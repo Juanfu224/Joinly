@@ -1,0 +1,73 @@
+# =============================================================================
+# Joinly Root - Docker Ignore
+# =============================================================================
+# Excluir archivos innecesarios del contexto de build del proyecto completo
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentación
+*.md
+docs/
+CONTRIBUTING.md
+LICENSE
+
+# IDE y editores
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+
+# Archivos de entorno (CRÍTICO - no incluir en imágenes)
+.env
+.env.*
+!.env.example
+!.env.prod.example
+
+# Logs
+*.log
+logs/
+
+# Backups
+backups/
+
+# Node modules (se instalan en el build)
+**/node_modules/
+
+# Builds locales
+**/target/
+**/dist/
+**/.angular/
+
+# Archivos temporales
+*.tmp
+*.bak
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.yml
+docker-compose.*.yml
+!docker-compose.prod.yml
+
+# Scripts locales (no necesarios en imagen)
+scripts/setup-server.sh
+scripts/backup.sh
+scripts/restore.sh
+
+# Testing
+**/coverage/
+**/.nyc_output/
+
+# Configuración local
+proxy.conf.json

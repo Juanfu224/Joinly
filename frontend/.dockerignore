@@ -1,0 +1,47 @@
+# =============================================================================
+# Joinly Frontend - Docker Ignore
+# =============================================================================
+# Excluir archivos innecesarios del contexto de build
+
+# Dependencias (se instalan en el contenedor)
+node_modules/
+
+# Directorio de build
+dist/
+.angular/
+
+# IDE y editores
+.idea/
+.vscode/
+*.iml
+
+# Git
+.git/
+.gitignore
+
+# Archivos de entorno
+.env
+.env.*
+!.env.example
+
+# Documentación
+*.md
+
+# Tests
+coverage/
+*.spec.ts
+
+# Archivos temporales
+*.tmp
+*.bak
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Configuración de desarrollo
+proxy.conf.json

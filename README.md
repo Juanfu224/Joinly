@@ -93,6 +93,8 @@ Joinly es una solución completa para gestionar suscripciones digitales comparti
 
 ### DevOps
 - **Docker & Docker Compose** (Containerización)
+- **Nginx** (Reverse proxy y servidor web)
+- **Let's Encrypt** (Certificados SSL)
 - **Maven** (Build tool)
 - **Git** (Control de versiones)
 
@@ -384,11 +386,41 @@ Joinly fue desarrollado como proyecto final para demostrar competencias en:
   Testing de integración completo  
   Documentación profesional con Swagger  
   Seguridad: encriptación, CORS, CSRF  
-  Frontend moderno con Angular 19  
+  Frontend moderno con Angular 21  
   Containerización con Docker  
+  Despliegue a producción con Nginx + SSL  
+  Automatización con scripts de deploy  
   Buenas prácticas y código limpio  
 
-**Puntuación estimada:** 92/100  
+**Puntuación estimada:** 95/100  
+
+---
+
+## 📖 Documentación Adicional
+
+- **[🚀 Quick Start Producción](docs/QUICKSTART.md)** - Despliegue rápido en 15 minutos
+- **[📘 Guía Completa de Despliegue](docs/DEPLOYMENT.md)** - Despliegue detallado en Digital Ocean
+- **[📊 Monitoreo y Observabilidad](docs/MONITORING.md)** - Guía de monitoreo y logs
+- **[⚙️ Variables de Entorno](docs/ENV_CONFIG.md)** - Configuración de variables
+- **[🎨 Buenas Prácticas CSS](docs/buenas_practicas/)** - Arquitectura CSS del proyecto
+- **[🔧 Backend README](backend/README.md)** - Documentación técnica del backend
+
+## 🛠️ Comandos Rápidos
+
+```bash
+# Desarrollo
+make dev-up              # Iniciar entorno de desarrollo
+make test-backend        # Ejecutar tests
+make dev-down           # Detener servicios
+
+# Producción
+make prod-deploy        # Desplegar a producción
+make backup             # Crear backup de BD
+make prod-logs          # Ver logs
+
+# Ver todos los comandos
+make help
+```
 
 ---
 

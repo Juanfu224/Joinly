@@ -1,6 +1,35 @@
-# Environment variables
+# =============================================================================
+# Joinly - Git Ignore
+# =============================================================================
+
+# Environment variables (sensible)
 .env
+.env.prod
+.env.local
 !.env.example
+!.env.prod.example
 
 # Docker
 mysql_data/
+
+# Backups (contienen datos sensibles)
+backups/
+
+# Logs
+*.log
+logs/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporales
+*.tmp
+*.bak
+*.swp
+*~

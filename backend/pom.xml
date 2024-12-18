@@ -101,6 +101,12 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- Spring Boot Actuator - Health checks y métricas -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
 		<!-- Flyway Database Migrations -->
 		<dependency>
 			<groupId>org.flywaydb</groupId>
