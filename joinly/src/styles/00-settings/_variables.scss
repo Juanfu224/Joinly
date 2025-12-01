@@ -54,18 +54,33 @@ $font-weight-bold: 700; // Usado en H1, H2
 $font-weight-black: 900;
 
 // --- Escala de Tamaños (Font Sizes) ---
-// Nombres estándar tipo "camiseta" para mantener orden
-$text-caption: 12px; // Caption
-$text-body-small: 14px; // Body Small
-$text-body-regular: 16px; // Body Regular
-$text-body-large: 18px; // Body Large
-$text-h4: 20px; // H4
-$text-h3: 32px; // H3
-$text-h2: 48px; // H2
-$text-h1: 64px; // H1
+$size-caption: 12px; // Caption
+$size-body-small: 14px; // Body Small
+$size-body-regular: 16px; // Body Regular
+$size-body-large: 18px; // Body Large
+$size-h4: 20px; // H4
+$size-h3: 32px; // H3
+$size-h2: 48px; // H2
+$size-h1: 64px; // H1
 
 // --- Alturas de Línea (Line Heights) ---
 $leading-tight: 1.1; // Para títulos grandes (H1)
 $leading-snug: 1.25; // Para subtítulos (H3, H2)
 $leading-normal: 1.5; // Para texto base y párrafos
 $leading-relaxed: 1.6; // Para textos largos o destacados
+
+// ==========================================================================
+// ESPACIADO (Base 8px)
+// ==========================================================================
+
+$spacing-0: 0;
+$spacing-1: 8px; // Unidad base
+$spacing-2: 16px;
+$spacing-3: 24px;
+$spacing-4: 32px;
+$spacing-5: 40px;
+$spacing-6: 48px;
+$spacing-8: 64px;
+$spacing-10: 80px;
+$spacing-12: 96px;
+$spacing-16: 128px;
