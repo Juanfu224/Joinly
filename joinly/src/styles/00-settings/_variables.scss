@@ -1,0 +1,69 @@
+// ==========================================================================
+// PALETA DE COLORES
+// ==========================================================================
+
+// --- Principales ---
+$color-primary-purple: #9333ea; // Morado principal
+$color-primary-dark-purple: #7c3aed; // Morado oscuro
+$color-primary-orange: #f97316; // Naranja principal
+$color-primary-dark-orange: #ea580c; // Naranja oscuro
+
+// --- Secundarios ---
+$color-secondary-yellow: #facc15; // Amarillo
+$color-secondary-blue: #60a5fa; // Azul
+
+// --- Neutrales ---
+$color-neutral-gray-medium: #e5e7eb; // Gris medio
+$color-neutral-gray-dark: #9ca3af; // Gris oscuro
+$color-neutral-normal-text: #4b5563; // Texto normal
+$color-neutral-dark-text: #111827; // Texto oscuro
+
+// --- Footer ---
+$color-footer-background: #1e293b; // Fondo del footer
+
+// --- Backgrounds ---
+$color-background-light: #f9fafb; // Fondo claro
+
+// --- Fondos claros ---
+$color-background-warm: #fef8eb; // Fondo claro naranja
+$color-background-purple: #f7f5ff; // Fondo claro morado
+$color-background-white: #f8fafc; // Fondo claro
+$color-background-white-alt: #f6f6f8; // Fondo claro 2
+$color-background-blue: #eff6ff; // Fondo claro azul
+
+// --- Estados ---
+$color-warning: $color-secondary-yellow; // Reutilizamos tu amarillo
+$color-info: $color-secondary-blue; // Reutilizamos tu azul
+
+// ==========================================================================
+// TIPOGRAFÍA
+// ==========================================================================
+
+// --- Familia ---
+// Inter es la fuente principal, con sans-serif como respaldo
+$font-family-primary: 'Inter', sans-serif;
+
+// --- Pesos ---
+$font-weight-light: 300;
+$font-weight-regular: 400; // Usado en textos base
+$font-weight-medium: 500;
+$font-weight-semibold: 600; // Usado en H3, H4
+$font-weight-bold: 700; // Usado en H1, H2
+$font-weight-black: 900;
+
+// --- Escala de Tamaños (Font Sizes) ---
+// Nombres estándar tipo "camiseta" para mantener orden
+$text-caption: 12px; // Caption
+$text-body-small: 14px; // Body Small
+$text-body-regular: 16px; // Body Regular
+$text-body-large: 18px; // Body Large
+$text-h4: 20px; // H4
+$text-h3: 32px; // H3
+$text-h2: 48px; // H2
+$text-h1: 64px; // H1
+
+// --- Alturas de Línea (Line Heights) ---
+$leading-tight: 1.1; // Para títulos grandes (H1)
+$leading-snug: 1.25; // Para subtítulos (H3, H2)
+$leading-normal: 1.5; // Para texto base y párrafos
+$leading-relaxed: 1.6; // Para textos largos o destacados
