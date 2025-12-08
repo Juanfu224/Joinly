@@ -1,0 +1,9 @@
+//Este es el archivo central que maneja todos los estilos
+
+// 1. Settings (Configuración y Variables)
+@use '00-settings/variables' as *;
+
+// 2. Tools (Herramientas y Mixins)
+@use '01-tools/mixins' as *;
+
+//3. Estilos genericos

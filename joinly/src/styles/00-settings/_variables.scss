@@ -91,10 +91,10 @@ $spacing-16: 128px;
 // ==========================================================================
 // BREAKPOINTS
 // ==========================================================================
-$bp-sm: 640px; // Móvil grande
-$bp-md: 768px; // Tablet vertical
-$bp-lg: 1024px; // Desktop / Tablet horizontal
-$bp-xl: 1280px; // Desktop grande
+$bp-movil: 640px; // Móvil grande
+$bp-tablet: 768px; // Tablet vertical
+$bp-desktop: 1024px; // Desktop / Tablet horizontal
+$bp-big-desktop: 1280px; // Desktop grande
 
 // ==========================================================================
 // BORDES Y RADIOS
@@ -106,10 +106,8 @@ $border-medium: 2px;
 $border-thick: 4px;
 
 // --- Radios (Border Radius) ---
-$radius-sm: 2px;
-$radius-md: 4px;
-$radius-lg: 8px;
-$radius-xl: 18px;
+$radius-normal: 8px;
+$radius-high: 18px;
 $radius-full: 9999px;
 
 // ==========================================================================
@@ -118,22 +116,22 @@ $radius-full: 9999px;
 // ==========================================================================
 
 // Sombra 1 (Muy sutil)
-$shadow-xs: 0 2px 6px rgba($shadow-color-base, 0.06);
+$shadow-1: 0 2px 6px rgba($shadow-color-base, 0.06);
 
 // Sombra 2 (Pequeña estándar)
-$shadow-sm: 0 2px 12px rgba($shadow-color-base, 0.08);
+$shadow-2: 0 2px 12px rgba($shadow-color-base, 0.08);
 
 // Sombra 3 (Media)
-$shadow-md: 0 8px 28px rgba($shadow-color-base, 0.1);
+$shadow-3: 0 8px 28px rgba($shadow-color-base, 0.1);
 
 // Sombra 4 (Grande)
-$shadow-lg: 0 14px 42px rgba($shadow-color-base, 0.14);
+$shadow-4: 0 14px 42px rgba($shadow-color-base, 0.14);
 
 // Sombra 5 (Muy grande)
-$shadow-xl: 0 24px 65px rgba($shadow-color-base, 0.16);
+$shadow-5: 0 24px 65px rgba($shadow-color-base, 0.16);
 
 // Sombra 6 (Enorme)
-$shadow-2xl: 0 32px 72px rgba($shadow-color-base, 0.24);
+$shadow-6: 0 32px 72px rgba($shadow-color-base, 0.24);
 
 // ==========================================================================
 // TRANSICIONES Y ANIMACIONES

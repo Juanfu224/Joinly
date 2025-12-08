@@ -1,0 +1,53 @@
+@use '../00-settings/variables' as *;
+
+// ==========================================================================
+// MIXINS
+// ==========================================================================
+
+// 1. MEDIA QUERIES (RESPONSIVE)
+// --------------------------------------------------------------------------
+// Este mixin permite adaptar el diseño a diferentes pantallas usando
+// los breakpoints que se han definido en variables.
+// Enfoque Mobile First: los estilos base son para móvil y se escalan hacia arriba.
+
+@mixin mixin-responsive($breakpoint) {
+  @if $breakpoint == 'movil' {
+    @media (min-width: $bp-movil) {
+      @content;
+    }
+  } @else if $breakpoint == 'tablet' {
+    @media (min-width: $bp-tablet) {
+      @content;
+    }
+  } @else if $breakpoint == 'desktop' {
+    @media (min-width: $bp-desktop) {
+      @content;
+    }
+  } @else if $breakpoint == 'big-desktop' {
+    @media (min-width: $bp-big-desktop) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint '#{$breakpoint}' no reconocido. Usa: movil, tablet, desktop o big-desktop.";
+  }
+}
+
+// 2. FLEXBOX CENTER (POSICIONAMIENTO)
+// --------------------------------------------------------------------------
+// Centra cualquier elemento vertical y horizontalmente.
+
+@mixin mixin-flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// 3. TEXT TRUNCATE (ESTÉTICA)
+// --------------------------------------------------------------------------
+// Si un texto es muy largo (ej. un título de tarjeta), corta el texto
+// y pone tres puntos (...) automáticamente.
+@mixin mixin-text-truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
