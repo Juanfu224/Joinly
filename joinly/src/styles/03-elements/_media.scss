@@ -1,0 +1,35 @@
+// ==========================================================================
+// MEDIA ELEMENTS
+// ==========================================================================
+// Estilos base para imágenes, videos y figuras
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+img {
+  // Evita que las imágenes se distorsionen
+  object-fit: cover;
+
+  // Elimina el borde en imágenes dentro de enlaces (legacy)
+  border-style: none;
+}
+
+figure {
+  margin: 0;
+  padding: 0;
+}
+
+figcaption {
+  font-size: var(--tamano-texto-pequeno);
+  color: var(--color-texto-base);
+  margin-block-start: var(--espaciado-1);
+}
+
+// SVG inline heredan color del texto
+svg {
+  fill: currentColor;
+}

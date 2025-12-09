@@ -1,0 +1,33 @@
+// ==========================================================================
+// PAGE ELEMENTS
+// ==========================================================================
+// Estilos base para html y body - Configuración global de la página
+
+html {
+  // Comportamiento de scroll suave para anclas
+  scroll-behavior: smooth;
+
+  // Mejora el cálculo del box-sizing heredado del reset
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  // Tipografía base
+  font-family: var(--font-primaria);
+  font-size: var(--tamano-texto-regular);
+  font-weight: var(--peso-fuente-regular);
+  line-height: var(--altura-linea-normal);
+
+  // Colores base
+  color: var(--color-texto-base);
+  background-color: var(--color-superficie-base);
+
+  // Antialiasing para mejor renderizado de fuentes
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+
+  // Evita saltos de scroll horizontal
+  overflow-x: hidden;
+}

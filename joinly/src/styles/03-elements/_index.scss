@@ -1,0 +1,12 @@
+// ==========================================================================
+// ELEMENTS LAYER INDEX
+// ==========================================================================
+// Punto de entrada para todos los estilos base de elementos HTML
+// Orden: de más global a más específico
+
+@forward 'page';
+@forward 'headings';
+@forward 'links';
+@forward 'media';
+@forward 'lists';
+@forward 'forms';

@@ -32,13 +32,11 @@
 @use '02-generic/reset';
 
 // ==========================================================================
-// 4️⃣ BASE - Estilos base de elementos HTML
+// 4️⃣ ELEMENTS - Estilos base de elementos HTML
 // ==========================================================================
-// Contiene: Estilos de h1-h6, p, a, button, input, etc.
-// Especificidad: Baja (solo selectores de elementos)
-@use '03-elements/typography';
-@use '03-elements/buttons';
-@use '03-elements/forms';
+// Contiene: Estilos de html, body, h1-h6, a, img, ul, input, etc.
+// Especificidad: Baja (solo selectores de elementos, sin clases)
+@use '03-elements';
 
 // ==========================================================================
 // 5️⃣ LAYOUTS - Estructuras y layouts

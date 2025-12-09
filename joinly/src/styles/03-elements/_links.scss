@@ -1,0 +1,24 @@
+// ==========================================================================
+// LINKS
+// ==========================================================================
+// Estilos base para enlaces
+
+a {
+  color: var(--color-principal);
+  text-decoration: none;
+  transition: color var(--duracion-rapida) var(--transicion-estandar);
+
+  &:hover {
+    color: var(--color-principal-oscuro);
+  }
+
+  &:focus-visible {
+    outline: var(--borde-medio) solid var(--color-principal);
+    outline-offset: 2px;
+    border-radius: var(--radio-pequeno);
+  }
+
+  &:active {
+    color: var(--color-principal-oscuro);
+  }
+}

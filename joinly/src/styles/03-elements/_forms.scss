@@ -1,60 +1,107 @@
-@use '../00-settings/variables' as *;
+// ==========================================================================
+// FORM ELEMENTS (Reset tipográfico)
+// ==========================================================================
+// Reset base para elementos de formulario
+// Los estilos visuales detallados se definen en la capa de componentes
 
-@layer base {
-  // ==========================================================================
-  // FORMULARIOS BASE
-  // ==========================================================================
-  // Estilos fundamentales para inputs, textareas y selects
+input,
+button,
+textarea,
+select {
+  // Hereda tipografía del padre (evita fuente de sistema)
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  color: inherit;
 
-  input,
-  textarea,
-  select {
-  // Tipografía
-  font-family: var(--font-primaria);
-  font-size: var(--tamano-texto-regular);
-  color: var(--color-texto-fuerte);
-  
-  // Espaciado
-  padding: var(--espaciado-2) var(--espaciado-3);
-  
-  // Apariencia
-  background-color: white;
+  // Reset de margin
+  margin: 0;
+}
+
+button {
+  // Reset de estilos de botón
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  // Evita selección de texto accidental
+  user-select: none;
+
+  // Mejora la accesibilidad táctil
+  touch-action: manipulation;
+
+  &:focus-visible {
+    outline: var(--borde-medio) solid var(--color-principal);
+    outline-offset: 2px;
+    border-radius: var(--radio-pequeno);
+  }
+}
+
+input,
+textarea,
+select {
+  // Preparación para estilos de componente
+  background-color: transparent;
   border: var(--borde-delgado) solid var(--color-borde-base);
   border-radius: var(--radio-medio);
-  
-  // Interactividad
-  transition: border-color var(--duracion-rapida) var(--transicion-estandar);
-  
-  // Estados
-  &:hover {
-    border-color: var(--color-borde-fuerte);
+
+  &::placeholder {
+    color: var(--color-borde-fuerte);
+    opacity: 1;
   }
-  
+
   &:focus {
     outline: none;
     border-color: var(--color-principal);
-    box-shadow: 0 0 0 3px rgb(from var(--color-principal) r g b / 0.1);
   }
-  
-  &::placeholder {
-    color: var(--color-borde-fuerte);
-  }
-  
+
   &:disabled {
-    background-color: var(--color-borde-base);
     cursor: not-allowed;
     opacity: 0.6;
   }
 }
 
-  // Textarea específico
-  textarea {
-    resize: vertical;
-    min-height: 100px;
-  }
+textarea {
+  // Permitir solo redimensionar verticalmente
+  resize: vertical;
+  min-height: 6rem;
+}
 
-  // Select específico
-  select {
-    cursor: pointer;
+select {
+  // Reset de apariencia nativa
+  appearance: none;
+  cursor: pointer;
+}
+
+// Elimina los spinners de inputs numéricos
+input[type='number'] {
+  appearance: textfield;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
   }
+}
+
+// Label base
+label {
+  display: block;
+  font-size: var(--tamano-texto-pequeno);
+  font-weight: var(--peso-fuente-medio);
+  color: var(--color-texto-fuerte);
+  margin-block-end: var(--espaciado-1);
+}
+
+// Fieldset y legend reset
+fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  padding: 0;
+  font-weight: var(--peso-fuente-semi-negrita);
 }
