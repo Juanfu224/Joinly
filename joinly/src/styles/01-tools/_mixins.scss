@@ -1,15 +1,11 @@
 @use '../00-settings/variables' as *;
 
 // ==========================================================================
-// MIXINS
-// ==========================================================================
-
 // 1. MEDIA QUERIES (RESPONSIVE)
-// --------------------------------------------------------------------------
+// ==========================================================================
 // Este mixin permite adaptar el diseño a diferentes pantallas usando
 // los breakpoints que se han definido en variables.
 // Enfoque Mobile First: los estilos base son para móvil y se escalan hacia arriba.
-
 @mixin mixin-responsive($breakpoint) {
   @if $breakpoint == 'movil' {
     @media (min-width: $bp-movil) {
@@ -32,22 +28,45 @@
   }
 }
 
+// ==========================================================================
 // 2. FLEXBOX CENTER (POSICIONAMIENTO)
-// --------------------------------------------------------------------------
+// ==========================================================================
 // Centra cualquier elemento vertical y horizontalmente.
-
 @mixin mixin-flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+// ==========================================================================
 // 3. TEXT TRUNCATE (ESTÉTICA)
-// --------------------------------------------------------------------------
-// Si un texto es muy largo (ej. un título de tarjeta), corta el texto
-// y pone tres puntos (...) automáticamente.
-@mixin mixin-text-truncate {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+// ==========================================================================
+// Trunca texto con puntos suspensivos (...)
+// Soporta truncado de 1 línea o multilínea (usando line-clamp)
+@mixin mixin-text-truncate($lines: 1) {
+  @if $lines == 1 {
+    // Truncado simple de una línea
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  } @else {
+    // Truncado multilínea usando line-clamp (CSS moderno)
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+// ==========================================================================
+// 4. FOCUS VISIBLE ACCESIBLE
+// ==========================================================================
+// Aplica un outline accesible y visible cuando el elemento recibe foco
+// Solo se muestra con teclado (:focus-visible), no con click de ratón
+@mixin mixin-focus-visible {
+  &:focus-visible {
+    outline: 2px solid var(--color-principal);
+    outline-offset: 2px;
+    border-radius: var(--radio-pequeno);
+  }
 }

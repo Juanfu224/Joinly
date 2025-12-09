@@ -1,9 +1,68 @@
-//Este es el archivo central que maneja todos los estilos
+// MAIN.SCSS - Punto de entrada de todos los estilos
+// Arquitectura ITCSS (Inverted Triangle CSS) + Cascade Layers
+// El orden de importación es CRÍTICO: de menos específico a más específico
+// https://www.xfive.co/blog/itcss-scalable-maintainable-css-architecture/
 
-// 1. Settings (Configuración y Variables)
+// ==========================================================================
+// DEFINICIÓN DEL ORDEN DE CAPAS (CSS Cascade Layers)
+// ==========================================================================
+// Las capas superiores SIEMPRE tienen prioridad, sin importar la especificidad
+// Esto elimina la guerra de !important y hace predecible la cascada
+@layer reset, base, layouts, components, utilities, overrides;
+
+// ==========================================================================
+// 1️⃣ SETTINGS - Variables globales y configuración
+// ==========================================================================
+// Contiene: Variables SCSS, design tokens, configuración del proyecto
+// Especificidad: Ninguna (solo variables, no genera CSS)
 @use '00-settings/variables' as *;
 
-// 2. Tools (Herramientas y Mixins)
+// ==========================================================================
+// 2️⃣ TOOLS - Mixins y funciones
+// ==========================================================================
+// Contiene: Mixins reutilizables, funciones SCSS
+// Especificidad: Ninguna (solo herramientas, no genera CSS)
 @use '01-tools/mixins' as *;
 
-//3. Estilos genericos
+// ==========================================================================
+// 3️⃣ RESET - Reset y normalize
+// ==========================================================================
+// Contiene: Reset CSS, normalize, box-sizing
+// Especificidad: Muy baja (selectores de elementos genéricos)
+@use '02-generic/reset';
+
+// ==========================================================================
+// 4️⃣ BASE - Estilos base de elementos HTML
+// ==========================================================================
+// Contiene: Estilos de h1-h6, p, a, button, input, etc.
+// Especificidad: Baja (solo selectores de elementos)
+@use '03-elements/typography';
+@use '03-elements/buttons';
+@use '03-elements/forms';
+
+// ==========================================================================
+// 5️⃣ LAYOUTS - Estructuras y layouts
+// ==========================================================================
+// Contiene: Container, grid, header, footer, sidebar
+// Especificidad: Media (clases de layout)
+@use '04-layout/container';
+@use '04-layout/grid';
+@use '04-layout/flex';
+
+// ==========================================================================
+// 6️⃣ COMPONENTS - Componentes reutilizables (Capa: components)
+// ==========================================================================
+// Contiene: Cards, buttons variantes, modals, navigation, etc.
+// Especificidad: Media-Alta (clases de componentes específicos)
+// TODO: Añadir cuando se creen los componentes Angular
+// @layer components {
+//   @use '05-components/card';
+//   @use '05-components/modal';
+// }
+
+// ==========================================================================
+// 7️⃣ UTILITIES - Clases de utilidad (Próximamente)
+// ==========================================================================
+// Contiene: Clases helper (.text-center, .mt-4, .hidden, etc.)
+// Especificidad: Muy alta (clases de una sola responsabilidad)
+// TODO: Añadir si es necesario

@@ -1,0 +1,60 @@
+@use '../00-settings/variables' as *;
+
+@layer base {
+  // ==========================================================================
+  // FORMULARIOS BASE
+  // ==========================================================================
+  // Estilos fundamentales para inputs, textareas y selects
+
+  input,
+  textarea,
+  select {
+  // Tipografía
+  font-family: var(--font-primaria);
+  font-size: var(--tamano-texto-regular);
+  color: var(--color-texto-fuerte);
+  
+  // Espaciado
+  padding: var(--espaciado-2) var(--espaciado-3);
+  
+  // Apariencia
+  background-color: white;
+  border: var(--borde-delgado) solid var(--color-borde-base);
+  border-radius: var(--radio-medio);
+  
+  // Interactividad
+  transition: border-color var(--duracion-rapida) var(--transicion-estandar);
+  
+  // Estados
+  &:hover {
+    border-color: var(--color-borde-fuerte);
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: var(--color-principal);
+    box-shadow: 0 0 0 3px rgb(from var(--color-principal) r g b / 0.1);
+  }
+  
+  &::placeholder {
+    color: var(--color-borde-fuerte);
+  }
+  
+  &:disabled {
+    background-color: var(--color-borde-base);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+  // Textarea específico
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  // Select específico
+  select {
+    cursor: pointer;
+  }
+}
