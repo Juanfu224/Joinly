@@ -1,0 +1,82 @@
+// ==========================================================================
+// GRID SYSTEM
+// ==========================================================================
+// Sistema de grid moderno basado en CSS Grid nativo
+
+@use '../00-settings/variables' as *;
+
+.l-grid {
+  display: grid;
+  gap: var(--espaciado-2);
+
+  // --- Variantes de gap ---
+  &--gap-sm {
+    gap: var(--espaciado-1);
+  }
+
+  &--gap-lg {
+    gap: var(--espaciado-4);
+  }
+
+  &--gap-xl {
+    gap: var(--espaciado-6);
+  }
+
+  // --- Grid Auto-Fit (Responsive sin Media Queries) ---
+  // Las columnas se ajustan automáticamente según el espacio disponible
+
+  &--auto-fit {
+    grid-template-columns: repeat(auto-fit, minmax(var(--grid-item-min-width-md), 1fr));
+  }
+
+  &--auto-fit-sm {
+    grid-template-columns: repeat(auto-fit, minmax(var(--grid-item-min-width-sm), 1fr));
+  }
+
+  &--auto-fit-lg {
+    grid-template-columns: repeat(auto-fit, minmax(var(--grid-item-min-width-lg), 1fr));
+  }
+
+  // --- Columnas Fijas (con responsive manual) ---
+  &--2-cols {
+    grid-template-columns: repeat(2, 1fr);
+
+    @media (max-width: $bp-tablet) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &--3-cols {
+    grid-template-columns: repeat(3, 1fr);
+
+    @media (max-width: $bp-desktop) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: $bp-tablet) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &--4-cols {
+    grid-template-columns: repeat(4, 1fr);
+
+    @media (max-width: $bp-desktop) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: $bp-tablet) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // --- Alineación de items ---
+  &--center {
+    justify-items: center;
+    align-items: center;
+  }
+
+  &--stretch {
+    align-items: stretch;
+  }
+}

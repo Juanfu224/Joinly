@@ -1,0 +1,130 @@
+// ==========================================================================
+// FLEXBOX UTILITIES
+// ==========================================================================
+// Clases utilitarias para alineación rápida con Flexbox
+
+.l-flex {
+  display: flex;
+
+  // --- Direcciones ---
+  &--column {
+    flex-direction: column;
+  }
+
+  &--row-reverse {
+    flex-direction: row-reverse;
+  }
+
+  &--column-reverse {
+    flex-direction: column-reverse;
+  }
+
+  // --- Wrap ---
+  &--wrap {
+    flex-wrap: wrap;
+  }
+
+  &--nowrap {
+    flex-wrap: nowrap;
+  }
+
+  // --- Gap ---
+  &--gap-sm {
+    gap: var(--espaciado-1);
+  }
+
+  &--gap {
+    gap: var(--espaciado-2);
+  }
+
+  &--gap-lg {
+    gap: var(--espaciado-4);
+  }
+
+  // --- Alineación horizontal (justify-content) ---
+  &--justify-start {
+    justify-content: flex-start;
+  }
+
+  &--justify-center {
+    justify-content: center;
+  }
+
+  &--justify-end {
+    justify-content: flex-end;
+  }
+
+  &--justify-between {
+    justify-content: space-between;
+  }
+
+  &--justify-around {
+    justify-content: space-around;
+  }
+
+  &--justify-evenly {
+    justify-content: space-evenly;
+  }
+
+  // --- Alineación vertical (align-items) ---
+  &--align-start {
+    align-items: flex-start;
+  }
+
+  &--align-center {
+    align-items: center;
+  }
+
+  &--align-end {
+    align-items: flex-end;
+  }
+
+  &--align-stretch {
+    align-items: stretch;
+  }
+
+  &--align-baseline {
+    align-items: baseline;
+  }
+}
+
+// --- Patrones comunes pre-definidos ---
+
+// Centrado perfecto (ideal para login, modales, páginas de error)
+.l-flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// Navbar / Header pattern (logo izq, nav der)
+.l-flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+// Stack vertical con gap (ideal para formularios, listas)
+.l-flex-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-2);
+}
+
+// Fila con wrap y gap (ideal para tags, badges, botones)
+.l-flex-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaciado-1);
+  align-items: center;
+}
+
+// Item que crece para ocupar espacio disponible
+.l-flex-grow {
+  flex-grow: 1;
+}
+
+// Item que no se encoge
+.l-flex-shrink-0 {
+  flex-shrink: 0;
+}

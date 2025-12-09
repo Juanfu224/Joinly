@@ -1,30 +1,10 @@
 // ==========================================================================
-// FORM ELEMENTS (Reset tipográfico)
+// FORM ELEMENTS
 // ==========================================================================
-// Reset base para elementos de formulario
-// Los estilos visuales detallados se definen en la capa de componentes
-
-input,
-button,
-textarea,
-select {
-  // Hereda tipografía del padre (evita fuente de sistema)
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  line-height: inherit;
-  color: inherit;
-
-  // Reset de margin
-  margin: 0;
-}
+// Estilos base para elementos de formulario
+// Nota: font:inherit, background:none, border:none para buttons ya están en reset
 
 button {
-  // Reset de estilos de botón
-  background: transparent;
-  border: none;
-  cursor: pointer;
-
   // Evita selección de texto accidental
   user-select: none;
 
@@ -41,7 +21,6 @@ button {
 input,
 textarea,
 select {
-  // Preparación para estilos de componente
   background-color: transparent;
   border: var(--borde-delgado) solid var(--color-borde-base);
   border-radius: var(--radio-medio);
@@ -63,18 +42,15 @@ select {
 }
 
 textarea {
-  // Permitir solo redimensionar verticalmente
   resize: vertical;
   min-height: 6rem;
 }
 
 select {
-  // Reset de apariencia nativa
   appearance: none;
   cursor: pointer;
 }
 
-// Elimina los spinners de inputs numéricos
 input[type='number'] {
   appearance: textfield;
 
@@ -85,7 +61,6 @@ input[type='number'] {
   }
 }
 
-// Label base
 label {
   display: block;
   font-size: var(--tamano-texto-pequeno);
@@ -94,7 +69,6 @@ label {
   margin-block-end: var(--espaciado-1);
 }
 
-// Fieldset y legend reset
 fieldset {
   border: none;
   margin: 0;

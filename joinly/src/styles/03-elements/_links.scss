@@ -2,10 +2,10 @@
 // LINKS
 // ==========================================================================
 // Estilos base para enlaces
+// Nota: text-decoration:none y color:inherit ya están en reset
 
 a {
   color: var(--color-principal);
-  text-decoration: none;
   transition: color var(--duracion-rapida) var(--transicion-estandar);
 
   &:hover {

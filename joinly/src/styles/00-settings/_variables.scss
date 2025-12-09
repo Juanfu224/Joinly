@@ -198,6 +198,20 @@
 }
 
 // ==========================================================================
+// Z-INDEX (Sistema de capas)
+// ==========================================================================
+:root {
+  // Sistema ordenado de z-index para evitar conflictos
+  --z-dropdown: 100; // Menús desplegables
+  --z-sticky: 200; // Headers sticky, elementos fijos en scroll
+  --z-fixed: 300; // Elementos fijos (navbars, sidebars)
+  --z-modal-backdrop: 400; // Fondo oscuro detrás de modales
+  --z-modal: 500; // Modales y diálogos
+  --z-popover: 600; // Popovers, tooltips
+  --z-toast: 700; // Notificaciones toast
+}
+
+// ==========================================================================
 // VARIABLES SCSS (para uso en tiempo de compilación)
 // ==========================================================================
 // Estas variables SCSS se usan en mixins y condiciones que necesitan

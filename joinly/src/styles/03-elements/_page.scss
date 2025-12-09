@@ -2,14 +2,10 @@
 // PAGE ELEMENTS
 // ==========================================================================
 // Estilos base para html y body - Configuración global de la página
+// Nota: box-sizing, antialiasing básico y min-height ya están en reset
 
 html {
-  // Comportamiento de scroll suave para anclas
   scroll-behavior: smooth;
-
-  // Mejora el cálculo del box-sizing heredado del reset
-  text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -23,9 +19,7 @@ body {
   color: var(--color-texto-base);
   background-color: var(--color-superficie-base);
 
-  // Antialiasing para mejor renderizado de fuentes
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  // Mejora adicional de renderizado (complementa reset)
   text-rendering: optimizeLegibility;
 
   // Evita saltos de scroll horizontal

@@ -2,20 +2,11 @@
 // MEDIA ELEMENTS
 // ==========================================================================
 // Estilos base para imágenes, videos y figuras
-
-img,
-video {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
+// Nota: display:block, max-width:100%, height:auto ya están en reset
 
 img {
-  // Evita que las imágenes se distorsionen
+  // Comportamiento por defecto para imágenes de contenido
   object-fit: cover;
-
-  // Elimina el borde en imágenes dentro de enlaces (legacy)
-  border-style: none;
 }
 
 figure {

@@ -1,14 +1,6 @@
 // MAIN.SCSS - Punto de entrada de todos los estilos
-// Arquitectura ITCSS (Inverted Triangle CSS) + Cascade Layers
+// Arquitectura ITCSS (Inverted Triangle CSS)
 // El orden de importación es CRÍTICO: de menos específico a más específico
-// https://www.xfive.co/blog/itcss-scalable-maintainable-css-architecture/
-
-// ==========================================================================
-// DEFINICIÓN DEL ORDEN DE CAPAS (CSS Cascade Layers)
-// ==========================================================================
-// Las capas superiores SIEMPRE tienen prioridad, sin importar la especificidad
-// Esto elimina la guerra de !important y hace predecible la cascada
-@layer reset, base, layouts, components, utilities, overrides;
 
 // ==========================================================================
 // 1️⃣ SETTINGS - Variables globales y configuración
@@ -36,27 +28,22 @@
 // ==========================================================================
 // Contiene: Estilos de html, body, h1-h6, a, img, ul, input, etc.
 // Especificidad: Baja (solo selectores de elementos, sin clases)
-@use '03-elements';
+@use '03-elements' as elements;
 
 // ==========================================================================
 // 5️⃣ LAYOUTS - Estructuras y layouts
 // ==========================================================================
-// Contiene: Container, grid, header, footer, sidebar
-// Especificidad: Media (clases de layout)
-@use '04-layout/container';
-@use '04-layout/grid';
-@use '04-layout/flex';
+// Contiene: Container, grid, flexbox utilities
+// Especificidad: Media (clases de layout con prefijo .l-)
+@use '04-layout' as layout;
 
 // ==========================================================================
-// 6️⃣ COMPONENTS - Componentes reutilizables (Capa: components)
+// 6️⃣ COMPONENTS - Componentes reutilizables
 // ==========================================================================
 // Contiene: Cards, buttons variantes, modals, navigation, etc.
 // Especificidad: Media-Alta (clases de componentes específicos)
 // TODO: Añadir cuando se creen los componentes Angular
-// @layer components {
-//   @use '05-components/card';
-//   @use '05-components/modal';
-// }
+// @use '05-components';
 
 // ==========================================================================
 // 7️⃣ UTILITIES - Clases de utilidad (Próximamente)
