@@ -1,69 +1,85 @@
+// ==========================================================================
+// MIXINS - HERRAMIENTAS REUTILIZABLES
+// ==========================================================================
+// Los mixins son "plantillas" de CSS que podemos reutilizar.
+// Evitan repetir código y centralizan la lógica en un solo lugar.
+// Se invocan con @include nombre-del-mixin();
+
+// Importamos las variables para usar los breakpoints
 @use '../00-settings/variables' as *;
 
 // ==========================================================================
-// 1. MEDIA QUERIES (RESPONSIVE)
+// 1. MEDIA QUERIES RESPONSIVE (Mobile First)
 // ==========================================================================
-// Este mixin permite adaptar el diseño a diferentes pantallas usando
-// los breakpoints que se han definido en variables.
-// Enfoque Mobile First: los estilos base son para móvil y se escalan hacia arriba.
-@mixin mixin-responsive($breakpoint) {
-  @if $breakpoint == 'movil' {
+// Este mixin genera media queries usando nuestros breakpoints predefinidos.
+// Enfoque Mobile First: los estilos base son para móvil, luego escalamos.
+
+@mixin responder-a($punto-ruptura) {
+  @if $punto-ruptura == 'movil' {
     @media (min-width: $bp-movil) {
       @content;
     }
-  } @else if $breakpoint == 'tablet' {
+  } @else if $punto-ruptura == 'tablet' {
     @media (min-width: $bp-tablet) {
       @content;
     }
-  } @else if $breakpoint == 'desktop' {
+  } @else if $punto-ruptura == 'escritorio' {
     @media (min-width: $bp-desktop) {
       @content;
     }
-  } @else if $breakpoint == 'big-desktop' {
+  } @else if $punto-ruptura == 'escritorio-grande' {
     @media (min-width: $bp-big-desktop) {
       @content;
     }
   } @else {
-    @warn "Breakpoint '#{$breakpoint}' no reconocido. Usa: movil, tablet, desktop o big-desktop.";
+    @warn "Breakpoint '#{$punto-ruptura}' no existe. Usa: movil, tablet, escritorio o escritorio-grande.";
   }
 }
 
 // ==========================================================================
-// 2. FLEXBOX CENTER (POSICIONAMIENTO)
+// 2. CENTRADO CON FLEXBOX
 // ==========================================================================
-// Centra cualquier elemento vertical y horizontalmente.
-@mixin mixin-flex-center {
+// Centra un elemento tanto horizontal como verticalmente.
+// Muy útil para modales, páginas de login, spinners de carga, etc.
+
+@mixin centrar-flex {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 // ==========================================================================
-// 3. TEXT TRUNCATE (ESTÉTICA)
+// 3. TRUNCAR TEXTO CON PUNTOS SUSPENSIVOS
 // ==========================================================================
-// Trunca texto con puntos suspensivos (...)
-// Soporta truncado de 1 línea o multilínea (usando line-clamp)
-@mixin mixin-text-truncate($lines: 1) {
-  @if $lines == 1 {
-    // Truncado simple de una línea
+// Corta el texto que se desborda y añade "..." al final.
+// Puede ser de una línea o multilínea (usando line-clamp moderno).
+//
+// USO:
+// .titulo-tarjeta { @include truncar-texto(2); }  // Máximo 2 líneas
+
+@mixin truncar-texto($lineas: 1) {
+  @if $lineas == 1 {
+    // Truncado clásico de una sola línea
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
   } @else {
-    // Truncado multilínea usando line-clamp (CSS moderno)
+    // Truncado multilínea (CSS moderno, funciona en todos los navegadores actuales)
     display: -webkit-box;
-    -webkit-line-clamp: $lines;
+    -webkit-line-clamp: $lineas;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
 }
 
 // ==========================================================================
-// 4. FOCUS VISIBLE ACCESIBLE
+// 4. FOCO VISIBLE ACCESIBLE (WCAG)
 // ==========================================================================
-// Aplica un outline accesible y visible cuando el elemento recibe foco
-// Solo se muestra con teclado (:focus-visible), no con click de ratón
-@mixin mixin-focus-visible {
+// Aplica un outline visible SOLO cuando el usuario navega con teclado.
+// :focus-visible se activa con Tab, pero NO con click de ratón.
+// Esto mejora la accesibilidad sin afectar la estética para usuarios de ratón.
+
+@mixin foco-visible {
   &:focus-visible {
     outline: 2px solid var(--color-principal);
     outline-offset: 2px;
@@ -72,11 +88,16 @@
 }
 
 // ==========================================================================
-// 5. VISUALLY HIDDEN (Accesibilidad WCAG)
+// 5. OCULTO VISUALMENTE (Solo para lectores de pantalla)
 // ==========================================================================
-// Oculta visualmente pero mantiene accesible para lectores de pantalla
-// Uso: etiquetas de formulario ocultas, skip links, textos solo para SR
-@mixin mixin-visually-hidden {
+// Oculta el elemento visualmente pero lo mantiene accesible para tecnologías
+// de asistencia (lectores de pantalla como NVDA, VoiceOver, etc.).
+// Útil para: etiquetas de formulario ocultas, skip links, textos descriptivos.
+//
+// IMPORTANTE: Nunca usar display:none o visibility:hidden para esto,
+// ya que también lo ocultan de los lectores de pantalla.
+
+@mixin oculto-accesible {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -89,17 +110,24 @@
 }
 
 // ==========================================================================
-// 6. ASPECT RATIO (Para contenedores de media)
+// 6. RATIO DE ASPECTO
 // ==========================================================================
-// Mantiene proporción de aspecto en contenedores
-@mixin mixin-aspect-ratio($width: 16, $height: 9) {
-  aspect-ratio: #{$width} / #{$height};
+// Mantiene una proporción de aspecto fija en un contenedor.
+// Útil para videos, imágenes de fondo, tarjetas de preview, etc.
+
+// USO:
+// .video-container { @include ratio-aspecto(16, 9); }
+
+@mixin ratio-aspecto($ancho: 16, $alto: 9) {
+  aspect-ratio: #{$ancho} / #{$alto};
 }
 
 // ==========================================================================
-// 7. TRANSITION HELPER
+// 7. TRANSICIÓN SUAVE
 // ==========================================================================
-// Aplica transiciones consistentes usando variables del sistema
-@mixin mixin-transition($properties: all, $duration: var(--duracion-base)) {
-  transition: $properties $duration var(--transicion-estandar);
+// Aplica transiciones consistentes usando las variables del sistema de diseño.
+// Centralizar esto garantiza que todas las animaciones se sientan coherentes.
+
+@mixin transicion($propiedades: all, $duracion: var(--duracion-base)) {
+  transition: $propiedades $duracion ease-out;
 }

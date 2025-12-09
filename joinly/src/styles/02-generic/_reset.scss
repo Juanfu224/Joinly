@@ -1,94 +1,138 @@
-@layer reset {
-  // ==========================================================================
-  // RESET CSS
-  // ==========================================================================
+// ==========================================================================
+// RESET CSS - NORMALIZACIÓN BASE
+// ==========================================================================
+// Un "reset" elimina los estilos por defecto inconsistentes de los navegadores.
+// Esto nos da un lienzo en blanco para construir nuestros propios estilos.
+//
+// Este reset es MODERNO y MINIMALISTA:
+// - Usa box-sizing: border-box (más intuitivo para calcular tamaños)
+// - Elimina márgenes y paddings por defecto
+// - Mejora el renderizado de texto
+// - Hace que las imágenes sean responsive por defecto
 
-  // Establece valores por defecto coherentes en todos los navegadores
+// ---------------------------------------------------------------------------
+// Box-sizing universal
+// ---------------------------------------------------------------------------
+// Con border-box, el padding y border se INCLUYEN en el width/height.
+// Ejemplo: un div con width: 100px y padding: 10px seguirá midiendo 100px.
+// Sin esto, mediría 120px (100 + 10 + 10), lo cual es contraintuitivo.
 
-  // Box-sizing universal
-  // Hace que padding y border se incluyan en el width/height
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
-  // Eliminar márgenes por defecto
-  // Los navegadores añaden márgenes inconsistentes
-  * {
-    margin: 0;
-    padding: 0;
-  }
+// ---------------------------------------------------------------------------
+// Eliminar márgenes y paddings por defecto
+// ---------------------------------------------------------------------------
+// Cada navegador aplica márgenes diferentes a elementos como p, h1, ul...
+// Eliminándolos, tenemos control total sobre el espaciado.
 
-  // Configuración del html y body
-  html {
-    // Mejora la renderización de texto
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+* {
+  margin: 0;
+  padding: 0;
+}
 
-    // Evita el ajuste automático del tamaño de fuente en iOS
-    -webkit-text-size-adjust: 100%;
-  }
+// ---------------------------------------------------------------------------
+// Configuración del documento (html y body)
+// ---------------------------------------------------------------------------
 
-  body {
-    // Altura mínima del viewport
-    min-height: 100vh;
+html {
+  // Mejora la renderización del texto en todos los navegadores
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  // Evita que iOS ajuste automáticamente el tamaño del texto
+  -webkit-text-size-adjust: 100%;
+}
 
-    // Mejora el renderizado de texto
-    text-rendering: optimizeSpeed;
-    line-height: 1.5;
-  }
+body {
+  // El body debe ocupar al menos toda la altura de la ventana
+  min-height: 100vh;
 
-  // Mejoras en elementos multimedia
-  img,
-  picture,
-  video,
-  canvas,
-  svg {
-    // Las imágenes se comportan como bloques
-    display: block;
+  // Altura de línea cómoda para lectura
+  line-height: 1.5;
 
-    // No se desbordan de su contenedor
-    max-width: 100%;
-    height: auto;
-  }
+  // Optimiza el renderizado del texto (prioriza velocidad en textos largos)
+  text-rendering: optimizeSpeed;
+}
 
-  // Herencia de fuentes en elementos de formulario
-  input,
-  button,
-  textarea,
-  select {
-    font: inherit;
-    color: inherit;
-  }
+// ---------------------------------------------------------------------------
+// Elementos multimedia (imágenes, videos, etc.)
+// ---------------------------------------------------------------------------
+// Por defecto, las imágenes son elementos inline y pueden causar
+// espacios blancos no deseados. Convertirlas a block elimina esto.
 
-  // Evitar desbordamiento de texto
-  p,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    overflow-wrap: break-word;
-  }
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;  // Nunca se desbordan de su contenedor
+  height: auto;     // Mantienen su proporción
+}
 
-  // Mejorar el estilo de listas sin bullets
-  ul[role='list'],
-  ol[role='list'] {
-    list-style: none;
-  }
+// ---------------------------------------------------------------------------
+// Elementos de formulario
+// ---------------------------------------------------------------------------
+// Los navegadores aplican fuentes del sistema a inputs y buttons.
+// Con font: inherit, heredan la fuente del proyecto.
 
-  // Eliminar estilos de botones
-  button {
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
 
-  // Anclas sin estilos por defecto
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
+// ---------------------------------------------------------------------------
+// Tipografía: evitar desbordamiento de texto
+// ---------------------------------------------------------------------------
+// overflow-wrap permite que las palabras muy largas se corten
+// en lugar de desbordar su contenedor.
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+// ---------------------------------------------------------------------------
+// Botones: reset de estilos nativos
+// ---------------------------------------------------------------------------
+// Los botones tienen estilos muy diferentes en cada navegador.
+// Este reset nos da un botón "limpio" para estilizar.
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+// ---------------------------------------------------------------------------
+// Enlaces: reset de estilos nativos
+// ---------------------------------------------------------------------------
+// Eliminamos el subrayado y el color azul por defecto.
+// Los estilos visuales se definen en _enlaces.scss
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+// ---------------------------------------------------------------------------
+// Listas con rol="list": sin bullets
+// ---------------------------------------------------------------------------
+// Cuando una lista tiene role="list" (para accesibilidad),
+// probablemente sea una lista de navegación, no una lista de contenido.
+
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
 }

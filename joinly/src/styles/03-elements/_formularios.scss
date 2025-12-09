@@ -1,0 +1,122 @@
+// ==========================================================================
+// FORMULARIOS (inputs, buttons, textareas, selects)
+// ==========================================================================
+// Los elementos de formulario tienen estilos nativos muy inconsistentes
+// entre navegadores. Este archivo los normaliza y prepara para estilizar.
+//
+// NOTA: Los estilos visuales completos (variantes de botón, inputs decorados)
+// se definen en la capa de COMPONENTES, no aquí.
+
+// ---------------------------------------------------------------------------
+// BOTONES
+// ---------------------------------------------------------------------------
+// Reset de estilos nativos + mejoras de UX
+
+button {
+  // Evita que el texto del botón sea seleccionable
+  user-select: none;
+
+  // Mejora la respuesta táctil en móviles (evita delay de 300ms)
+  touch-action: manipulation;
+
+  // Foco accesible para navegación con teclado
+  &:focus-visible {
+    outline: var(--borde-medio) solid var(--color-principal);
+    outline-offset: 2px;
+    border-radius: var(--radio-pequeno);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// CAMPOS DE ENTRADA (input, textarea, select)
+// ---------------------------------------------------------------------------
+
+input,
+textarea,
+select {
+  // Fondo transparente para personalizar con componentes
+  background-color: transparent;
+
+  // Borde base sutil
+  border: var(--borde-delgado) solid var(--color-borde-base);
+  border-radius: var(--radio-medio);
+
+  // Placeholder: color gris suave
+  &::placeholder {
+    color: var(--color-borde-fuerte);
+    opacity: 1; // Firefox reduce la opacidad por defecto
+  }
+
+  // Estado: Focus (campo activo)
+  &:focus {
+    outline: none; // Quitamos el outline feo por defecto
+    border-color: var(--color-principal); // Resaltamos con color de marca
+  }
+
+  // Estado: Deshabilitado
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// TEXTAREA específico
+// ---------------------------------------------------------------------------
+
+textarea {
+  // Solo permitir redimensionar verticalmente (evita romper layouts)
+  resize: vertical;
+  min-height: 6rem;
+}
+
+// ---------------------------------------------------------------------------
+// SELECT específico
+// ---------------------------------------------------------------------------
+
+select {
+  // Elimina la flecha nativa (la añadiremos con CSS en componentes)
+  appearance: none;
+  cursor: pointer;
+}
+
+// ---------------------------------------------------------------------------
+// INPUT NUMBER: eliminar flechas nativas
+// ---------------------------------------------------------------------------
+
+input[type='number'] {
+  appearance: textfield;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// LABEL
+// ---------------------------------------------------------------------------
+
+label {
+  display: block;
+  font-size: var(--tamano-texto-pequeno);
+  font-weight: var(--peso-fuente-medio);
+  color: var(--color-texto-fuerte);
+  margin-block-end: var(--espaciado-1);
+}
+
+// ---------------------------------------------------------------------------
+// FIELDSET y LEGEND (para agrupar campos)
+// ---------------------------------------------------------------------------
+
+fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  padding: 0;
+  font-weight: var(--peso-fuente-semi-negrita);
+}

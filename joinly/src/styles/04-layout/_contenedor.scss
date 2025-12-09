@@ -1,0 +1,50 @@
+// ==========================================================================
+// CONTENEDOR PRINCIPAL (.l-contenedor)
+// ==========================================================================
+// El contenedor centra el contenido horizontalmente y limita su ancho máximo.
+// Evita que el contenido se estire infinitamente en pantallas muy anchas.
+//
+// USO:
+// <div class="l-contenedor">
+//   <!-- Contenido centrado aquí -->
+// </div>
+
+.l-contenedor {
+  // Ocupa todo el ancho disponible hasta el máximo
+  width: 100%;
+  max-width: var(--bp-escritorio-grande); // 1280px
+
+  // Centrado horizontal con márgenes automáticos
+  margin-inline: auto;
+
+  // Padding lateral de seguridad (evita que toque los bordes en móvil)
+  padding-inline: var(--espaciado-2);
+
+  // ---------------------------------------------------------------------------
+  // Variante: Más padding (para secciones con más respiro)
+  // ---------------------------------------------------------------------------
+  &--amplio {
+    padding-inline: var(--espaciado-4);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Variante: Sin límite de ancho (ocupa todo el viewport)
+  // ---------------------------------------------------------------------------
+  &--fluido {
+    max-width: none;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Variante: Estrecho (ideal para formularios, login, modales)
+  // ---------------------------------------------------------------------------
+  &--estrecho {
+    max-width: 32rem; // 512px
+  }
+
+  // ---------------------------------------------------------------------------
+  // Variante: Mediano (ideal para contenido de lectura, artículos)
+  // ---------------------------------------------------------------------------
+  &--mediano {
+    max-width: 48rem; // 768px
+  }
+}

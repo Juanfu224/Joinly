@@ -1,0 +1,106 @@
+// ==========================================================================
+// SISTEMA DE REJILLA (CSS Grid)
+// ==========================================================================
+// Un sistema de grid moderno basado en CSS Grid nativo.
+// Mucho más potente y flexible que los grids de 12 columnas antiguos.
+//
+// CSS Grid nos permite crear layouts complejos con poco código.
+// La magia está en auto-fit + minmax() para grids totalmente responsivos.
+
+@use '../00-settings/variables' as *;
+
+.l-rejilla {
+  display: grid;
+  gap: var(--espaciado-2); // Espaciado entre items (16px)
+
+  // ---------------------------------------------------------------------------
+  // VARIANTES DE GAP (Espaciado entre elementos)
+  // ---------------------------------------------------------------------------
+
+  &--gap-pequeño {
+    gap: var(--espaciado-1); // 8px
+  }
+
+  &--gap-grande {
+    gap: var(--espaciado-4); // 32px
+  }
+
+  &--gap-enorme {
+    gap: var(--espaciado-6); // 48px
+  }
+
+  // ---------------------------------------------------------------------------
+  // GRID AUTO-FIT (Responsive automático SIN media queries)
+  // ---------------------------------------------------------------------------
+  // Esta es la forma MODERNA de crear grids responsivos.
+  // Las columnas se ajustan automáticamente según el espacio disponible.
+  //
+  // Cómo funciona:
+  // - repeat(auto-fit, ...) crea tantas columnas como quepan
+  // - minmax(280px, 1fr) dice: mínimo 280px, máximo 1 fracción disponible
+  //
+  // Resultado: En móvil verás 1 columna, en tablet 2, en desktop 3 o más.
+
+  &--auto {
+    grid-template-columns: repeat(auto-fit, minmax(var(--grid-item-mediano), 1fr));
+  }
+
+  &--auto-pequeño {
+    grid-template-columns: repeat(auto-fit, minmax(var(--grid-item-pequeño), 1fr));
+  }
+
+  &--auto-grande {
+    grid-template-columns: repeat(auto-fit, minmax(var(--grid-item-grande), 1fr));
+  }
+
+  // ---------------------------------------------------------------------------
+  // COLUMNAS FIJAS (con breakpoints para responsividad)
+  // ---------------------------------------------------------------------------
+  // Usar cuando necesitas control exacto sobre el número de columnas.
+  // Incluyen breakpoints para colapsar a menos columnas en móvil.
+
+  &--2-columnas {
+    grid-template-columns: repeat(2, 1fr);
+
+    @media (max-width: $bp-tablet) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &--3-columnas {
+    grid-template-columns: repeat(3, 1fr);
+
+    @media (max-width: $bp-desktop) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: $bp-tablet) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &--4-columnas {
+    grid-template-columns: repeat(4, 1fr);
+
+    @media (max-width: $bp-desktop) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: $bp-tablet) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // ALINEACIÓN DE ITEMS
+  // ---------------------------------------------------------------------------
+
+  &--centrado {
+    justify-items: center;
+    align-items: center;
+  }
+
+  &--estirar {
+    align-items: stretch;
+  }
+}

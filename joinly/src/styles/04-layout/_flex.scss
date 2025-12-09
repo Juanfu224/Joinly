@@ -1,25 +1,44 @@
 // ==========================================================================
-// FLEXBOX UTILITIES
+// UTILIDADES FLEXBOX (.l-flex)
 // ==========================================================================
-// Clases utilitarias para alineación rápida con Flexbox
+// Clases utilitarias para alineación rápida con Flexbox.
+// Flexbox es ideal para layouts unidimensionales (filas o columnas).
+//
+// CONVENCIÓN DE NOMBRES:
+// - Usamos prefijo .l- (layout) para clases de posicionamiento
+// - Nombres en español para máxima claridad
+
+// ---------------------------------------------------------------------------
+// CLASE BASE FLEX
+// ---------------------------------------------------------------------------
+// Activa flexbox y permite combinar con modificadores.
+//
+// USO:
+// <div class="l-flex l-flex--centrar l-flex--gap">
 
 .l-flex {
   display: flex;
 
-  // --- Direcciones ---
-  &--column {
+  // ---------------------------------------------------------------------------
+  // DIRECCIONES
+  // ---------------------------------------------------------------------------
+
+  &--columna {
     flex-direction: column;
   }
 
-  &--row-reverse {
+  &--fila-inversa {
     flex-direction: row-reverse;
   }
 
-  &--column-reverse {
+  &--columna-inversa {
     flex-direction: column-reverse;
   }
 
-  // --- Wrap ---
+  // ---------------------------------------------------------------------------
+  // WRAP (Envolver elementos)
+  // ---------------------------------------------------------------------------
+
   &--wrap {
     flex-wrap: wrap;
   }
@@ -28,8 +47,11 @@
     flex-wrap: nowrap;
   }
 
-  // --- Gap ---
-  &--gap-sm {
+  // ---------------------------------------------------------------------------
+  // GAP (Espaciado entre elementos)
+  // ---------------------------------------------------------------------------
+
+  &--gap-pequeño {
     gap: var(--espaciado-1);
   }
 
@@ -37,94 +59,129 @@
     gap: var(--espaciado-2);
   }
 
-  &--gap-lg {
+  &--gap-grande {
     gap: var(--espaciado-4);
   }
 
-  // --- Alineación horizontal (justify-content) ---
-  &--justify-start {
+  // ---------------------------------------------------------------------------
+  // JUSTIFY-CONTENT (Alineación horizontal en fila)
+  // ---------------------------------------------------------------------------
+
+  &--justificar-inicio {
     justify-content: flex-start;
   }
 
-  &--justify-center {
+  &--justificar-centro {
     justify-content: center;
   }
 
-  &--justify-end {
+  &--justificar-fin {
     justify-content: flex-end;
   }
 
-  &--justify-between {
+  &--justificar-entre {
     justify-content: space-between;
   }
 
-  &--justify-around {
+  &--justificar-alrededor {
     justify-content: space-around;
   }
 
-  &--justify-evenly {
-    justify-content: space-evenly;
-  }
+  // ---------------------------------------------------------------------------
+  // ALIGN-ITEMS (Alineación vertical en fila)
+  // ---------------------------------------------------------------------------
 
-  // --- Alineación vertical (align-items) ---
-  &--align-start {
+  &--alinear-inicio {
     align-items: flex-start;
   }
 
-  &--align-center {
+  &--alinear-centro {
     align-items: center;
   }
 
-  &--align-end {
+  &--alinear-fin {
     align-items: flex-end;
   }
 
-  &--align-stretch {
+  &--alinear-estirar {
     align-items: stretch;
   }
 
-  &--align-baseline {
+  &--alinear-base {
     align-items: baseline;
   }
 }
 
-// --- Patrones comunes pre-definidos ---
+// ==========================================================================
+// PATRONES COMUNES PRE-DEFINIDOS
+// ==========================================================================
+// Combinaciones frecuentes listas para usar directamente.
 
-// Centrado perfecto (ideal para login, modales, páginas de error)
-.l-flex-center {
+// ---------------------------------------------------------------------------
+// CENTRADO PERFECTO
+// ---------------------------------------------------------------------------
+// Ideal para: páginas de login, modales, spinners de carga, páginas de error
+//
+// USO: <main class="l-centrar">...</main>
+
+.l-centrar {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-// Navbar / Header pattern (logo izq, nav der)
-.l-flex-between {
+// ---------------------------------------------------------------------------
+// NAVBAR PATTERN (Logo izquierda, navegación derecha)
+// ---------------------------------------------------------------------------
+// Ideal para: headers, footers con copyright, barras de herramientas
+//
+// USO: <header class="l-entre">...</header>
+
+.l-entre {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-// Stack vertical con gap (ideal para formularios, listas)
-.l-flex-stack {
+// ---------------------------------------------------------------------------
+// STACK VERTICAL
+// ---------------------------------------------------------------------------
+// Ideal para: formularios, listas de items, sidebars
+// Los elementos se apilan verticalmente con gap consistente.
+//
+// USO: <form class="l-stack">...</form>
+
+.l-stack {
   display: flex;
   flex-direction: column;
   gap: var(--espaciado-2);
 }
 
-// Fila con wrap y gap (ideal para tags, badges, botones)
-.l-flex-row {
+// ---------------------------------------------------------------------------
+// FILA CON WRAP
+// ---------------------------------------------------------------------------
+// Ideal para: tags, badges, botones de acción, filtros
+// Los elementos se envuelven a la siguiente línea si no caben.
+//
+// USO: <div class="l-fila">...</div>
+
+.l-fila {
   display: flex;
   flex-wrap: wrap;
   gap: var(--espaciado-1);
   align-items: center;
 }
 
-// Item que crece para ocupar espacio disponible
-.l-flex-grow {
+// ---------------------------------------------------------------------------
+// UTILIDADES PARA ITEMS INDIVIDUALES
+// ---------------------------------------------------------------------------
+
+// Hace que un item crezca para ocupar espacio disponible
+.l-crecer {
   flex-grow: 1;
 }
 
-// Item que no se encoge
-.l-flex-shrink-0 {
+// Evita que un item se encoja (útil para iconos, botones)
+.l-no-encoger {
   flex-shrink: 0;
 }

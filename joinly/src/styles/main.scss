@@ -1,53 +1,68 @@
-// MAIN.SCSS - Punto de entrada de todos los estilos
-// Arquitectura ITCSS (Inverted Triangle CSS)
-// El orden de importación es CRÍTICO: de menos específico a más específico
+// ==========================================================================
+// MAIN.SCSS - PUNTO DE ENTRADA PRINCIPAL
+// ==========================================================================
+// Este archivo importa TODOS los estilos del proyecto en el ORDEN CORRECTO.
+//
+// Seguimos la arquitectura ITCSS (Inverted Triangle CSS):
+// Los estilos se organizan de MENOS específico a MÁS específico.
+// Esto evita problemas de especificidad y hace el CSS escalable.
+//
+// ORDEN DE LAS CAPAS:
+// 1. Settings  → Variables (no genera CSS)
+// 2. Tools     → Mixins y funciones (no genera CSS)
+// 3. Generic   → Reset, normalize (especificidad muy baja)
+// 4. Elements  → Estilos de etiquetas HTML (h1, a, input...)
+// 5. Layout    → Clases de estructura (.l-contenedor, .l-rejilla)
+// 6. Components → Componentes UI (.c-boton, .c-tarjeta) [futuro]
+// 7. Utilities → Clases helper (.u-oculto, .u-centrar) [futuro]
 
 // ==========================================================================
-// 1️⃣ SETTINGS - Variables globales y configuración
+// 1️⃣ SETTINGS - Variables y tokens de diseño
 // ==========================================================================
-// Contiene: Variables SCSS, design tokens, configuración del proyecto
-// Especificidad: Ninguna (solo variables, no genera CSS)
+// Define: colores, tipografía, espaciado, breakpoints, sombras, z-index
+// No genera CSS, solo variables para usar en otros archivos.
 @use '00-settings/variables' as *;
 
 // ==========================================================================
-// 2️⃣ TOOLS - Mixins y funciones
+// 2️⃣ TOOLS - Mixins y funciones reutilizables
 // ==========================================================================
-// Contiene: Mixins reutilizables, funciones SCSS
-// Especificidad: Ninguna (solo herramientas, no genera CSS)
-@use '01-tools/mixins' as *;
+// Define: responder-a(), centrar-flex(), truncar-texto(), etc.
+// No genera CSS, solo herramientas para usar en otros archivos.
+@use '01-tools/mixins' as mixins;
 
 // ==========================================================================
-// 3️⃣ RESET - Reset y normalize
+// 3️⃣ GENERIC - Reset y normalización
 // ==========================================================================
-// Contiene: Reset CSS, normalize, box-sizing
-// Especificidad: Muy baja (selectores de elementos genéricos)
+// Elimina estilos por defecto inconsistentes de los navegadores.
+// Especificidad muy baja (selectores universales y de elemento).
 @use '02-generic/reset';
 
 // ==========================================================================
 // 4️⃣ ELEMENTS - Estilos base de elementos HTML
 // ==========================================================================
-// Contiene: Estilos de html, body, h1-h6, a, img, ul, input, etc.
-// Especificidad: Baja (solo selectores de elementos, sin clases)
-@use '03-elements' as elements;
+// Estiliza etiquetas HTML puras SIN clases: body, h1-h6, a, input, etc.
+// Define la apariencia por defecto de todos los elementos.
+@use '03-elements' as elementos;
 
 // ==========================================================================
-// 5️⃣ LAYOUTS - Estructuras y layouts
+// 5️⃣ LAYOUT - Clases de estructura y posicionamiento
 // ==========================================================================
-// Contiene: Container, grid, flexbox utilities
-// Especificidad: Media (clases de layout con prefijo .l-)
+// Define DÓNDE van las cosas, no cómo se ven.
+// Clases con prefijo .l-: .l-contenedor, .l-rejilla, .l-flex
 @use '04-layout' as layout;
 
 // ==========================================================================
-// 6️⃣ COMPONENTS - Componentes reutilizables
+// 6️⃣ COMPONENTS - Componentes reutilizables (PRÓXIMAMENTE)
 // ==========================================================================
-// Contiene: Cards, buttons variantes, modals, navigation, etc.
-// Especificidad: Media-Alta (clases de componentes específicos)
-// TODO: Añadir cuando se creen los componentes Angular
-// @use '05-components';
+// Aquí irán los componentes UI con prefijo .c-
+// Ejemplos: .c-boton, .c-tarjeta, .c-modal, .c-navbar
+//
+// @use '05-components' as componentes;
 
 // ==========================================================================
-// 7️⃣ UTILITIES - Clases de utilidad (Próximamente)
+// 7️⃣ UTILITIES - Clases de utilidad (PRÓXIMAMENTE)
 // ==========================================================================
-// Contiene: Clases helper (.text-center, .mt-4, .hidden, etc.)
-// Especificidad: Muy alta (clases de una sola responsabilidad)
-// TODO: Añadir si es necesario
+// Clases helper de una sola propiedad con prefijo .u-
+// Ejemplos: .u-oculto, .u-texto-centro, .u-mt-4
+//
+// @use '06-utilities' as utilidades;

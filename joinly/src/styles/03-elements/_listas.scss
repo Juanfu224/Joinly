@@ -1,0 +1,20 @@
+// ==========================================================================
+// LISTAS (ul, ol)
+// ==========================================================================
+// En aplicaciones web modernas, las listas raramente usan bullets.
+// Se usan más como contenedores semánticos para navegación, tarjetas, etc.
+//
+// Por eso hacemos un reset completo. Si necesitas bullets nativos,
+// crea una clase específica en la capa de componentes.
+
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  margin: 0;
+  padding: 0;
+}

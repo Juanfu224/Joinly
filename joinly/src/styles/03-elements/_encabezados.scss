@@ -1,0 +1,76 @@
+// ==========================================================================
+// ENCABEZADOS (h1 - h6)
+// ==========================================================================
+// Los encabezados son fundamentales para la jerarquía visual y la accesibilidad.
+// Un buen sistema tipográfico hace que el contenido sea escaneable.
+//
+// REGLA DE ORO: Solo debe haber UN h1 por página (el título principal).
+// Los demás encabezados (h2-h6) estructuran las secciones.
+
+// ---------------------------------------------------------------------------
+// Estilos compartidos por todos los encabezados
+// ---------------------------------------------------------------------------
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  // Fuente y peso: títulos siempre en negrita para destacar
+  font-family: var(--font-primaria);
+  font-weight: var(--peso-fuente-negrita);
+
+  // Color oscuro para máximo contraste y legibilidad
+  color: var(--color-texto-fuerte);
+
+  // Espaciado: margin-block es la forma moderna (lógica) de margin-top/bottom
+  margin-block-start: 0;
+  margin-block-end: var(--espaciado-2);
+}
+
+// ---------------------------------------------------------------------------
+// Tamaños individuales (escala tipográfica fluida)
+// ---------------------------------------------------------------------------
+
+// H1: Título principal de página
+// Usado para: Landing hero, títulos de página, nombres de sección principal
+h1 {
+  font-size: var(--tamano-h1);
+  line-height: var(--altura-linea-ajustada);
+  font-weight: var(--peso-fuente-extra-negrita);
+}
+
+// H2: Títulos de sección
+// Usado para: Encabezados de secciones principales ("Grupos", "Tus suscripciones")
+h2 {
+  font-size: var(--tamano-h2);
+  line-height: var(--altura-linea-compacta);
+}
+
+// H3: Subtítulos o títulos de subsección
+// Usado para: Nombres de tarjetas, títulos de modales
+h3 {
+  font-size: var(--tamano-h3);
+  line-height: var(--altura-linea-compacta);
+}
+
+// H4: Títulos menores
+// Usado para: Etiquetas de formularios en grupo, títulos de sidebars
+h4 {
+  font-size: var(--tamano-h4);
+  line-height: var(--altura-linea-compacta);
+}
+
+// H5 y H6: Títulos pequeños (uso limitado)
+// Usado para: Metadatos, notas, breadcrumbs
+h5 {
+  font-size: var(--tamano-texto-grande);
+  line-height: var(--altura-linea-compacta);
+  font-weight: var(--peso-fuente-semi-negrita);
+}
+
+h6 {
+  font-size: var(--tamano-texto-regular);
+  line-height: var(--altura-linea-compacta);
+  font-weight: var(--peso-fuente-semi-negrita);
+}

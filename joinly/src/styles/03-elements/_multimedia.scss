@@ -1,11 +1,12 @@
 // ==========================================================================
-// MEDIA ELEMENTS
+// ELEMENTOS MULTIMEDIA (img, video, figure)
 // ==========================================================================
-// Estilos base para imágenes, videos y figuras
-// Nota: display:block, max-width:100%, height:auto ya están en reset
+// Estilos base para contenido visual.
+// La mayoría del reset ya está en _reset.scss (display: block, max-width).
 
 img {
-  // Comportamiento por defecto para imágenes de contenido
+  // object-fit: cover hace que la imagen cubra todo su contenedor
+  // sin distorsionarse (recorta los bordes si es necesario)
   object-fit: cover;
 }
 
@@ -20,7 +21,7 @@ figcaption {
   margin-block-start: var(--espaciado-1);
 }
 
-// SVG inline heredan color del texto
+// Los SVG inline heredan el color del texto padre
 svg {
   fill: currentColor;
 }

@@ -1,0 +1,41 @@
+// ==========================================================================
+// ENLACES (<a>)
+// ==========================================================================
+// Los enlaces son elementos interactivos fundamentales en la web.
+// Deben ser claramente identificables y accesibles.
+//
+// ACCESIBILIDAD: Los enlaces deben diferenciarse del texto normal.
+// Aquí usamos el color de marca (morado) que contrasta bien.
+
+a {
+  // Color de la marca para identificar claramente que es clickeable
+  color: var(--color-principal);
+
+  // Transición suave para el hover (efecto profesional)
+  transition: color var(--duracion-rapida) var(--transicion-estandar);
+
+  // ---------------------------------------------------------------------------
+  // Estado: Hover (cursor encima)
+  // ---------------------------------------------------------------------------
+  &:hover {
+    color: var(--color-principal-oscuro);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Estado: Focus visible (navegación con teclado)
+  // ---------------------------------------------------------------------------
+  // :focus-visible solo se activa con Tab, no con click de ratón.
+  // Esto es CRÍTICO para accesibilidad (WCAG 2.1).
+  &:focus-visible {
+    outline: var(--borde-medio) solid var(--color-principal);
+    outline-offset: 2px;
+    border-radius: var(--radio-pequeno);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Estado: Active (siendo presionado)
+  // ---------------------------------------------------------------------------
+  &:active {
+    color: var(--color-principal-oscuro);
+  }
+}

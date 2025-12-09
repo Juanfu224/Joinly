@@ -1,0 +1,38 @@
+// ==========================================================================
+// BASE - ESTILOS GLOBALES DEL DOCUMENTO
+// ==========================================================================
+// Define la apariencia base del body: tipografía, colores y comportamiento.
+// Estos estilos se heredan a todos los elementos del documento.
+
+html {
+  // Scroll suave cuando se navega a anclas (#seccion)
+  scroll-behavior: smooth;
+}
+
+body {
+  // ---------------------------------------------------------------------------
+  // Tipografía base
+  // ---------------------------------------------------------------------------
+  // Estos valores se heredan a casi todos los elementos del documento.
+  font-family: var(--font-primaria);
+  font-size: var(--tamano-texto-regular);
+  font-weight: var(--peso-fuente-regular);
+  line-height: var(--altura-linea-normal);
+
+  // ---------------------------------------------------------------------------
+  // Colores base
+  // ---------------------------------------------------------------------------
+  // El color de texto y fondo por defecto de toda la aplicación.
+  color: var(--color-texto-base);
+  background-color: var(--color-superficie-base);
+
+  // ---------------------------------------------------------------------------
+  // Mejoras de renderizado
+  // ---------------------------------------------------------------------------
+  // optimizeLegibility mejora el kerning (espaciado entre letras)
+  // a costa de un pequeño impacto en rendimiento. Vale la pena para UI.
+  text-rendering: optimizeLegibility;
+
+  // Evita el scroll horizontal accidental en móvil
+  overflow-x: hidden;
+}

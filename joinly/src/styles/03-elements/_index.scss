@@ -1,12 +1,12 @@
 // ==========================================================================
-// ELEMENTS LAYER INDEX
+// ÍNDICE DE ELEMENTOS
 // ==========================================================================
-// Punto de entrada para todos los estilos base de elementos HTML
-// Orden: de más global a más específico
+// Este archivo "barrel" exporta todos los estilos de elementos HTML base.
+// El orden importa: de lo más general a lo más específico.
 
-@forward 'page';
-@forward 'headings';
-@forward 'links';
-@forward 'media';
-@forward 'lists';
-@forward 'forms';
+@forward 'base';        // html, body
+@forward 'encabezados'; // h1-h6
+@forward 'enlaces';     // a
+@forward 'listas';      // ul, ol, li
+@forward 'multimedia';  // img, video, figure
+@forward 'formularios'; // input, button, textarea, select

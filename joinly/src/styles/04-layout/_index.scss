@@ -1,8 +1,9 @@
 // ==========================================================================
-// LAYOUT LAYER INDEX
+// ÍNDICE DE LAYOUT
 // ==========================================================================
-// Punto de entrada para todos los estilos de layout/estructura
+// Este archivo exporta todos los estilos de estructura/posicionamiento.
+// Son clases de "layout" que definen DÓNDE van las cosas, no cómo se ven.
 
-@forward 'container';
-@forward 'grid';
-@forward 'flex';
+@forward 'contenedor'; // .l-contenedor (centrado, max-width)
+@forward 'rejilla';    // .l-rejilla (CSS Grid)
+@forward 'flex';       // .l-flex, .l-centrar, .l-entre, .l-stack
