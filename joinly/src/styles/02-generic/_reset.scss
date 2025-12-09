@@ -1,0 +1,92 @@
+// ==========================================================================
+// RESET CSS MODERNO
+// ==========================================================================
+// Basado en las mejores prácticas actuales (Josh Comeau, Andy Bell)
+// Establece valores por defecto coherentes en todos los navegadores
+
+// 1. Box-sizing universal
+// Hace que padding y border se incluyan en el width/height
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+// 2. Eliminar márgenes por defecto
+// Los navegadores añaden márgenes inconsistentes
+* {
+  margin: 0;
+  padding: 0;
+}
+
+// 3. Configuración del html y body
+html {
+  // Mejora la renderización de texto
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  // Evita el ajuste automático del tamaño de fuente en iOS
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  // Altura mínima del viewport
+  min-height: 100vh;
+  
+  // Mejora el renderizado de texto
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+// 4. Mejoras en elementos multimedia
+img,
+picture,
+video,
+canvas,
+svg {
+  // Las imágenes se comportan como bloques
+  display: block;
+  
+  // No se desbordan de su contenedor
+  max-width: 100%;
+  height: auto;
+}
+
+// 5. Herencia de fuentes en elementos de formulario
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+// 6. Evitar desbordamiento de texto
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+// 7. Mejorar el estilo de listas sin bullets
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+}
+
+// 8. Eliminar estilos de botones
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+// 9. Anclas sin estilos por defecto
+a {
+  text-decoration: none;
+  color: inherit;
+}
