@@ -1,10 +1,59 @@
 # Documentación de Diseño - Joinly
 
+## Índice
+
+- [1.1 Principios de comunicación visual](#11-principios-de-comunicación-visual)
+  - [1.1.1 Jerarquía](#111-jerarquía)
+  - [1.1.2 Contraste](#112-contraste)
+  - [1.1.3 Alineación](#113-alineación)
+  - [1.1.4 Proximidad](#114-proximidad)
+  - [1.1.5 Repetición](#115-repetición)
+  - [1.1.6 Resumen](#116-resumen)
+- [1.2 Metodología CSS](#12-metodología-css)
+  - [1.2.1 Introducción a BEM](#121-introducción-a-bem)
+  - [1.2.2 Ejemplo Práctico: Tarjeta de Estadísticas](#122-ejemplo-práctico-tarjeta-de-estadísticas)
+  - [1.2.3 Ejemplo Práctico: Sistema de Botones](#123-ejemplo-práctico-sistema-de-botones)
+  - [1.2.4 Beneficios de BEM en Angular](#124-beneficios-de-bem-en-angular)
+  - [1.2.5 Resumen](#125-resumen)
+- [1.3 Organización de archivos](#13-organización-de-archivos)
+  - [1.3.1 Arquitectura ITCSS](#131-arquitectura-itcss)
+  - [1.3.2 Estructura de directorios](#132-estructura-de-directorios)
+  - [1.3.3 Explicación capa por capa](#133-explicación-capa-por-capa)
+  - [1.3.4 El archivo main.scss](#134-el-archivo-mainscss)
+  - [1.3.5 Flujo de especificidad](#135-flujo-de-especificidad)
+  - [1.3.6 Beneficios de ITCSS](#136-beneficios-de-itcss)
+- [1.4 Sistema de Design Tokens](#14-sistema-de-design-tokens)
+  - [1.4.1 Paleta de Colores](#141-paleta-de-colores)
+  - [1.4.2 Escala Tipográfica](#142-escala-tipográfica)
+  - [1.4.3 Sistema de Espaciado](#143-sistema-de-espaciado)
+  - [1.4.4 Breakpoints (Responsive Design)](#144-breakpoints-responsive-design)
+  - [1.4.5 Tokens Adicionales](#145-tokens-adicionales)
+  - [1.4.6 Resumen](#146-resumen)
+- [1.5 Mixins y Funciones](#15-mixins-y-funciones)
+  - [1.5.1 Media Queries Responsive](#151-media-queries-responsive-responder-a)
+  - [1.5.2 Centrado Flexbox](#152-centrado-flexbox-centrar-flex)
+  - [1.5.3 Truncado de Texto](#153-truncado-de-texto-truncar-texto)
+  - [1.5.4 Foco Visible Accesible](#154-foco-visible-accesible-foco-visible)
+  - [1.5.5 Oculto Accesible](#155-oculto-accesible-oculto-accesible)
+  - [1.5.6 Ratio de Aspecto](#156-ratio-de-aspecto-ratio-aspecto)
+  - [1.5.7 Transición Suave](#157-transición-suave-transicion)
+  - [1.5.8 Resumen de Mixins](#158-resumen-de-mixins)
+  - [1.5.9 Por qué los mixins viven en 01-tools](#159-por-qué-los-mixins-viven-en-01-tools)
+- [1.6 ViewEncapsulation en Angular](#16-viewencapsulation-en-angular)
+  - [1.6.1 ¿Qué es ViewEncapsulation?](#161-qué-es-viewencapsulation)
+  - [1.6.2 Análisis de cada estrategia](#162-análisis-de-cada-estrategia)
+  - [1.6.3 Decisión para Joinly](#163-decisión-para-joinly-viewencapsulationnone)
+  - [1.6.4 Implementación práctica](#164-implementación-práctica)
+  - [1.6.5 Cuándo considerar otras estrategias](#165-cuándo-considerar-otras-estrategias)
+  - [1.6.6 Resumen](#166-resumen)
+
+---
+
 ## 1.1 Principios de comunicación visual
 
 Los principios de comunicación visual son las reglas fundamentales que guían cada decisión de diseño en Joinly. No son arbitrarios: cada uno tiene un propósito claro orientado a mejorar la experiencia del usuario, facilitar la comprensión de la interfaz y reforzar la identidad de marca. A continuación, explicamos cómo aplicamos estos cinco principios en nuestra aplicación.
 
-### 1. Jerarquía
+### 1.1.1 Jerarquía
 
 La jerarquía visual establece el orden de importancia de los elementos en pantalla, guiando al usuario sobre qué debe ver primero y qué es secundario.
 
@@ -18,11 +67,9 @@ La jerarquía visual establece el orden de importancia de los elementos en panta
 
 Esta diferenciación reduce la carga cognitiva del usuario, ya que intuitivamente sabe qué botón cumple la acción esperada.
 
-> [CAPTURA: Aquí insertar imagen del formulario de creación mostrando el contraste entre botones "Cancelar" y "Crear"]
+![Jerarquía visual de botones en Joinly](images/jerarquia-botones.png)
 
----
-
-### 2. Contraste
+### 1.1.2 Contraste
 
 El contraste garantiza la legibilidad y accesibilidad del contenido, además de crear separaciones visuales claras entre secciones.
 
@@ -37,11 +84,9 @@ El contraste garantiza la legibilidad y accesibilidad del contenido, además de 
   - Naranja para estados de administrador
   - Azul para estados de pago retenido
 
-> [CAPTURA: Aquí insertar imagen del Footer mostrando el contraste con el cuerpo de la página]
+![Contraste y estados visuales en Joinly](images/contraste-estados.png)
 
----
-
-### 3. Alineación
+### 1.1.3 Alineación
 
 La alineación crea orden visual y conexiones implícitas entre elementos, facilitando el escaneo de información.
 
@@ -53,11 +98,9 @@ La alineación crea orden visual y conexiones implícitas entre elementos, facil
 
 - **Formularios estructurados:** En los modales de creación (grupo, suscripción, login), cada campo mantiene una alineación vertical perfecta: etiqueta → input → siguiente campo, creando un flujo de lectura predecible y reduciendo errores de entrada.
 
-> [CAPTURA: Aquí insertar imagen de un formulario de registro mostrando la alineación de campos]
+![Alineación en formularios de Joinly](images/alineacion-formularios.png)
 
----
-
-### 4. Proximidad
+### 1.1.4 Proximidad
 
 La proximidad agrupa elementos relacionados, ayudando al cerebro a procesar la información como unidades lógicas en lugar de elementos aislados.
 
@@ -74,11 +117,9 @@ La proximidad agrupa elementos relacionados, ayudando al cerebro a procesar la i
 
 - **Sección de miembros:** El avatar, nombre de usuario, email y badge de rol ("Admin") se agrupan horizontalmente en una misma fila, indicando que toda esa información pertenece a un único usuario.
 
-> [CAPTURA: Aquí insertar imagen del Dashboard mostrando las tarjetas de suscripción agrupadas]
+![Proximidad y agrupación en tarjetas de Joinly](images/proximidad-tarjetas.png)
 
----
-
-### 5. Repetición
+### 1.1.5 Repetición
 
 La repetición crea consistencia y refuerza la identidad de marca. En términos técnicos, implementamos esto mediante **Design Tokens**: valores reutilizables para colores, espaciados, radios de borde y sombras.
 
@@ -98,11 +139,9 @@ La repetición crea consistencia y refuerza la identidad de marca. En términos 
 
 Esta repetición sistemática permite que nuevos usuarios comprendan intuitivamente la interfaz: si un elemento se ve como un botón, se comportará como un botón. Si una tarjeta tiene sombra, es interactiva o contiene información agrupada.
 
-> [CAPTURA: Aquí insertar imagen comparativa de varios componentes mostrando la consistencia de estilos]
+![Repetición y design tokens en Joinly](images/repeticion-design-tokens.png)
 
----
-
-### Resumen
+### 1.1.6 Resumen
 
 | Principio      | Implementación en Joinly                                                              |
 | -------------- | ------------------------------------------------------------------------------------- |
@@ -118,7 +157,7 @@ Estos principios no son reglas aisladas, sino que trabajan en conjunto. Una tarj
 
 ## 1.2 Metodología CSS
 
-### Introducción a BEM
+### 1.2.1 Introducción a BEM
 
 **BEM** (Block, Element, Modifier) es una metodología de nomenclatura para clases CSS desarrollada por Yandex que proporciona una convención clara y predecible para nombrar selectores. En Joinly, adoptamos BEM como estándar porque resuelve problemas fundamentales del CSS a escala:
 
@@ -135,19 +174,17 @@ Estos principios no son reglas aisladas, sino que trabajan en conjunto. Una tarj
 .bloque__elemento--modificador {}
 ```
 
-| Componente | Símbolo | Propósito |
-|------------|---------|-----------|
-| **Block** | (ninguno) | Componente independiente y reutilizable |
-| **Element** | `__` (doble guion bajo) | Parte interna que depende del bloque |
-| **Modifier** | `--` (doble guion) | Variación de apariencia o estado |
+| Componente   | Símbolo                 | Propósito                               |
+| ------------ | ----------------------- | --------------------------------------- |
+| **Block**    | (ninguno)               | Componente independiente y reutilizable |
+| **Element**  | `__` (doble guion bajo) | Parte interna que depende del bloque    |
+| **Modifier** | `--` (doble guion)      | Variación de apariencia o estado        |
 
----
-
-### Ejemplo Práctico 1: Componente de Tarjeta de Estadísticas
+### 1.2.2 Ejemplo Práctico: Tarjeta de Estadísticas
 
 En la vista de detalle de una suscripción ("Spotify Family"), encontramos tres tarjetas que muestran información resumida: **Renovación**, **Plazas disponibles** y **Tu aporte**. Estas tarjetas comparten la misma estructura pero muestran datos diferentes.
 
-> [CAPTURA: Aquí insertar imagen de las tres tarjetas de estadísticas: Renovación, Plazas disponibles, Tu aporte]
+![Ejemplo BEM: Tarjeta de estadísticas](images/bem-tarjeta-estadisticas.png)
 
 **Estructura HTML con BEM:**
 
@@ -195,7 +232,7 @@ En la vista de detalle de una suscripción ("Spotify Family"), encontramos tres 
   background-color: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
-  
+
   // === ELEMENTO: Contenedor del icono ===
   &__icon {
     display: flex;
@@ -204,38 +241,38 @@ En la vista de detalle de una suscripción ("Spotify Family"), encontramos tres 
     width: 48px;
     height: 48px;
     border-radius: 8px;
-    
+
     // === MODIFICADORES: Variantes de color según el tipo ===
     &--calendar {
       background-color: #fef3c7; // Amarillo suave
       color: #f59e0b;
     }
-    
+
     &--users {
       background-color: #dbeafe; // Azul suave
       color: #3b82f6;
     }
-    
+
     &--money {
       background-color: #fef3c7; // Amarillo suave
       color: #f59e0b;
     }
   }
-  
+
   // === ELEMENTO: Contenedor de texto ===
   &__content {
     display: flex;
     flex-direction: column;
     gap: 4px;
   }
-  
+
   // === ELEMENTO: Título descriptivo ===
   &__title {
     font-size: 14px;
     font-weight: 500;
     color: #1f2937;
   }
-  
+
   // === ELEMENTO: Valor principal ===
   &__value {
     font-size: 16px;
@@ -251,31 +288,24 @@ En la vista de detalle de una suscripción ("Spotify Family"), encontramos tres 
 - **`.stat-card__icon`**, **`.stat-card__title`**, **`.stat-card__value`** son **Elementos**: solo tienen sentido dentro del contexto de `.stat-card`. Fuera de él, no tendrían propósito.
 - **`.stat-card__icon--calendar`** es un **Modificador**: altera el color de fondo del icono sin cambiar su estructura. Podemos añadir `--users`, `--money`, etc., para otras variantes.
 
----
-
-### Ejemplo Práctico 2: Sistema de Botones
+### 1.2.3 Ejemplo Práctico: Sistema de Botones
 
 Los botones en Joinly siguen un patrón consistente con variaciones para diferentes contextos: acciones principales (crear, registrar), acciones secundarias (cancelar) y acciones de peligro (eliminar).
 
-> [CAPTURA: Aquí insertar imagen de un modal mostrando botones "Cancelar" y "Crear" lado a lado]
+![Ejemplo BEM: Sistema de botones - Variantes primarias](images/bem-sistema-botones-1.png)
+![Ejemplo BEM: Sistema de botones - Variantes secundarias](images/bem-sistema-botones-2.png)
 
 **Estructura HTML con BEM:**
 
 ```html
 <!-- Botón primario naranja (Crear grupo, Crear suscripción) -->
-<button class="btn btn--primary">
-  Crear
-</button>
+<button class="btn btn--primary">Crear</button>
 
 <!-- Botón primario morado (Autenticación) -->
-<button class="btn btn--primary btn--purple">
-  Registrar
-</button>
+<button class="btn btn--primary btn--purple">Registrar</button>
 
 <!-- Botón secundario con borde (Cancelar) -->
-<button class="btn btn--outline">
-  Cancelar
-</button>
+<button class="btn btn--outline">Cancelar</button>
 
 <!-- Botón con icono -->
 <button class="btn btn--primary btn--icon">
@@ -284,9 +314,7 @@ Los botones en Joinly siguen un patrón consistente con variaciones para diferen
 </button>
 
 <!-- Botón de ancho completo (para móviles o modales) -->
-<button class="btn btn--primary btn--full">
-  Empezar ahora
-</button>
+<button class="btn btn--primary btn--full">Empezar ahora</button>
 ```
 
 **Estilos SCSS correspondientes:**
@@ -305,52 +333,52 @@ Los botones en Joinly siguen un patrón consistente con variaciones para diferen
   border: 2px solid transparent;
   cursor: pointer;
   transition: all 0.2s ease;
-  
+
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
-  
+
   // === MODIFICADOR: Botón primario (acción principal) ===
   &--primary {
     background-color: #f97316; // Naranja Joinly
     color: #ffffff;
     border-color: #f97316;
-    
+
     &:hover:not(:disabled) {
       background-color: #ea580c;
       border-color: #ea580c;
     }
   }
-  
+
   // === MODIFICADOR: Variante morada (autenticación) ===
   &--purple {
     background-color: #8b5cf6;
     border-color: #8b5cf6;
-    
+
     &:hover:not(:disabled) {
       background-color: #7c3aed;
       border-color: #7c3aed;
     }
   }
-  
+
   // === MODIFICADOR: Botón con solo borde (acción secundaria) ===
   &--outline {
     background-color: #ffffff;
     color: #374151;
     border-color: #d1d5db;
-    
+
     &:hover:not(:disabled) {
       background-color: #f9fafb;
       border-color: #9ca3af;
     }
   }
-  
+
   // === MODIFICADOR: Ancho completo ===
   &--full {
     width: 100%;
   }
-  
+
   // === MODIFICADOR: Con icono ===
   &--icon {
     svg {
@@ -368,11 +396,9 @@ Los botones en Joinly siguen un patrón consistente con variaciones para diferen
 - Los modificadores son **acumulables**: un botón puede ser `.btn .btn--primary .btn--full .btn--icon` simultáneamente.
 - El estado `:disabled` se maneja dentro del bloque base, aplicándose automáticamente a todas las variantes.
 
----
+### 1.2.4 Beneficios de BEM en Angular
 
-### Beneficios de BEM en nuestro proyecto Angular
-
-#### 1. Legibilidad inmediata del código
+#### Legibilidad inmediata del código
 
 Al revisar el HTML de un componente, BEM permite entender la estructura sin consultar los estilos:
 
@@ -390,23 +416,24 @@ Al revisar el HTML de un componente, BEM permite entender la estructura sin cons
 </div>
 ```
 
-#### 2. Integración con la arquitectura de componentes Angular
+#### Integración con la arquitectura de componentes Angular
 
 Aunque Angular proporciona **encapsulación de estilos** mediante `ViewEncapsulation`, BEM aporta beneficios adicionales:
 
-| Característica | ViewEncapsulation | BEM |
-|----------------|-------------------|-----|
-| Aislamiento de estilos | Sí (Automático) | Sí (Por convención) |
-| Reutilización entre proyectos | No (Limitada) | Sí (Total) |
-| Claridad en componentes grandes | No (Se pierde contexto) | Sí (Siempre claro) |
-| Estilos globales/compartidos | Parcial (Requiere `::ng-deep`) | Sí (Natural) |
+| Característica                  | ViewEncapsulation              | BEM                 |
+| ------------------------------- | ------------------------------ | ------------------- |
+| Aislamiento de estilos          | Sí (Automático)                | Sí (Por convención) |
+| Reutilización entre proyectos   | No (Limitada)                  | Sí (Total)          |
+| Claridad en componentes grandes | No (Se pierde contexto)        | Sí (Siempre claro)  |
+| Estilos globales/compartidos    | Parcial (Requiere `::ng-deep`) | Sí (Natural)        |
 
 En Joinly, usamos BEM incluso con encapsulación porque:
+
 - Facilita el trabajo con **estilos globales** (tipografía, botones, layouts) definidos en `src/styles/`.
 - Permite **copiar componentes** entre proyectos sin preocuparse por colisiones.
 - Mantiene **disciplina de equipo** en proyectos colaborativos.
 
-#### 3. Prevención del "Spaghetti CSS"
+#### Prevención del "Spaghetti CSS"
 
 Sin una metodología clara, el CSS tiende a degradarse:
 
@@ -422,22 +449,20 @@ Sin una metodología clara, el CSS tiende a degradarse:
 .sidebar-card__title { ... } // Sin conflicto posible
 ```
 
-#### 4. Facilita el mantenimiento a largo plazo
+#### Mantenimiento a largo plazo
 
 Cuando necesites modificar un componente meses después:
 
 - **Sin BEM:** Debes rastrear selectores anidados, verificar especificidad, temer efectos secundarios.
 - **Con BEM:** Buscas `.subscription-card__price`, lo modificas, y sabes que solo afectará a ese elemento específico.
 
----
+### 1.2.5 Resumen
 
-### Resumen
-
-| Concepto | Símbolo | Ejemplo en Joinly |
-|----------|---------|-------------------|
-| **Block** | — | `.stat-card`, `.btn`, `.subscription-card` |
-| **Element** | `__` | `.stat-card__icon`, `.btn__text`, `.subscription-card__price` |
-| **Modifier** | `--` | `.btn--primary`, `.stat-card__icon--calendar`, `.subscription-card--featured` |
+| Concepto     | Símbolo | Ejemplo en Joinly                                                             |
+| ------------ | ------- | ----------------------------------------------------------------------------- |
+| **Block**    | —       | `.stat-card`, `.btn`, `.subscription-card`                                    |
+| **Element**  | `__`    | `.stat-card__icon`, `.btn__text`, `.subscription-card__price`                 |
+| **Modifier** | `--`    | `.btn--primary`, `.stat-card__icon--calendar`, `.subscription-card--featured` |
 
 BEM no es solo una convención de nombres: es una **filosofía de componentización** que nos obliga a pensar en piezas reutilizables, independientes y predecibles. En un proyecto Angular como Joinly, donde los componentes crecen y evolucionan, BEM actúa como una guía que mantiene el código CSS tan organizado como nuestros componentes TypeScript.
 
@@ -445,9 +470,9 @@ BEM no es solo una convención de nombres: es una **filosofía de componentizaci
 
 ## 1.3 Organización de archivos
 
-### Arquitectura ITCSS (Inverted Triangle CSS)
+### 1.3.1 Arquitectura ITCSS
 
-**ITCSS** es una metodología de organización de archivos CSS creada por Harry Roberts que estructura el código en capas ordenadas por especificidad, de menor a mayor. El nombre "Triángulo Invertido" hace referencia a la forma visual de esta arquitectura: las capas superiores son amplias y genéricas (afectan a todo el proyecto), mientras que las capas inferiores son estrechas y específicas (afectan a componentes puntuales).
+**ITCSS** (Inverted Triangle CSS) es una metodología de organización de archivos CSS creada por Harry Roberts que estructura el código en capas ordenadas por especificidad, de menor a mayor. El nombre "Triángulo Invertido" hace referencia a la forma visual de esta arquitectura: las capas superiores son amplias y genéricas (afectan a todo el proyecto), mientras que las capas inferiores son estrechas y específicas (afectan a componentes puntuales).
 
 En Joinly, implementamos ITCSS para resolver tres problemas fundamentales del CSS a escala:
 
@@ -457,7 +482,7 @@ En Joinly, implementamos ITCSS para resolver tres problemas fundamentales del CS
 
 ---
 
-### Estructura de directorios en Joinly
+### 1.3.2 Estructura de directorios
 
 ```
 src/styles/
@@ -485,9 +510,7 @@ src/styles/
 
 La numeración de las carpetas (`00-`, `01-`, `02-`...) no es decorativa: garantiza que cualquier herramienta de ordenación alfabética mantenga el orden correcto de especificidad.
 
----
-
-### Explicación capa por capa
+### 1.3.3 Explicación capa por capa
 
 #### 00-settings (Configuración)
 
@@ -497,8 +520,8 @@ La numeración de las carpetas (`00-`, `01-`, `02-`...) no es decorativa: garant
 
 **Contenido en Joinly:**
 
-| Archivo | Descripción |
-|---------|-------------|
+| Archivo           | Descripción                                                                                                                                                                        |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `_variables.scss` | Paleta de colores (`$color-primary`, `$color-secondary`), escalas tipográficas (`$font-size-base`), espaciados (`$spacing-unit`), radios de borde, sombras, breakpoints responsive |
 
 **Ejemplo conceptual:**
@@ -507,27 +530,25 @@ La numeración de las carpetas (`00-`, `01-`, `02-`...) no es decorativa: garant
 // 00-settings/_variables.scss
 
 // Colores de marca
-$color-primary: #f97316;      // Naranja Joinly
-$color-secondary: #8b5cf6;    // Morado autenticación
-$color-background: #fffbf5;   // Off-white
-$color-surface: #ffffff;      // Tarjetas
+$color-primary: #f97316; // Naranja Joinly
+$color-secondary: #8b5cf6; // Morado autenticación
+$color-background: #fffbf5; // Off-white
+$color-surface: #ffffff; // Tarjetas
 
 // Tipografía
-$font-family-base: 'Inter', sans-serif;
+$font-family-base: "Inter", sans-serif;
 $font-size-base: 16px;
 
 // Espaciados (escala de 4px)
 $spacing-unit: 4px;
-$spacing-sm: $spacing-unit * 2;   // 8px
-$spacing-md: $spacing-unit * 4;   // 16px
-$spacing-lg: $spacing-unit * 6;   // 24px
+$spacing-sm: $spacing-unit * 2; // 8px
+$spacing-md: $spacing-unit * 4; // 16px
+$spacing-lg: $spacing-unit * 6; // 24px
 
 // Bordes
 $border-radius-sm: 8px;
 $border-radius-md: 12px;
 ```
-
----
 
 #### 01-tools (Herramientas)
 
@@ -537,8 +558,8 @@ $border-radius-md: 12px;
 
 **Contenido en Joinly:**
 
-| Archivo | Descripción |
-|---------|-------------|
+| Archivo        | Descripción                                                                                                                |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | `_mixins.scss` | Mixins para media queries responsive, truncado de texto, centrado flex, generación de sombras, transiciones estandarizadas |
 
 **Ejemplo conceptual:**
@@ -548,10 +569,14 @@ $border-radius-md: 12px;
 
 // Mixin para media queries mobile-first
 @mixin respond-to($breakpoint) {
-  @if $breakpoint == 'tablet' {
-    @media (min-width: 768px) { @content; }
-  } @else if $breakpoint == 'desktop' {
-    @media (min-width: 1024px) { @content; }
+  @if $breakpoint == "tablet" {
+    @media (min-width: 768px) {
+      @content;
+    }
+  } @else if $breakpoint == "desktop" {
+    @media (min-width: 1024px) {
+      @content;
+    }
   }
 }
 
@@ -570,8 +595,6 @@ $border-radius-md: 12px;
 }
 ```
 
----
-
 #### 02-generic (Genéricos)
 
 **Propósito:** Primera capa que genera CSS real. Aquí se normalizan los estilos del navegador para que todos los browsers partan de la misma base visual.
@@ -580,8 +603,8 @@ $border-radius-md: 12px;
 
 **Contenido en Joinly:**
 
-| Archivo | Descripción |
-|---------|-------------|
+| Archivo       | Descripción                                                                                                                  |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | `_reset.scss` | Reset CSS que elimina márgenes, paddings y estilos por defecto del navegador. Establece `box-sizing: border-box` globalmente |
 
 **Ejemplo conceptual:**
@@ -623,8 +646,6 @@ button {
 }
 ```
 
----
-
 #### 03-elements (Elementos)
 
 **Propósito:** Definir estilos para etiquetas HTML puras, sin clases. Esta capa establece la apariencia base de los elementos nativos en Joinly.
@@ -633,56 +654,65 @@ button {
 
 **Contenido en Joinly:**
 
-| Archivo | Descripción |
-|---------|-------------|
-| `_base.scss` | Estilos globales del `body`: fuente base, color de texto, fondo |
-| `_encabezados.scss` | Estilos para `h1` a `h6`: tamaños, pesos, márgenes |
-| `_enlaces.scss` | Estilos para `a`: color, hover, focus, decoración |
-| `_formularios.scss` | Estilos para `input`, `textarea`, `select`, `label` |
-| `_listas.scss` | Estilos para `ul`, `ol`, `li` |
-| `_multimedia.scss` | Estilos para `img`, `video`, `figure`, `figcaption` |
-| `_index.scss` | Archivo barril que importa todos los parciales de la capa |
+| Archivo             | Descripción                                                     |
+| ------------------- | --------------------------------------------------------------- |
+| `_base.scss`        | Estilos globales del `body`: fuente base, color de texto, fondo |
+| `_encabezados.scss` | Estilos para `h1` a `h6`: tamaños, pesos, márgenes              |
+| `_enlaces.scss`     | Estilos para `a`: color, hover, focus, decoración               |
+| `_formularios.scss` | Estilos para `input`, `textarea`, `select`, `label`             |
+| `_listas.scss`      | Estilos para `ul`, `ol`, `li`                                   |
+| `_multimedia.scss`  | Estilos para `img`, `video`, `figure`, `figcaption`             |
+| `_index.scss`       | Archivo barril que importa todos los parciales de la capa       |
 
 **Ejemplo conceptual:**
 
 ```scss
 // 03-elements/_encabezados.scss
-@use '../00-settings/variables' as *;
+@use "../00-settings/variables" as *;
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: $font-family-base;
   font-weight: 700;
   line-height: 1.2;
   color: $color-text-primary;
 }
 
-h1 { font-size: 2rem; }      // 32px
-h2 { font-size: 1.5rem; }    // 24px
-h3 { font-size: 1.25rem; }   // 20px
+h1 {
+  font-size: 2rem;
+} // 32px
+h2 {
+  font-size: 1.5rem;
+} // 24px
+h3 {
+  font-size: 1.25rem;
+} // 20px
 ```
 
 ```scss
 // 03-elements/_enlaces.scss
-@use '../00-settings/variables' as *;
+@use "../00-settings/variables" as *;
 
 a {
   color: $color-primary;
   text-decoration: none;
   transition: color 0.2s ease;
-  
+
   &:hover {
     color: darken($color-primary, 10%);
     text-decoration: underline;
   }
-  
+
   &:focus-visible {
     outline: 2px solid $color-primary;
     outline-offset: 2px;
   }
 }
 ```
-
----
 
 #### 04-layout (Estructura)
 
@@ -692,18 +722,18 @@ a {
 
 **Contenido en Joinly:**
 
-| Archivo | Descripción |
-|---------|-------------|
-| `_contenedor.scss` | Clase `.container` con ancho máximo y centrado horizontal |
-| `_rejilla.scss` | Sistema de grid con clases como `.grid`, `.grid--cols-2`, `.grid--cols-3` |
-| `_flex.scss` | Utilidades flexbox: `.flex`, `.flex--center`, `.flex--between` |
-| `_index.scss` | Archivo barril que importa todos los parciales de la capa |
+| Archivo            | Descripción                                                               |
+| ------------------ | ------------------------------------------------------------------------- |
+| `_contenedor.scss` | Clase `.container` con ancho máximo y centrado horizontal                 |
+| `_rejilla.scss`    | Sistema de grid con clases como `.grid`, `.grid--cols-2`, `.grid--cols-3` |
+| `_flex.scss`       | Utilidades flexbox: `.flex`, `.flex--center`, `.flex--between`            |
+| `_index.scss`      | Archivo barril que importa todos los parciales de la capa                 |
 
 **Ejemplo conceptual:**
 
 ```scss
 // 04-layout/_contenedor.scss
-@use '../00-settings/variables' as *;
+@use "../00-settings/variables" as *;
 
 .container {
   width: 100%;
@@ -723,26 +753,24 @@ a {
 
 ```scss
 // 04-layout/_rejilla.scss
-@use '../00-settings/variables' as *;
-@use '../01-tools/mixins' as *;
+@use "../00-settings/variables" as *;
+@use "../01-tools/mixins" as *;
 
 .grid {
   display: grid;
   gap: $spacing-md;
-  
+
   &--cols-2 {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   &--cols-3 {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 ```
 
----
-
-### El archivo main.scss
+### 1.3.4 El archivo main.scss
 
 El archivo `main.scss` actúa como punto de entrada que orquesta la importación de todas las capas en el orden correcto. El orden de importación es **crítico**: si importamos `03-elements` antes de `00-settings`, la compilación fallará porque las variables referenciadas aún no existirían.
 
@@ -758,37 +786,35 @@ El archivo `main.scss` actúa como punto de entrada que orquesta la importación
 // 00 - SETTINGS: Variables y tokens
 // No genera CSS, solo define valores
 // -----------------------------------------
-@use '00-settings/variables';
+@use "00-settings/variables";
 
 // -----------------------------------------
 // 01 - TOOLS: Mixins y funciones
 // No genera CSS, solo define lógica
 // -----------------------------------------
-@use '01-tools/mixins';
+@use "01-tools/mixins";
 
 // -----------------------------------------
 // 02 - GENERIC: Reset y normalización
 // Primera capa que genera CSS real
 // Especificidad: *, elemento
 // -----------------------------------------
-@use '02-generic/reset';
+@use "02-generic/reset";
 
 // -----------------------------------------
 // 03 - ELEMENTS: Estilos de etiquetas HTML
 // Especificidad: elemento (h1, a, input)
 // -----------------------------------------
-@use '03-elements/index';
+@use "03-elements/index";
 
 // -----------------------------------------
 // 04 - LAYOUT: Estructura y rejillas
 // Especificidad: .clase
 // -----------------------------------------
-@use '04-layout/index';
+@use "04-layout/index";
 ```
 
----
-
-### Flujo de especificidad
+### 1.3.5 Flujo de especificidad
 
 El siguiente diagrama ilustra cómo la especificidad aumenta progresivamente a través de las capas:
 
@@ -819,17 +845,15 @@ El siguiente diagrama ilustra cómo la especificidad aumenta progresivamente a t
 
 Cada capa puede sobrescribir estilos de las capas superiores sin conflictos, porque la cascada CSS respeta naturalmente el orden de aparición cuando la especificidad es igual o mayor.
 
----
+### 1.3.6 Beneficios de ITCSS
 
-### Beneficios de ITCSS en Joinly
-
-| Beneficio | Descripción |
-|-----------|-------------|
-| **Predecibilidad** | Sabemos exactamente dónde buscar cada tipo de estilo |
-| **Escalabilidad** | Podemos añadir nuevas capas (05-components, 06-utilities) sin romper lo existente |
-| **Colaboración** | Múltiples desarrolladores pueden trabajar en capas diferentes sin conflictos |
-| **Depuración** | Los problemas de especificidad se identifican rápidamente por la capa donde ocurren |
-| **Rendimiento** | El orden optimizado reduce la probabilidad de estilos duplicados o redundantes |
+| Beneficio          | Descripción                                                                         |
+| ------------------ | ----------------------------------------------------------------------------------- |
+| **Predecibilidad** | Sabemos exactamente dónde buscar cada tipo de estilo                                |
+| **Escalabilidad**  | Podemos añadir nuevas capas (05-components, 06-utilities) sin romper lo existente   |
+| **Colaboración**   | Múltiples desarrolladores pueden trabajar en capas diferentes sin conflictos        |
+| **Depuración**     | Los problemas de especificidad se identifican rápidamente por la capa donde ocurren |
+| **Rendimiento**    | El orden optimizado reduce la probabilidad de estilos duplicados o redundantes      |
 
 Esta arquitectura, combinada con la metodología BEM para nombrar clases, proporciona un sistema robusto y mantenible para gestionar los estilos de Joinly a medida que el proyecto crece.
 
@@ -841,20 +865,18 @@ Los **Design Tokens** son los valores atómicos que constituyen la "única fuent
 
 En Joinly implementamos una **estrategia híbrida**: utilizamos CSS Custom Properties (variables nativas de CSS) para tokens que pueden cambiar dinámicamente o heredarse, combinadas con variables SCSS para valores que necesitan evaluarse en tiempo de compilación (como breakpoints en media queries).
 
----
-
 ### 1.4.1 Paleta de Colores
 
 La paleta cromática de Joinly está diseñada para equilibrar la expresividad de marca con la funcionalidad y accesibilidad. Cada color tiene un propósito definido.
 
 #### Colores de Marca (Primarios)
 
-| Token | Valor | Uso |
-|-------|-------|-----|
+| Token                       | Valor     | Uso                                                                                                       |
+| --------------------------- | --------- | --------------------------------------------------------------------------------------------------------- |
 | `--color-naranja-principal` | `#F97316` | Acciones primarias relacionadas con grupos y suscripciones: "Crear grupo", "Crear suscripción", "Invitar" |
-| `--color-naranja-oscuro` | `#EA580C` | Estado hover de botones naranja |
-| `--color-morado-principal` | `#9333EA` | Acciones de autenticación y branding: "Registrar", "Iniciar sesión" |
-| `--color-morado-oscuro` | `#7C3AED` | Estado hover de botones morados |
+| `--color-naranja-oscuro`    | `#EA580C` | Estado hover de botones naranja                                                                           |
+| `--color-morado-principal`  | `#9333EA` | Acciones de autenticación y branding: "Registrar", "Iniciar sesión"                                       |
+| `--color-morado-oscuro`     | `#7C3AED` | Estado hover de botones morados                                                                           |
 
 **Justificacion de la combinacion Naranja/Morado:**
 
@@ -870,14 +892,14 @@ La eleccion de esta dupla cromatica responde a criterios tanto psicologicos como
 
 La gestion de los colores neutros es fundamental para crear profundidad visual sin recurrir a bordes duros o separadores explicitos.
 
-| Token | Valor | Uso |
-|-------|-------|-----|
+| Token                         | Valor     | Uso                                               |
+| ----------------------------- | --------- | ------------------------------------------------- |
 | `--color-fondo-claro-naranja` | `#FEF8EB` | Fondo general de la aplicacion (Off-white calido) |
-| `--color-fondo-claro-normal` | `#F8FAFC` | Superficie de tarjetas y componentes elevados |
-| `--color-gris-medio` | `#E5E7EB` | Bordes sutiles, separadores |
-| `--color-texto-oscuro` | `#111827` | Titulos y texto de alta importancia |
-| `--color-texto-normal` | `#4B5563` | Cuerpo de texto, descripciones |
-| `--color-footer` | `#1E293B` | Fondo del footer (azul oscuro/negro) |
+| `--color-fondo-claro-normal`  | `#F8FAFC` | Superficie de tarjetas y componentes elevados     |
+| `--color-gris-medio`          | `#E5E7EB` | Bordes sutiles, separadores                       |
+| `--color-texto-oscuro`        | `#111827` | Titulos y texto de alta importancia               |
+| `--color-texto-normal`        | `#4B5563` | Cuerpo de texto, descripciones                    |
+| `--color-footer`              | `#1E293B` | Fondo del footer (azul oscuro/negro)              |
 
 **Tecnica Off-white vs White:**
 
@@ -889,20 +911,20 @@ Una decision clave en Joinly es el uso de **dos tonos de blanco diferenciados**:
 
 Esta tecnica, conocida como **"elevation through color"**, reduce el ruido visual eliminando lineas innecesarias mientras mantiene la estructura clara.
 
-#### Colores Semanticos (Feedback)
+#### Colores Semánticos (Feedback)
 
 Los colores semanticos comunican estados del sistema al usuario de forma universal:
 
-| Token | Valor | Significado |
-|-------|-------|-------------|
-| `--color-exito` | `#22C55E` | Operacion completada, disponibilidad, confirmacion |
-| `--color-error` | `#EF4444` | Error, accion destructiva, validacion fallida |
-| `--color-advertencia` | `#FACC15` | Atencion requerida, estado pendiente |
-| `--color-informacion` | `#60A5FA` | Informacion neutral, ayuda contextual |
+| Token                 | Valor     | Significado                                        |
+| --------------------- | --------- | -------------------------------------------------- |
+| `--color-exito`       | `#22C55E` | Operacion completada, disponibilidad, confirmacion |
+| `--color-error`       | `#EF4444` | Error, accion destructiva, validacion fallida      |
+| `--color-advertencia` | `#FACC15` | Atencion requerida, estado pendiente               |
+| `--color-informacion` | `#60A5FA` | Informacion neutral, ayuda contextual              |
 
 Estos colores se aplican consistentemente en badges de estado, mensajes de validacion de formularios, toasts de notificacion y alertas del sistema.
 
-#### Tokens Semanticos vs Primitivos
+#### Tokens Semánticos vs Primitivos
 
 Implementamos un sistema de **dos niveles de abstraccion**:
 
@@ -917,20 +939,19 @@ Implementamos un sistema de **dos niveles de abstraccion**:
 ```
 
 Esta arquitectura permite:
+
 - **Cambios globales rapidos:** Modificar `--color-naranja-principal` actualiza automaticamente todos los componentes que lo referencian.
 - **Theming futuro:** Podriamos implementar un tema oscuro redefiniendo solo los tokens semanticos sin tocar los primitivos.
 - **Claridad de intencion:** Un desarrollador que lee `--color-acento` entiende el proposito mejor que leyendo `#F97316`.
 
----
+### 1.4.2 Escala Tipográfica
 
-### 1.4.2 Escala Tipografica
+La tipografía es el vehículo principal de comunicacion en cualquier interfaz. En Joinly, hemos construido un sistema tipografico que prioriza la legibilidad, establece jerarquia clara y se adapta fluidamente a diferentes tamaños de pantalla.
 
-La tipografia es el vehiculo principal de comunicacion en cualquier interfaz. En Joinly, hemos construido un sistema tipografico que prioriza la legibilidad, establece jerarquia clara y se adapta fluidamente a diferentes tamaños de pantalla.
+#### Familia Tipográfica: Inter
 
-#### Familia Tipografica: Inter
-
-| Token | Valor |
-|-------|-------|
+| Token             | Valor                 |
+| ----------------- | --------------------- |
 | `--font-primaria` | `'Inter', sans-serif` |
 
 **Justificacion de la eleccion:**
@@ -951,16 +972,16 @@ La tipografia es el vehiculo principal de comunicacion en cualquier interfaz. En
 
 Utilizamos una **escala modular** basada en la proporcion Major Third (1.25). Esto significa que cada nivel de la escala es 1.25 veces mayor que el anterior, creando una progresion armonica y predecible.
 
-| Nivel | Token | Rango (clamp) | Uso |
-|-------|-------|---------------|-----|
-| H1 Display | `--tamano-h1` | `40px` - `64px` | Titulo principal de pagina, hero sections |
-| H2 Seccion | `--tamano-h2` | `32px` - `48px` | Divisiones principales de contenido |
-| H3 Subseccion | `--tamano-h3` | `24px` - `32px` | Encabezados de tarjetas, modales |
-| H4 Pequeno | `--tamano-h4` | `18px` - `20px` | Titulos terciarios, destacados menores |
-| Body Large | `--tamano-texto-grande` | `17px` - `18px` | Introducciones, textos destacados |
-| Body Regular | `--tamano-texto-regular` | `15px` - `16px` | Contenido principal (80% del texto) |
-| Body Small | `--tamano-texto-pequeno` | `13px` - `14px` | Metadatos, fechas, autores |
-| Caption | `--tamano-caption` | `11px` - `12px` | Notas al pie, etiquetas minimas |
+| Nivel         | Token                    | Rango (clamp)   | Uso                                       |
+| ------------- | ------------------------ | --------------- | ----------------------------------------- |
+| H1 Display    | `--tamano-h1`            | `40px` - `64px` | Titulo principal de pagina, hero sections |
+| H2 Seccion    | `--tamano-h2`            | `32px` - `48px` | Divisiones principales de contenido       |
+| H3 Subseccion | `--tamano-h3`            | `24px` - `32px` | Encabezados de tarjetas, modales          |
+| H4 Pequeno    | `--tamano-h4`            | `18px` - `20px` | Titulos terciarios, destacados menores    |
+| Body Large    | `--tamano-texto-grande`  | `17px` - `18px` | Introducciones, textos destacados         |
+| Body Regular  | `--tamano-texto-regular` | `15px` - `16px` | Contenido principal (80% del texto)       |
+| Body Small    | `--tamano-texto-pequeno` | `13px` - `14px` | Metadatos, fechas, autores                |
+| Caption       | `--tamano-caption`       | `11px` - `12px` | Notas al pie, etiquetas minimas           |
 
 **Tipografia fluida con `clamp()`:**
 
@@ -971,6 +992,7 @@ En lugar de definir tamaños fijos con media queries, implementamos **tipografia
 ```
 
 Esta sintaxis define:
+
 - **Minimo:** `2.5rem` (40px) - El titulo nunca sera mas pequeño
 - **Preferido:** `5vw + 1rem` - Escala proporcionalmente al viewport
 - **Maximo:** `4rem` (64px) - El titulo nunca sera mas grande
@@ -979,25 +1001,23 @@ Este enfoque elimina "saltos" bruscos entre breakpoints, creando una experiencia
 
 #### Pesos de Fuente
 
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `--peso-fuente-regular` | `400` | Cuerpo de texto, parrafos |
-| `--peso-fuente-medio` | `500` | Labels, texto enfatizado |
+| Token                        | Valor | Uso                           |
+| ---------------------------- | ----- | ----------------------------- |
+| `--peso-fuente-regular`      | `400` | Cuerpo de texto, parrafos     |
+| `--peso-fuente-medio`        | `500` | Labels, texto enfatizado      |
 | `--peso-fuente-semi-negrita` | `600` | Subtitulos, encabezados H3-H4 |
-| `--peso-fuente-negrita` | `700` | Titulos principales H1-H2 |
+| `--peso-fuente-negrita`      | `700` | Titulos principales H1-H2     |
 
-#### Alturas de Linea (Line Height)
+#### Alturas de Línea (Line Height)
 
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `--altura-linea-ajustada` | `1.1` | Titulos grandes (H1) donde el texto es corto |
-| `--altura-linea-compacta` | `1.25` | Subtitulos y encabezados |
-| `--altura-linea-normal` | `1.5` | Cuerpo de texto, parrafos |
-| `--altura-linea-relajada` | `1.6` | Textos largos, articulos |
+| Token                     | Valor  | Uso                                          |
+| ------------------------- | ------ | -------------------------------------------- |
+| `--altura-linea-ajustada` | `1.1`  | Titulos grandes (H1) donde el texto es corto |
+| `--altura-linea-compacta` | `1.25` | Subtitulos y encabezados                     |
+| `--altura-linea-normal`   | `1.5`  | Cuerpo de texto, parrafos                    |
+| `--altura-linea-relajada` | `1.6`  | Textos largos, articulos                     |
 
 La regla general: a mayor tamaño de fuente, menor line-height proporcional necesario. Los titulos grandes con line-height 1.5 lucen excesivamente espaciados, mientras que el texto pequeño con line-height 1.1 se vuelve ilegible.
-
----
 
 ### 1.4.3 Sistema de Espaciado
 
@@ -1005,19 +1025,19 @@ El espaciado consistente es uno de los indicadores mas claros de un diseño prof
 
 #### Escala de Espaciado (Base 8px)
 
-| Token | Valor | Pixeles | Uso tipico |
-|-------|-------|---------|------------|
-| `--espaciado-0` | `0` | 0px | Reset, elementos sin margen |
-| `--espaciado-1` | `0.5rem` | 8px | Separacion minima entre elementos inline |
-| `--espaciado-2` | `1rem` | 16px | Padding interno de botones, gap en flex |
-| `--espaciado-3` | `1.5rem` | 24px | Padding de tarjetas, separacion entre campos |
-| `--espaciado-4` | `2rem` | 32px | Margen entre secciones menores |
-| `--espaciado-5` | `2.5rem` | 40px | Separacion entre bloques de contenido |
-| `--espaciado-6` | `3rem` | 48px | Padding de secciones principales |
-| `--espaciado-8` | `4rem` | 64px | Margen entre secciones mayores |
-| `--espaciado-10` | `5rem` | 80px | Espaciado de hero sections |
-| `--espaciado-12` | `6rem` | 96px | Separacion entre areas de pagina |
-| `--espaciado-16` | `8rem` | 128px | Espaciado maximo, areas de respiro |
+| Token            | Valor    | Pixeles | Uso tipico                                   |
+| ---------------- | -------- | ------- | -------------------------------------------- |
+| `--espaciado-0`  | `0`      | 0px     | Reset, elementos sin margen                  |
+| `--espaciado-1`  | `0.5rem` | 8px     | Separacion minima entre elementos inline     |
+| `--espaciado-2`  | `1rem`   | 16px    | Padding interno de botones, gap en flex      |
+| `--espaciado-3`  | `1.5rem` | 24px    | Padding de tarjetas, separacion entre campos |
+| `--espaciado-4`  | `2rem`   | 32px    | Margen entre secciones menores               |
+| `--espaciado-5`  | `2.5rem` | 40px    | Separacion entre bloques de contenido        |
+| `--espaciado-6`  | `3rem`   | 48px    | Padding de secciones principales             |
+| `--espaciado-8`  | `4rem`   | 64px    | Margen entre secciones mayores               |
+| `--espaciado-10` | `5rem`   | 80px    | Espaciado de hero sections                   |
+| `--espaciado-12` | `6rem`   | 96px    | Separacion entre areas de pagina             |
+| `--espaciado-16` | `8rem`   | 128px   | Espaciado maximo, areas de respiro           |
 
 **Por que base 8px y no 4px o 10px:**
 
@@ -1047,19 +1067,17 @@ El espaciado consistente es uno de los indicadores mas claros de un diseño prof
 
 El segundo enfoque garantiza que todas las tarjetas de la aplicacion compartan el mismo ritmo vertical, creando una sensacion de orden y coherencia visual.
 
----
-
 ### 1.4.4 Breakpoints (Responsive Design)
 
 Joinly adopta una estrategia **Mobile-First**, donde los estilos base estan optimizados para dispositivos moviles y se añaden modificaciones progresivas para pantallas mas grandes mediante `min-width`.
 
 #### Puntos de Ruptura
 
-| Token CSS | Token SCSS | Valor | Dispositivo objetivo |
-|-----------|------------|-------|---------------------|
-| `--bp-movil` | `$bp-movil` | `640px` (40rem) | Movil grande / Phablet |
-| `--bp-tablet` | `$bp-tablet` | `768px` (48rem) | Tablet vertical |
-| `--bp-escritorio` | `$bp-desktop` | `1024px` (64rem) | Desktop / Tablet horizontal |
+| Token CSS                | Token SCSS        | Valor            | Dispositivo objetivo              |
+| ------------------------ | ----------------- | ---------------- | --------------------------------- |
+| `--bp-movil`             | `$bp-movil`       | `640px` (40rem)  | Movil grande / Phablet            |
+| `--bp-tablet`            | `$bp-tablet`      | `768px` (48rem)  | Tablet vertical                   |
+| `--bp-escritorio`        | `$bp-desktop`     | `1024px` (64rem) | Desktop / Tablet horizontal       |
 | `--bp-escritorio-grande` | `$bp-big-desktop` | `1280px` (80rem) | Desktop grande / Monitores anchos |
 
 **Justificacion de los valores:**
@@ -1089,79 +1107,75 @@ El enfoque Mobile-First no es solo una decision tecnica, sino filosofica:
   display: grid;
   grid-template-columns: 1fr; // Movil: 1 columna
   gap: var(--espaciado-3);
-  
-  @include respond-to('tablet') {
+
+  @include respond-to("tablet") {
     grid-template-columns: repeat(2, 1fr); // Tablet: 2 columnas
   }
-  
-  @include respond-to('desktop') {
+
+  @include respond-to("desktop") {
     grid-template-columns: repeat(3, 1fr); // Desktop: 3 columnas
   }
 }
 ```
 
----
-
 ### 1.4.5 Tokens Adicionales
 
 #### Bordes y Radios
 
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `--borde-delgado` | `1px` | Bordes sutiles de inputs, separadores |
-| `--borde-medio` | `2px` | Bordes de botones, focus rings |
-| `--radio-pequeno` | `4px` | Badges, etiquetas pequenas |
-| `--radio-medio` | `8px` | Botones, inputs |
-| `--radio-grande` | `18px` | Tarjetas, modales |
+| Token              | Valor    | Uso                                   |
+| ------------------ | -------- | ------------------------------------- |
+| `--borde-delgado`  | `1px`    | Bordes sutiles de inputs, separadores |
+| `--borde-medio`    | `2px`    | Bordes de botones, focus rings        |
+| `--radio-pequeno`  | `4px`    | Badges, etiquetas pequenas            |
+| `--radio-medio`    | `8px`    | Botones, inputs                       |
+| `--radio-grande`   | `18px`   | Tarjetas, modales                     |
 | `--radio-completo` | `9999px` | Avatares, pills, elementos circulares |
 
 #### Sistema de Sombras (Elevation)
 
-| Token | Valor | Nivel |
-|-------|-------|-------|
-| `--sombra-1` | `0 2px 6px rgba(20,20,43,0.06)` | Elevation 1 - Muy sutil |
-| `--sombra-2` | `0 2px 12px rgba(20,20,43,0.08)` | Elevation 2 - Cards en reposo |
-| `--sombra-3` | `0 8px 28px rgba(20,20,43,0.10)` | Elevation 3 - Cards en hover |
-| `--sombra-4` | `0 14px 42px rgba(20,20,43,0.14)` | Elevation 4 - Dropdowns |
-| `--sombra-5` | `0 24px 65px rgba(20,20,43,0.16)` | Elevation 5 - Modales |
+| Token        | Valor                             | Nivel                             |
+| ------------ | --------------------------------- | --------------------------------- |
+| `--sombra-1` | `0 2px 6px rgba(20,20,43,0.06)`   | Elevation 1 - Muy sutil           |
+| `--sombra-2` | `0 2px 12px rgba(20,20,43,0.08)`  | Elevation 2 - Cards en reposo     |
+| `--sombra-3` | `0 8px 28px rgba(20,20,43,0.10)`  | Elevation 3 - Cards en hover      |
+| `--sombra-4` | `0 14px 42px rgba(20,20,43,0.14)` | Elevation 4 - Dropdowns           |
+| `--sombra-5` | `0 24px 65px rgba(20,20,43,0.16)` | Elevation 5 - Modales             |
 | `--sombra-6` | `0 32px 72px rgba(20,20,43,0.24)` | Elevation 6 - Elementos flotantes |
 
 El sistema de sombras sigue una progresion donde cada nivel incrementa tanto el blur como el offset vertical, simulando una fuente de luz superior. Usamos un color base azulado oscuro (`#14142B`) en lugar de negro puro para sombras mas suaves y naturales.
 
 #### Transiciones
 
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `--duracion-rapida` | `150ms` | Hover de botones, cambios de color |
-| `--duracion-base` | `300ms` | Apertura de dropdowns, animaciones de entrada |
-| `--duracion-lenta` | `500ms` | Transiciones de pagina, animaciones complejas |
-| `--transicion-estandar` | `ease-in-out` | Movimiento natural |
+| Token                   | Valor         | Uso                                           |
+| ----------------------- | ------------- | --------------------------------------------- |
+| `--duracion-rapida`     | `150ms`       | Hover de botones, cambios de color            |
+| `--duracion-base`       | `300ms`       | Apertura de dropdowns, animaciones de entrada |
+| `--duracion-lenta`      | `500ms`       | Transiciones de pagina, animaciones complejas |
+| `--transicion-estandar` | `ease-in-out` | Movimiento natural                            |
 
 #### Z-Index (Sistema de Capas)
 
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `--z-dropdown` | `100` | Menus desplegables |
-| `--z-sticky` | `200` | Headers sticky |
-| `--z-fixed` | `300` | Navbars fijas |
+| Token                | Valor | Uso                       |
+| -------------------- | ----- | ------------------------- |
+| `--z-dropdown`       | `100` | Menus desplegables        |
+| `--z-sticky`         | `200` | Headers sticky            |
+| `--z-fixed`          | `300` | Navbars fijas             |
 | `--z-modal-backdrop` | `400` | Overlay oscuro de modales |
-| `--z-modal` | `500` | Modales y dialogos |
-| `--z-popover` | `600` | Tooltips, popovers |
-| `--z-toast` | `700` | Notificaciones toast |
+| `--z-modal`          | `500` | Modales y dialogos        |
+| `--z-popover`        | `600` | Tooltips, popovers        |
+| `--z-toast`          | `700` | Notificaciones toast      |
 
 Este sistema escalonado previene conflictos de z-index, un problema comun en proyectos sin convencion establecida donde los valores crecen arbitrariamente hasta llegar a `z-index: 99999`.
 
----
+### 1.4.6 Resumen
 
-### Resumen
-
-| Categoria | Estrategia | Beneficio |
-|-----------|------------|-----------|
-| **Colores** | Primitivos + Semanticos, Off-white vs White | Theming futuro, profundidad sin bordes |
-| **Tipografia** | Inter + escala modular 1.25 + clamp() | Jerarquia clara, escalado fluido |
-| **Espaciado** | Base 8px, tokens nombrados | Ritmo visual, consistencia |
-| **Breakpoints** | Mobile-First, 4 puntos | Rendimiento, priorizacion contenido |
-| **Extras** | Sombras escalonadas, z-index sistematico | Elevation predecible, sin conflictos |
+| Categoria       | Estrategia                                  | Beneficio                              |
+| --------------- | ------------------------------------------- | -------------------------------------- |
+| **Colores**     | Primitivos + Semanticos, Off-white vs White | Theming futuro, profundidad sin bordes |
+| **Tipografia**  | Inter + escala modular 1.25 + clamp()       | Jerarquia clara, escalado fluido       |
+| **Espaciado**   | Base 8px, tokens nombrados                  | Ritmo visual, consistencia             |
+| **Breakpoints** | Mobile-First, 4 puntos                      | Rendimiento, priorizacion contenido    |
+| **Extras**      | Sombras escalonadas, z-index sistematico    | Elevation predecible, sin conflictos   |
 
 Los Design Tokens son la base sobre la que se construye todo el sistema visual de Joinly. Al documentarlos explicitamente y utilizarlos de forma consistente, garantizamos que cualquier desarrollador pueda contribuir al proyecto manteniendo la coherencia visual, y que cualquier cambio de diseño pueda propagarse globalmente modificando un unico archivo.
 
@@ -1177,8 +1191,6 @@ Esta característica los diferencia de las capas posteriores (02-generic, 03-ele
 
 **Ubicación:** `src/styles/01-tools/_mixins.scss`
 
----
-
 ### 1.5.1 Media Queries Responsive (`responder-a`)
 
 **Descripción:**
@@ -1189,36 +1201,36 @@ El mixin sigue el enfoque **Mobile-First**: los estilos base se escriben para m�
 
 **Parámetros:**
 
-| Parámetro | Tipo | Valores aceptados | Descripción |
-|-----------|------|-------------------|-------------|
+| Parámetro        | Tipo     | Valores aceptados                                            | Descripción                     |
+| ---------------- | -------- | ------------------------------------------------------------ | ------------------------------- |
 | `$punto-ruptura` | `string` | `'movil'`, `'tablet'`, `'escritorio'`, `'escritorio-grande'` | Nombre del breakpoint a aplicar |
 
 **Correspondencia de breakpoints:**
 
-| Valor del parámetro | Variable SCSS | Resolución |
-|---------------------|---------------|------------|
-| `'movil'` | `$bp-movil` | `640px` (40rem) |
-| `'tablet'` | `$bp-tablet` | `768px` (48rem) |
-| `'escritorio'` | `$bp-desktop` | `1024px` (64rem) |
+| Valor del parámetro   | Variable SCSS     | Resolución       |
+| --------------------- | ----------------- | ---------------- |
+| `'movil'`             | `$bp-movil`       | `640px` (40rem)  |
+| `'tablet'`            | `$bp-tablet`      | `768px` (48rem)  |
+| `'escritorio'`        | `$bp-desktop`     | `1024px` (64rem) |
 | `'escritorio-grande'` | `$bp-big-desktop` | `1280px` (80rem) |
 
 **Código fuente:**
 
 ```scss
 @mixin responder-a($punto-ruptura) {
-  @if $punto-ruptura == 'movil' {
+  @if $punto-ruptura == "movil" {
     @media (min-width: $bp-movil) {
       @content;
     }
-  } @else if $punto-ruptura == 'tablet' {
+  } @else if $punto-ruptura == "tablet" {
     @media (min-width: $bp-tablet) {
       @content;
     }
-  } @else if $punto-ruptura == 'escritorio' {
+  } @else if $punto-ruptura == "escritorio" {
     @media (min-width: $bp-desktop) {
       @content;
     }
-  } @else if $punto-ruptura == 'escritorio-grande' {
+  } @else if $punto-ruptura == "escritorio-grande" {
     @media (min-width: $bp-big-desktop) {
       @content;
     }
@@ -1235,20 +1247,20 @@ El mixin sigue el enfoque **Mobile-First**: los estilos base se escriben para m�
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--espaciado-3);
-  
-  @include responder-a('tablet') {
+
+  @include responder-a("tablet") {
     grid-template-columns: repeat(2, 1fr);
   }
-  
-  @include responder-a('escritorio') {
+
+  @include responder-a("escritorio") {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 .hero__title {
   font-size: var(--tamano-h2);
-  
-  @include responder-a('escritorio') {
+
+  @include responder-a("escritorio") {
     font-size: var(--tamano-h1);
   }
 }
@@ -1281,8 +1293,6 @@ El mixin sigue el enfoque **Mobile-First**: los estilos base se escriben para m�
 1. **Legibilidad:** `@include responder-a('tablet')` es más expresivo que `@media (min-width: 768px)`.
 2. **Mantenibilidad:** Si decidimos cambiar el breakpoint de tablet de 768px a 800px, lo hacemos en `_variables.scss` y se propaga automáticamente.
 3. **Prevención de errores:** El mixin emite un warning si se usa un breakpoint inexistente, evitando media queries vacías o mal escritas.
-
----
 
 ### 1.5.2 Centrado Flexbox (`centrar-flex`)
 
@@ -1321,7 +1331,7 @@ Este mixin no recibe parámetros. Su simplicidad es intencional.
   height: 48px;
   border-radius: var(--radio-medio);
   background-color: var(--color-fondo-claro-naranja);
-  
+
   svg {
     width: 24px;
     height: 24px;
@@ -1358,8 +1368,6 @@ Este mixin no recibe parámetros. Su simplicidad es intencional.
 }
 ```
 
----
-
 ### 1.5.3 Truncado de Texto (`truncar-texto`)
 
 **Descripción:**
@@ -1373,9 +1381,9 @@ Es especialmente útil en tarjetas de suscripción donde los nombres de servicio
 
 **Parámetros:**
 
-| Parámetro | Tipo | Valor por defecto | Descripción |
-|-----------|------|-------------------|-------------|
-| `$lineas` | `number` | `1` | Número máximo de líneas a mostrar antes de truncar |
+| Parámetro | Tipo     | Valor por defecto | Descripción                                        |
+| --------- | -------- | ----------------- | -------------------------------------------------- |
+| `$lineas` | `number` | `1`               | Número máximo de líneas a mostrar antes de truncar |
 
 **Código fuente:**
 
@@ -1436,8 +1444,6 @@ Es especialmente útil en tarjetas de suscripción donde los nombres de servicio
 }
 ```
 
----
-
 ### 1.5.4 Foco Visible Accesible (`foco-visible`)
 
 **Descripción:**
@@ -1497,8 +1503,6 @@ Este mixin no recibe parámetros. Utiliza los tokens del sistema de diseño para
 - **Navegación con Tab:** Se muestra un anillo morado de 2px alrededor del elemento.
 - **Clic con ratón:** No se muestra ningún outline, manteniendo la estética limpia.
 
----
-
 ### 1.5.5 Oculto Accesible (`oculto-accesible`)
 
 **Descripción:**
@@ -1538,7 +1542,7 @@ Este mixin oculta un elemento visualmente pero lo mantiene accesible para tecnol
 
 .skip-link {
   @include oculto-accesible;
-  
+
   &:focus {
     // Cuando recibe foco con Tab, se vuelve visible
     position: fixed;
@@ -1562,8 +1566,6 @@ Este mixin oculta un elemento visualmente pero lo mantiene accesible para tecnol
 }
 ```
 
----
-
 ### 1.5.6 Ratio de Aspecto (`ratio-aspecto`)
 
 **Descripción:**
@@ -1579,10 +1581,10 @@ Es especialmente útil para:
 
 **Parámetros:**
 
-| Parámetro | Tipo | Valor por defecto | Descripción |
-|-----------|------|-------------------|-------------|
-| `$ancho` | `number` | `16` | Proporción horizontal |
-| `$alto` | `number` | `9` | Proporción vertical |
+| Parámetro | Tipo     | Valor por defecto | Descripción           |
+| --------- | -------- | ----------------- | --------------------- |
+| `$ancho`  | `number` | `16`              | Proporción horizontal |
+| `$alto`   | `number` | `9`               | Proporción vertical   |
 
 **Código fuente:**
 
@@ -1606,7 +1608,7 @@ Es especialmente útil para:
   width: 48px;
   border-radius: var(--radio-completo);
   overflow: hidden;
-  
+
   img {
     width: 100%;
     height: 100%;
@@ -1630,8 +1632,6 @@ Es especialmente útil para:
 }
 ```
 
----
-
 ### 1.5.7 Transición Suave (`transicion`)
 
 **Descripción:**
@@ -1640,10 +1640,10 @@ Aplica transiciones CSS utilizando las duraciones definidas en el sistema de Des
 
 **Parámetros:**
 
-| Parámetro | Tipo | Valor por defecto | Descripción |
-|-----------|------|-------------------|-------------|
-| `$propiedades` | `string` | `all` | Propiedades CSS a animar (ej: `color`, `transform`, `opacity`) |
-| `$duracion` | `time` | `var(--duracion-base)` | Duración de la transición (usa tokens del sistema) |
+| Parámetro      | Tipo     | Valor por defecto      | Descripción                                                    |
+| -------------- | -------- | ---------------------- | -------------------------------------------------------------- |
+| `$propiedades` | `string` | `all`                  | Propiedades CSS a animar (ej: `color`, `transform`, `opacity`) |
+| `$duracion`    | `time`   | `var(--duracion-base)` | Duración de la transición (usa tokens del sistema)             |
 
 **Código fuente:**
 
@@ -1658,7 +1658,7 @@ Aplica transiciones CSS utilizando las duraciones definidas en el sistema de Des
 ```scss
 .btn {
   @include transicion(background-color, var(--duracion-rapida));
-  
+
   &:hover {
     background-color: var(--color-naranja-oscuro);
   }
@@ -1666,7 +1666,7 @@ Aplica transiciones CSS utilizando las duraciones definidas en el sistema de Des
 
 .subscription-card {
   @include transicion(transform box-shadow);
-  
+
   &:hover {
     transform: translateY(-4px);
     box-shadow: var(--sombra-3);
@@ -1675,7 +1675,7 @@ Aplica transiciones CSS utilizando las duraciones definidas en el sistema de Des
 
 .nav__link {
   @include transicion(color);
-  
+
   &:hover {
     color: var(--color-principal);
   }
@@ -1694,23 +1694,19 @@ Aplica transiciones CSS utilizando las duraciones definidas en el sistema de Des
 }
 ```
 
----
+### 1.5.8 Resumen de Mixins
 
-### Resumen de Mixins
+| Mixin                                 | Propósito                                          | Parámetros                                                   |
+| ------------------------------------- | -------------------------------------------------- | ------------------------------------------------------------ |
+| `responder-a($punto-ruptura)`         | Media queries responsive Mobile-First              | `'movil'`, `'tablet'`, `'escritorio'`, `'escritorio-grande'` |
+| `centrar-flex`                        | Centrado horizontal y vertical con Flexbox         | Ninguno                                                      |
+| `truncar-texto($lineas)`              | Truncado de texto con puntos suspensivos           | Número de líneas (por defecto: 1)                            |
+| `foco-visible`                        | Outline accesible solo para navegación con teclado | Ninguno                                                      |
+| `oculto-accesible`                    | Oculta visualmente pero mantiene accesibilidad     | Ninguno                                                      |
+| `ratio-aspecto($ancho, $alto)`        | Mantiene proporción de aspecto fija                | Ancho y alto (por defecto: 16, 9)                            |
+| `transicion($propiedades, $duracion)` | Transiciones consistentes con tokens del sistema   | Propiedades y duración                                       |
 
-| Mixin | Propósito | Parámetros |
-|-------|-----------|------------|
-| `responder-a($punto-ruptura)` | Media queries responsive Mobile-First | `'movil'`, `'tablet'`, `'escritorio'`, `'escritorio-grande'` |
-| `centrar-flex` | Centrado horizontal y vertical con Flexbox | Ninguno |
-| `truncar-texto($lineas)` | Truncado de texto con puntos suspensivos | Número de líneas (por defecto: 1) |
-| `foco-visible` | Outline accesible solo para navegación con teclado | Ninguno |
-| `oculto-accesible` | Oculta visualmente pero mantiene accesibilidad | Ninguno |
-| `ratio-aspecto($ancho, $alto)` | Mantiene proporción de aspecto fija | Ancho y alto (por defecto: 16, 9) |
-| `transicion($propiedades, $duracion)` | Transiciones consistentes con tokens del sistema | Propiedades y duración |
-
----
-
-### Por qué los mixins viven en 01-tools
+### 1.5.9 Por qué los mixins viven en 01-tools
 
 La ubicación de `_mixins.scss` en la capa `01-tools` de ITCSS responde a su naturaleza de **herramienta sin output**:
 
@@ -1723,3 +1719,317 @@ La ubicación de `_mixins.scss` en la capa `01-tools` de ITCSS responde a su nat
 4. **Sin especificidad:** Como no generan selectores propios, no participan en conflictos de cascada CSS.
 
 Esta organización garantiza que la capa Tools actúe como una caja de herramientas: siempre disponible, nunca intrusiva, esperando ser utilizada cuando se necesite.
+
+---
+
+## 1.6 ViewEncapsulation en Angular
+
+Angular proporciona un sistema de **encapsulación de estilos** que determina cómo los estilos CSS de un componente interactúan con el resto de la aplicación. Esta funcionalidad, llamada `ViewEncapsulation`, es fundamental para entender cómo gestionar los estilos en una aplicación Angular, especialmente cuando ya contamos con una arquitectura CSS global bien definida como ITCSS.
+
+### 1.6.1 ¿Qué es ViewEncapsulation?
+
+`ViewEncapsulation` es una configuración que controla el **alcance de los estilos** definidos en un componente Angular. Responde a una pregunta simple pero crucial: _¿Los estilos de este componente afectan solo a este componente, o pueden "escapar" y afectar a otros elementos de la página?_
+
+Angular ofrece tres estrategias de encapsulación:
+
+| Estrategia  | Descripción                                                                                                                                                                        |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Emulated`  | **(Por defecto)** Simula el comportamiento de Shadow DOM añadiendo atributos únicos a los elementos y selectores. Los estilos del componente solo afectan a sus propios elementos. |
+| `None`      | Sin encapsulación. Los estilos del componente se convierten en **estilos globales** que pueden afectar a cualquier elemento de la aplicación.                                      |
+| `ShadowDom` | Utiliza el Shadow DOM nativo del navegador para encapsular estilos. Proporciona aislamiento real a nivel del navegador.                                                            |
+
+### 1.6.2 Análisis de cada estrategia
+
+#### ViewEncapsulation.Emulated (Por defecto)
+
+Cuando usamos `Emulated`, Angular añade atributos autogenerados a los elementos del componente y modifica los selectores CSS para que solo coincidan con esos atributos específicos.
+
+**Ejemplo práctico:**
+
+```typescript
+// component.ts
+@Component({
+  selector: 'app-card',
+  template: `<div class="card"><h2>Título</h2></div>`,
+  styles: [`.card { background: white; } h2 { color: blue; }`],
+  encapsulation: ViewEncapsulation.Emulated // Por defecto, no es necesario declararlo
+})
+```
+
+**Lo que Angular genera:**
+
+```html
+<!-- HTML renderizado -->
+<app-card _nghost-abc-1>
+  <div _ngcontent-abc-1 class="card">
+    <h2 _ngcontent-abc-1>Título</h2>
+  </div>
+</app-card>
+```
+
+```css
+/* CSS transformado */
+.card[_ngcontent-abc-1] {
+  background: white;
+}
+h2[_ngcontent-abc-1] {
+  color: blue;
+}
+```
+
+**Ventajas:**
+
+- Aislamiento automático sin esfuerzo adicional.
+- Los estilos del componente no "contaminan" otros componentes.
+- Compatible con todos los navegadores.
+
+**Desventajas:**
+
+- Los estilos globales (como los de ITCSS) no penetran fácilmente en el componente.
+- Puede requerir `::ng-deep` para aplicar estilos heredados (aunque está deprecado).
+- La especificidad aumenta debido a los selectores de atributo añadidos.
+
+#### ViewEncapsulation.None
+
+Con `None`, Angular no modifica los estilos del componente. Se comportan exactamente como CSS tradicional: globales y afectando a cualquier elemento que coincida con el selector.
+
+**Ejemplo práctico:**
+
+```typescript
+@Component({
+  selector: 'app-card',
+  template: `<div class="card"><h2>Título</h2></div>`,
+  styles: [`.card { background: white; }`],
+  encapsulation: ViewEncapsulation.None
+})
+```
+
+**Lo que Angular genera:**
+
+```html
+<!-- HTML renderizado (sin atributos especiales) -->
+<app-card>
+  <div class="card">
+    <h2>Título</h2>
+  </div>
+</app-card>
+```
+
+```css
+/* CSS sin modificar */
+.card {
+  background: white;
+}
+```
+
+**Ventajas:**
+
+- Los estilos globales de ITCSS fluyen naturalmente al componente.
+- Funciona perfectamente con metodologías como BEM.
+- Menor complejidad en los selectores generados.
+- Facilita la reutilización de estilos entre componentes.
+
+**Desventajas:**
+
+- Riesgo de colisiones de nombres si no se usa una metodología de nomenclatura estricta.
+- Los estilos del componente pueden afectar accidentalmente a otros elementos.
+- Requiere disciplina del equipo para mantener el CSS organizado.
+
+#### ViewEncapsulation.ShadowDom
+
+Utiliza la API nativa de Shadow DOM del navegador para crear una barrera de estilos real. Los estilos dentro del Shadow DOM están completamente aislados del documento principal.
+
+```typescript
+@Component({
+  selector: 'app-card',
+  template: `<div class="card"><h2>Título</h2></div>`,
+  styles: [`.card { background: white; }`],
+  encapsulation: ViewEncapsulation.ShadowDom
+})
+```
+
+**Ventajas:**
+
+- Aislamiento completo y nativo.
+- Ideal para Web Components distribuibles.
+
+**Desventajas:**
+
+- Los estilos globales **no pueden penetrar** en el Shadow DOM.
+- Requiere duplicar o pasar explícitamente estilos compartidos mediante CSS Custom Properties.
+- Incompatible con arquitecturas CSS globales como ITCSS.
+- Soporte limitado en navegadores antiguos.
+
+### 1.6.3 Decisión para Joinly: `ViewEncapsulation.None`
+
+Después de analizar las tres estrategias y considerando la arquitectura CSS establecida en Joinly, **recomendamos utilizar `ViewEncapsulation.None`** para los componentes del proyecto.
+
+#### Justificación técnica
+
+**1. Coherencia con la arquitectura ITCSS**
+
+Nuestra arquitectura ITCSS está diseñada para que los estilos fluyan de forma predecible desde las capas más genéricas (reset, elements) hasta las más específicas (components). Con `Emulated`, esta cascada se interrumpe porque Angular añade selectores de atributo que aumentan la especificidad de forma artificial.
+
+Como explica el recurso de referencia del curso sobre CSS moderno:
+
+> _"La solución no es escribir más CSS, sino organizarlo mejor."_
+> — [CSS Moderno: Arquitectura y Organización](https://github.com/envasador/DIW-FFEOE/blob/main/mkdocs/referencias/docs/orbita3.2-css-moderno-arquitectura-y-organizacion.md)
+
+Nuestra organización en capas (`00-settings` → `01-tools` → `02-generic` → `03-elements` → `04-layout`) ya resuelve el problema de la cascada mediante orden de importación y control de especificidad. La encapsulación `Emulated` duplicaría esfuerzos y crearía conflictos.
+
+**2. BEM como mecanismo de aislamiento**
+
+La metodología BEM que usamos en Joinly ya proporciona un **aislamiento semántico** efectivo:
+
+```scss
+// Cada componente tiene su namespace único
+.subscription-card { ... }
+.subscription-card__title { ... }
+.subscription-card__price--highlighted { ... }
+
+// Imposible colisionar con:
+.stat-card { ... }
+.stat-card__title { ... }
+```
+
+Los nombres de clase BEM son tan específicos y descriptivos que las colisiones son prácticamente imposibles si se sigue la convención. Como documentamos en la sección 1.2:
+
+> _"Una clase como `.subscription-card__price--highlighted` comunica instantáneamente su propósito sin necesidad de buscar en el código fuente."_
+
+BEM hace innecesaria la encapsulación automática de Angular porque **el propio naming convention actúa como aislamiento**.
+
+**3. Estilos globales reutilizables**
+
+Con `None`, los estilos definidos en nuestras capas ITCSS (`03-elements` para tipografía base, `04-layout` para grids) se aplican automáticamente dentro de los componentes Angular:
+
+```html
+<!-- En cualquier componente Angular -->
+<article class="subscription-card">
+  <h2>Spotify Family</h2>
+  <!-- Hereda estilos de 03-elements/_encabezados.scss -->
+  <p>Gestiona tu suscripción</p>
+  <!-- Hereda estilos base de 03-elements/_base.scss -->
+</article>
+```
+
+Esto sigue el principio de **"CSS más limpio: puedes seleccionar elementos por su significado"** mencionado en el recurso de HTML5 semántico:
+
+> _"Cuando escribes HTML, no solo estás diciéndole al navegador 'pon esto en pantalla'. Estás comunicando significado."_
+> — [HTML5 Semántico: La base de todo](https://github.com/envasador/DIW-FFEOE/blob/main/mkdocs/referencias/docs/orbita3.1-HTML5-semantico-la-base-de-todo.md)
+
+**4. Mantenibilidad y escalabilidad**
+
+El recurso de CSS moderno enfatiza:
+
+> _"El código que escribes hoy será leído (y maldecido o bendecido) por alguien mañana, posiblemente tú mismo."_
+
+Con `None`, un desarrollador puede:
+
+- Inspeccionar los estilos en DevTools sin ver atributos crípticos como `_ngcontent-abc-1`.
+- Modificar estilos globales sabiendo que afectarán a todos los componentes de forma predecible.
+- Reutilizar componentes en otros proyectos Angular (o incluso no-Angular) sin dependencias de encapsulación.
+
+### 1.6.4 Implementación práctica
+
+#### Configuración global en angular.json
+
+Para establecer `None` como valor predeterminado para todos los componentes nuevos, añadimos la configuración en los schematics:
+
+```json
+{
+  "projects": {
+    "joinly": {
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss",
+          "encapsulation": "None"
+        }
+      }
+    }
+  }
+}
+```
+
+#### Configuración por componente
+
+Para componentes existentes o casos específicos, declaramos explícitamente la encapsulación:
+
+```typescript
+import { Component, ViewEncapsulation } from "@angular/core";
+
+@Component({
+  selector: "app-subscription-card",
+  templateUrl: "./subscription-card.html",
+  styleUrl: "./subscription-card.scss",
+  encapsulation: ViewEncapsulation.None,
+})
+export class SubscriptionCardComponent {}
+```
+
+#### Estructura de estilos recomendada
+
+Con `None`, la hoja de estilos del componente debe seguir las convenciones BEM y referenciar los tokens del sistema:
+
+```scss
+// subscription-card.component.scss
+@use "../../styles/00-settings/variables" as *;
+
+.subscription-card {
+  background-color: var(--color-fondo-claro-normal);
+  border-radius: var(--radio-borde-md);
+  padding: var(--espacio-lg);
+  box-shadow: var(--sombra-sm);
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: var(--espacio-md);
+    margin-bottom: var(--espacio-md);
+  }
+
+  &__title {
+    font-size: var(--fuente-lg);
+    font-weight: var(--peso-bold);
+    color: var(--color-texto-oscuro);
+  }
+
+  &__price {
+    font-size: var(--fuente-xl);
+    color: var(--color-naranja-principal);
+
+    &--discounted {
+      text-decoration: line-through;
+      color: var(--color-texto-normal);
+    }
+  }
+}
+```
+
+### 1.6.5 Cuándo considerar otras estrategias
+
+Aunque `None` es nuestra recomendación general, existen casos donde otras estrategias tienen sentido:
+
+| Escenario                                                | Estrategia recomendada   |
+| -------------------------------------------------------- | ------------------------ |
+| Aplicación con arquitectura ITCSS + BEM                  | `None`                   |
+| Componente distribuible como librería npm                | `ShadowDom` o `Emulated` |
+| Migración gradual de proyecto legacy sin metodología CSS | `Emulated` (temporal)    |
+| Web Components estándar para uso fuera de Angular        | `ShadowDom`              |
+
+### 1.6.6 Resumen
+
+| Aspecto                      | Decisión en Joinly                                           |
+| ---------------------------- | ------------------------------------------------------------ |
+| **Estrategia elegida**       | `ViewEncapsulation.None`                                     |
+| **Razón principal**          | Coherencia con arquitectura ITCSS + BEM                      |
+| **Mecanismo de aislamiento** | Nomenclatura BEM (`.bloque__elemento--modificador`)          |
+| **Estilos globales**         | Fluyen naturalmente desde `src/styles/main.scss`             |
+| **Configuración**            | Global en `angular.json` + explícita en componentes críticos |
+
+La elección de `ViewEncapsulation.None` no es una decisión perezosa ni un "desactivar funcionalidades". Es una decisión arquitectónica consciente que reconoce que **ya tenemos un sistema de aislamiento robusto** (BEM) y una **organización de capas predecible** (ITCSS). Añadir encapsulación automática de Angular sería redundante y contraproducente.
+
+Como concluye el recurso de CSS moderno:
+
+> _"No se trata de memorizar todas las propiedades CSS que existen, sino de entender cómo pensar en componentes, cómo estructurar tu código para que otros lo entiendan, y cómo usar las características modernas de la plataforma web para escribir menos código y más expresivo."_
+
+En Joinly, `ViewEncapsulation.None` + ITCSS + BEM es nuestra receta para CSS escalable, mantenible y predecible.
