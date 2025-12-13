@@ -1,0 +1,107 @@
+<form
+  class="c-register-form__form"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  novalidate
+>
+  <header class="c-register-form__header">
+    <h2 class="c-register-form__title">
+      Regístrate para empezar a organizar
+      <span class="c-register-form__title-highlight">tus suscripciones</span>
+    </h2>
+  </header>
+
+  <fieldset class="c-register-form__fieldset">
+    <legend class="c-register-form__legend">Datos personales</legend>
+
+    <div class="c-register-form__row">
+      <app-form-input
+        label="Nombre"
+        name="nombre"
+        autocomplete="given-name"
+        placeholder="Nombre"
+        [required]="true"
+        formControlName="nombre"
+        [errorMessage]="getErrorMessage('nombre')"
+      />
+
+      <app-form-input
+        label="Apellido"
+        name="apellido"
+        autocomplete="family-name"
+        placeholder="Apellido"
+        [required]="true"
+        formControlName="apellido"
+        [errorMessage]="getErrorMessage('apellido')"
+      />
+    </div>
+  </fieldset>
+
+  <fieldset class="c-register-form__fieldset">
+    <legend class="c-register-form__legend">Datos de la cuenta</legend>
+
+    <app-form-input
+      label="Email"
+      type="email"
+      name="email"
+      autocomplete="email"
+      placeholder="Email"
+      [required]="true"
+      formControlName="email"
+      [errorMessage]="getErrorMessage('email')"
+    />
+
+    <app-form-input
+      label="Contraseña"
+      type="password"
+      name="password"
+      autocomplete="new-password"
+      placeholder="Contraseña"
+      [required]="true"
+      formControlName="password"
+      helpText="Mínimo 8 caracteres"
+      [errorMessage]="getErrorMessage('password')"
+    />
+
+    <app-form-input
+      label="Repetir contraseña"
+      type="password"
+      name="confirmPassword"
+      autocomplete="new-password"
+      placeholder="Contraseña"
+      [required]="true"
+      formControlName="confirmPassword"
+      [errorMessage]="getErrorMessage('confirmPassword')"
+    />
+  </fieldset>
+
+  <div class="c-register-form__actions">
+    <button
+      type="button"
+      class="c-register-form__btn c-register-form__btn--secondary"
+      (click)="onCancel()"
+    >
+      Cancelar
+    </button>
+
+    <button
+      type="submit"
+      class="c-register-form__btn c-register-form__btn--primary"
+      [disabled]="isFormInvalid() || isLoading()"
+      [attr.aria-busy]="isLoading()"
+    >
+      @if (isLoading()) {
+        Registrando...
+      } @else {
+        Registrar
+      }
+    </button>
+  </div>
+
+  <footer class="c-register-form__footer">
+    <p class="c-register-form__footer-text">
+      ¿Ya tienes cuenta?
+      <a href="/login" class="c-register-form__link">Inicia sesión</a>
+    </p>
+  </footer>
+</form>
