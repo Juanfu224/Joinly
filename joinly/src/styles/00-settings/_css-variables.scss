@@ -1,0 +1,207 @@
+// ==========================================================================
+// CSS CUSTOM PROPERTIES - TOKENS DE DISEÑO (Run-time)
+// ==========================================================================
+// Este archivo contiene EXCLUSIVAMENTE variables CSS nativas (:root).
+// Se evalúan en tiempo de ejecución y pueden ser modificadas dinámicamente.
+//
+// Para variables de compilación (SCSS), ver: _variables.scss
+
+// ==========================================================================
+// PALETA DE COLORES
+// ==========================================================================
+
+:root {
+  // --- COLORES PRIMITIVOS (Paleta base) ---
+  // Morados
+  --color-morado-principal: #9333ea;
+  --color-morado-oscuro: #7c3aed;
+
+  // Naranjas
+  --color-naranja-principal: #f97316;
+  --color-naranja-oscuro: #ea580c;
+
+  // Amarillos y Azules
+  --color-amarillo: #facc15;
+  --color-azul: #60a5fa;
+
+  // Grises
+  --color-gris-medio: #e5e7eb;
+  --color-gris-oscuro: #9ca3af;
+  --color-texto-normal: #4b5563;
+  --color-texto-oscuro: #111827;
+  --color-footer: #1e293b;
+
+  // Blancos y fondos claros
+  --color-fondo-claro-naranja: #fef8eb;
+  --color-fondo-claro-morado: #f7f5ff;
+  --color-fondo-claro-normal: #f8fafc;
+  --color-fondo-claro-secundario: #f6f6f8;
+  --color-fondo-claro-azul: #eff6ff;
+
+  // Estados
+  --color-verde: #22c55e;
+  --color-rojo: #ef4444;
+
+  // --- TOKENS SEMÁNTICOS (Significado contextual) ---
+  // Colores principales
+  --color-principal: var(--color-morado-principal);
+  --color-principal-oscuro: var(--color-morado-oscuro);
+  --color-acento: var(--color-naranja-principal);
+  --color-acento-oscuro: var(--color-naranja-oscuro);
+
+  // Colores secundarios
+  --color-secundario: var(--color-amarillo);
+  --color-secundario-alt: var(--color-azul);
+
+  // Texto
+  --color-texto-base: var(--color-texto-normal);
+  --color-texto-fuerte: var(--color-texto-oscuro);
+
+  // Superficies
+  --color-superficie-base: var(--color-fondo-claro-normal);
+  --color-superficie-calida: var(--color-fondo-claro-naranja);
+  --color-superficie-morada: var(--color-fondo-claro-morado);
+  --color-superficie-blanca: var(--color-fondo-claro-normal);
+  --color-superficie-blanca-alt: var(--color-fondo-claro-secundario);
+  --color-superficie-azul: var(--color-fondo-claro-azul);
+  --color-superficie-footer: var(--color-footer);
+
+  // Bordes
+  --color-borde-base: var(--color-gris-medio);
+  --color-borde-fuerte: var(--color-gris-oscuro);
+
+  // Estados
+  --color-exito: var(--color-verde);
+  --color-error: var(--color-rojo);
+  --color-advertencia: var(--color-amarillo);
+  --color-informacion: var(--color-azul);
+
+  // Sombras
+  --color-base-sombra: #14142b;
+}
+
+// ==========================================================================
+// TIPOGRAFÍA
+// ==========================================================================
+
+:root {
+  // --- FAMILIA DE FUENTE ---
+  --font-primaria: 'Inter', sans-serif;
+
+  // --- PESOS DE FUENTE ---
+  --peso-fuente-ligero: 300;
+  --peso-fuente-regular: 400;
+  --peso-fuente-medio: 500;
+  --peso-fuente-semi-negrita: 600;
+  --peso-fuente-negrita: 700;
+  --peso-fuente-extra-negrita: 900;
+
+  // --- TAMAÑOS DE FUENTE FLUIDOS (Responsive con clamp) ---
+  // Títulos
+  --tamano-h1: clamp(2.5rem, 5vw + 1rem, 4rem);
+  --tamano-h2: clamp(2rem, 4vw + 1rem, 3rem);
+  --tamano-h3: clamp(1.5rem, 2.5vw + 0.5rem, 2rem);
+  --tamano-h4: clamp(1.125rem, 1.5vw + 0.5rem, 1.25rem);
+
+  // Cuerpo de texto
+  --tamano-texto-grande: clamp(1.0625rem, 0.5vw + 1rem, 1.125rem);
+  --tamano-texto-regular: clamp(0.9375rem, 0.5vw + 0.875rem, 1rem);
+  --tamano-texto-pequeno: clamp(0.8125rem, 0.5vw + 0.75rem, 0.875rem);
+  --tamano-caption: clamp(0.6875rem, 0.5vw + 0.625rem, 0.75rem);
+
+  // --- ALTURAS DE LÍNEA ---
+  --altura-linea-ajustada: 1.1;
+  --altura-linea-compacta: 1.25;
+  --altura-linea-normal: 1.5;
+  --altura-linea-relajada: 1.6;
+}
+
+// ==========================================================================
+// ESPACIADO (Base 8px)
+// ==========================================================================
+
+:root {
+  --espaciado-0: 0;
+  --espaciado-1: 0.5rem;
+  --espaciado-2: 1rem;
+  --espaciado-3: 1.5rem;
+  --espaciado-4: 2rem;
+  --espaciado-5: 2.5rem;
+  --espaciado-6: 3rem;
+  --espaciado-8: 4rem;
+  --espaciado-10: 5rem;
+  --espaciado-12: 6rem;
+  --espaciado-16: 8rem;
+}
+
+// ==========================================================================
+// GRID
+// ==========================================================================
+
+:root {
+  --grid-item-min-width-sm: 15rem;
+  --grid-item-min-width-md: 17.5rem;
+  --grid-item-min-width-lg: 20rem;
+  --grid-item-min-width-xl: 25rem;
+}
+
+// ==========================================================================
+// BORDES Y RADIOS
+// ==========================================================================
+
+:root {
+  // Grosores de borde
+  --borde-delgado: 1px;
+  --borde-medio: 2px;
+  --borde-grueso: 4px;
+
+  // Radios
+  --radio-pequeno: 0.25rem;
+  --radio-medio: 0.5rem;
+  --radio-grande: 1.125rem;
+  --radio-completo: 9999px;
+}
+
+// ==========================================================================
+// SOMBRAS
+// ==========================================================================
+
+:root {
+  --sombra-1: 0 2px 6px rgba(20, 20, 43, 0.06);
+  --sombra-2: 0 2px 12px rgba(20, 20, 43, 0.08);
+  --sombra-3: 0 8px 28px rgba(20, 20, 43, 0.1);
+  --sombra-4: 0 14px 42px rgba(20, 20, 43, 0.14);
+  --sombra-5: 0 24px 65px rgba(20, 20, 43, 0.16);
+  --sombra-6: 0 32px 72px rgba(20, 20, 43, 0.24);
+}
+
+// ==========================================================================
+// TRANSICIONES Y ANIMACIONES
+// ==========================================================================
+
+:root {
+  // Duraciones
+  --duracion-rapida: 150ms;
+  --duracion-base: 300ms;
+  --duracion-lenta: 500ms;
+
+  // Funciones de tiempo
+  --transicion-estandar: ease-in-out;
+  --transicion-entrada: ease-in;
+  --transicion-salida: ease-out;
+  --transicion-lineal: linear;
+}
+
+// ==========================================================================
+// Z-INDEX (Sistema de capas)
+// ==========================================================================
+
+:root {
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-toast: 700;
+}

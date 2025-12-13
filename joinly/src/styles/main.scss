@@ -19,9 +19,10 @@
 // ==========================================================================
 // 1️⃣ SETTINGS - Variables y tokens de diseño
 // ==========================================================================
-// Define: colores, tipografía, espaciado, breakpoints, sombras, z-index
-// No genera CSS, solo variables para usar en otros archivos.
+// _variables: Variables SCSS para compile-time (breakpoints, etc.)
+// _css-variables: CSS Custom Properties para run-time (colores, tipografía, etc.)
 @use '00-settings/variables' as *;
+@use '00-settings/css-variables';
 
 // ==========================================================================
 // 2️⃣ TOOLS - Mixins y funciones reutilizables
