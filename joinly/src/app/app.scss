@@ -1,0 +1,66 @@
+// ==========================================================================
+// ESTILOS DEL COMPONENTE RAÍZ (app-root)
+// ==========================================================================
+// Define el layout principal de la aplicación con estructura flex vertical.
+
+@use '../styles/00-settings/variables' as *;
+@use '../styles/01-tools/mixins' as *;
+
+// ---------------------------------------------------------------------------
+// HOST: app-root
+// ---------------------------------------------------------------------------
+:host {
+  // Layout flex vertical para que el footer siempre esté al final
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh; // Dynamic viewport height para móviles
+
+  // Fuente base de la aplicación
+  font-family: var(--font-primaria);
+  font-size: var(--tamano-texto-regular);
+  line-height: var(--altura-linea-normal);
+  color: var(--color-texto-base);
+  background-color: var(--color-superficie-base);
+
+  // Suavizado de fuentes
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// ---------------------------------------------------------------------------
+// SKIP LINK (Accesibilidad)
+// ---------------------------------------------------------------------------
+// Enlace oculto que aparece al hacer focus con teclado.
+// Permite a usuarios de teclado/lectores de pantalla saltar la navegación.
+
+.c-skip-link {
+  @include oculto-accesible;
+
+  // Al hacer focus, se muestra en pantalla
+  &:focus {
+    position: fixed;
+    top: var(--espaciado-2);
+    left: var(--espaciado-2);
+    z-index: var(--z-toast);
+
+    // Resetear estilos de oculto-accesible
+    width: auto;
+    height: auto;
+    padding: var(--espaciado-2) var(--espaciado-3);
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: nowrap;
+
+    // Estilos visuales
+    background-color: var(--color-principal);
+    color: #fefefe;
+    font-weight: var(--peso-fuente-semi-negrita);
+    text-decoration: none;
+    border-radius: var(--radio-medio);
+    box-shadow: var(--sombra-4);
+
+    @include foco-visible;
+  }
+}

@@ -1,0 +1,227 @@
+// ==========================================================================
+// COMPONENTE: HEADER (.c-header)
+// ==========================================================================
+// Cabecera principal de la aplicación con logotipo, navegación y acciones.
+// Sigue metodología BEM y arquitectura ITCSS.
+
+@use '../../../styles/00-settings/variables' as *;
+@use '../../../styles/01-tools/mixins' as *;
+
+// ---------------------------------------------------------------------------
+// BLOQUE: .c-header
+// ---------------------------------------------------------------------------
+.c-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-fixed);
+  background-color: var(--color-superficie-base);
+  border-bottom: var(--borde-delgado) solid var(--color-borde-base);
+
+  // Contenedor interno con layout flex
+  &__contenedor {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 5.5rem; // 88px según Figma
+    gap: var(--espaciado-2);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Logo (.c-header__logo)
+// ---------------------------------------------------------------------------
+.c-header__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--espaciado-1);
+  text-decoration: none;
+  flex-shrink: 0;
+
+  @include foco-visible;
+}
+
+.c-header__logo-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-principal);
+  width: 2rem;
+  height: 2rem;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.c-header__logo-texto {
+  font-family: var(--font-primaria);
+  font-size: 2rem;
+  font-weight: var(--peso-fuente-negrita);
+  line-height: var(--altura-linea-ajustada);
+}
+
+.c-header__logo-nombre {
+  color: var(--color-texto-fuerte);
+}
+
+.c-header__logo-acento {
+  color: var(--color-acento-oscuro);
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Navegación (.c-header__nav)
+// ---------------------------------------------------------------------------
+.c-header__nav {
+  display: none;
+
+  @include responder-a('escritorio') {
+    display: block;
+  }
+}
+
+.c-header__nav-lista {
+  display: flex;
+  align-items: center;
+  gap: var(--espaciado-4);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.c-header__nav-item {
+  margin: 0;
+}
+
+.c-header__nav-enlace {
+  display: inline-block;
+  padding: var(--espaciado-1) 0;
+  font-size: var(--tamano-texto-regular);
+  font-weight: var(--peso-fuente-medio);
+  color: var(--color-texto-base);
+  text-decoration: none;
+  position: relative;
+
+  @include transicion(color);
+  @include foco-visible;
+
+  &:hover {
+    color: var(--color-principal);
+  }
+}
+
+.c-header__nav-enlace--activo {
+  color: var(--color-principal);
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--color-principal);
+    border-radius: var(--radio-completo);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Área de utilidad (.c-header__utilidad)
+// ---------------------------------------------------------------------------
+.c-header__utilidad {
+  display: none;
+  align-items: center;
+  gap: var(--espaciado-2);
+
+  @include responder-a('escritorio') {
+    display: flex;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Botones (.c-header__btn)
+// ---------------------------------------------------------------------------
+.c-header__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--espaciado-2) var(--espaciado-3);
+  font-size: var(--tamano-texto-regular);
+  font-weight: var(--peso-fuente-semi-negrita);
+  text-decoration: none;
+  border-radius: var(--radio-medio);
+  cursor: pointer;
+
+  @include transicion(all);
+  @include foco-visible;
+}
+
+.c-header__btn--secundario {
+  color: var(--color-texto-base);
+  background-color: transparent;
+  border: var(--borde-delgado) solid var(--color-borde-fuerte);
+
+  &:hover {
+    color: var(--color-principal);
+    border-color: var(--color-principal);
+  }
+}
+
+.c-header__btn--primario {
+  color: #fefefe;
+  background-color: var(--color-acento);
+  border: var(--borde-delgado) solid transparent;
+  box-shadow:
+    0 4px 6px -4px rgba(249, 115, 22, 0.3),
+    0 10px 15px -3px rgba(249, 115, 22, 0.3);
+
+  &:hover {
+    background-color: var(--color-acento-oscuro);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Menú toggle móvil (.c-header__menu-toggle)
+// ---------------------------------------------------------------------------
+.c-header__menu-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radio-medio);
+
+  @include foco-visible;
+
+  @include responder-a('escritorio') {
+    display: none;
+  }
+
+  &:hover {
+    background-color: var(--color-superficie-blanca-alt);
+  }
+}
+
+.c-header__menu-icono {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 1.5rem;
+  height: 1.5rem;
+
+  span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-texto-fuerte);
+    border-radius: var(--radio-completo);
+
+    @include transicion(all);
+  }
+}

@@ -1,0 +1,199 @@
+// ==========================================================================
+// COMPONENTE: FOOTER (.c-footer)
+// ==========================================================================
+// Pie de página de la aplicación con navegación, redes sociales y copyright.
+// Sigue metodología BEM y arquitectura ITCSS.
+
+@use '../../../styles/00-settings/variables' as *;
+@use '../../../styles/01-tools/mixins' as *;
+
+// ---------------------------------------------------------------------------
+// BLOQUE: .c-footer
+// ---------------------------------------------------------------------------
+.c-footer {
+  flex-shrink: 0;
+  background-color: var(--color-superficie-footer);
+  color: var(--color-gris-medio);
+  padding-top: var(--espaciado-6);
+}
+
+.c-footer__contenedor {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--espaciado-4);
+
+  @include responder-a('tablet') {
+    grid-template-columns: 1fr 2fr;
+    gap: var(--espaciado-6);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Marca (.c-footer__marca)
+// ---------------------------------------------------------------------------
+.c-footer__marca {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-2);
+}
+
+.c-footer__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaciado-1);
+  text-decoration: none;
+
+  @include foco-visible;
+}
+
+.c-footer__logo-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-acento);
+  width: 2rem;
+  height: 2rem;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.c-footer__logo-texto {
+  font-family: var(--font-primaria);
+  font-size: 2rem;
+  font-weight: var(--peso-fuente-negrita);
+  line-height: var(--altura-linea-ajustada);
+}
+
+.c-footer__logo-nombre {
+  color: var(--color-gris-medio);
+}
+
+.c-footer__logo-acento {
+  color: var(--color-acento);
+}
+
+.c-footer__descripcion {
+  font-size: var(--tamano-texto-grande);
+  line-height: var(--altura-linea-normal);
+  color: var(--color-gris-medio);
+  max-width: 24rem;
+  margin: 0;
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Redes sociales (.c-footer__redes)
+// ---------------------------------------------------------------------------
+.c-footer__redes {
+  margin-top: var(--espaciado-2);
+}
+
+.c-footer__redes-lista {
+  display: flex;
+  gap: var(--espaciado-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.c-footer__red {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--color-gris-medio);
+  background-color: transparent;
+  border-radius: var(--radio-medio);
+  text-decoration: none;
+
+  @include transicion(all);
+  @include foco-visible;
+
+  &:hover {
+    color: var(--color-fondo-claro-normal);
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Navegación (.c-footer__nav)
+// ---------------------------------------------------------------------------
+.c-footer__nav {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--espaciado-4);
+
+  @include responder-a('tablet') {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.c-footer__columna {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-1);
+}
+
+.c-footer__titulo {
+  font-size: var(--tamano-h4);
+  font-weight: var(--peso-fuente-semi-negrita);
+  color: var(--color-fondo-claro-normal);
+  margin: 0 0 var(--espaciado-1) 0;
+  line-height: var(--altura-linea-compacta);
+}
+
+.c-footer__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.c-footer__enlace {
+  display: inline-block;
+  padding: 0.25rem 0;
+  font-size: var(--tamano-texto-grande);
+  line-height: var(--altura-linea-normal);
+  color: var(--color-gris-medio);
+  text-decoration: none;
+
+  @include transicion(color);
+  @include foco-visible;
+
+  &:hover {
+    color: var(--color-fondo-claro-normal);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Parte inferior (.c-footer__inferior)
+// ---------------------------------------------------------------------------
+.c-footer__inferior {
+  margin-top: var(--espaciado-4);
+  padding-bottom: var(--espaciado-4);
+}
+
+.c-footer__separador {
+  border: none;
+  border-top: var(--borde-delgado) solid var(--color-fondo-claro-normal);
+  opacity: 0.2;
+  margin: 0 0 var(--espaciado-3) 0;
+}
+
+.c-footer__copyright {
+  font-size: var(--tamano-texto-grande);
+  line-height: var(--altura-linea-normal);
+  color: var(--color-gris-medio);
+  text-align: center;
+  margin: 0;
+}

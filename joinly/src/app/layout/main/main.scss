@@ -1,0 +1,26 @@
+// ==========================================================================
+// COMPONENTE: MAIN (.c-main)
+// ==========================================================================
+// Contenedor principal del contenido de la aplicación.
+// Utiliza la etiqueta semántica <main> y proyecta contenido dinámico.
+
+@use '../../../styles/00-settings/variables' as *;
+
+// ---------------------------------------------------------------------------
+// BLOQUE: .c-main
+// ---------------------------------------------------------------------------
+.c-main {
+  // Flex-grow para ocupar el espacio disponible entre header y footer
+  flex: 1 0 auto;
+
+  // Fondo base de la aplicación
+  background-color: var(--color-superficie-base);
+
+  // Padding vertical para separar del header y footer
+  padding-block: var(--espaciado-4);
+
+  // En escritorio, más espacio vertical
+  @media (min-width: $bp-desktop) {
+    padding-block: var(--espaciado-6);
+  }
+}

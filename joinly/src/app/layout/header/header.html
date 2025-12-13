@@ -1,0 +1,84 @@
+<header class="c-header">
+  <div class="c-header__contenedor l-contenedor">
+    <!-- Logotipo con enlace a inicio -->
+    <a routerLink="/" class="c-header__logo" aria-label="Joinly - Ir al inicio">
+      <span class="c-header__logo-icono" aria-hidden="true">
+        <svg
+          width="33"
+          height="35"
+          viewBox="0 0 33 35"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            d="M16.5 0C7.387 0 0 7.835 0 17.5S7.387 35 16.5 35 33 27.165 33 17.5 25.613 0 16.5 0Zm0 28c-5.514 0-10-4.486-10-10s4.486-10 10-10 10 4.486 10 10-4.486 10-10 10Z"
+            fill="currentColor"
+          />
+        </svg>
+      </span>
+      <span class="c-header__logo-texto">
+        <span class="c-header__logo-nombre">Join</span><span class="c-header__logo-acento">ly</span>
+      </span>
+    </a>
+
+    <!-- Navegación principal -->
+    <nav class="c-header__nav" aria-label="Navegación principal">
+      <ul class="c-header__nav-lista" role="list">
+        <li class="c-header__nav-item">
+          <a
+            routerLink="/"
+            routerLinkActive="c-header__nav-enlace--activo"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="c-header__nav-enlace"
+          >
+            Inicio
+          </a>
+        </li>
+        <li class="c-header__nav-item">
+          <a
+            routerLink="/como-funciona"
+            routerLinkActive="c-header__nav-enlace--activo"
+            class="c-header__nav-enlace"
+          >
+            Cómo funciona
+          </a>
+        </li>
+        <li class="c-header__nav-item">
+          <a
+            routerLink="/precios"
+            routerLinkActive="c-header__nav-enlace--activo"
+            class="c-header__nav-enlace"
+          >
+            Precios
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Área de utilidad (acciones del usuario) -->
+    <div class="c-header__utilidad">
+      <a routerLink="/login" class="c-header__btn c-header__btn--secundario">
+        Iniciar sesión
+      </a>
+      <a routerLink="/registro" class="c-header__btn c-header__btn--primario">
+        Empezar
+      </a>
+    </div>
+
+    <!-- Botón menú móvil -->
+    <button
+      type="button"
+      class="c-header__menu-toggle"
+      aria-label="Abrir menú de navegación"
+      aria-expanded="false"
+      aria-controls="menu-movil"
+    >
+      <span class="c-header__menu-icono" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+  </div>
+</header>
