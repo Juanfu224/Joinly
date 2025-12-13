@@ -1,0 +1,38 @@
+<label class="c-form-input__label" [attr.for]="computedId()">
+  {{ label() }}
+  @if (required()) {
+    <span class="c-form-input__required" aria-hidden="true">*</span>
+  }
+</label>
+
+<input
+  class="c-form-input__field"
+  [id]="computedId()"
+  [type]="type()"
+  [name]="name()"
+  [placeholder]="placeholder()"
+  [autocomplete]="autocomplete()"
+  [value]="value()"
+  [disabled]="disabled()"
+  [attr.aria-required]="required()"
+  [attr.aria-invalid]="errorMessage() ? true : null"
+  [attr.aria-describedby]="ariaDescribedBy()"
+  (input)="onInput($event)"
+  (blur)="onBlur()"
+/>
+
+@if (errorMessage()) {
+  <span
+    [id]="errorId()"
+    class="c-form-input__error"
+    role="alert"
+  >
+    {{ errorMessage() }}
+  </span>
+}
+
+@if (helpText() && !errorMessage()) {
+  <span [id]="helpTextId()" class="c-form-input__help">
+    {{ helpText() }}
+  </span>
+}
