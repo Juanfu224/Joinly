@@ -3,9 +3,18 @@
 // ==========================================================================
 // Pie de página de la aplicación con navegación, redes sociales y copyright.
 // Sigue metodología BEM y arquitectura ITCSS.
+// Basado en diseño Figma: https://www.figma.com/design/8q36kcT9LEqoXs99ZBxfV5/Joinly
 
 @use '../../../styles/00-settings/variables' as *;
 @use '../../../styles/01-tools/mixins' as *;
+
+// ---------------------------------------------------------------------------
+// HOST: Encapsulación del componente Angular
+// ---------------------------------------------------------------------------
+:host {
+  display: block;
+  flex-shrink: 0;
+}
 
 // ---------------------------------------------------------------------------
 // BLOQUE: .c-footer
@@ -14,7 +23,11 @@
   flex-shrink: 0;
   background-color: var(--color-superficie-footer);
   color: var(--color-gris-medio);
-  padding-top: var(--espaciado-6);
+  padding-block-start: var(--espaciado-6);
+
+  @include responder-a('tablet') {
+    padding-block-start: var(--espaciado-8);
+  }
 }
 
 .c-footer__contenedor {
@@ -23,8 +36,14 @@
   gap: var(--espaciado-4);
 
   @include responder-a('tablet') {
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: minmax(16rem, 1.2fr) 2fr;
     gap: var(--espaciado-6);
+    align-items: start;
+  }
+
+  @include responder-a('escritorio') {
+    grid-template-columns: minmax(20rem, 1fr) 2.5fr;
+    gap: var(--espaciado-8);
   }
 }
 
@@ -44,6 +63,11 @@
   text-decoration: none;
 
   @include foco-visible;
+  @include transicion(opacity);
+
+  &:hover {
+    opacity: 0.85;
+  }
 }
 
 .c-footer__logo-icono {
@@ -51,20 +75,20 @@
   align-items: center;
   justify-content: center;
   color: var(--color-acento);
-  width: 2rem;
-  height: 2rem;
+  inline-size: 2.0625rem;
+  block-size: 2.1875rem;
 
   svg {
-    width: 100%;
-    height: 100%;
+    inline-size: 100%;
+    block-size: 100%;
   }
 }
 
 .c-footer__logo-texto {
-  font-family: var(--font-primaria);
+  font-family: 'DM Sans', var(--font-primaria);
   font-size: 2rem;
   font-weight: var(--peso-fuente-negrita);
-  line-height: var(--altura-linea-ajustada);
+  line-height: 1.1;
 }
 
 .c-footer__logo-nombre {
@@ -77,9 +101,9 @@
 
 .c-footer__descripcion {
   font-size: var(--tamano-texto-grande);
-  line-height: var(--altura-linea-normal);
+  line-height: var(--altura-linea-relajada);
   color: var(--color-gris-medio);
-  max-width: 24rem;
+  max-inline-size: 24rem;
   margin: 0;
 }
 
@@ -87,12 +111,13 @@
 // ELEMENTO: Redes sociales (.c-footer__redes)
 // ---------------------------------------------------------------------------
 .c-footer__redes {
-  margin-top: var(--espaciado-2);
+  margin-block-start: var(--espaciado-3);
 }
 
 .c-footer__redes-lista {
   display: flex;
-  gap: var(--espaciado-2);
+  flex-wrap: wrap;
+  gap: var(--espaciado-1);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -102,8 +127,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
   color: var(--color-gris-medio);
   background-color: transparent;
   border-radius: var(--radio-medio);
@@ -115,11 +140,12 @@
   &:hover {
     color: var(--color-fondo-claro-normal);
     background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
   }
 
   svg {
-    width: 1.25rem;
-    height: 1.25rem;
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
   }
 }
 
@@ -133,6 +159,11 @@
 
   @include responder-a('tablet') {
     grid-template-columns: repeat(3, 1fr);
+    gap: var(--espaciado-3);
+  }
+
+  @include responder-a('escritorio') {
+    gap: var(--espaciado-4);
   }
 }
 
@@ -146,24 +177,27 @@
   font-size: var(--tamano-h4);
   font-weight: var(--peso-fuente-semi-negrita);
   color: var(--color-fondo-claro-normal);
-  margin: 0 0 var(--espaciado-1) 0;
+  margin-block: 0 var(--espaciado-1);
+  margin-inline: 0;
   line-height: var(--altura-linea-compacta);
 }
 
 .c-footer__lista {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
 .c-footer__enlace {
-  display: inline-block;
-  padding: 0.25rem 0;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 2.75rem; // 44px mínimo para accesibilidad táctil WCAG
+  padding-block: 0.5rem;
   font-size: var(--tamano-texto-grande);
-  line-height: var(--altura-linea-normal);
+  line-height: var(--altura-linea-relajada);
   color: var(--color-gris-medio);
   text-decoration: none;
 
@@ -179,20 +213,29 @@
 // ELEMENTO: Parte inferior (.c-footer__inferior)
 // ---------------------------------------------------------------------------
 .c-footer__inferior {
-  margin-top: var(--espaciado-4);
-  padding-bottom: var(--espaciado-4);
+  margin-block-start: var(--espaciado-4);
+  padding-block-end: var(--espaciado-4);
+
+  @include responder-a('tablet') {
+    margin-block-start: var(--espaciado-6);
+  }
 }
 
 .c-footer__separador {
   border: none;
-  border-top: var(--borde-delgado) solid var(--color-fondo-claro-normal);
-  opacity: 0.2;
-  margin: 0 0 var(--espaciado-3) 0;
+  border-block-start: var(--borde-delgado) solid var(--color-fondo-claro-normal);
+  opacity: 0.15;
+  margin-block: 0 var(--espaciado-3);
+  margin-inline: 0;
+
+  @include responder-a('tablet') {
+    margin-block-end: var(--espaciado-4);
+  }
 }
 
 .c-footer__copyright {
   font-size: var(--tamano-texto-grande);
-  line-height: var(--altura-linea-normal);
+  line-height: var(--altura-linea-relajada);
   color: var(--color-gris-medio);
   text-align: center;
   margin: 0;

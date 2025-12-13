@@ -3,26 +3,34 @@
 // ==========================================================================
 // Cabecera principal de la aplicación con logotipo, navegación y acciones.
 // Sigue metodología BEM y arquitectura ITCSS.
+// Basado en diseño Figma: https://www.figma.com/design/8q36kcT9LEqoXs99ZBxfV5/Joinly
 
 @use '../../../styles/00-settings/variables' as *;
 @use '../../../styles/01-tools/mixins' as *;
+
+// ---------------------------------------------------------------------------
+// HOST: Encapsulación del componente Angular
+// ---------------------------------------------------------------------------
+:host {
+  display: block;
+}
 
 // ---------------------------------------------------------------------------
 // BLOQUE: .c-header
 // ---------------------------------------------------------------------------
 .c-header {
   position: sticky;
-  top: 0;
+  inset-block-start: 0;
   z-index: var(--z-fixed);
-  background-color: var(--color-superficie-base);
-  border-bottom: var(--borde-delgado) solid var(--color-borde-base);
+  background-color: #fefefe;
+  box-shadow: 0 5px 14px rgba(20, 20, 43, 0.05);
 
   // Contenedor interno con layout flex
   &__contenedor {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 5.5rem; // 88px según Figma
+    min-block-size: 5.5rem;
     gap: var(--espaciado-2);
   }
 }
@@ -31,34 +39,40 @@
 // ELEMENTO: Logo (.c-header__logo)
 // ---------------------------------------------------------------------------
 .c-header__logo {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: var(--espaciado-1);
   text-decoration: none;
   flex-shrink: 0;
 
   @include foco-visible;
+  @include transicion(opacity);
+
+  &:hover {
+    opacity: 0.85;
+  }
 }
 
 .c-header__logo-icono {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-principal);
-  width: 2rem;
-  height: 2rem;
+  color: var(--color-acento-oscuro);
+  inline-size: 2.0625rem;
+  block-size: 2.1875rem;
 
   svg {
-    width: 100%;
-    height: 100%;
+    inline-size: 100%;
+    block-size: 100%;
   }
 }
 
 .c-header__logo-texto {
-  font-family: var(--font-primaria);
+  font-family: 'DM Sans', var(--font-primaria);
   font-size: 2rem;
   font-weight: var(--peso-fuente-negrita);
-  line-height: var(--altura-linea-ajustada);
+  line-height: 1.1;
+  letter-spacing: 0;
 }
 
 .c-header__logo-nombre {
@@ -77,6 +91,7 @@
 
   @include responder-a('escritorio') {
     display: block;
+    margin-inline: auto;
   }
 }
 
@@ -95,7 +110,7 @@
 
 .c-header__nav-enlace {
   display: inline-block;
-  padding: var(--espaciado-1) 0;
+  padding-block: var(--espaciado-1);
   font-size: var(--tamano-texto-regular);
   font-weight: var(--peso-fuente-medio);
   color: var(--color-texto-base);
@@ -105,6 +120,18 @@
   @include transicion(color);
   @include foco-visible;
 
+  &::after {
+    content: '';
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline: 0;
+    block-size: 2px;
+    background-color: transparent;
+    border-radius: var(--radio-completo);
+
+    @include transicion(background-color);
+  }
+
   &:hover {
     color: var(--color-principal);
   }
@@ -112,16 +139,10 @@
 
 .c-header__nav-enlace--activo {
   color: var(--color-principal);
+  font-weight: var(--peso-fuente-semi-negrita);
 
   &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
     background-color: var(--color-principal);
-    border-radius: var(--radio-completo);
   }
 }
 
@@ -145,12 +166,15 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: var(--espaciado-2) var(--espaciado-3);
+  padding-block: var(--espaciado-2);
+  padding-inline: var(--espaciado-3);
   font-size: var(--tamano-texto-regular);
   font-weight: var(--peso-fuente-semi-negrita);
+  line-height: 1;
   text-decoration: none;
   border-radius: var(--radio-medio);
   cursor: pointer;
+  white-space: nowrap;
 
   @include transicion(all);
   @include foco-visible;
@@ -164,6 +188,7 @@
   &:hover {
     color: var(--color-principal);
     border-color: var(--color-principal);
+    background-color: var(--color-superficie-morada);
   }
 }
 
@@ -177,6 +202,9 @@
 
   &:hover {
     background-color: var(--color-acento-oscuro);
+    box-shadow:
+      0 4px 6px -4px rgba(234, 88, 12, 0.4),
+      0 10px 15px -3px rgba(234, 88, 12, 0.4);
   }
 }
 
@@ -187,8 +215,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
   padding: 0;
   background: transparent;
   border: none;
@@ -196,6 +224,7 @@
   border-radius: var(--radio-medio);
 
   @include foco-visible;
+  @include transicion(background-color);
 
   @include responder-a('escritorio') {
     display: none;
@@ -204,6 +233,21 @@
   &:hover {
     background-color: var(--color-superficie-blanca-alt);
   }
+
+}
+
+// Estado abierto del menú - Clases BEM planas para evitar anidamiento excesivo
+.c-header__menu-toggle[aria-expanded='true'] .c-header__menu-linea--superior {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.c-header__menu-toggle[aria-expanded='true'] .c-header__menu-linea--central {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.c-header__menu-toggle[aria-expanded='true'] .c-header__menu-linea--inferior {
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 .c-header__menu-icono {
@@ -212,15 +256,69 @@
   justify-content: center;
   align-items: center;
   gap: 5px;
-  width: 1.5rem;
-  height: 1.5rem;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+}
+
+.c-header__menu-linea {
+  display: block;
+  inline-size: 100%;
+  block-size: 2px;
+  background-color: var(--color-texto-fuerte);
+  border-radius: var(--radio-completo);
+  transform-origin: center;
+
+  @include transicion(all);
+}
+
+// DEPRECADO: Mantener compatibilidad con span sin clase
+.c-header__menu-icono span {
+  display: block;
+  inline-size: 100%;
+  block-size: 2px;
+  background-color: var(--color-texto-fuerte);
+  border-radius: var(--radio-completo);
+  transform-origin: center;
+
+  @include transicion(all);
+}
+
+// ---------------------------------------------------------------------------
+// LEGACY: Soporte para estructura anterior con nth-child
+// ---------------------------------------------------------------------------
+.c-header__menu-toggle[aria-expanded='true'] .c-header__menu-icono span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.c-header__menu-toggle[aria-expanded='true'] .c-header__menu-icono span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.c-header__menu-toggle[aria-expanded='true'] .c-header__menu-icono span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+// ---------------------------------------------------------------------------
+// FIN DEL COMPONENTE HEADER
+// ---------------------------------------------------------------------------
+// NOTA: El siguiente bloque está deprecado y se eliminará
+.c-header__menu-icono--legacy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
 
   span {
     display: block;
-    width: 100%;
-    height: 2px;
+    inline-size: 100%;
+    block-size: 2px;
     background-color: var(--color-texto-fuerte);
     border-radius: var(--radio-completo);
+    transform-origin: center;
 
     @include transicion(all);
   }

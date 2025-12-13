@@ -3,8 +3,19 @@
 // ==========================================================================
 // Contenedor principal del contenido de la aplicación.
 // Utiliza la etiqueta semántica <main> y proyecta contenido dinámico.
+// Basado en diseño Figma: https://www.figma.com/design/8q36kcT9LEqoXs99ZBxfV5/Joinly
 
 @use '../../../styles/00-settings/variables' as *;
+@use '../../../styles/01-tools/mixins' as *;
+
+// ---------------------------------------------------------------------------
+// HOST: Encapsulación del componente Angular
+// ---------------------------------------------------------------------------
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
 
 // ---------------------------------------------------------------------------
 // BLOQUE: .c-main
@@ -12,15 +23,22 @@
 .c-main {
   // Flex-grow para ocupar el espacio disponible entre header y footer
   flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
 
-  // Fondo base de la aplicación
+  // Fondo base de la aplicación según Figma
   background-color: var(--color-superficie-base);
 
-  // Padding vertical para separar del header y footer
+  // Padding vertical responsivo (Mobile First)
   padding-block: var(--espaciado-4);
 
-  // En escritorio, más espacio vertical
-  @media (min-width: $bp-desktop) {
+  // Tablet: más respiro vertical
+  @include responder-a('tablet') {
+    padding-block: var(--espaciado-5);
+  }
+
+  // Escritorio: máximo espacio vertical
+  @include responder-a('escritorio') {
     padding-block: var(--espaciado-6);
   }
 }
