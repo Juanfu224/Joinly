@@ -16,3 +16,45 @@ $bp-movil: 40rem; // 640px - Móvil grande
 $bp-tablet: 48rem; // 768px - Tablet vertical
 $bp-desktop: 64rem; // 1024px - Desktop / Tablet horizontal
 $bp-big-desktop: 80rem; // 1280px - Desktop grande
+
+// ==========================================================================
+// PALETA DE COLORES (Compile-time)
+// ==========================================================================
+// Colores base extraídos del diseño Figma de Joinly.
+// Estos valores se interpolan en las CSS Custom Properties.
+
+// --- Colores primarios ---
+$color-morado-principal: #9333ea;
+$color-morado-oscuro: #7c3aed;
+
+// --- Colores de acento ---
+$color-naranja-principal: #f97316;
+$color-naranja-oscuro: #ea580c;
+
+// --- Colores secundarios ---
+$color-amarillo: #facc15;
+$color-azul: #60a5fa;
+
+// --- Escala de grises ---
+$color-gris-medio: #e5e7eb;
+$color-gris-oscuro: #9ca3af;
+
+// --- Colores de texto ---
+$color-texto-normal: #4b5563;
+$color-texto-oscuro: #111827;
+
+// --- Colores de fondo ---
+$color-blanco: #fefefe;
+$color-fondo-claro: #f8fafc;
+$color-fondo-claro-secundario: #f6f6f8;
+$color-fondo-claro-naranja: #fef8eb;
+$color-fondo-claro-morado: #f7f5ff;
+$color-fondo-claro-azul: #eff6ff;
+$color-footer: #1e293b;
+
+// --- Estados ---
+$color-verde: #22c55e;
+$color-rojo: #ef4444;
+
+// --- Sombras ---
+$color-base-sombra: #14142b;
