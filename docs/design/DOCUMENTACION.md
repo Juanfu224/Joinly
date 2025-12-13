@@ -46,6 +46,22 @@
   - [1.6.4 Implementación práctica](#164-implementación-práctica)
   - [1.6.5 Cuándo considerar otras estrategias](#165-cuándo-considerar-otras-estrategias)
   - [1.6.6 Resumen](#166-resumen)
+- [2. HTML Semántico y Estructura](#2-html-semántico-y-estructura)
+  - [2.1 Elementos semánticos utilizados](#21-elementos-semánticos-utilizados)
+    - [2.1.1 `<header>` - Cabecera del sitio](#211-header---cabecera-del-sitio)
+    - [2.1.2 `<nav>` - Navegación](#212-nav---navegación)
+    - [2.1.3 `<main>` - Contenido principal](#213-main---contenido-principal)
+    - [2.1.4 `<footer>` - Pie de página](#214-footer---pie-de-página)
+    - [2.1.5 `<aside>` - Contenido complementario](#215-aside---contenido-complementario)
+  - [2.2 Jerarquía de headings](#22-jerarquía-de-headings)
+    - [2.2.1 Reglas de jerarquía en Joinly](#221-reglas-de-jerarquía-en-joinly)
+    - [2.2.2 Estilos de encabezados](#222-estilos-de-encabezados)
+    - [2.2.3 Diagrama de jerarquía - Página de Registro](#223-diagrama-de-jerarquía---página-de-registro)
+  - [2.3 Estructura de formularios](#23-estructura-de-formularios)
+    - [2.3.1 Agrupación con `<fieldset>` y `<legend>`](#231-agrupación-con-fieldset-y-legend)
+    - [2.3.2 Asociación Label-Input](#232-asociación-label-input)
+    - [2.3.3 Componente `FormInputComponent` - IDs dinámicos](#233-componente-forminputcomponent---ids-dinámicos)
+  - [2.4 Resumen](#24-resumen)
 
 ---
 
@@ -2033,3 +2049,579 @@ Como concluye el recurso de CSS moderno:
 > _"No se trata de memorizar todas las propiedades CSS que existen, sino de entender cómo pensar en componentes, cómo estructurar tu código para que otros lo entiendan, y cómo usar las características modernas de la plataforma web para escribir menos código y más expresivo."_
 
 En Joinly, `ViewEncapsulation.None` + ITCSS + BEM es nuestra receta para CSS escalable, mantenible y predecible.
+
+---
+
+## 2. HTML Semántico y Estructura
+
+El HTML semántico es la base de una aplicación web accesible, mantenible y bien posicionada en buscadores. En Joinly, cada etiqueta HTML se elige con un propósito específico: comunicar el **significado** del contenido tanto a los usuarios (mediante tecnologías de asistencia) como a las máquinas (motores de búsqueda, crawlers).
+
+Esta sección documenta las decisiones de estructura HTML tomadas en el proyecto, explicando el **por qué** técnico detrás de cada elección.
+
+### 2.1 Elementos semánticos utilizados
+
+Los elementos semánticos de HTML5 (`<header>`, `<nav>`, `<main>`, `<footer>`, `<aside>`, `<article>`, `<section>`) proporcionan información contextual sobre el contenido que contienen. A diferencia de `<div>` y `<span>`, que son contenedores genéricos sin significado, los elementos semánticos crean **landmarks** (puntos de referencia) que los lectores de pantalla pueden anunciar y a los que los usuarios pueden saltar directamente.
+
+#### 2.1.1 `<header>` - Cabecera del sitio
+
+**Propósito:** El elemento `<header>` representa contenido introductorio o de navegación para su ancestro de sección más cercano. Cuando se usa como hijo directo de `<body>`, representa la cabecera del sitio completo.
+
+**Beneficios para accesibilidad y SEO:**
+- Los lectores de pantalla lo anuncian como "banner" (rol ARIA implícito: `banner`), permitiendo a usuarios navegar directamente a él.
+- Los motores de búsqueda identifican el contenido del header como navegación y branding, no como contenido principal indexable.
+
+**Implementación en Joinly:**
+
+```html
+<!-- src/app/layout/header/header.html -->
+<header class="c-header">
+  <div class="c-header__contenedor l-contenedor">
+    <!-- Logotipo con enlace a inicio -->
+    <a routerLink="/" class="c-header__logo" aria-label="Joinly - Ir al inicio">
+      <span class="c-header__logo-icono" aria-hidden="true">
+        <svg><!-- SVG del logo --></svg>
+      </span>
+      <span class="c-header__logo-texto">
+        <span class="c-header__logo-nombre">Join</span><span class="c-header__logo-acento">ly</span>
+      </span>
+    </a>
+
+    <!-- Navegación principal -->
+    <nav class="c-header__nav" aria-label="Navegación principal">
+      <!-- ... enlaces de navegación ... -->
+    </nav>
+
+    <!-- Área de utilidad (acciones del usuario) -->
+    <div class="c-header__utilidad">
+      <a routerLink="/login" class="c-header__btn c-header__btn--secundario">
+        Iniciar sesión
+      </a>
+      <a routerLink="/registro" class="c-header__btn c-header__btn--primario">
+        Empezar
+      </a>
+    </div>
+  </div>
+</header>
+```
+
+**Puntos clave:**
+- El logo incluye `aria-label="Joinly - Ir al inicio"` para que los lectores de pantalla anuncien el destino del enlace.
+- El SVG del logo tiene `aria-hidden="true"` porque es decorativo; el texto del logo proporciona el contenido accesible.
+- La estructura sigue un patrón predecible: **Logo → Navegación → Acciones de usuario**.
+
+---
+
+#### 2.1.2 `<nav>` - Navegación
+
+**Propósito:** El elemento `<nav>` representa una sección de la página con enlaces de navegación, ya sean internos o externos. No toda agrupación de enlaces debe ser `<nav>`, solo aquellas que representan **bloques de navegación principales**.
+
+**Beneficios para accesibilidad y SEO:**
+- Rol ARIA implícito: `navigation`. Los usuarios de lectores de pantalla pueden listar todas las navegaciones de la página y saltar a ellas.
+- El atributo `aria-label` diferencia múltiples navegaciones cuando hay más de una en la página.
+
+**Implementación en el Header:**
+
+```html
+<!-- Navegación principal del sitio -->
+<nav class="c-header__nav" aria-label="Navegación principal">
+  <ul class="c-header__nav-lista" role="list">
+    <li class="c-header__nav-item">
+      <a
+        routerLink="/"
+        routerLinkActive="c-header__nav-enlace--activo"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="c-header__nav-enlace"
+      >
+        Inicio
+      </a>
+    </li>
+    <li class="c-header__nav-item">
+      <a routerLink="/como-funciona" class="c-header__nav-enlace">
+        Cómo funciona
+      </a>
+    </li>
+    <li class="c-header__nav-item">
+      <a routerLink="/precios" class="c-header__nav-enlace">
+        Precios
+      </a>
+    </li>
+  </ul>
+</nav>
+```
+
+**Implementación en el Footer:**
+
+```html
+<!-- src/app/layout/footer/footer.html -->
+
+<!-- Navegación de redes sociales -->
+<nav class="c-footer__redes" aria-label="Redes sociales">
+  <ul class="c-footer__redes-lista" role="list">
+    <li>
+      <a
+        href="https://twitter.com/joinly"
+        class="c-footer__red"
+        aria-label="Síguenos en Twitter"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <svg aria-hidden="true"><!-- icono --></svg>
+      </a>
+    </li>
+    <!-- ... más redes sociales ... -->
+  </ul>
+</nav>
+
+<!-- Navegación del pie de página (enlaces secundarios) -->
+<nav class="c-footer__nav" aria-label="Navegación del pie de página">
+  <div class="c-footer__columna">
+    <h2 class="c-footer__titulo">Producto</h2>
+    <ul class="c-footer__lista" role="list">
+      <li><a routerLink="/" class="c-footer__enlace">Inicio</a></li>
+      <li><a routerLink="/como-funciona" class="c-footer__enlace">Cómo funciona</a></li>
+      <!-- ... más enlaces ... -->
+    </ul>
+  </div>
+  <!-- ... más columnas ... -->
+</nav>
+```
+
+**Puntos clave:**
+- Usamos `aria-label` diferenciado: "Navegación principal", "Redes sociales", "Navegación del pie de página".
+- `role="list"` en `<ul>` preserva la semántica de lista que algunos navegadores eliminan cuando se usa `list-style: none`.
+- Los enlaces a redes sociales incluyen `target="_blank"` con `rel="noopener noreferrer"` por seguridad (previene ataques de _tabnabbing_).
+
+---
+
+#### 2.1.3 `<main>` - Contenido principal
+
+**Propósito:** El elemento `<main>` contiene el contenido principal del documento. Solo debe haber **un `<main>` visible** por página. Representa el contenido único de la página, excluyendo elementos repetidos como cabecera, pie de página o navegación.
+
+**Beneficios para accesibilidad y SEO:**
+- Rol ARIA implícito: `main`. Los usuarios de lectores de pantalla pueden saltar directamente al contenido principal con un atajo de teclado.
+- Los motores de búsqueda priorizan el contenido dentro de `<main>` para la indexación.
+- Añadir un `id` permite implementar "skip links" (enlaces para saltar al contenido).
+
+**Implementación en Joinly:**
+
+```html
+<!-- src/app/layout/main/main.html -->
+<main class="c-main" id="contenido-principal">
+  <!-- Proyección del contenido de las páginas -->
+  <ng-content />
+</main>
+```
+
+**Análisis de la implementación:**
+
+1. **`id="contenido-principal"`**: Permite crear un _skip link_ en el header (`<a href="#contenido-principal">Saltar al contenido</a>`) para que usuarios de teclado eviten navegar por toda la cabecera en cada página.
+
+2. **`<ng-content />`**: Este es el **slot de proyección de contenido** de Angular. Permite que el componente `MainComponent` actúe como un _wrapper_ semántico, donde cada página proyecta su contenido específico:
+
+```html
+<!-- Uso en app.html -->
+<app-header />
+<app-main>
+  <router-outlet />  <!-- Aquí se renderiza cada página -->
+</app-main>
+<app-footer />
+```
+
+Esta arquitectura garantiza que **todas las páginas** hereden automáticamente la estructura semántica correcta (`<main>` con su `id`) sin repetir código.
+
+---
+
+#### 2.1.4 `<footer>` - Pie de página
+
+**Propósito:** El elemento `<footer>` representa el pie de página de su ancestro de sección más cercano. Cuando es hijo directo de `<body>`, representa el pie de página del sitio completo.
+
+**Beneficios para accesibilidad y SEO:**
+- Rol ARIA implícito: `contentinfo`. Los lectores de pantalla lo anuncian como información de contacto/copyright del sitio.
+- El contenido del footer suele indexarse con menor prioridad que el `<main>`, ideal para enlaces legales y de soporte.
+
+**Implementación en Joinly:**
+
+```html
+<!-- src/app/layout/footer/footer.html -->
+<footer class="c-footer">
+  <div class="c-footer__contenedor l-contenedor">
+    <!-- Columna de marca -->
+    <div class="c-footer__marca">
+      <a routerLink="/" class="c-footer__logo" aria-label="Joinly - Ir al inicio">
+        <!-- Logo -->
+      </a>
+      <p class="c-footer__descripcion">
+        Comparte suscripciones de forma inteligente y ahorra cada mes.
+      </p>
+
+      <!-- Navegación de redes sociales -->
+      <nav class="c-footer__redes" aria-label="Redes sociales">
+        <!-- ... -->
+      </nav>
+    </div>
+
+    <!-- Navegación del footer -->
+    <nav class="c-footer__nav" aria-label="Navegación del pie de página">
+      <!-- Columnas: Producto, Soporte, Legal -->
+    </nav>
+  </div>
+
+  <!-- Separador y copyright -->
+  <div class="c-footer__inferior">
+    <div class="c-footer__contenedor l-contenedor">
+      <hr class="c-footer__separador" aria-hidden="true" />
+      <p class="c-footer__copyright">
+        Copyright © {{ anioActual }} Joinly | Todos los derechos reservados
+      </p>
+    </div>
+  </div>
+</footer>
+```
+
+**Puntos clave:**
+- El `<hr>` tiene `aria-hidden="true"` porque es puramente decorativo (separador visual).
+- El copyright usa interpolación dinámica (`{{ anioActual }}`) para mantenerse actualizado sin intervención manual.
+- Las columnas de navegación usan `<h2>` para los títulos, manteniendo la jerarquía de encabezados dentro del footer.
+
+---
+
+#### 2.1.5 `<aside>` - Contenido complementario
+
+**Propósito:** El elemento `<aside>` representa contenido tangencialmente relacionado con el contenido principal: barras laterales, widgets, publicidad, biografías de autor, etc.
+
+**Beneficios para accesibilidad y SEO:**
+- Rol ARIA implícito: `complementary`. Los lectores de pantalla identifican este contenido como secundario.
+- Los motores de búsqueda entienden que el contenido de `<aside>` no es el foco principal de la página.
+
+**Uso potencial en Joinly:**
+
+Actualmente, la aplicación no implementa `<aside>` en su layout base, pero está previsto su uso en páginas como:
+
+- **Dashboard de usuario:** Barra lateral con filtros de suscripciones, estadísticas resumidas o accesos rápidos.
+- **Página de detalle de suscripción:** Panel lateral con información del grupo o miembros.
+- **Blog:** Sidebar con artículos relacionados, categorías o autor.
+
+**Implementación futura sugerida:**
+
+```html
+<!-- Ejemplo: Dashboard con sidebar -->
+<main class="c-main" id="contenido-principal">
+  <div class="c-dashboard">
+    <section class="c-dashboard__contenido">
+      <!-- Contenido principal: tarjetas de suscripciones -->
+    </section>
+
+    <aside class="c-dashboard__sidebar" aria-label="Filtros y estadísticas">
+      <div class="c-sidebar__seccion">
+        <h2 class="c-sidebar__titulo">Filtrar por</h2>
+        <!-- Filtros -->
+      </div>
+      <div class="c-sidebar__seccion">
+        <h2 class="c-sidebar__titulo">Resumen</h2>
+        <!-- Estadísticas -->
+      </div>
+    </aside>
+  </div>
+</main>
+```
+
+---
+
+### 2.2 Jerarquía de headings
+
+Los encabezados (`<h1>` a `<h6>`) son fundamentales para la accesibilidad y el SEO. Proporcionan un **esquema** del documento que permite a los usuarios de lectores de pantalla navegar por secciones y a los motores de búsqueda entender la estructura temática del contenido.
+
+#### 2.2.1 Reglas de jerarquía en Joinly
+
+| Regla | Descripción |
+|-------|-------------|
+| **Un solo `<h1>` por página** | El `<h1>` representa el título principal de la página. Tener múltiples `<h1>` confunde a los lectores de pantalla y diluye la relevancia SEO. |
+| **Orden secuencial sin saltos** | Los encabezados deben seguir un orden lógico: `<h1>` → `<h2>` → `<h3>`. Saltar de `<h1>` a `<h3>` directamente es una violación de accesibilidad (WCAG 1.3.1). |
+| **Jerarquía semántica, no visual** | El nivel de encabezado debe basarse en la estructura del contenido, no en el tamaño deseado. Los estilos visuales se controlan con CSS. |
+| **Encabezados significativos** | Cada encabezado debe describir el contenido de su sección. Evitar encabezados genéricos como "Más información". |
+
+#### 2.2.2 Estilos de encabezados
+
+Nuestro archivo `src/styles/03-elements/_encabezados.scss` define los estilos visuales para cada nivel:
+
+```scss
+// REGLA DE ORO: Solo debe haber UN h1 por página (el título principal).
+// Los demás encabezados (h2-h6) estructuran las secciones.
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-primaria);
+  font-weight: var(--peso-fuente-negrita);
+  color: var(--color-texto-fuerte);
+  margin-block-start: 0;
+  margin-block-end: var(--espaciado-2);
+}
+
+// H1: Título principal de página
+// Usado para: Landing hero, títulos de página
+h1 {
+  font-size: var(--tamano-h1);
+  line-height: var(--altura-linea-ajustada);
+  font-weight: var(--peso-fuente-extra-negrita);
+}
+
+// H2: Títulos de sección
+// Usado para: Encabezados de secciones principales
+h2 {
+  font-size: var(--tamano-h2);
+  line-height: var(--altura-linea-compacta);
+}
+
+// H3: Subtítulos o títulos de subsección
+// Usado para: Nombres de tarjetas, títulos de modales
+h3 {
+  font-size: var(--tamano-h3);
+  line-height: var(--altura-linea-compacta);
+}
+
+// H4-H6: Títulos menores (uso limitado)
+```
+
+Los comentarios en el código documentan el **uso previsto** de cada nivel, sirviendo como guía para el equipo de desarrollo.
+
+#### 2.2.3 Diagrama de jerarquía - Página de Registro
+
+El siguiente diagrama ASCII representa la estructura de encabezados típica de una página de Joinly, usando como ejemplo la página de registro:
+
+```
+PÁGINA DE REGISTRO - ESTRUCTURA DE HEADINGS
+============================================
+
+<h1> Joinly (Logo/Nombre del sitio en Header)
+│
+├── <h2> Regístrate para empezar a organizar tus suscripciones
+│        (Título del formulario de registro)
+│
+└── FOOTER
+    ├── <h2> Producto
+    │        └── Enlaces: Inicio, Cómo funciona, Precios...
+    │
+    ├── <h2> Soporte y ayuda
+    │        └── Enlaces: FAQ, Abrir ticket, Seguridad...
+    │
+    └── <h2> Legal
+             └── Enlaces: Términos, Privacidad, Cookies...
+```
+
+**Análisis de la estructura:**
+
+1. **`<h1>`**: El nombre de la aplicación "Joinly" actúa como título principal. Aunque visualmente es parte del logo, semánticamente representa la identidad de la página.
+
+2. **`<h2>` del formulario**: El título "Regístrate para empezar..." es el encabezado de la sección principal de contenido.
+
+3. **`<h2>` del footer**: Cada columna de navegación tiene su propio `<h2>` ("Producto", "Soporte y ayuda", "Legal"), manteniendo una estructura plana y organizada.
+
+> **Nota sobre los `<legend>`:** Los `<fieldset>` del formulario de registro contienen `<legend>` con texto ("Datos personales", "Datos de la cuenta"), pero estos están **visualmente ocultos** con el mixin `oculto-accesible`. No son encabezados (`<hX>`), sino etiquetas de grupo accesibles.
+
+---
+
+### 2.3 Estructura de formularios
+
+Los formularios son puntos críticos de interacción y, por tanto, de accesibilidad. Un formulario mal estructurado puede ser completamente inutilizable para usuarios de lectores de pantalla. En Joinly, aplicamos las mejores prácticas de WCAG y WAI-ARIA para garantizar formularios accesibles.
+
+#### 2.3.1 Agrupación con `<fieldset>` y `<legend>`
+
+**Propósito:** El elemento `<fieldset>` agrupa controles de formulario relacionados, mientras que `<legend>` proporciona un título descriptivo para ese grupo. Los lectores de pantalla anuncian el `<legend>` antes de cada campo del grupo.
+
+**Implementación en el formulario de registro:**
+
+```html
+<!-- src/app/components/shared/register-form/register-form.html -->
+<form class="c-register-form__form" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <header class="c-register-form__header">
+    <h2 class="c-register-form__title">
+      Regístrate para empezar a organizar
+      <span class="c-register-form__title-highlight">tus suscripciones</span>
+    </h2>
+  </header>
+
+  <!-- Grupo: Datos personales -->
+  <fieldset class="c-register-form__fieldset">
+    <legend class="c-register-form__legend">Datos personales</legend>
+
+    <div class="c-register-form__row">
+      <app-form-input label="Nombre" name="nombre" ... />
+      <app-form-input label="Apellido" name="apellido" ... />
+    </div>
+  </fieldset>
+
+  <!-- Grupo: Datos de la cuenta -->
+  <fieldset class="c-register-form__fieldset">
+    <legend class="c-register-form__legend">Datos de la cuenta</legend>
+
+    <app-form-input label="Email" type="email" ... />
+    <app-form-input label="Contraseña" type="password" ... />
+    <app-form-input label="Repetir contraseña" type="password" ... />
+  </fieldset>
+
+  <!-- Acciones -->
+  <div class="c-register-form__actions">
+    <button type="button" class="c-register-form__btn--secondary">Cancelar</button>
+    <button type="submit" class="c-register-form__btn--primary">Registrar</button>
+  </div>
+</form>
+```
+
+**Técnica: Legend visualmente oculto pero accesible**
+
+El `<legend>` es obligatorio semánticamente, pero a veces el diseño visual no requiere un título visible para cada grupo. La solución es **ocultar visualmente** el legend sin eliminarlo del árbol de accesibilidad:
+
+```scss
+// src/app/components/shared/register-form/register-form.scss
+.c-register-form {
+  &__legend {
+    @include oculto-accesible;
+  }
+}
+```
+
+El mixin `oculto-accesible` (definido en `src/styles/01-tools/_mixins.scss`) aplica la técnica estándar de ocultación accesible:
+
+```scss
+@mixin oculto-accesible {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+```
+
+**¿Por qué no usar `display: none` o `visibility: hidden`?**
+
+Porque estas propiedades **también ocultan el elemento de los lectores de pantalla**. La técnica `oculto-accesible` reduce el elemento a 1x1 píxel y lo posiciona fuera del flujo visual, pero mantiene su presencia en el árbol de accesibilidad.
+
+---
+
+#### 2.3.2 Asociación Label-Input
+
+**El problema:** Un `<input>` sin `<label>` asociado es inutilizable para usuarios de lectores de pantalla. Pueden tabular hasta el campo, pero no sabrán qué información deben introducir.
+
+**La solución:** Vincular explícitamente cada `<label>` con su `<input>` mediante los atributos `for` (en el label) e `id` (en el input):
+
+```html
+<label for="email-123">Correo electrónico</label>
+<input type="email" id="email-123" name="email" />
+```
+
+Cuando un usuario de lector de pantalla enfoca el input, escuchará: "Correo electrónico, campo de texto de correo electrónico".
+
+**Beneficio adicional:** Al hacer clic en el `<label>`, el foco se mueve automáticamente al `<input>` asociado, aumentando el área de clic (especialmente útil en móviles).
+
+---
+
+#### 2.3.3 Componente `FormInputComponent` - IDs dinámicos
+
+En una aplicación Angular con componentes reutilizables, surge un desafío: si múltiples instancias del mismo componente de input usan un ID fijo (ej: `id="email"`), habrá **IDs duplicados** en el DOM, violando la especificación HTML y rompiendo la asociación label-input.
+
+**Solución en Joinly: IDs generados dinámicamente**
+
+El componente `FormInputComponent` genera un ID único para cada instancia usando `crypto.randomUUID()`:
+
+```typescript
+// src/app/components/shared/form-input/form-input.ts
+export class FormInputComponent implements ControlValueAccessor {
+  readonly label = input.required<string>();
+  readonly inputId = input<string>('');
+  readonly errorMessage = input<string>('');
+  readonly helpText = input<string>('');
+
+  // Genera un ID único si no se proporciona uno personalizado
+  private readonly generatedId = `form-input-${crypto.randomUUID().slice(0, 8)}`;
+
+  // Usa el ID proporcionado o el generado
+  readonly computedId = computed(() => this.inputId() || this.generatedId);
+
+  // IDs derivados para elementos asociados
+  readonly helpTextId = computed(() => `${this.computedId()}-help`);
+  readonly errorId = computed(() => `${this.computedId()}-error`);
+
+  // Construye aria-describedby dinámicamente
+  readonly ariaDescribedBy = computed(() => {
+    const ids: string[] = [];
+    if (this.errorMessage()) ids.push(this.errorId());
+    if (this.helpText()) ids.push(this.helpTextId());
+    return ids.length > 0 ? ids.join(' ') : null;
+  });
+}
+```
+
+**Aplicación en el template:**
+
+```html
+<!-- src/app/components/shared/form-input/form-input.html -->
+<label class="c-form-input__label" [attr.for]="computedId()">
+  {{ label() }}
+  @if (required()) {
+    <span class="c-form-input__required" aria-hidden="true">*</span>
+  }
+</label>
+
+<input
+  class="c-form-input__field"
+  [id]="computedId()"
+  [type]="type()"
+  [name]="name()"
+  [attr.aria-required]="required()"
+  [attr.aria-invalid]="errorMessage() ? true : null"
+  [attr.aria-describedby]="ariaDescribedBy()"
+/>
+
+@if (errorMessage()) {
+  <span [id]="errorId()" class="c-form-input__error" role="alert">
+    {{ errorMessage() }}
+  </span>
+}
+
+@if (helpText() && !errorMessage()) {
+  <span [id]="helpTextId()" class="c-form-input__help">
+    {{ helpText() }}
+  </span>
+}
+```
+
+**Análisis de la implementación:**
+
+| Elemento | Técnica | Propósito |
+|----------|---------|-----------|
+| `[id]="computedId()"` | ID único por instancia | Evita conflictos de IDs duplicados en el DOM |
+| `[attr.for]="computedId()"` | Vinculación label-input | Accesibilidad: asocia label con input |
+| `[attr.aria-invalid]` | Estado de error | Indica a tecnologías asistivas que el campo tiene error |
+| `[attr.aria-describedby]` | Descripción extendida | Conecta el input con mensajes de error/ayuda |
+| `role="alert"` en error | Live region | Los lectores de pantalla anuncian el error inmediatamente |
+
+**¿Por qué `crypto.randomUUID()` es mejor que un contador incremental?**
+
+1. **Sin colisiones:** Cada ID es genuinamente único, incluso entre sesiones o si componentes se destruyen y recrean.
+2. **Sin estado global:** No requiere mantener un contador a nivel de módulo.
+3. **Estándar web:** Es una API nativa del navegador, sin dependencias externas.
+4. **Truncado a 8 caracteres:** `crypto.randomUUID().slice(0, 8)` produce IDs como `form-input-a3b7c9d2`, suficientemente únicos y legibles en el inspector del navegador.
+
+---
+
+### 2.4 Resumen
+
+| Aspecto | Implementación en Joinly |
+|---------|--------------------------|
+| **Elementos semánticos** | `<header>`, `<nav>`, `<main>`, `<footer>` con roles ARIA implícitos |
+| **Múltiples navegaciones** | Diferenciadas con `aria-label` único |
+| **Contenido principal** | `<main id="contenido-principal">` con proyección de contenido Angular |
+| **Jerarquía de headings** | Un solo `<h1>`, secuencia sin saltos, `<legend>` para grupos de formulario |
+| **Formularios accesibles** | `<fieldset>`/`<legend>`, asociación `for`/`id`, IDs dinámicos con `crypto.randomUUID()` |
+| **Ocultación accesible** | Mixin `oculto-accesible` para legends visualmente ocultos |
+| **Estados de error** | `aria-invalid`, `aria-describedby`, `role="alert"` |
+
+Cada decisión de estructura HTML en Joinly tiene una razón técnica fundamentada en las pautas WCAG 2.1 y las mejores prácticas de desarrollo web accesible. El HTML semántico no es un "extra" opcional: es la base sobre la que construimos una aplicación que funciona para todos los usuarios, independientemente de cómo accedan a ella.
