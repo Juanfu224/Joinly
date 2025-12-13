@@ -1,0 +1,129 @@
+@use '../../../styles/01-tools/mixins' as *;
+
+// ==========================================================================
+// COMPONENTE: BUTTON
+// ==========================================================================
+// Bloque BEM principal para botones.
+// Soporta variantes: primary, secondary, ghost, danger
+// Soporta tamaños: sm, md, lg
+
+.c-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espaciado-1);
+  border: var(--borde-medio) solid transparent;
+  border-radius: var(--radio-medio);
+  font-family: var(--font-primaria);
+  font-weight: var(--peso-fuente-semi-negrita);
+  line-height: var(--altura-linea-compacta);
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+
+  @include transicion;
+  @include foco-visible;
+
+  // ==========================================================================
+  // TAMAÑOS
+  // ==========================================================================
+
+  &--sm {
+    padding: var(--espaciado-1) var(--espaciado-2);
+    font-size: var(--tamano-texto-pequeno);
+  }
+
+  &--md {
+    padding: calc(var(--espaciado-1) * 1.5) var(--espaciado-3);
+    font-size: var(--tamano-texto-regular);
+  }
+
+  &--lg {
+    padding: var(--espaciado-2) var(--espaciado-4);
+    font-size: var(--tamano-texto-grande);
+  }
+
+  // ==========================================================================
+  // VARIANTES
+  // ==========================================================================
+
+  &--primary {
+    background-color: var(--color-acento);
+    border-color: var(--color-acento);
+    color: var(--color-blanco);
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-acento-oscuro);
+      border-color: var(--color-acento-oscuro);
+    }
+
+    &:active:not(:disabled) {
+      background-color: var(--color-acento-oscuro);
+    }
+  }
+
+  &--secondary {
+    background-color: transparent;
+    border-color: var(--color-borde-fuerte);
+    color: var(--color-texto-fuerte);
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-superficie-base);
+      border-color: var(--color-principal);
+      color: var(--color-principal);
+    }
+
+    &:active:not(:disabled) {
+      background-color: var(--color-superficie-base);
+    }
+  }
+
+  &--ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--color-texto-base);
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-superficie-base);
+      color: var(--color-principal);
+    }
+
+    &:active:not(:disabled) {
+      background-color: var(--color-gris-medio);
+    }
+  }
+
+  &--danger {
+    background-color: var(--color-error);
+    border-color: var(--color-error);
+    color: var(--color-blanco);
+
+    &:hover:not(:disabled) {
+      background-color: color-mix(in srgb, var(--color-error) 85%, black);
+      border-color: color-mix(in srgb, var(--color-error) 85%, black);
+    }
+
+    &:active:not(:disabled) {
+      background-color: color-mix(in srgb, var(--color-error) 75%, black);
+    }
+  }
+
+  // ==========================================================================
+  // MODIFICADORES
+  // ==========================================================================
+
+  &--full-width {
+    width: 100%;
+  }
+
+  // ==========================================================================
+  // ESTADOS
+  // ==========================================================================
+
+  &:disabled,
+  &[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
