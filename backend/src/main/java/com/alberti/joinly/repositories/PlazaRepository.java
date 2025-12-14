@@ -32,6 +32,11 @@ public interface PlazaRepository extends JpaRepository<Plaza, Long> {
         """)
     List<Plaza> findPlazasDisponiblesOrdenadas(@Param("idSuscripcion") Long idSuscripcion);
 
-    @Query("SELECT p FROM Plaza p WHERE p.usuario.id = :idUsuario AND p.estado = 'OCUPADA'")
+    @Query("""
+        SELECT p FROM Plaza p
+        JOIN FETCH p.suscripcion s
+        JOIN FETCH s.servicio
+        WHERE p.usuario.id = :idUsuario AND p.estado = 'OCUPADA'
+        """)
     List<Plaza> findPlazasOcupadasPorUsuario(@Param("idUsuario") Long idUsuario);
 }

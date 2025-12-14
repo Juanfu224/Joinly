@@ -10,9 +10,34 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * Manejador global de excepciones para la API REST de Joinly.
+ * <p>
+ * Intercepta excepciones lanzadas por los controladores y las convierte
+ * en respuestas HTTP estructuradas con formato JSON uniforme.
+ * <p>
+ * <b>Mapeo de excepciones a códigos HTTP:</b>
+ * <table border="1">
+ *   <tr><th>Excepción</th><th>HTTP Status</th><th>Descripción</th></tr>
+ *   <tr><td>ResourceNotFoundException</td><td>404</td><td>Recurso no encontrado</td></tr>
+ *   <tr><td>DuplicateResourceException</td><td>409</td><td>Conflicto por duplicado</td></tr>
+ *   <tr><td>UnauthorizedException</td><td>403</td><td>Sin permisos</td></tr>
+ *   <tr><td>BusinessException</td><td>422</td><td>Regla de negocio violada</td></tr>
+ *   <tr><td>LimiteAlcanzadoException</td><td>422</td><td>Límite del sistema alcanzado</td></tr>
+ *   <tr><td>NoPlazasDisponiblesException</td><td>422</td><td>No hay plazas disponibles</td></tr>
+ *   <tr><td>ValidationException</td><td>400</td><td>Datos de entrada inválidos</td></tr>
+ * </table>
+ *
+ * @author Joinly Team
+ * @version 1.0
+ * @since 2025
+ */
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    /** Código HTTP 422 - Entidad no procesable (reglas de negocio). */
+    private static final int UNPROCESSABLE_ENTITY = 422;
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleResourceNotFound(
@@ -36,12 +61,42 @@ public class GlobalExceptionHandler {
         
         log.warn("Violación de regla de negocio: {}", ex.getMessage());
         var response = new ApiErrorResponse(
-                422,
+                UNPROCESSABLE_ENTITY,
                 "Business Rule Violation",
                 ex.getMessage(),
                 request.getRequestURI()
         );
-        return ResponseEntity.status(422).body(response);
+        return ResponseEntity.status(UNPROCESSABLE_ENTITY).body(response);
+    }
+
+    @ExceptionHandler(LimiteAlcanzadoException.class)
+    public ResponseEntity<ApiErrorResponse> handleLimiteAlcanzado(
+            LimiteAlcanzadoException ex, 
+            HttpServletRequest request) {
+        
+        log.warn("Límite alcanzado: {}", ex.getMessage());
+        var response = new ApiErrorResponse(
+                UNPROCESSABLE_ENTITY,
+                "Limit Reached",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(UNPROCESSABLE_ENTITY).body(response);
+    }
+
+    @ExceptionHandler(NoPlazasDisponiblesException.class)
+    public ResponseEntity<ApiErrorResponse> handleNoPlazasDisponibles(
+            NoPlazasDisponiblesException ex, 
+            HttpServletRequest request) {
+        
+        log.warn("No hay plazas disponibles: {}", ex.getMessage());
+        var response = new ApiErrorResponse(
+                UNPROCESSABLE_ENTITY,
+                "No Available Slots",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(UNPROCESSABLE_ENTITY).body(response);
     }
 
     @ExceptionHandler(UnauthorizedException.class)

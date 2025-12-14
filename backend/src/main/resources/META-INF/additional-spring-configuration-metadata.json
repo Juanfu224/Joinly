@@ -1,0 +1,47 @@
+{
+  "properties": [
+    {
+      "name": "jwt.secret-key",
+      "type": "java.lang.String",
+      "description": "Clave secreta para firmar tokens JWT (min. 256 bits para HS256)."
+    },
+    {
+      "name": "jwt.access-token-expiration",
+      "type": "java.lang.Long",
+      "description": "Duración del access token en milisegundos.",
+      "defaultValue": 900000
+    },
+    {
+      "name": "jwt.refresh-token-expiration",
+      "type": "java.lang.Long",
+      "description": "Duración del refresh token en milisegundos.",
+      "defaultValue": 604800000
+    },
+    {
+      "name": "cors.allowed-origins",
+      "type": "java.util.List<java.lang.String>",
+      "description": "Lista de orígenes permitidos para CORS."
+    },
+    {
+      "name": "cors.allowed-methods",
+      "type": "java.util.List<java.lang.String>",
+      "description": "Lista de métodos HTTP permitidos."
+    },
+    {
+      "name": "cors.allowed-headers",
+      "type": "java.util.List<java.lang.String>",
+      "description": "Lista de headers permitidos en peticiones."
+    },
+    {
+      "name": "cors.exposed-headers",
+      "type": "java.util.List<java.lang.String>",
+      "description": "Lista de headers expuestos al frontend."
+    },
+    {
+      "name": "cors.max-age",
+      "type": "java.lang.Long",
+      "description": "Tiempo máximo de caché para preflight requests (segundos).",
+      "defaultValue": 3600
+    }
+  ]
+}
