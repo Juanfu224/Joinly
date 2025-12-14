@@ -25,6 +25,9 @@ import java.time.LocalDateTime;
         @Index(name = "idx_solicitud_suscripcion_estado", columnList = "id_suscripcion, estado"),
         @Index(name = "idx_solicitud_fecha", columnList = "fecha_solicitud")
 })
+@org.hibernate.annotations.Check(constraints = 
+    "(id_unidad IS NOT NULL AND id_suscripcion IS NULL) OR (id_unidad IS NULL AND id_suscripcion IS NOT NULL)"
+)
 @Getter
 @Setter
 @NoArgsConstructor

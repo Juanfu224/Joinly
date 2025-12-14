@@ -3,6 +3,7 @@ package com.alberti.joinly.services;
 import com.alberti.joinly.entities.enums.*;
 import com.alberti.joinly.entities.grupo.MiembroUnidad;
 import com.alberti.joinly.entities.grupo.Solicitud;
+import com.alberti.joinly.exceptions.*;
 import com.alberti.joinly.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,34 +44,32 @@ public class SolicitudService {
     @Transactional
     public Solicitud crearSolicitudUnionGrupo(Long idSolicitante, String codigoInvitacion, String mensaje) {
         var solicitante = usuarioRepository.findById(idSolicitante)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario", "id", idSolicitante));
 
         var unidad = unidadFamiliarRepository.findByCodigoInvitacion(codigoInvitacion.toUpperCase())
-                .orElseThrow(() -> new IllegalArgumentException("Código de invitación inválido"));
+                .orElseThrow(() -> new ResourceNotFoundException("Unidad familiar", "código", codigoInvitacion));
 
         // Validar que la unidad esté activa
         if (unidad.getEstado() != EstadoUnidadFamiliar.ACTIVO) {
-            throw new IllegalArgumentException("El grupo no está activo");
+            throw new BusinessException("El grupo no está activo");
         }
 
         // Validar que no sea ya miembro activo
-        var yaMiembro = miembroUnidadRepository.existsByUsuarioIdAndUnidadIdAndEstado(
-                idSolicitante, unidad.getId(), EstadoMiembro.ACTIVO);
-        if (yaMiembro) {
-            throw new IllegalArgumentException("Ya eres miembro de este grupo");
+        if (miembroUnidadRepository.existsByUsuarioIdAndUnidadIdAndEstado(
+                idSolicitante, unidad.getId(), EstadoMiembro.ACTIVO)) {
+            throw new DuplicateResourceException("Ya eres miembro de este grupo");
         }
 
         // Restricción: No puede existir más de 1 solicitud pendiente del mismo usuario al mismo grupo
-        var tieneSolicitudPendiente = solicitudRepository.existsBySolicitanteIdAndUnidadIdAndEstado(
-                idSolicitante, unidad.getId(), EstadoSolicitud.PENDIENTE);
-        if (tieneSolicitudPendiente) {
-            throw new IllegalArgumentException("Ya tienes una solicitud pendiente para este grupo");
+        if (solicitudRepository.existsBySolicitanteIdAndUnidadIdAndEstado(
+                idSolicitante, unidad.getId(), EstadoSolicitud.PENDIENTE)) {
+            throw new DuplicateResourceException("Ya tienes una solicitud pendiente para este grupo");
         }
 
         // Verificar límite de miembros
         var miembrosActuales = unidadFamiliarRepository.contarMiembrosActivos(unidad.getId());
         if (miembrosActuales >= unidad.getMaxMiembros()) {
-            throw new IllegalArgumentException("El grupo ha alcanzado el número máximo de miembros");
+            throw new LimiteAlcanzadoException("miembros del grupo", unidad.getMaxMiembros());
         }
 
         var solicitud = Solicitud.builder()
@@ -88,39 +87,36 @@ public class SolicitudService {
     @Transactional
     public Solicitud crearSolicitudUnionSuscripcion(Long idSolicitante, Long idSuscripcion, String mensaje) {
         var solicitante = usuarioRepository.findById(idSolicitante)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario", "id", idSolicitante));
 
         var suscripcion = suscripcionRepository.findById(idSuscripcion)
-                .orElseThrow(() -> new IllegalArgumentException("Suscripción no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Suscripción", "id", idSuscripcion));
 
         // Validar que la suscripción esté activa
         if (suscripcion.getEstado() != EstadoSuscripcion.ACTIVA) {
-            throw new IllegalArgumentException("La suscripción no está activa");
+            throw new BusinessException("La suscripción no está activa");
         }
 
         // Validar que el solicitante sea miembro de la unidad familiar
-        var esMiembro = miembroUnidadRepository.existsByUsuarioIdAndUnidadIdAndEstado(
-                idSolicitante, suscripcion.getUnidad().getId(), EstadoMiembro.ACTIVO);
-        if (!esMiembro) {
-            throw new IllegalArgumentException("Debes ser miembro del grupo para solicitar unirte a esta suscripción");
+        if (!miembroUnidadRepository.existsByUsuarioIdAndUnidadIdAndEstado(
+                idSolicitante, suscripcion.getUnidad().getId(), EstadoMiembro.ACTIVO)) {
+            throw new UnauthorizedException("Debes ser miembro del grupo para solicitar unirte a esta suscripción");
         }
 
         // Validar que no tenga ya una plaza en esta suscripción
         if (plazaRepository.existsBySuscripcionIdAndUsuarioId(idSuscripcion, idSolicitante)) {
-            throw new IllegalArgumentException("Ya tienes una plaza en esta suscripción");
+            throw new DuplicateResourceException("Ya tienes una plaza en esta suscripción");
         }
 
         // Restricción: No puede existir más de 1 solicitud pendiente del mismo usuario a la misma suscripción
-        var tieneSolicitudPendiente = solicitudRepository.existsBySolicitanteIdAndSuscripcionIdAndEstado(
-                idSolicitante, idSuscripcion, EstadoSolicitud.PENDIENTE);
-        if (tieneSolicitudPendiente) {
-            throw new IllegalArgumentException("Ya tienes una solicitud pendiente para esta suscripción");
+        if (solicitudRepository.existsBySolicitanteIdAndSuscripcionIdAndEstado(
+                idSolicitante, idSuscripcion, EstadoSolicitud.PENDIENTE)) {
+            throw new DuplicateResourceException("Ya tienes una solicitud pendiente para esta suscripción");
         }
 
         // Validar que haya plazas disponibles
-        var plazasDisponibles = plazaRepository.contarPlazasDisponibles(idSuscripcion);
-        if (plazasDisponibles == 0) {
-            throw new IllegalArgumentException("No hay plazas disponibles en esta suscripción");
+        if (plazaRepository.contarPlazasDisponibles(idSuscripcion) == 0) {
+            throw new NoPlazasDisponiblesException(idSuscripcion);
         }
 
         var solicitud = Solicitud.builder()
@@ -138,10 +134,10 @@ public class SolicitudService {
     @Transactional
     public Solicitud aprobarSolicitud(Long idSolicitud, Long idAprobador) {
         var solicitud = solicitudRepository.findByIdConSolicitante(idSolicitud)
-                .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Solicitud", "id", idSolicitud));
 
         if (solicitud.getEstado() != EstadoSolicitud.PENDIENTE) {
-            throw new IllegalArgumentException("Solo se pueden aprobar solicitudes pendientes");
+            throw new BusinessException("Solo se pueden aprobar solicitudes pendientes");
         }
 
         validarPermisoAprobacion(solicitud, idAprobador);
@@ -168,13 +164,13 @@ public class SolicitudService {
             case UNION_GRUPO -> {
                 var unidad = solicitud.getUnidad();
                 if (!unidad.getAdministrador().getId().equals(idAprobador)) {
-                    throw new IllegalArgumentException("Solo el administrador del grupo puede aprobar solicitudes");
+                    throw new UnauthorizedException("Solo el administrador del grupo puede aprobar solicitudes");
                 }
             }
             case UNION_SUSCRIPCION -> {
                 var suscripcion = solicitud.getSuscripcion();
                 if (!suscripcion.getAnfitrion().getId().equals(idAprobador)) {
-                    throw new IllegalArgumentException("Solo el anfitrión de la suscripción puede aprobar solicitudes");
+                    throw new UnauthorizedException("Solo el anfitrión de la suscripción puede aprobar solicitudes");
                 }
             }
         }
@@ -187,7 +183,7 @@ public class SolicitudService {
         // Verificar nuevamente el límite de miembros
         var miembrosActuales = unidadFamiliarRepository.contarMiembrosActivos(unidad.getId());
         if (miembrosActuales >= unidad.getMaxMiembros()) {
-            throw new IllegalArgumentException("El grupo ha alcanzado el límite de miembros durante el proceso");
+            throw new LimiteAlcanzadoException("miembros del grupo", unidad.getMaxMiembros());
         }
 
         var miembro = MiembroUnidad.builder()
@@ -205,10 +201,10 @@ public class SolicitudService {
         var suscripcion = solicitud.getSuscripcion();
         var solicitante = solicitud.getSolicitante();
 
-        // Buscar primera plaza disponible
+        // Buscar primera plaza disponible usando SequencedCollection (Java 21+)
         var plazasDisponibles = plazaRepository.findPlazasDisponiblesOrdenadas(suscripcion.getId());
         if (plazasDisponibles.isEmpty()) {
-            throw new IllegalArgumentException("No hay plazas disponibles en este momento");
+            throw new NoPlazasDisponiblesException(suscripcion.getId());
         }
 
         var plaza = plazasDisponibles.getFirst();
@@ -222,10 +218,10 @@ public class SolicitudService {
     @Transactional
     public Solicitud rechazarSolicitud(Long idSolicitud, Long idAprobador, String motivoRechazo) {
         var solicitud = solicitudRepository.findById(idSolicitud)
-                .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Solicitud", "id", idSolicitud));
 
         if (solicitud.getEstado() != EstadoSolicitud.PENDIENTE) {
-            throw new IllegalArgumentException("Solo se pueden rechazar solicitudes pendientes");
+            throw new BusinessException("Solo se pueden rechazar solicitudes pendientes");
         }
 
         validarPermisoAprobacion(solicitud, idAprobador);
@@ -241,14 +237,14 @@ public class SolicitudService {
     @Transactional
     public Solicitud cancelarSolicitud(Long idSolicitud, Long idSolicitante) {
         var solicitud = solicitudRepository.findById(idSolicitud)
-                .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Solicitud", "id", idSolicitud));
 
         if (!solicitud.getSolicitante().getId().equals(idSolicitante)) {
-            throw new IllegalArgumentException("Solo puedes cancelar tus propias solicitudes");
+            throw new UnauthorizedException("Solo puedes cancelar tus propias solicitudes");
         }
 
         if (solicitud.getEstado() != EstadoSolicitud.PENDIENTE) {
-            throw new IllegalArgumentException("Solo se pueden cancelar solicitudes pendientes");
+            throw new BusinessException("Solo se pueden cancelar solicitudes pendientes");
         }
 
         solicitud.setEstado(EstadoSolicitud.CANCELADA);

@@ -22,7 +22,10 @@ import java.util.List;
  */
 @Entity
 @Table(name = "plaza", 
-       uniqueConstraints = @UniqueConstraint(columnNames = {"id_suscripcion", "numero_plaza"}),
+       uniqueConstraints = {
+           @UniqueConstraint(name = "uk_plaza_suscripcion_numero", columnNames = {"id_suscripcion", "numero_plaza"}),
+           @UniqueConstraint(name = "uk_plaza_suscripcion_usuario", columnNames = {"id_suscripcion", "id_usuario"})
+       },
        indexes = {
            @Index(name = "idx_plaza_suscripcion_estado", columnList = "id_suscripcion, estado"),
            @Index(name = "idx_plaza_usuario", columnList = "id_usuario")
