@@ -4,7 +4,6 @@ import com.alberti.joinly.dto.common.ApiErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,11 +24,10 @@ import java.io.IOException;
  * @since 2025
  */
 @Component
-@RequiredArgsConstructor
 @Slf4j
 public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 
-    private final ObjectMapper objectMapper;
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     /**
      * Maneja las peticiones con acceso denegado retornando un error 403.
@@ -60,6 +58,6 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
 
-        objectMapper.writeValue(response.getOutputStream(), errorResponse);
+        OBJECT_MAPPER.writeValue(response.getOutputStream(), errorResponse);
     }
 }
