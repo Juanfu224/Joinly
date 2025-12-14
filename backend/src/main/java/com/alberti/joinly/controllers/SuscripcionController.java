@@ -1,0 +1,231 @@
+package com.alberti.joinly.controllers;
+
+import com.alberti.joinly.dto.suscripcion.CreateSuscripcionRequest;
+import com.alberti.joinly.dto.suscripcion.PlazaResponse;
+import com.alberti.joinly.dto.suscripcion.SuscripcionResponse;
+import com.alberti.joinly.dto.suscripcion.SuscripcionSummary;
+import com.alberti.joinly.services.SuscripcionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/v1/suscripciones")
+@RequiredArgsConstructor
+@Tag(name = "Suscripciones", description = "Gestión de suscripciones compartidas")
+public class SuscripcionController {
+
+    private final SuscripcionService suscripcionService;
+
+    @PostMapping
+    @Operation(summary = "Crear suscripción")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Suscripción creada exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos"),
+            @ApiResponse(responseCode = "404", description = "Unidad, servicio o usuario no encontrado"),
+            @ApiResponse(responseCode = "422", description = "El usuario no es miembro del grupo o límite alcanzado")
+    })
+    public ResponseEntity<SuscripcionResponse> crearSuscripcion(
+            @Parameter(description = "ID del usuario anfitrión") @RequestHeader("X-User-Id") Long idAnfitrion,
+            @Valid @RequestBody CreateSuscripcionRequest request) {
+
+        var suscripcion = suscripcionService.crearSuscripcion(
+                request.idUnidad(),
+                idAnfitrion,
+                request.idServicio(),
+                request.precioTotal(),
+                request.numPlazasTotal(),
+                request.fechaInicio(),
+                request.periodicidad(),
+                request.anfitrionOcupaPlaza());
+
+        var plazasDisponibles = suscripcionService.contarPlazasDisponibles(suscripcion.getId());
+        var plazasOcupadas = suscripcionService.contarPlazasOcupadas(suscripcion.getId());
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(SuscripcionResponse.fromEntity(suscripcion, plazasDisponibles, plazasOcupadas));
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Obtener suscripción por ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Suscripción encontrada"),
+            @ApiResponse(responseCode = "404", description = "Suscripción no encontrada")
+    })
+    public ResponseEntity<SuscripcionResponse> getSuscripcion(
+            @Parameter(description = "ID de la suscripción") @PathVariable Long id) {
+
+        var suscripcion = suscripcionService.buscarPorIdConPlazas(id)
+                .orElseThrow(() -> new IllegalArgumentException("Suscripción no encontrada con ID: " + id));
+
+        var plazasDisponibles = suscripcionService.contarPlazasDisponibles(id);
+        var plazasOcupadas = suscripcionService.contarPlazasOcupadas(id);
+
+        return ResponseEntity.ok(SuscripcionResponse.fromEntity(suscripcion, plazasDisponibles, plazasOcupadas));
+    }
+
+    @GetMapping("/unidad/{idUnidad}")
+    @Operation(summary = "Listar suscripciones de unidad")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista de suscripciones")
+    })
+    public ResponseEntity<List<SuscripcionSummary>> listarSuscripcionesDeUnidad(
+            @Parameter(description = "ID de la unidad familiar") @PathVariable Long idUnidad) {
+
+        var suscripciones = suscripcionService.listarSuscripcionesActivasDeUnidad(idUnidad)
+                .stream()
+                .map(SuscripcionSummary::fromEntity)
+                .toList();
+
+        return ResponseEntity.ok(suscripciones);
+    }
+
+    @GetMapping("/anfitrion")
+    @Operation(summary = "Listar mis suscripciones como anfitrión")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista de suscripciones")
+    })
+    public ResponseEntity<List<SuscripcionSummary>> listarMisSuscripcionesComoAnfitrion(
+            @Parameter(description = "ID del usuario anfitrión") @RequestHeader("X-User-Id") Long idAnfitrion) {
+
+        var suscripciones = suscripcionService.listarSuscripcionesDeAnfitrion(idAnfitrion)
+                .stream()
+                .map(SuscripcionSummary::fromEntity)
+                .toList();
+
+        return ResponseEntity.ok(suscripciones);
+    }
+
+    @GetMapping("/{idSuscripcion}/plazas/disponibles")
+    @Operation(summary = "Listar plazas disponibles")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista de plazas disponibles")
+    })
+    public ResponseEntity<List<PlazaResponse>> listarPlazasDisponibles(
+            @Parameter(description = "ID de la suscripción") @PathVariable Long idSuscripcion) {
+
+        var plazas = suscripcionService.listarPlazasDisponibles(idSuscripcion)
+                .stream()
+                .map(PlazaResponse::fromEntity)
+                .toList();
+
+        return ResponseEntity.ok(plazas);
+    }
+
+    @GetMapping("/mis-plazas")
+    @Operation(summary = "Listar mis plazas ocupadas")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista de plazas ocupadas")
+    })
+    public ResponseEntity<List<PlazaResponse>> listarMisPlazas(
+            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario) {
+
+        var plazas = suscripcionService.listarPlazasOcupadasPorUsuario(idUsuario)
+                .stream()
+                .map(PlazaResponse::fromEntity)
+                .toList();
+
+        return ResponseEntity.ok(plazas);
+    }
+
+    @PostMapping("/{idSuscripcion}/ocupar-plaza")
+    @Operation(summary = "Ocupar plaza")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Plaza ocupada exitosamente"),
+            @ApiResponse(responseCode = "400", description = "No hay plazas disponibles o usuario ya tiene plaza"),
+            @ApiResponse(responseCode = "404", description = "Suscripción o usuario no encontrado"),
+            @ApiResponse(responseCode = "422", description = "Usuario no es miembro del grupo")
+    })
+    public ResponseEntity<PlazaResponse> ocuparPlaza(
+            @Parameter(description = "ID de la suscripción") @PathVariable Long idSuscripcion,
+            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario) {
+
+        var plaza = suscripcionService.ocuparPlaza(idSuscripcion, idUsuario);
+        return ResponseEntity.ok(PlazaResponse.fromEntity(plaza));
+    }
+
+    @DeleteMapping("/plazas/{idPlaza}")
+    @Operation(summary = "Liberar plaza")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Plaza liberada exitosamente"),
+            @ApiResponse(responseCode = "400", description = "El anfitrión no puede liberar su plaza reservada"),
+            @ApiResponse(responseCode = "403", description = "No tienes permiso para liberar esta plaza"),
+            @ApiResponse(responseCode = "404", description = "Plaza no encontrada")
+    })
+    public ResponseEntity<Void> liberarPlaza(
+            @Parameter(description = "ID de la plaza") @PathVariable Long idPlaza,
+            @Parameter(description = "ID del solicitante") @RequestHeader("X-User-Id") Long idSolicitante) {
+
+        suscripcionService.liberarPlaza(idPlaza, idSolicitante);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/pausar")
+    @Operation(summary = "Pausar suscripción")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Suscripción pausada exitosamente"),
+            @ApiResponse(responseCode = "403", description = "Solo el anfitrión puede pausar"),
+            @ApiResponse(responseCode = "404", description = "Suscripción no encontrada")
+    })
+    public ResponseEntity<Void> pausarSuscripcion(
+            @Parameter(description = "ID de la suscripción") @PathVariable Long id,
+            @Parameter(description = "ID del anfitrión") @RequestHeader("X-User-Id") Long idSolicitante) {
+
+        suscripcionService.pausarSuscripcion(id, idSolicitante);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/reactivar")
+    @Operation(summary = "Reactivar suscripción")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Suscripción reactivada exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Solo se pueden reactivar suscripciones pausadas"),
+            @ApiResponse(responseCode = "403", description = "Solo el anfitrión puede reactivar"),
+            @ApiResponse(responseCode = "404", description = "Suscripción no encontrada")
+    })
+    public ResponseEntity<Void> reactivarSuscripcion(
+            @Parameter(description = "ID de la suscripción") @PathVariable Long id,
+            @Parameter(description = "ID del anfitrión") @RequestHeader("X-User-Id") Long idSolicitante) {
+
+        suscripcionService.reactivarSuscripcion(id, idSolicitante);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/cancelar")
+    @Operation(summary = "Cancelar suscripción")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Suscripción cancelada exitosamente"),
+            @ApiResponse(responseCode = "403", description = "Solo el anfitrión puede cancelar"),
+            @ApiResponse(responseCode = "404", description = "Suscripción no encontrada")
+    })
+    public ResponseEntity<Void> cancelarSuscripcion(
+            @Parameter(description = "ID de la suscripción") @PathVariable Long id,
+            @Parameter(description = "ID del anfitrión") @RequestHeader("X-User-Id") Long idSolicitante) {
+
+        suscripcionService.cancelarSuscripcion(id, idSolicitante);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{idSuscripcion}/tiene-plaza")
+    @Operation(summary = "Verificar si tiene plaza")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Resultado de la verificación")
+    })
+    public ResponseEntity<Boolean> tienePlaza(
+            @Parameter(description = "ID de la suscripción") @PathVariable Long idSuscripcion,
+            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario) {
+
+        var tienePlaza = suscripcionService.usuarioTienePlazaEnSuscripcion(idSuscripcion, idUsuario);
+        return ResponseEntity.ok(tienePlaza);
+    }
+}
