@@ -1,0 +1,6 @@
+# Environment variables
+.env
+!.env.example
+
+# Docker
+mysql_data/
