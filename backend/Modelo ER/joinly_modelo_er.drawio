@@ -1,0 +1,297 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36" version="29.2.7">
+  <diagram name="Modelo ER - Joinly" id="joinly-er">
+    <mxGraphModel dx="2066" dy="1163" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3500" pageHeight="3000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="titulo" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1" value="MODELO ENTIDAD-RELACIÓN - JOINLY&#xa;Plataforma de Gestión de Suscripciones Compartidas" vertex="1">
+          <mxGeometry height="60" width="800" x="1000" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="modulo_usuarios" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=14;align=center;" value="MÓDULO: GESTIÓN DE USUARIOS" vertex="1">
+          <mxGeometry height="40" width="600" x="100" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="usuario" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;verticalAlign=top;spacingLeft=10;spacingTop=5;" value="&lt;b&gt;USUARIO&lt;/b&gt;&#xa;───────────────────&#xa;PK: id_usuario&#xa;• nombre&#xa;• email (UNIQUE)&#xa;• password (hash)&#xa;• fecha_registro&#xa;• email_verificado&#xa;• avatar&#xa;• telefono&#xa;• estado&#xa;• fecha_ultimo_acceso&#xa;• es_agente_soporte" vertex="1">
+          <mxGeometry height="240" width="180" x="280" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="token" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;verticalAlign=top;spacingLeft=10;spacingTop=5;" value="&lt;b&gt;TOKEN&lt;/b&gt;&#xa;───────────────────&#xa;PK: id_token&#xa;FK: id_usuario&#xa;• token (UNIQUE)&#xa;• tipo&#xa;• fecha_creacion&#xa;• fecha_expiracion&#xa;• usado&#xa;• ip_creacion&#xa;• user_agent" vertex="1">
+          <mxGeometry height="200" width="140" x="120" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="metodo_pago" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;verticalAlign=top;spacingLeft=10;spacingTop=5;" value="&lt;b&gt;METODO_PAGO_USUARIO&lt;/b&gt;&#xa;───────────────────&#xa;PK: id_metodo&#xa;FK: id_usuario&#xa;• tipo&#xa;• ultimos_digitos&#xa;• marca&#xa;• token_pasarela&#xa;• fecha_expiracion&#xa;• es_predeterminado&#xa;• estado" vertex="1">
+          <mxGeometry height="200" width="200" x="500" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_usuario_token" edge="1" parent="1" source="usuario" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" target="token" value="1:N">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_usuario_metodo" edge="1" parent="1" source="usuario" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" target="metodo_pago" value="1:N">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="modulo_grupos" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=14;align=center;" value="MÓDULO: GRUPOS Y MEMBRESÍAS" vertex="1">
+          <mxGeometry height="40" width="700" x="800" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="unidad_familiar" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;align=left;verticalAlign=top;spacingLeft=10;spacingTop=5;" value="&lt;b&gt;UNIDAD_FAMILIAR&lt;/b&gt;&#xa;───────────────────&#xa;PK: id_unidad&#xa;FK: id_administrador&#xa;• nombre&#xa;• codigo_invitacion (UNIQUE)&#xa;• fecha_creacion&#xa;• descripcion&#xa;• max_miembros&#xa;• estado" vertex="1">
+          <mxGeometry height="200" width="200" x="1000" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="miembro_unidad" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;align=left;verticalAlign=top;spacingLeft=10;spacingTop=5;" value="&lt;b&gt;MIEMBRO_UNIDAD&lt;/b&gt;&lt;br&gt;───────────────&lt;br&gt;PK: id_miembro&lt;br&gt;FK: id_usuario&lt;br&gt;FK: id_unidad&lt;br&gt;• rol&lt;br&gt;• fecha_union&lt;br&gt;• fecha_baja&lt;br&gt;• estado&lt;br&gt;&lt;br&gt;UNIQUE(id_usuario, id_unidad)" vertex="1">
+          <mxGeometry height="200" width="160" x="820" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="solicitud" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;align=left;verticalAlign=top;spacingLeft=10;spacingTop=5;" value="&lt;b&gt;SOLICITUD&lt;/b&gt;&#xa;───────────────────&#xa;PK: id_solicitud&#xa;FK: id_solicitante&#xa;FK: id_unidad&#xa;FK: id_suscripcion&#xa;FK: id_aprobador&#xa;• tipo_solicitud&#xa;• mensaje&#xa;• fecha_solicitud&#xa;• fecha_respuesta&#xa;• estado&#xa;• motivo_rechazo" vertex="1">
+          <mxGeometry height="230" width="210" x="1230" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_usuario_unidad_admin" edge="1" parent="1" source="usuario" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;exitX=0.998;exitY=0.918;exitDx=0;exitDy=0;exitPerimeter=0;" target="unidad_familiar" value="administra&#xa;1:N">
+          <mxGeometry relative="1" x="0.521" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="470" y="420" />
+              <mxPoint x="1050" y="420" />
+            </Array>
+            <mxPoint x="470" y="430" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_usuario_miembro" edge="1" parent="1" source="usuario" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=ERmany;endFill=0;startArrow=ERmany;startFill=0;dashed=1;" target="miembro_unidad" value="N:M">
+          <mxGeometry relative="1" x="0.4894" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="750" y="410" />
+              <mxPoint x="750" y="290" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_unidad_miembro" edge="1" parent="1" source="unidad_familiar" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;startArrow=none;startFill=0;dashed=1;" target="miembro_unidad" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_usuario_solicitud" edge="1" parent="1" source="usuario" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" target="solicitud" value="solicita&#xa;1:N">
+          <mxGeometry relative="1" x="-0.3" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="415" y="190" />
+              <mxPoint x="1210" y="190" />
+              <mxPoint x="1210" y="258" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_solicitud_unidad" edge="1" parent="1" source="solicitud" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=ERone;endFill=0;startArrow=ERmany;startFill=0;" target="unidad_familiar" value="N:1">
+          <mxGeometry relative="1" x="-0.1111" y="-5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="modulo_servicios" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=14;align=center;" value="MÓDULO: SERVICIOS Y SUSCRIPCIONES" vertex="1">
+          <mxGeometry height="40" width="1340" x="100" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="servicio" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;verticalAlign=top;spacingLeft=10;spacingTop=5;" value="&lt;b&gt;SERVICIO&lt;/b&gt;&#xa;───────────────────&#xa;PK: id_servicio&#xa;• nombre&#xa;• categoria&#xa;• logo&#xa;• descripcion&#xa;• url_oficial&#xa;• max_usuarios&#xa;• precio_referencia&#xa;• moneda_referencia&#xa;• activo" vertex="1">
+          <mxGeometry height="220" width="180" x="120" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="suscripcion" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;verticalAlign=top;spacingLeft=10;spacingTop=5;" value="&lt;b&gt;SUSCRIPCION&lt;/b&gt;&#xa;───────────────────&#xa;PK: id_suscripcion&#xa;FK: id_servicio&#xa;FK: id_unidad&#xa;FK: id_anfitrion&#xa;• precio_total&#xa;• moneda&#xa;• precio_por_plaza&#xa;• num_plazas_total&#xa;• anfitrion_ocupa_plaza&#xa;• fecha_inicio&#xa;• fecha_renovacion&#xa;• periodicidad&#xa;• renovacion_automatica&#xa;• estado&#xa;• notas" vertex="1">
+          <mxGeometry height="300" width="200" x="590" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="plaza" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;verticalAlign=top;spacingLeft=10;spacingTop=5;" value="&lt;b&gt;PLAZA&lt;/b&gt;&#xa;───────────────────&#xa;PK: id_plaza&#xa;FK: id_suscripcion&#xa;FK: id_usuario&#xa;• numero_plaza&#xa;• es_plaza_anfitrion&#xa;• fecha_ocupacion&#xa;• fecha_baja&#xa;• estado&#xa;&#xa;UNIQUE(id_suscripcion, numero_plaza)&#xa;UNIQUE(id_suscripcion, id_usuario)" vertex="1">
+          <mxGeometry height="220" width="210" x="850" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="credencial" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;verticalAlign=top;spacingLeft=10;spacingTop=5;" value="&lt;b&gt;CREDENCIAL&lt;/b&gt;&#xa;───────────────────&#xa;PK: id_credencial&#xa;FK: id_suscripcion&#xa;• tipo&#xa;• etiqueta&#xa;• valor_encriptado (AES-256)&#xa;• instrucciones&#xa;• fecha_actualizacion&#xa;• visible_para_miembros" vertex="1">
+          <mxGeometry height="200" width="200" x="1100" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="historial_anfitrion" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;verticalAlign=top;spacingLeft=10;spacingTop=5;" value="&lt;b&gt;HISTORIAL_ANFITRION&lt;/b&gt;&#xa;───────────────────&#xa;PK: id_historial&#xa;FK: id_suscripcion&#xa;FK: id_anfitrion_anterior&#xa;FK: id_anfitrion_nuevo&#xa;• fecha_transferencia&#xa;• motivo" vertex="1">
+          <mxGeometry height="150" width="220" x="330" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="historial_credencial" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;verticalAlign=top;spacingLeft=10;spacingTop=5;" value="&lt;b&gt;HISTORIAL_CREDENCIAL&lt;/b&gt;&#xa;───────────────────&#xa;PK: id_historial&#xa;FK: id_credencial&#xa;FK: id_usuario_cambio&#xa;• valor_anterior_encriptado&#xa;• fecha_cambio&#xa;• ip_cambio" vertex="1">
+          <mxGeometry height="160" width="200" x="1100" y="800" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_servicio_suscripcion" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" target="suscripcion" value="1:N">
+          <mxGeometry relative="1" x="-0.3086" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="590" y="760" />
+            </Array>
+            <mxPoint x="300" y="760" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_unidad_suscripcion" edge="1" parent="1" source="unidad_familiar" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" target="suscripcion" value="1:N">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1100" y="460" />
+              <mxPoint x="610" y="460" />
+            </Array>
+            <mxPoint x="620" y="550" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_usuario_suscripcion_anfitrion" edge="1" parent="1" source="usuario" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.912;exitY=1.011;exitDx=0;exitDy=0;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;exitPerimeter=0;entryX=0;entryY=0;entryDx=0;entryDy=0;" target="suscripcion" value="anfitrión&#xa;1:N">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="444" y="460" />
+              <mxPoint x="590" y="460" />
+            </Array>
+            <mxPoint x="610" y="560" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_suscripcion_plaza" edge="1" parent="1" source="suscripcion" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" target="plaza" value="1:N">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_usuario_plaza" edge="1" parent="1" source="usuario" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" value="ocupa&#xa;1:N">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="480" />
+              <mxPoint x="980" y="480" />
+            </Array>
+            <mxPoint x="980" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_suscripcion_credencial" edge="1" parent="1" source="suscripcion" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.996;exitY=0.927;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;exitPerimeter=0;" target="credencial" value="1:N">
+          <mxGeometry relative="1" x="-0.4032" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1080" y="848" />
+              <mxPoint x="1080" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_suscripcion_historial_anf" edge="1" parent="1" source="suscripcion" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" target="historial_anfitrion" value="1:N">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_credencial_historial" edge="1" parent="1" source="credencial" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" target="historial_credencial" value="1:N">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_solicitud_suscripcion" edge="1" parent="1" source="solicitud" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=ERone;endFill=0;startArrow=ERmany;startFill=0;" value="N:1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1335" y="470" />
+              <mxPoint x="830" y="470" />
+              <mxPoint x="830" y="590" />
+              <mxPoint x="791" y="590" />
+            </Array>
+            <mxPoint x="790" y="590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="modulo_pagos" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=14;align=center;" value="MÓDULO: PAGOS" vertex="1">
+          <mxGeometry height="40" width="400" x="1580" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="pago" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=left;verticalAlign=top;spacingLeft=10;spacingTop=5;" value="&lt;b&gt;PAGO&lt;/b&gt;&#xa;───────────────────&#xa;PK: id_pago&#xa;FK: id_usuario&#xa;FK: id_plaza&#xa;FK: id_suscripcion&#xa;FK: id_metodo_pago&#xa;• monto&#xa;• moneda&#xa;• monto_reembolsado&#xa;• fecha_pago&#xa;• fecha_retencion_hasta&#xa;• fecha_liberacion&#xa;• referencia_externa&#xa;• estado&#xa;• ciclo_inicio&#xa;• ciclo_fin" vertex="1">
+          <mxGeometry height="300" width="190" x="1600" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="disputa" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=left;verticalAlign=top;spacingLeft=10;spacingTop=5;" value="&lt;b&gt;DISPUTA&lt;/b&gt;&#xa;───────────────────&#xa;PK: id_disputa&#xa;FK: id_pago&#xa;FK: id_reclamante&#xa;FK: id_agente_resolutor&#xa;• motivo&#xa;• descripcion&#xa;• evidencia_urls&#xa;• fecha_apertura&#xa;• fecha_resolucion&#xa;• resolucion&#xa;• monto_resuelto&#xa;• notas_resolucion&#xa;• estado" vertex="1">
+          <mxGeometry height="260" width="180" x="1850" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_usuario_pago" edge="1" parent="1" source="usuario" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" target="pago" value="1:N">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="370" y="170" />
+              <mxPoint x="1560" y="170" />
+              <mxPoint x="1560" y="275" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_plaza_pago" edge="1" parent="1" source="plaza" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;exitX=0.95;exitY=-0.004;exitDx=0;exitDy=0;exitPerimeter=0;" target="pago" value="1:N">
+          <mxGeometry relative="1" x="0.1684" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1050" y="560" />
+              <mxPoint x="1520" y="560" />
+              <mxPoint x="1520" y="350" />
+            </Array>
+            <mxPoint x="1050" y="830" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_metodo_pago_pago" edge="1" parent="1" source="metodo_pago" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" target="pago" value="1:N">
+          <mxGeometry relative="1" x="-0.9024" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="720" y="350" />
+              <mxPoint x="720" y="450" />
+              <mxPoint x="1550" y="450" />
+              <mxPoint x="1550" y="425" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_pago_disputa" edge="1" parent="1" source="pago" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" target="disputa" value="1:N">
+          <mxGeometry relative="1" x="-0.2" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="modulo_soporte" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=14;align=center;" value="MÓDULO: SOPORTE" vertex="1">
+          <mxGeometry height="40" width="600" x="1580" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="ticket_soporte" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;align=left;verticalAlign=top;spacingLeft=10;spacingTop=5;" value="&lt;b&gt;TICKET_SOPORTE&lt;/b&gt;&#xa;───────────────────&#xa;PK: id_ticket&#xa;FK: id_usuario&#xa;FK: id_suscripcion&#xa;FK: id_pago&#xa;FK: id_disputa&#xa;FK: id_agente&#xa;• asunto&#xa;• descripcion&#xa;• categoria&#xa;• prioridad&#xa;• estado&#xa;• fecha_apertura&#xa;• fecha_primera_respuesta&#xa;• fecha_cierre&#xa;• satisfaccion" vertex="1">
+          <mxGeometry height="290" width="200" x="1620" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="mensaje_ticket" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;align=left;verticalAlign=top;spacingLeft=10;spacingTop=5;" value="&lt;b&gt;MENSAJE_TICKET&lt;/b&gt;&#xa;───────────────────&#xa;PK: id_mensaje&#xa;FK: id_ticket&#xa;FK: id_autor&#xa;• contenido&#xa;• fecha_mensaje&#xa;• es_interno&#xa;• adjuntos&#xa;• editado&#xa;• fecha_edicion" vertex="1">
+          <mxGeometry height="200" width="170" x="1950" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_usuario_ticket" edge="1" parent="1" source="usuario" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" target="ticket_soporte" value="abre&#xa;1:N">
+          <mxGeometry relative="1" x="-0.7945" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1560" y="440" />
+              <mxPoint x="1560" y="643" />
+            </Array>
+            <mxPoint x="460" y="430" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_ticket_mensaje" edge="1" parent="1" source="ticket_soporte" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" target="mensaje_ticket" value="1:N">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_disputa_ticket" edge="1" parent="1" source="disputa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERone;endFill=0;startArrow=ERone;startFill=0;dashed=1;exitX=-0.004;exitY=0.964;exitDx=0;exitDy=0;exitPerimeter=0;" value="1:1">
+          <mxGeometry relative="1" x="-0.2858" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1800" y="451" />
+            </Array>
+            <mxPoint x="1810" y="450" as="sourcePoint" />
+            <mxPoint x="1800" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="modulo_notif_sistema" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=14;align=center;" value="MÓDULO: NOTIFICACIONES Y SISTEMA" vertex="1">
+          <mxGeometry height="40" width="950" x="120" y="1020" as="geometry" />
+        </mxCell>
+        <mxCell id="notificacion" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;verticalAlign=top;spacingLeft=10;spacingTop=5;" value="&lt;b&gt;NOTIFICACION&lt;/b&gt;&#xa;───────────────────&#xa;PK: id_notificacion&#xa;FK: id_usuario&#xa;• tipo&#xa;• titulo&#xa;• mensaje&#xa;• url_accion&#xa;• datos_extra&#xa;• fecha_creacion&#xa;• fecha_lectura&#xa;• fecha_envio_email&#xa;• enviado_push" vertex="1">
+          <mxGeometry height="230" width="180" x="140" y="1090" as="geometry" />
+        </mxCell>
+        <mxCell id="configuracion" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;verticalAlign=top;spacingLeft=10;spacingTop=5;" value="&lt;b&gt;CONFIGURACION&lt;/b&gt;&#xa;───────────────────&#xa;PK: clave&#xa;FK: updated_by&#xa;• valor&#xa;• tipo&#xa;• descripcion&#xa;• categoria&#xa;• modificable&#xa;• updated_at" vertex="1">
+          <mxGeometry height="170" width="180" x="550" y="1090" as="geometry" />
+        </mxCell>
+        <mxCell id="log_auditoria" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;verticalAlign=top;spacingLeft=10;spacingTop=5;" value="&lt;b&gt;LOG_AUDITORIA&lt;/b&gt;&#xa;───────────────────&#xa;PK: id_log&#xa;FK: id_usuario&#xa;• accion&#xa;• entidad&#xa;• id_entidad&#xa;• datos_anteriores&#xa;• datos_nuevos&#xa;• ip&#xa;• user_agent&#xa;• fecha" vertex="1">
+          <mxGeometry height="200" width="180" x="350" y="1090" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_usuario_notificacion" edge="1" parent="1" source="usuario" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;entryX=0.554;entryY=-0.004;entryDx=0;entryDy=0;entryPerimeter=0;" target="notificacion" value="1:N">
+          <mxGeometry relative="1" x="0.1566" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="320" y="970" />
+              <mxPoint x="240" y="970" />
+            </Array>
+            <mxPoint x="310" y="440" as="sourcePoint" />
+            <mxPoint x="240" y="1080" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="leyenda_titulo" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1" value="LEYENDA" vertex="1">
+          <mxGeometry height="30" width="120" x="2250" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="leyenda_pk" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" value="PK = Primary Key (Clave Primaria)" vertex="1">
+          <mxGeometry height="20" width="280" x="2250" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="leyenda_fk" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" value="FK = Foreign Key (Clave Foránea)" vertex="1">
+          <mxGeometry height="20" width="280" x="2250" y="195" as="geometry" />
+        </mxCell>
+        <mxCell id="leyenda_1n" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" value="1:N = Relación Uno a Muchos" vertex="1">
+          <mxGeometry height="20" width="280" x="2250" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="leyenda_nm" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" value="N:M = Relación Muchos a Muchos" vertex="1">
+          <mxGeometry height="20" width="280" x="2250" y="245" as="geometry" />
+        </mxCell>
+        <mxCell id="leyenda_11" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" value="1:1 = Relación Uno a Uno" vertex="1">
+          <mxGeometry height="20" width="280" x="2250" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="leyenda_dashed" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" value="━━━ = Línea punteada: relación intermedia (N:M)" vertex="1">
+          <mxGeometry height="20" width="320" x="2250" y="295" as="geometry" />
+        </mxCell>
+        <mxCell id="info_proyecto" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;verticalAlign=top;spacingLeft=15;spacingTop=10;fontSize=11;" value="&lt;b&gt;JOINLY - Plataforma de Suscripciones Compartidas&lt;/b&gt;&#xa;&#xa;Total de Entidades: 19&#xa;Total de Relaciones: 25&#xa;Restricciones de Integridad: 15&#xa;&#xa;Módulos:&#xa;• Gestión de Usuarios (3 entidades)&#xa;• Grupos y Membresías (3 entidades)&#xa;• Servicios y Suscripciones (6 entidades)&#xa;• Pagos (2 entidades)&#xa;• Soporte (2 entidades)&#xa;• Notificaciones y Sistema (3 entidades)&#xa;&#xa;Fecha: 14/12/2025&#xa;Estado: ✅ VALIDADO - Listo para implementación" vertex="1">
+          <mxGeometry height="280" width="350" x="2250" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="notas_tecnicas" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;verticalAlign=top;spacingLeft=15;spacingTop=10;fontSize=11;" value="&lt;b&gt;NOTAS TÉCNICAS&lt;/b&gt;&#xa;&#xa;• Modelo normalizado en 3FN&#xa;• Credenciales encriptadas con AES-256-GCM&#xa;• Passwords hasheados con bcrypt (cost 12)&#xa;• Soft delete mediante campo &#39;estado&#39;&#xa;• Charset: utf8mb4 para soporte de emojis&#xa;• Timestamps en UTC&#xa;• Sistema de auditoría completo&#xa;• Integración con Stripe y PayPal&#xa;• Sistema de retención de pagos (30 días)&#xa;• Gestión de disputas y tickets&#xa;• Notificaciones multi-canal&#xa;• Tokens seguros con hash SHA-256" vertex="1">
+          <mxGeometry height="280" width="350" x="2250" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="modulos_colores" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;verticalAlign=top;spacingLeft=15;spacingTop=10;fontSize=11;" value="&lt;b&gt;COLORES POR MÓDULO&lt;/b&gt;&#xa;&#xa;🔵 Azul: Gestión de Usuarios&#xa;🟢 Verde: Grupos y Membresías&#xa;🟣 Morado: Servicios y Suscripciones&#xa;🔴 Rojo: Pagos&#xa;🟠 Naranja: Soporte&#xa;⚪ Gris: Notificaciones y Sistema" vertex="1">
+          <mxGeometry height="190" width="350" x="2250" y="970" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,859 @@
+================================================================================
+        DESCOMPOSICIÓN DE ENTIDADES Y RELACIONES - JOINLY
+                        Versión 2.0 - Optimizada
+================================================================================
+
+Este documento describe las entidades, atributos y relaciones necesarias para
+implementar la base de datos del proyecto Joinly, una plataforma de gestión
+de suscripciones compartidas.
+
+Última revisión: 14/12/2025
+Estado: ✅ VALIDADO - Listo para implementación
+
+================================================================================
+                              ENTIDADES (19)
+================================================================================
+
+================================================================================
+                         MÓDULO: GESTIÓN DE USUARIOS
+================================================================================
+
+1. USUARIO
+--------------------------------------------------------------------------------
+   Descripción: Representa a cada persona registrada en la plataforma.
+   
+   Atributos:
+   - id_usuario (PK)          : INT UNSIGNED AUTO_INCREMENT
+   - nombre                   : VARCHAR(100) NOT NULL
+   - email                    : VARCHAR(150) NOT NULL UNIQUE
+   - password                 : VARCHAR(255) NOT NULL (hash bcrypt)
+   - fecha_registro           : DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+   - email_verificado         : BOOLEAN DEFAULT FALSE
+   - avatar                   : VARCHAR(500) NULL (URL imagen)
+   - telefono                 : VARCHAR(20) NULL
+   - estado                   : ENUM('activo','suspendido','eliminado') DEFAULT 'activo'
+   - fecha_ultimo_acceso      : DATETIME NULL
+   - es_agente_soporte        : BOOLEAN DEFAULT FALSE
+   - created_at               : DATETIME DEFAULT CURRENT_TIMESTAMP
+   - updated_at               : DATETIME ON UPDATE CURRENT_TIMESTAMP
+
+   Notas:
+   - Los agentes de soporte son usuarios con es_agente_soporte = true
+   - Permite soft delete mediante estado = 'eliminado'
+
+--------------------------------------------------------------------------------
+
+2. TOKEN
+--------------------------------------------------------------------------------
+   Descripción: Tokens para recuperación de contraseña, verificación de email
+                y gestión de sesiones (refresh tokens).
+   
+   Atributos:
+   - id_token (PK)            : INT UNSIGNED AUTO_INCREMENT
+   - id_usuario (FK)          : INT UNSIGNED NOT NULL
+   - token                    : VARCHAR(255) NOT NULL UNIQUE (hash)
+   - tipo                     : ENUM('recuperacion','verificacion','refresh_token')
+   - fecha_creacion           : DATETIME DEFAULT CURRENT_TIMESTAMP
+   - fecha_expiracion         : DATETIME NOT NULL
+   - usado                    : BOOLEAN DEFAULT FALSE
+   - ip_creacion              : VARCHAR(45) NULL (IPv4/IPv6)
+   - user_agent               : VARCHAR(500) NULL
+
+   Notas:
+   - Los tokens de recuperación expiran en 1 hora
+   - Los refresh tokens expiran en 30 días
+   - Al usar un token, marcar usado = true (no borrar, para auditoría)
+
+--------------------------------------------------------------------------------
+
+3. METODO_PAGO_USUARIO
+--------------------------------------------------------------------------------
+   Descripción: Métodos de pago guardados por cada usuario (tokenizados).
+   
+   Atributos:
+   - id_metodo (PK)           : INT UNSIGNED AUTO_INCREMENT
+   - id_usuario (FK)          : INT UNSIGNED NOT NULL
+   - tipo                     : ENUM('tarjeta','paypal','cuenta_bancaria')
+   - ultimos_digitos          : CHAR(4) NULL (solo para tarjetas)
+   - marca                    : VARCHAR(20) NULL (Visa, Mastercard, etc.)
+   - token_pasarela           : VARCHAR(255) NOT NULL (token de Stripe/PayPal)
+   - fecha_expiracion         : DATE NULL (MM/AA para tarjetas)
+   - es_predeterminado        : BOOLEAN DEFAULT FALSE
+   - estado                   : ENUM('activo','expirado','eliminado') DEFAULT 'activo'
+   - fecha_registro           : DATETIME DEFAULT CURRENT_TIMESTAMP
+
+   Notas:
+   - NUNCA almacenar datos completos de tarjeta (PCI-DSS)
+   - Solo un método puede ser predeterminado por usuario
+
+================================================================================
+                      MÓDULO: GRUPOS Y MEMBRESÍAS
+================================================================================
+
+4. UNIDAD_FAMILIAR
+--------------------------------------------------------------------------------
+   Descripción: Grupo de usuarios que comparten suscripciones entre sí.
+   
+   Atributos:
+   - id_unidad (PK)           : INT UNSIGNED AUTO_INCREMENT
+   - nombre                   : VARCHAR(100) NOT NULL
+   - codigo_invitacion        : CHAR(12) NOT NULL UNIQUE
+   - id_administrador (FK)    : INT UNSIGNED NOT NULL
+   - fecha_creacion           : DATETIME DEFAULT CURRENT_TIMESTAMP
+   - descripcion              : VARCHAR(500) NULL
+   - max_miembros             : TINYINT UNSIGNED DEFAULT 10
+   - estado                   : ENUM('activo','inactivo','eliminado') DEFAULT 'activo'
+   - created_at               : DATETIME DEFAULT CURRENT_TIMESTAMP
+   - updated_at               : DATETIME ON UPDATE CURRENT_TIMESTAMP
+
+   Notas:
+   - codigo_invitacion se genera automáticamente (alfanumérico 12 chars)
+   - El administrador se añade automáticamente como miembro al crear
+
+--------------------------------------------------------------------------------
+
+5. MIEMBRO_UNIDAD
+--------------------------------------------------------------------------------
+   Descripción: Relaciona usuarios con unidades familiares (pertenencia activa).
+   
+   Atributos:
+   - id_miembro (PK)          : INT UNSIGNED AUTO_INCREMENT
+   - id_usuario (FK)          : INT UNSIGNED NOT NULL
+   - id_unidad (FK)           : INT UNSIGNED NOT NULL
+   - rol                      : ENUM('administrador','miembro') DEFAULT 'miembro'
+   - fecha_union              : DATETIME DEFAULT CURRENT_TIMESTAMP
+   - fecha_baja               : DATETIME NULL
+   - estado                   : ENUM('activo','expulsado','abandono') DEFAULT 'activo'
+
+   Restricciones:
+   - UNIQUE(id_usuario, id_unidad) - Un usuario solo puede estar una vez en cada grupo
+   
+   Notas:
+   - Solo se crea registro cuando SOLICITUD es aprobada
+   - Estado 'pendiente' eliminado (se gestiona en SOLICITUD)
+
+--------------------------------------------------------------------------------
+
+6. SOLICITUD
+--------------------------------------------------------------------------------
+   Descripción: Peticiones de unión a grupos o suscripciones.
+   
+   Atributos:
+   - id_solicitud (PK)        : INT UNSIGNED AUTO_INCREMENT
+   - tipo_solicitud           : ENUM('union_grupo','union_suscripcion') NOT NULL
+   - id_solicitante (FK)      : INT UNSIGNED NOT NULL
+   - id_unidad (FK)           : INT UNSIGNED NULL (si es solicitud de grupo)
+   - id_suscripcion (FK)      : INT UNSIGNED NULL (si es solicitud de plaza)
+   - mensaje                  : VARCHAR(500) NULL
+   - fecha_solicitud          : DATETIME DEFAULT CURRENT_TIMESTAMP
+   - fecha_respuesta          : DATETIME NULL
+   - estado                   : ENUM('pendiente','aprobada','rechazada','cancelada')
+   - motivo_rechazo           : VARCHAR(255) NULL
+   - id_aprobador (FK)        : INT UNSIGNED NULL
+
+   Restricciones:
+   - CHECK: (id_unidad IS NOT NULL AND id_suscripcion IS NULL) 
+            OR (id_unidad IS NULL AND id_suscripcion IS NOT NULL)
+   - No duplicados: No más de 1 solicitud pendiente del mismo usuario al mismo destino
+
+================================================================================
+                      MÓDULO: SERVICIOS Y SUSCRIPCIONES
+================================================================================
+
+7. SERVICIO
+--------------------------------------------------------------------------------
+   Descripción: Catálogo de servicios de suscripción disponibles.
+   
+   Atributos:
+   - id_servicio (PK)         : INT UNSIGNED AUTO_INCREMENT
+   - nombre                   : VARCHAR(100) NOT NULL
+   - categoria                : ENUM('streaming','musica','vpn','gaming','software',
+                                     'almacenamiento','productividad','otro')
+   - logo                     : VARCHAR(500) NULL (URL)
+   - descripcion              : TEXT NULL
+   - url_oficial              : VARCHAR(500) NULL
+   - max_usuarios             : TINYINT UNSIGNED NOT NULL
+   - precio_referencia        : DECIMAL(10,2) NULL
+   - moneda_referencia        : CHAR(3) DEFAULT 'EUR'
+   - activo                   : BOOLEAN DEFAULT TRUE
+   - created_at               : DATETIME DEFAULT CURRENT_TIMESTAMP
+   - updated_at               : DATETIME ON UPDATE CURRENT_TIMESTAMP
+
+   Notas:
+   - max_usuarios define el límite real del servicio (ej: Netflix = 5)
+   - precio_referencia es orientativo, el real lo define el anfitrión
+
+--------------------------------------------------------------------------------
+
+8. SUSCRIPCION
+--------------------------------------------------------------------------------
+   Descripción: Suscripción compartida creada por un anfitrión dentro de un grupo.
+   
+   Atributos:
+   - id_suscripcion (PK)      : INT UNSIGNED AUTO_INCREMENT
+   - id_servicio (FK)         : INT UNSIGNED NOT NULL
+   - id_unidad (FK)           : INT UNSIGNED NOT NULL
+   - id_anfitrion (FK)        : INT UNSIGNED NOT NULL
+   - precio_total             : DECIMAL(10,2) NOT NULL
+   - moneda                   : CHAR(3) DEFAULT 'EUR'
+   - precio_por_plaza         : DECIMAL(10,2) NOT NULL (derivado, almacenado)
+   - num_plazas_total         : TINYINT UNSIGNED NOT NULL
+   - anfitrion_ocupa_plaza    : BOOLEAN DEFAULT TRUE
+   - fecha_inicio             : DATE NOT NULL
+   - fecha_renovacion         : DATE NOT NULL
+   - periodicidad             : ENUM('mensual','trimestral','semestral','anual')
+   - renovacion_automatica    : BOOLEAN DEFAULT TRUE
+   - estado                   : ENUM('activa','pausada','cancelada','finalizada')
+   - notas                    : TEXT NULL
+   - fecha_creacion           : DATETIME DEFAULT CURRENT_TIMESTAMP
+   - updated_at               : DATETIME ON UPDATE CURRENT_TIMESTAMP
+
+   Restricciones:
+   - num_plazas_total <= SERVICIO.max_usuarios (validar en aplicación)
+   - El anfitrión debe ser miembro de la unidad familiar
+   
+   Notas:
+   - Si anfitrion_ocupa_plaza = true, se crea plaza automática para él
+   - precio_por_plaza = precio_total / plazas_pagantes
+
+--------------------------------------------------------------------------------
+
+9. HISTORIAL_ANFITRION
+--------------------------------------------------------------------------------
+   Descripción: Registro de transferencias de propiedad de suscripciones.
+   
+   Atributos:
+   - id_historial (PK)        : INT UNSIGNED AUTO_INCREMENT
+   - id_suscripcion (FK)      : INT UNSIGNED NOT NULL
+   - id_anfitrion_anterior (FK): INT UNSIGNED NOT NULL
+   - id_anfitrion_nuevo (FK)  : INT UNSIGNED NOT NULL
+   - fecha_transferencia      : DATETIME DEFAULT CURRENT_TIMESTAMP
+   - motivo                   : VARCHAR(255) NULL
+
+   Notas:
+   - Permite auditar quién ha sido anfitrión de cada suscripción
+
+--------------------------------------------------------------------------------
+
+10. PLAZA
+--------------------------------------------------------------------------------
+    Descripción: Cada espacio disponible en una suscripción compartida.
+    
+    Atributos:
+    - id_plaza (PK)            : INT UNSIGNED AUTO_INCREMENT
+    - id_suscripcion (FK)      : INT UNSIGNED NOT NULL
+    - id_usuario (FK)          : INT UNSIGNED NULL (null si vacía)
+    - numero_plaza             : TINYINT UNSIGNED NOT NULL
+    - es_plaza_anfitrion       : BOOLEAN DEFAULT FALSE
+    - fecha_ocupacion          : DATETIME NULL
+    - fecha_baja               : DATETIME NULL
+    - estado                   : ENUM('disponible','ocupada','reservada','bloqueada')
+
+    Restricciones:
+    - UNIQUE(id_suscripcion, id_usuario) WHERE id_usuario IS NOT NULL
+      (Un usuario solo puede ocupar una plaza por suscripción)
+    - UNIQUE(id_suscripcion, numero_plaza)
+
+    Notas:
+    - es_plaza_anfitrion = true para la plaza del creador (si aplica)
+
+--------------------------------------------------------------------------------
+
+11. CREDENCIAL
+--------------------------------------------------------------------------------
+    Descripción: Información de acceso compartida para una suscripción.
+    
+    Atributos:
+    - id_credencial (PK)       : INT UNSIGNED AUTO_INCREMENT
+    - id_suscripcion (FK)      : INT UNSIGNED NOT NULL
+    - tipo                     : ENUM('email','usuario','password','perfil','pin','otro')
+    - etiqueta                 : VARCHAR(50) NOT NULL (ej: "Email principal")
+    - valor_encriptado         : TEXT NOT NULL (AES-256)
+    - instrucciones            : TEXT NULL
+    - fecha_actualizacion      : DATETIME ON UPDATE CURRENT_TIMESTAMP
+    - visible_para_miembros    : BOOLEAN DEFAULT TRUE
+    - created_at               : DATETIME DEFAULT CURRENT_TIMESTAMP
+
+    Notas:
+    - Solo visible para usuarios con plaza ocupada y estado aprobado
+
+--------------------------------------------------------------------------------
+
+12. HISTORIAL_CREDENCIAL
+--------------------------------------------------------------------------------
+    Descripción: Registro de cambios en credenciales (auditoría).
+    
+    Atributos:
+    - id_historial (PK)        : INT UNSIGNED AUTO_INCREMENT
+    - id_credencial (FK)       : INT UNSIGNED NOT NULL
+    - valor_anterior_encriptado: TEXT NOT NULL
+    - id_usuario_cambio (FK)   : INT UNSIGNED NOT NULL
+    - fecha_cambio             : DATETIME DEFAULT CURRENT_TIMESTAMP
+    - ip_cambio                : VARCHAR(45) NULL
+
+    Notas:
+    - Se crea registro automáticamente al modificar una credencial
+    - Permite detectar cambios no autorizados
+
+================================================================================
+                           MÓDULO: PAGOS
+================================================================================
+
+13. PAGO
+--------------------------------------------------------------------------------
+    Descripción: Registro de transacciones y pagos de los miembros.
+    
+    Atributos:
+    - id_pago (PK)             : INT UNSIGNED AUTO_INCREMENT
+    - id_usuario (FK)          : INT UNSIGNED NOT NULL
+    - id_plaza (FK)            : INT UNSIGNED NOT NULL
+    - id_suscripcion (FK)      : INT UNSIGNED NOT NULL (desnormalizado para consultas)
+    - id_metodo_pago (FK)      : INT UNSIGNED NOT NULL
+    - monto                    : DECIMAL(10,2) NOT NULL
+    - moneda                   : CHAR(3) DEFAULT 'EUR'
+    - monto_reembolsado        : DECIMAL(10,2) DEFAULT 0.00
+    - fecha_pago               : DATETIME DEFAULT CURRENT_TIMESTAMP
+    - fecha_retencion_hasta    : DATE NOT NULL
+    - fecha_liberacion         : DATETIME NULL
+    - referencia_externa       : VARCHAR(100) NULL (ID pasarela)
+    - estado                   : ENUM('pendiente','fallido','retenido','liberado',
+                                      'reembolsado','reembolso_parcial','disputado')
+    - ciclo_inicio             : DATE NOT NULL
+    - ciclo_fin                : DATE NOT NULL
+    - created_at               : DATETIME DEFAULT CURRENT_TIMESTAMP
+
+    Notas:
+    - Estado 'fallido' para pagos rechazados por la pasarela
+    - monto_reembolsado permite reembolsos parciales
+
+--------------------------------------------------------------------------------
+
+14. DISPUTA
+--------------------------------------------------------------------------------
+    Descripción: Gestión formal de disputas sobre pagos.
+    
+    Atributos:
+    - id_disputa (PK)          : INT UNSIGNED AUTO_INCREMENT
+    - id_pago (FK)             : INT UNSIGNED NOT NULL
+    - id_reclamante (FK)       : INT UNSIGNED NOT NULL
+    - motivo                   : ENUM('no_acceso','credenciales_invalidas',
+                                      'servicio_cancelado','cobro_incorrecto','otro')
+    - descripcion              : TEXT NOT NULL
+    - evidencia_urls           : JSON NULL (array de URLs de capturas)
+    - fecha_apertura           : DATETIME DEFAULT CURRENT_TIMESTAMP
+    - fecha_resolucion         : DATETIME NULL
+    - resolucion               : ENUM('favor_usuario','favor_anfitrion',
+                                      'reembolso_total','reembolso_parcial') NULL
+    - monto_resuelto           : DECIMAL(10,2) NULL
+    - notas_resolucion         : TEXT NULL
+    - id_agente_resolutor (FK) : INT UNSIGNED NULL
+    - estado                   : ENUM('abierta','en_revision','resuelta','cerrada')
+
+    Notas:
+    - Una disputa bloquea la liberación del pago hasta resolución
+
+================================================================================
+                           MÓDULO: SOPORTE
+================================================================================
+
+15. TICKET_SOPORTE
+--------------------------------------------------------------------------------
+    Descripción: Incidencias y problemas reportados por los usuarios.
+    
+    Atributos:
+    - id_ticket (PK)           : INT UNSIGNED AUTO_INCREMENT
+    - id_usuario (FK)          : INT UNSIGNED NOT NULL
+    - id_suscripcion (FK)      : INT UNSIGNED NULL
+    - id_pago (FK)             : INT UNSIGNED NULL
+    - id_disputa (FK)          : INT UNSIGNED NULL
+    - asunto                   : VARCHAR(200) NOT NULL
+    - descripcion              : TEXT NOT NULL
+    - categoria                : ENUM('acceso','pago','credenciales','cuenta',
+                                      'grupo','tecnico','otro')
+    - prioridad                : ENUM('baja','media','alta','urgente') DEFAULT 'media'
+    - estado                   : ENUM('abierto','en_proceso','pendiente_usuario',
+                                      'resuelto','cerrado') DEFAULT 'abierto'
+    - fecha_apertura           : DATETIME DEFAULT CURRENT_TIMESTAMP
+    - fecha_primera_respuesta  : DATETIME NULL
+    - fecha_cierre             : DATETIME NULL
+    - id_agente (FK)           : INT UNSIGNED NULL (USUARIO con es_agente_soporte)
+    - satisfaccion             : TINYINT NULL (1-5, después de cerrar)
+
+    Notas:
+    - id_agente referencia a USUARIO donde es_agente_soporte = true
+
+--------------------------------------------------------------------------------
+
+16. MENSAJE_TICKET
+--------------------------------------------------------------------------------
+    Descripción: Mensajes dentro de un ticket de soporte (conversación).
+    
+    Atributos:
+    - id_mensaje (PK)          : INT UNSIGNED AUTO_INCREMENT
+    - id_ticket (FK)           : INT UNSIGNED NOT NULL
+    - id_autor (FK)            : INT UNSIGNED NOT NULL
+    - contenido                : TEXT NOT NULL
+    - fecha_mensaje            : DATETIME DEFAULT CURRENT_TIMESTAMP
+    - es_interno               : BOOLEAN DEFAULT FALSE (notas internas del equipo)
+    - adjuntos                 : JSON NULL (array de URLs)
+    - editado                  : BOOLEAN DEFAULT FALSE
+    - fecha_edicion            : DATETIME NULL
+
+================================================================================
+                      MÓDULO: NOTIFICACIONES Y CONFIG
+================================================================================
+
+17. NOTIFICACION
+--------------------------------------------------------------------------------
+    Descripción: Notificaciones enviadas a los usuarios.
+    
+    Atributos:
+    - id_notificacion (PK)     : INT UNSIGNED AUTO_INCREMENT
+    - id_usuario (FK)          : INT UNSIGNED NOT NULL
+    - tipo                     : ENUM('solicitud_recibida','solicitud_aprobada',
+                                      'solicitud_rechazada','pago_pendiente',
+                                      'pago_exitoso','pago_fallido','renovacion',
+                                      'credencial_actualizada','ticket_respuesta',
+                                      'disputa_abierta','disputa_resuelta','sistema')
+    - titulo                   : VARCHAR(200) NOT NULL
+    - mensaje                  : TEXT NOT NULL
+    - url_accion               : VARCHAR(500) NULL
+    - datos_extra              : JSON NULL (metadatos adicionales)
+    - fecha_creacion           : DATETIME DEFAULT CURRENT_TIMESTAMP
+    - fecha_lectura            : DATETIME NULL
+    - fecha_envio_email        : DATETIME NULL
+    - enviado_push             : BOOLEAN DEFAULT FALSE
+
+    Notas:
+    - fecha_lectura NULL = no leída
+    - Se puede enviar también por email/push
+
+--------------------------------------------------------------------------------
+
+18. CONFIGURACION
+--------------------------------------------------------------------------------
+    Descripción: Parámetros globales de configuración del sistema.
+    
+    Atributos:
+    - clave (PK)               : VARCHAR(50)
+    - valor                    : TEXT NOT NULL
+    - tipo                     : ENUM('string','number','boolean','json')
+    - descripcion              : VARCHAR(255) NULL
+    - categoria                : VARCHAR(50) DEFAULT 'general'
+    - modificable              : BOOLEAN DEFAULT TRUE
+    - updated_at               : DATETIME ON UPDATE CURRENT_TIMESTAMP
+    - updated_by (FK)          : INT UNSIGNED NULL
+
+    Valores iniciales sugeridos:
+    - 'comision_plataforma'    : '5' (porcentaje)
+    - 'dias_retencion_pago'    : '30'
+    - 'max_grupos_por_usuario' : '10'
+    - 'max_suscripciones_grupo': '20'
+    - 'tiempo_expiracion_token': '3600' (segundos)
+    - 'moneda_defecto'         : 'EUR'
+
+--------------------------------------------------------------------------------
+
+19. LOG_AUDITORIA
+--------------------------------------------------------------------------------
+    Descripción: Registro de acciones críticas para auditoría y seguridad.
+    
+    Atributos:
+    - id_log (PK)              : BIGINT UNSIGNED AUTO_INCREMENT
+    - id_usuario (FK)          : INT UNSIGNED NULL (null si es sistema)
+    - accion                   : VARCHAR(100) NOT NULL
+    - entidad                  : VARCHAR(50) NOT NULL (nombre de tabla afectada)
+    - id_entidad               : INT UNSIGNED NULL
+    - datos_anteriores         : JSON NULL
+    - datos_nuevos             : JSON NULL
+    - ip                       : VARCHAR(45) NULL
+    - user_agent               : VARCHAR(500) NULL
+    - fecha                    : DATETIME DEFAULT CURRENT_TIMESTAMP
+
+    Acciones a registrar:
+    - login, logout, login_fallido
+    - crear_suscripcion, cancelar_suscripcion
+    - pago_realizado, pago_fallido, reembolso
+    - cambio_credenciales, acceso_credenciales
+    - disputa_abierta, disputa_resuelta
+    - cambio_password, recuperacion_password
+
+
+================================================================================
+                              RELACIONES (25)
+================================================================================
+
+GESTIÓN DE USUARIOS
+--------------------------------------------------------------------------------
+1.  USUARIO 1:N TOKEN
+    Un usuario puede tener múltiples tokens activos.
+
+2.  USUARIO 1:N METODO_PAGO_USUARIO
+    Un usuario puede tener varios métodos de pago.
+
+GRUPOS Y MEMBRESÍAS
+--------------------------------------------------------------------------------
+3.  USUARIO 1:N UNIDAD_FAMILIAR (administra)
+    Un usuario puede administrar múltiples grupos.
+
+4.  USUARIO N:M UNIDAD_FAMILIAR (pertenece) [vía MIEMBRO_UNIDAD]
+    Relación muchos a muchos con atributos.
+
+5.  USUARIO 1:N SOLICITUD (solicita)
+    Un usuario puede enviar múltiples solicitudes.
+
+6.  USUARIO 1:N SOLICITUD (aprueba)
+    Un usuario puede aprobar/rechazar solicitudes.
+
+7.  SOLICITUD N:1 UNIDAD_FAMILIAR
+    Solicitudes de unión a grupos.
+
+8.  SOLICITUD N:1 SUSCRIPCION
+    Solicitudes de unión a suscripciones.
+
+SERVICIOS Y SUSCRIPCIONES
+--------------------------------------------------------------------------------
+9.  SERVICIO 1:N SUSCRIPCION
+    Un servicio puede tener múltiples suscripciones.
+
+10. UNIDAD_FAMILIAR 1:N SUSCRIPCION
+    Un grupo puede tener múltiples suscripciones.
+
+11. USUARIO 1:N SUSCRIPCION (es anfitrión)
+    Un usuario puede ser anfitrión de varias suscripciones.
+
+12. SUSCRIPCION 1:N HISTORIAL_ANFITRION
+    Historial de cambios de anfitrión.
+
+12b. USUARIO 1:N HISTORIAL_ANFITRION (como anfitrión anterior/nuevo)
+     Un usuario puede aparecer en múltiples transferencias.
+
+13. SUSCRIPCION 1:N PLAZA
+    Una suscripción tiene múltiples plazas.
+
+14. USUARIO 1:N PLAZA (ocupa)
+    Un usuario puede ocupar plazas en diferentes suscripciones.
+
+15. SUSCRIPCION 1:N CREDENCIAL
+    Una suscripción puede tener múltiples credenciales.
+
+16. CREDENCIAL 1:N HISTORIAL_CREDENCIAL
+    Historial de cambios de cada credencial.
+
+PAGOS
+--------------------------------------------------------------------------------
+17. USUARIO 1:N PAGO
+    Un usuario realiza múltiples pagos.
+
+18. PLAZA 1:N PAGO
+    Cada plaza genera pagos periódicos.
+
+19. METODO_PAGO_USUARIO 1:N PAGO
+    Un método de pago se usa en múltiples pagos.
+
+20. PAGO 1:N DISPUTA
+    Un pago puede tener disputas asociadas.
+
+SOPORTE
+--------------------------------------------------------------------------------
+21. USUARIO 1:N TICKET_SOPORTE (abre)
+    Un usuario puede abrir múltiples tickets.
+
+22. USUARIO 1:N TICKET_SOPORTE (atiende como agente)
+    Un agente puede atender múltiples tickets.
+
+23. TICKET_SOPORTE 1:N MENSAJE_TICKET
+    Un ticket tiene múltiples mensajes.
+
+24. DISPUTA 1:1 TICKET_SOPORTE (opcional)
+    Una disputa puede generar un ticket asociado.
+
+NOTIFICACIONES
+--------------------------------------------------------------------------------
+25. USUARIO 1:N NOTIFICACION
+    Un usuario recibe múltiples notificaciones.
+
+
+================================================================================
+                        DIAGRAMA E-R (Representación Textual)
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         NÚCLEO DEL SISTEMA                                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+                                ┌─────────────┐
+                                │   SERVICIO  │
+                                └──────┬──────┘
+                                       │ 1:N
+                                       ▼
+┌──────────┐     N:M       ┌───────────────────┐     1:N     ┌──────────────┐
+│          │◄─────────────►│                   │◄───────────►│              │
+│  USUARIO │ MIEMBRO_      │    SUSCRIPCION    │             │  CREDENCIAL  │
+│          │ UNIDAD        │                   │             │              │
+└────┬─────┘               └─────────┬─────────┘             └──────┬───────┘
+     │                               │                              │
+     │                               │ 1:N                          │ 1:N
+     │                               ▼                              ▼
+     │                       ┌───────────────┐             ┌────────────────┐
+     │ 1:N                   │     PLAZA     │             │   HISTORIAL_   │
+     │                       └───────┬───────┘             │   CREDENCIAL   │
+     ▼                               │                     └────────────────┘
+┌────────────────┐                   │ 1:N
+│ UNIDAD_FAMILIAR│                   ▼
+└────────────────┘           ┌───────────────┐
+                             │     PAGO      │
+                             └───────┬───────┘
+                                     │ 1:N
+                                     ▼
+                             ┌───────────────┐
+                             │    DISPUTA    │
+                             └───────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        MÓDULOS COMPLEMENTARIOS                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  AUTENTICACIÓN             SOLICITUDES              SOPORTE
+  ──────────────            ───────────              ───────
+  USUARIO                   USUARIO                  USUARIO
+      │ 1:N                     │ 1:N                    │ 1:N
+      ▼                         ▼                        ▼
+    TOKEN              SOLICITUD ───► UNIDAD_FAM   TICKET_SOPORTE
+                                ───► SUSCRIPCION        │ 1:N
+                                                        ▼
+                                                   MENSAJE_TICKET
+
+  PAGOS                     HISTORIAL                SISTEMA
+  ─────                     ─────────                ───────
+  USUARIO                   SUSCRIPCION              CONFIGURACION
+      │ 1:N                     │ 1:N                LOG_AUDITORIA
+      ▼                         ▼
+  METODO_PAGO_USUARIO    HISTORIAL_ANFITRION
+
+  COMUNICACIÓN
+  ────────────
+  USUARIO
+      │ 1:N
+      ▼
+  NOTIFICACION
+
+
+================================================================================
+                       RESTRICCIONES DE INTEGRIDAD (15)
+================================================================================
+
+1.  Un usuario solo puede ocupar UNA plaza en una misma suscripción.
+    → UNIQUE(id_suscripcion, id_usuario) en PLAZA WHERE id_usuario IS NOT NULL
+
+2.  El anfitrión de una suscripción DEBE ser miembro activo de la unidad familiar.
+    → Validar en aplicación antes de crear suscripción
+
+3.  Solo se pueden enviar solicitudes a suscripciones con plazas disponibles.
+    → Validar COUNT(plazas ocupadas) < num_plazas_total
+
+4.  Los pagos solo se liberan al anfitrión si NO hay disputas abiertas.
+    → CHECK estado disputa != 'abierta' antes de liberar
+
+5.  El código de invitación debe ser ÚNICO en todo el sistema.
+    → UNIQUE INDEX en codigo_invitacion
+
+6.  El número de plazas NO puede superar el máximo del servicio.
+    → SUSCRIPCION.num_plazas_total <= SERVICIO.max_usuarios
+
+7.  Las credenciales solo son visibles para usuarios con plaza OCUPADA.
+    → Validar en aplicación/API
+
+8.  Un usuario debe tener al menos un método de pago ACTIVO para ocupar plazas.
+    → Validar antes de aprobar solicitud de suscripción
+
+9.  No puede existir más de UNA solicitud PENDIENTE del mismo usuario
+    al mismo grupo o suscripción.
+    → UNIQUE(id_solicitante, id_unidad) WHERE estado = 'pendiente'
+    → UNIQUE(id_solicitante, id_suscripcion) WHERE estado = 'pendiente'
+
+10. El administrador de una unidad es AUTOMÁTICAMENTE miembro de la misma.
+    → Trigger/lógica al crear UNIDAD_FAMILIAR
+
+11. Solo usuarios con es_agente_soporte = TRUE pueden ser asignados a tickets.
+    → CHECK en asignación de id_agente
+
+12. Un PAGO en estado 'disputado' no puede pasar a 'liberado' directamente.
+    → Máquina de estados en aplicación
+
+13. Al eliminar un usuario (soft delete), mantener históricos pero anonimizar.
+    → No borrado físico, estado = 'eliminado'
+
+14. Un método de pago solo puede ser predeterminado si está ACTIVO.
+    → CHECK es_predeterminado = FALSE OR estado = 'activo'
+
+15. La fecha de renovación debe ser POSTERIOR a la fecha de inicio.
+    → CHECK fecha_renovacion > fecha_inicio
+
+
+================================================================================
+                              ÍNDICES SUGERIDOS
+================================================================================
+
+USUARIO
+  - UNIQUE: email
+  - INDEX: estado, fecha_registro
+  - INDEX: es_agente_soporte (parcial, para asignaciones)
+
+TOKEN
+  - UNIQUE: token
+  - INDEX: id_usuario, tipo, usado
+  - INDEX: fecha_expiracion (para limpieza)
+
+METODO_PAGO_USUARIO
+  - INDEX: id_usuario, es_predeterminado
+  - INDEX: estado
+
+UNIDAD_FAMILIAR
+  - UNIQUE: codigo_invitacion
+  - INDEX: id_administrador
+  - INDEX: estado
+
+MIEMBRO_UNIDAD
+  - UNIQUE: (id_usuario, id_unidad)
+  - INDEX: id_unidad, estado
+  - INDEX: id_usuario, estado
+
+SOLICITUD
+  - INDEX: id_solicitante, estado
+  - INDEX: id_unidad, estado
+  - INDEX: id_suscripcion, estado
+  - INDEX: fecha_solicitud
+
+SERVICIO
+  - INDEX: categoria, activo
+  - INDEX: nombre (para búsquedas)
+
+SUSCRIPCION
+  - INDEX: id_unidad, estado
+  - INDEX: id_anfitrion
+  - INDEX: fecha_renovacion, estado (para jobs de renovación)
+  - INDEX: id_servicio
+
+PLAZA
+  - INDEX: id_suscripcion, estado
+  - INDEX: id_usuario
+  - UNIQUE: (id_suscripcion, numero_plaza)
+
+CREDENCIAL
+  - INDEX: id_suscripcion
+
+HISTORIAL_CREDENCIAL
+  - INDEX: id_credencial, fecha_cambio
+
+PAGO
+  - INDEX: id_usuario, estado
+  - INDEX: id_plaza
+  - INDEX: id_suscripcion, ciclo_inicio
+  - INDEX: estado, fecha_retencion_hasta (para liberaciones)
+  - INDEX: referencia_externa
+
+DISPUTA
+  - INDEX: id_pago
+  - INDEX: estado, fecha_apertura
+  - INDEX: id_reclamante
+
+TICKET_SOPORTE
+  - INDEX: id_usuario, estado
+  - INDEX: id_agente, estado
+  - INDEX: estado, prioridad, fecha_apertura
+
+MENSAJE_TICKET
+  - INDEX: id_ticket, fecha_mensaje
+
+NOTIFICACION
+  - INDEX: id_usuario, fecha_lectura (parcial WHERE fecha_lectura IS NULL)
+  - INDEX: fecha_creacion
+
+LOG_AUDITORIA
+  - INDEX: id_usuario, fecha
+  - INDEX: entidad, id_entidad
+  - INDEX: accion, fecha
+
+
+================================================================================
+                              NOTAS TÉCNICAS
+================================================================================
+
+1. SEGURIDAD DE CREDENCIALES
+   - Passwords: bcrypt con cost factor 12
+   - Tokens: hash SHA-256 (no almacenar en plano)
+   - Credenciales suscripción: AES-256-GCM con clave rotativa
+   - Nunca loguear valores de credenciales
+
+2. SISTEMA DE PAGOS
+   - Integrar Stripe como principal (soporta retenciones)
+   - PayPal como alternativa
+   - Webhooks para actualizar estados en tiempo real
+   - Reintentos automáticos para pagos fallidos (3 intentos)
+
+3. SOFT DELETE
+   - Tablas principales usan campo 'estado' para borrado lógico
+   - LOG_AUDITORIA retiene historial completo
+   - GDPR: proceso de anonimización para solicitudes de eliminación
+
+4. ESCALABILIDAD
+   - Particionar PAGO, NOTIFICACION, LOG_AUDITORIA por fecha
+   - Considerar tabla PAGO_HISTORICO para pagos > 2 años
+   - Cache Redis para sesiones y notificaciones no leídas
+
+5. NORMALIZACIÓN
+   - Modelo en 3FN (Tercera Forma Normal)
+   - Desnormalizaciones justificadas:
+     * id_suscripcion en PAGO (evita JOINs costosos)
+     * precio_por_plaza (valor calculado frecuente)
+
+6. TIMESTAMPS
+   - Todas las entidades principales incluyen created_at
+   - Entidades editables incluyen updated_at
+   - Usar UTC en base de datos, convertir en aplicación
+
+7. CHARSET Y COLLATION
+   - utf8mb4 para soporte completo de emojis
+   - utf8mb4_unicode_ci para ordenamiento correcto
+
+8. JOBS PROGRAMADOS NECESARIOS
+   - Limpieza de tokens expirados (diario)
+   - Liberación automática de pagos retenidos (diario)
+   - Notificaciones de renovación próxima (3 días antes)
+   - Cancelación de suscripciones con pagos fallidos
+   - Archivado de logs antiguos (mensual)
+
+
+================================================================================
+                         RESUMEN DE ENTIDADES
+================================================================================
+
+  #  │ Entidad                │ Módulo           │ Tipo
+ ────┼────────────────────────┼──────────────────┼─────────────────
+  1  │ USUARIO                │ Usuarios         │ Principal
+  2  │ TOKEN                  │ Usuarios         │ Auxiliar
+  3  │ METODO_PAGO_USUARIO    │ Usuarios         │ Principal
+  4  │ UNIDAD_FAMILIAR        │ Grupos           │ Principal
+  5  │ MIEMBRO_UNIDAD         │ Grupos           │ Intermedia (N:M)
+  6  │ SOLICITUD              │ Grupos           │ Principal
+  7  │ SERVICIO               │ Suscripciones    │ Catálogo
+  8  │ SUSCRIPCION            │ Suscripciones    │ Principal
+  9  │ HISTORIAL_ANFITRION    │ Suscripciones    │ Auditoría
+  10 │ PLAZA                  │ Suscripciones    │ Principal
+  11 │ CREDENCIAL             │ Suscripciones    │ Principal
+  12 │ HISTORIAL_CREDENCIAL   │ Suscripciones    │ Auditoría
+  13 │ PAGO                   │ Pagos            │ Principal
+  14 │ DISPUTA                │ Pagos            │ Principal
+  15 │ TICKET_SOPORTE         │ Soporte          │ Principal
+  16 │ MENSAJE_TICKET         │ Soporte          │ Principal
+  17 │ NOTIFICACION           │ Comunicación     │ Principal
+  18 │ CONFIGURACION          │ Sistema          │ Config
+  19 │ LOG_AUDITORIA          │ Sistema          │ Auditoría
+
+ TOTAL: 19 entidades | 25 relaciones | 15 restricciones
+
+
+================================================================================
+              ✅ DOCUMENTO VALIDADO - LISTO PARA IMPLEMENTACIÓN
+================================================================================
