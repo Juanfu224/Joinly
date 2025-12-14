@@ -45,4 +45,20 @@ public interface SuscripcionRepository extends JpaRepository<Suscripcion, Long> 
 
     @Query("SELECT COUNT(s) FROM Suscripcion s WHERE s.unidad.id = :idUnidad AND s.estado = 'ACTIVA'")
     long contarSuscripcionesActivasEnUnidad(@Param("idUnidad") Long idUnidad);
+
+    /**
+     * Busca suscripciones con renovación próxima (entre hoy y fecha límite).
+     * Usada por ScheduledJobs para notificar renovaciones cercanas.
+     */
+    @Query("""
+        SELECT s FROM Suscripcion s
+        JOIN FETCH s.servicio
+        JOIN FETCH s.anfitrion
+        WHERE s.fechaRenovacion BETWEEN :hoy AND :fechaLimite
+        AND s.estado = 'ACTIVA'
+        AND s.renovacionAutomatica = true
+        """)
+    List<Suscripcion> findSuscripcionesProximasARenovar(
+            @Param("hoy") LocalDate hoy,
+            @Param("fechaLimite") LocalDate fechaLimite);
 }

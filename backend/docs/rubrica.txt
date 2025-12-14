@@ -1,0 +1,126 @@
+CHECKLIST SERVIDOR (DWES) v1.2 - PROYECTO FINAL
+Unificada por stack (Laravel, Spring Boot, NestJS/Express)
+================================================================================
+
+--------------------------------------------------------------------------------
+1. API REST (70%)
+--------------------------------------------------------------------------------
+
+A. DISEÑO IMPECABLE DE RECURSOS REST
+[ ] Recursos bien definidos y separados por entidad (/users, /products, etc.)
+[ ] Convención RESTful respetada (GET, POST, PUT/PATCH, DELETE)
+[ ] Rutas limpias, sin verbos en la URL (Evitar: /getUsers, /createUser)
+[ ] Uso correcto de rutas anidadas cuando corresponda (/users/{id}/orders)
+[ ] Soporte para paginación, filtros y ordenación (?page=1, ?sort=desc)
+[ ] Identificadores coherentes (id, uuid)
+[ ] Nombres de recursos en plural
+[ ] Documentación de todos los endpoints
+
+B. PUNTOS DE ENTRADA BIEN ORGANIZADOS
+[ ] Controladores separados por dominio/lógica de negocio
+[ ] Rutas agrupadas y estructuradas por funcionalidad
+[ ] Uso de middlewares, interceptores o filtros según el stack:
+    - Laravel: Middleware + routes/api.php
+    - Spring Boot: @Controller, @RestController + rutas REST
+    - NestJS: @Controller decorado + Guards/Pipes
+[ ] Separación de responsabilidades clara: controladores no contienen lógica de negocio compleja
+
+C. USO CORRECTO DE CÓDIGOS HTTP
+[ ] Respuestas exitosas: 200, 201, 204
+[ ] Errores correctamente usados: 400, 401, 403, 404, 422, 500
+[ ] Mensajes de error estructurados (ej: { "error": "mensaje", "code": 404 })
+[ ] Documentación especifica los códigos devueltos
+
+D. AUTENTICACIÓN Y AUTORIZACIÓN CON ROLES
+[ ] Sistema de login funcionando (JWT, sesiones o token)
+[ ] Acceso a rutas protegido por middleware o mecanismo similar
+[ ] Gestión de roles implementada según stack:
+    - Laravel: Middleware + Policy, Gate
+    - Spring Boot: @PreAuthorize, @Secured, filtros de seguridad
+    - NestJS: Guards + decoradores de roles
+[ ] Control de acceso efectivo a recursos según el rol del usuario
+
+E. PRUEBAS DE API CON BUENA COBERTURA
+[ ] Tests de los endpoints principales: casos de éxito y error
+[ ] Autenticación probada (acceso con y sin permisos)
+[ ] Validación del formato de respuesta JSON
+[ ] Tests automatizados según stack:
+    - Laravel: Feature, PHPUnit
+    - Spring Boot: MockMvc, WebMvcTest
+    - NestJS: SuperTest, Jest
+
+F. DOCUMENTACIÓN CLARA DE LA API
+[ ] Documentación con Swagger, OpenAPI o colección de Postman
+[ ] Ejemplos de uso con parámetros y respuestas
+[ ] Explicación del sistema de autenticación
+[ ] Repositorio incluye README con instrucciones de uso
+
+--------------------------------------------------------------------------------
+2. MVC (ESTRUCTURA DEL PROYECTO)
+--------------------------------------------------------------------------------
+
+A. SEPARACIÓN DE RESPONSABILIDADES
+[ ] Controladores gestionan la lógica de entrada/salida únicamente
+[ ] Lógica de negocio encapsulada en servicios o componentes
+[ ] Modelos acceden a la base de datos
+[ ] Las validaciones están separadas del controlador:
+    - Laravel: FormRequest
+    - Spring Boot: @Valid, DTOs
+    - NestJS: DTOs + Pipes
+
+B. ORGANIZACIÓN DEL PROYECTO POR COMPONENTES
+[ ] Estructura clara por módulos o funcionalidades
+[ ] Archivos y carpetas organizadas (controladores, modelos, servicios...)
+[ ] Se evita duplicar código (uso de servicios compartidos)
+[ ] Se aplican patrones adecuados al stack (SRP, IoC, etc.)
+
+C. AUTENTICACIÓN Y ROLES EN MVC
+[ ] Middleware, filtros o guards protegen rutas sensibles
+[ ] Comprobaciones de rol en controladores o servicios
+[ ] Comportamiento diferente según rol cuando aplica
+
+--------------------------------------------------------------------------------
+3. MODELO DE DATOS (30%)
+--------------------------------------------------------------------------------
+
+A. MODELO ESTRUCTURADO Y BIEN RELACIONADO
+[ ] Relación entre entidades definida y usada (1:1, 1:N, N:M)
+[ ] Definición clara de claves primarias y foráneas
+[ ] Uso de clases y anotaciones según stack:
+    - Laravel: hasMany, belongsTo, belongsToMany
+    - Spring Boot: @OneToMany, @ManyToOne, @ManyToMany
+    - NestJS/TypeORM: @OneToMany, @JoinTable, etc.
+
+B. CONSULTAS COMPLEJAS Y PERSONALIZADAS
+[ ] Consultas agregadas (count, avg, sum), filtros encadenados
+[ ] Queries anidadas o combinadas (where, join, groupBy)
+[ ] Consultas reutilizables implementadas:
+    - Laravel: Scopes (scopeActive())
+    - Spring Boot: métodos en repositorios (findByStatus())
+    - NestJS: servicios o query builders reutilizables
+
+C. DEFINICIÓN DE ESTRUCTURA DE DATOS (MIGRACIONES)
+[ ] Mecanismo de creación de esquema implementado:
+    - Laravel: migraciones (php artisan migrate), seeds
+    - Spring Boot: scripts SQL, Flyway o Liquibase
+    - NestJS: migraciones con TypeORM, Sequelize o Prisma
+[ ] Posibilidad de replicar la estructura de BD sin tocar el código manualmente
+
+D. DOCUMENTACIÓN DEL MODELO
+[ ] Diagrama de Entidad-Relación (ER)
+[ ] Descripción de tablas, campos y relaciones
+[ ] Justificación del diseño (por qué se estructura así)
+[ ] Incluido en la memoria técnica del proyecto
+
+--------------------------------------------------------------------------------
+4. NOTA SOBRE INSTALACIÓN Y EJECUCIÓN DEL SERVIDOR
+--------------------------------------------------------------------------------
+Aunque el despliegue se evalúa en otro módulo, para DWES es IMPRESCINDIBLE que:
+[ ] El servidor pueda ser instalado y ejecutado correctamente en entorno local.
+[ ] Esté documentado con instrucciones claras (README.md, scripts, etc.).
+[ ] Funcione sin intervención del autor, solo siguiendo la documentación.
+
+Esto es necesario para:
+- Probar la API REST o la aplicación MVC.
+- Ejecutar pruebas automáticas o manuales.
+- Verificar el modelo de datos, autenticación y lógica.

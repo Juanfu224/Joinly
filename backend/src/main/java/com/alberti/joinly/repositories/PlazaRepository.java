@@ -39,4 +39,11 @@ public interface PlazaRepository extends JpaRepository<Plaza, Long> {
         WHERE p.usuario.id = :idUsuario AND p.estado = 'OCUPADA'
         """)
     List<Plaza> findPlazasOcupadasPorUsuario(@Param("idUsuario") Long idUsuario);
+
+    /**
+     * Verifica si un usuario tiene una plaza con estado específico en una suscripción.
+     * Usada por CredencialService para validar acceso a credenciales.
+     */
+    boolean existsBySuscripcionIdAndUsuarioIdAndEstado(
+            Long idSuscripcion, Long idUsuario, EstadoPlaza estado);
 }
