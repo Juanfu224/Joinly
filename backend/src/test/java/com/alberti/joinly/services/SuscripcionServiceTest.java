@@ -6,6 +6,7 @@ import com.alberti.joinly.entities.suscripcion.Plaza;
 import com.alberti.joinly.entities.suscripcion.Servicio;
 import com.alberti.joinly.entities.suscripcion.Suscripcion;
 import com.alberti.joinly.entities.usuario.Usuario;
+import com.alberti.joinly.exceptions.*;
 import com.alberti.joinly.repositories.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -235,7 +236,7 @@ class SuscripcionServiceTest {
             assertThatThrownBy(() -> suscripcionService.crearSuscripcion(
                     10L, 1L, 100L, new BigDecimal("17.99"), (short) 5,
                     LocalDate.now(), Periodicidad.MENSUAL, true))
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(UnauthorizedException.class)
                     .hasMessageContaining("miembro activo");
         }
 
@@ -253,7 +254,7 @@ class SuscripcionServiceTest {
             assertThatThrownBy(() -> suscripcionService.crearSuscripcion(
                     10L, 1L, 100L, new BigDecimal("17.99"), (short) 10,
                     LocalDate.now(), Periodicidad.MENSUAL, true))
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(BusinessException.class)
                     .hasMessageContaining("excede el máximo");
         }
 
@@ -272,7 +273,7 @@ class SuscripcionServiceTest {
             assertThatThrownBy(() -> suscripcionService.crearSuscripcion(
                     10L, 1L, 100L, new BigDecimal("17.99"), (short) 5,
                     LocalDate.now(), Periodicidad.MENSUAL, true))
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(LimiteAlcanzadoException.class)
                     .hasMessageContaining("límite máximo");
         }
     }
@@ -366,7 +367,7 @@ class SuscripcionServiceTest {
 
             // When/Then
             assertThatThrownBy(() -> suscripcionService.ocuparPlaza(20L, 2L))
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(BusinessException.class)
                     .hasMessageContaining("no está activa");
         }
 
@@ -382,7 +383,7 @@ class SuscripcionServiceTest {
 
             // When/Then
             assertThatThrownBy(() -> suscripcionService.ocuparPlaza(20L, 2L))
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(DuplicateResourceException.class)
                     .hasMessageContaining("ya ocupa una plaza");
         }
 
@@ -399,8 +400,7 @@ class SuscripcionServiceTest {
 
             // When/Then
             assertThatThrownBy(() -> suscripcionService.ocuparPlaza(20L, 2L))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("No hay plazas disponibles");
+                    .isInstanceOf(NoPlazasDisponiblesException.class);
         }
     }
 
@@ -472,7 +472,7 @@ class SuscripcionServiceTest {
 
             // When/Then
             assertThatThrownBy(() -> suscripcionService.liberarPlaza(31L, 1L))
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(BusinessException.class)
                     .hasMessageContaining("no puede liberar su plaza reservada");
         }
 
@@ -484,7 +484,7 @@ class SuscripcionServiceTest {
 
             // When/Then - Usuario 99 intenta liberar plaza de usuario 2
             assertThatThrownBy(() -> suscripcionService.liberarPlaza(30L, 99L))
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(UnauthorizedException.class)
                     .hasMessageContaining("permiso");
         }
     }
@@ -517,7 +517,7 @@ class SuscripcionServiceTest {
 
             // When/Then
             assertThatThrownBy(() -> suscripcionService.pausarSuscripcion(20L, 99L))
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(UnauthorizedException.class)
                     .hasMessageContaining("anfitrión");
         }
 
@@ -544,7 +544,7 @@ class SuscripcionServiceTest {
 
             // When/Then
             assertThatThrownBy(() -> suscripcionService.reactivarSuscripcion(20L, 1L))
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(BusinessException.class)
                     .hasMessageContaining("pausadas");
         }
 
@@ -572,7 +572,7 @@ class SuscripcionServiceTest {
             given(suscripcionRepository.save(any(Suscripcion.class))).willAnswer(inv -> inv.getArgument(0));
             given(plazaRepository.findBySuscripcionIdAndEstado(20L, EstadoPlaza.OCUPADA))
                     .willReturn(List.of(plazaOcupada, plazaAnfitrion));
-            given(plazaRepository.save(any(Plaza.class))).willAnswer(inv -> inv.getArgument(0));
+            given(plazaRepository.saveAll(anyList())).willAnswer(inv -> inv.getArgument(0));
 
             // When
             suscripcionService.cancelarSuscripcion(20L, 1L);

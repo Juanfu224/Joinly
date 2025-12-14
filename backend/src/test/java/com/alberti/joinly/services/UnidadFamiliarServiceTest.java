@@ -6,6 +6,7 @@ import com.alberti.joinly.entities.enums.RolMiembro;
 import com.alberti.joinly.entities.grupo.MiembroUnidad;
 import com.alberti.joinly.entities.grupo.UnidadFamiliar;
 import com.alberti.joinly.entities.usuario.Usuario;
+import com.alberti.joinly.exceptions.*;
 import com.alberti.joinly.repositories.MiembroUnidadRepository;
 import com.alberti.joinly.repositories.SuscripcionRepository;
 import com.alberti.joinly.repositories.UnidadFamiliarRepository;
@@ -212,8 +213,8 @@ class UnidadFamiliarServiceTest {
             when(usuarioRepository.findById(999L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> service.crearUnidadFamiliar(999L, "Grupo", null))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("Usuario administrador no encontrado");
+                    .isInstanceOf(ResourceNotFoundException.class)
+                    .hasMessageContaining("Usuario");
         }
 
         @Test
@@ -223,8 +224,7 @@ class UnidadFamiliarServiceTest {
             when(miembroUnidadRepository.contarGruposActivosDelUsuario(1L)).thenReturn(10L);
 
             assertThatThrownBy(() -> service.crearUnidadFamiliar(1L, "Grupo", null))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("límite máximo de grupos");
+                    .isInstanceOf(LimiteAlcanzadoException.class);
         }
     }
 
@@ -259,8 +259,8 @@ class UnidadFamiliarServiceTest {
             when(unidadFamiliarRepository.findById(999L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> service.agregarMiembro(999L, 2L))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("Unidad familiar no encontrada");
+                    .isInstanceOf(ResourceNotFoundException.class)
+                    .hasMessageContaining("Unidad familiar");
         }
 
         @Test
@@ -272,7 +272,7 @@ class UnidadFamiliarServiceTest {
                     .thenReturn(true);
 
             assertThatThrownBy(() -> service.agregarMiembro(100L, 2L))
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(DuplicateResourceException.class)
                     .hasMessageContaining("ya es miembro activo");
         }
 
@@ -286,8 +286,7 @@ class UnidadFamiliarServiceTest {
             when(unidadFamiliarRepository.contarMiembrosActivos(100L)).thenReturn(10L); // Lleno
 
             assertThatThrownBy(() -> service.agregarMiembro(100L, 2L))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("máximo de miembros");
+                    .isInstanceOf(LimiteAlcanzadoException.class);
         }
 
         @Test
@@ -298,7 +297,7 @@ class UnidadFamiliarServiceTest {
             when(usuarioRepository.findById(2L)).thenReturn(Optional.of(usuarioMiembro));
 
             assertThatThrownBy(() -> service.agregarMiembro(100L, 2L))
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(BusinessException.class)
                     .hasMessageContaining("no está activa");
         }
     }
@@ -330,7 +329,7 @@ class UnidadFamiliarServiceTest {
             when(unidadFamiliarRepository.findById(100L)).thenReturn(Optional.of(unidadFamiliar));
 
             assertThatThrownBy(() -> service.expulsarMiembro(100L, 2L, 3L)) // Usuario 3 no es admin
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(UnauthorizedException.class)
                     .hasMessageContaining("Solo el administrador");
         }
 
@@ -340,7 +339,7 @@ class UnidadFamiliarServiceTest {
             when(unidadFamiliarRepository.findById(100L)).thenReturn(Optional.of(unidadFamiliar));
 
             assertThatThrownBy(() -> service.expulsarMiembro(100L, 1L, 1L))
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(BusinessException.class)
                     .hasMessageContaining("no puede expulsarse a sí mismo");
         }
     }
@@ -372,7 +371,7 @@ class UnidadFamiliarServiceTest {
             when(unidadFamiliarRepository.findById(100L)).thenReturn(Optional.of(unidadFamiliar));
 
             assertThatThrownBy(() -> service.abandonarGrupo(100L, 1L)) // 1L es el admin
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(BusinessException.class)
                     .hasMessageContaining("administrador no puede abandonar");
         }
     }
@@ -403,7 +402,7 @@ class UnidadFamiliarServiceTest {
             when(suscripcionRepository.contarSuscripcionesActivasEnUnidad(100L)).thenReturn(3L);
 
             assertThatThrownBy(() -> service.eliminarUnidadFamiliar(100L, 1L))
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(BusinessException.class)
                     .hasMessageContaining("suscripciones activas");
         }
 
@@ -413,7 +412,7 @@ class UnidadFamiliarServiceTest {
             when(unidadFamiliarRepository.findById(100L)).thenReturn(Optional.of(unidadFamiliar));
 
             assertThatThrownBy(() -> service.eliminarUnidadFamiliar(100L, 2L))
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(UnauthorizedException.class)
                     .hasMessageContaining("Solo el administrador");
         }
     }

@@ -1,0 +1,300 @@
+# 📋 TO-DO LIST - Mejoras y Correcciones Backend Joinly
+
+> **Última actualización:** 14/12/2025  
+> **Autor de la auditoría:** GitHub Copilot (Arquitecto de Software)  
+> **Puntuación actual estimada:** ~80/100  
+> **Puntuación potencial:** 95/100
+
+---
+
+## 📊 Resumen del Estado de la Rúbrica
+
+| Categoría | Estado | Puntuación |
+|-----------|--------|------------|
+| API REST (70%) | 🟡 En progreso | 85/100 |
+| MVC - Estructura | ✅ Excelente | 95/100 |
+| Modelo de Datos (30%) | 🟡 Requiere trabajo | 75/100 |
+| Documentación | 🔴 Crítico | 30/100 |
+
+---
+
+## 🔴 CRÍTICAS (Bloquean entrega) - Semana 1
+
+### 1. ~~Implementar Migraciones con Flyway~~ ✅ COMPLETADO
+- [x] Añadir dependencia Flyway en `pom.xml`
+- [x] Crear directorio `src/main/resources/db/migration/`
+- [x] Crear script `V1__Initial_Schema.sql` con todas las tablas (19 tablas)
+- [x] Cambiar `spring.jpa.hibernate.ddl-auto=update` → `validate`
+- [x] Configuración de Flyway en `application.properties`
+
+**Archivos modificados:**
+- `pom.xml` - Añadida dependencia `flyway-mysql`
+- `application.properties` - Configuración Flyway + ddl-auto=validate
+- Nuevo: `src/main/resources/db/migration/V1__Initial_Schema.sql`
+
+**Completado:** 14/12/2025
+
+---
+
+### 2. Refactorizar Autenticación (Eliminar X-User-Id)
+- [ ] Crear método helper para extraer usuario del SecurityContext
+- [ ] Refactorizar `AuthController.java` (si aplica)
+- [ ] Refactorizar `UsuarioController.java`
+- [ ] Refactorizar `UnidadFamiliarController.java`
+- [ ] Refactorizar `SuscripcionController.java`
+- [ ] Refactorizar `SolicitudController.java`
+- [ ] Refactorizar `PagoController.java`
+- [ ] Refactorizar `CredencialController.java`
+- [ ] Refactorizar `NotificacionController.java`
+- [ ] Refactorizar `TicketSoporteController.java`
+- [ ] Refactorizar `DisputaController.java`
+- [ ] Actualizar documentación Swagger de los endpoints
+
+**Patrón a usar:**
+```java
+// ANTES (inseguro)
+@RequestHeader("X-User-Id") Long idUsuario
+
+// DESPUÉS (correcto)
+@AuthenticationPrincipal UserPrincipal principal
+// Y luego: principal.getId()
+```
+
+**Tiempo estimado:** 3-4 horas
+
+---
+
+### 3. Escribir README Completo
+- [ ] Crear `backend/README.md`
+- [ ] Sección: Descripción del proyecto
+- [ ] Sección: Tecnologías utilizadas (Java 25, Spring Boot 4, MySQL, JWT)
+- [ ] Sección: Requisitos previos
+- [ ] Sección: Instalación paso a paso
+- [ ] Sección: Variables de entorno necesarias
+- [ ] Sección: Ejecución del proyecto
+- [ ] Sección: Endpoints principales (resumen)
+- [ ] Sección: Acceso a Swagger UI
+- [ ] Crear/Actualizar `docker-compose.yml` para BD MySQL
+
+**Tiempo estimado:** 1-2 horas
+
+---
+
+### 4. Añadir Tests de Integración
+- [ ] `AuthControllerIntegrationTest.java`
+  - [ ] Test registro exitoso
+  - [ ] Test registro con email duplicado
+  - [ ] Test login exitoso
+  - [ ] Test login con credenciales incorrectas
+  - [ ] Test refresh token
+- [ ] `UnidadFamiliarControllerIntegrationTest.java`
+  - [ ] Test crear unidad
+  - [ ] Test buscar por código
+  - [ ] Test listar miembros
+- [ ] `SuscripcionControllerIntegrationTest.java`
+  - [ ] Test crear suscripción
+  - [ ] Test ocupar plaza
+  - [ ] Test liberar plaza
+- [ ] `PagoControllerIntegrationTest.java`
+  - [ ] Test procesar pago
+  - [ ] Test listar mis pagos
+
+**Tiempo estimado:** 4-5 horas
+
+---
+
+## 🟡 IMPORTANTES (Mejoran nota) - Semana 2
+
+### 5. Crear ServicioController (CRUD Catálogo)
+- [ ] Crear `ServicioController.java`
+- [ ] Endpoint `GET /api/v1/servicios` - Listar todos (público)
+- [ ] Endpoint `GET /api/v1/servicios/{id}` - Obtener por ID
+- [ ] Endpoint `GET /api/v1/servicios/categoria/{categoria}` - Filtrar por categoría
+- [ ] Endpoint `POST /api/v1/servicios` - Crear (solo admin)
+- [ ] Endpoint `PUT /api/v1/servicios/{id}` - Actualizar (solo admin)
+- [ ] Endpoint `DELETE /api/v1/servicios/{id}` - Eliminar (solo admin)
+- [ ] Crear DTOs: `ServicioResponse`, `CreateServicioRequest`, `UpdateServicioRequest`
+
+**Tiempo estimado:** 2-3 horas
+
+---
+
+### 6. Crear MetodoPagoController
+- [ ] Crear `MetodoPagoController.java`
+- [ ] Endpoint `GET /api/v1/metodos-pago` - Listar mis métodos
+- [ ] Endpoint `POST /api/v1/metodos-pago` - Registrar nuevo
+- [ ] Endpoint `PUT /api/v1/metodos-pago/{id}/predeterminado` - Marcar como default
+- [ ] Endpoint `DELETE /api/v1/metodos-pago/{id}` - Eliminar
+- [ ] Crear DTOs: `MetodoPagoResponse`, `CreateMetodoPagoRequest`
+- [ ] Crear `MetodoPagoService.java`
+
+**Tiempo estimado:** 2-3 horas
+
+---
+
+### 7. Implementar Paginación en Más Endpoints
+- [ ] `GET /api/v1/suscripciones/unidad/{id}` - Añadir Pageable
+- [ ] `GET /api/v1/solicitudes/mis-solicitudes` - Añadir Pageable
+- [ ] `GET /api/v1/unidades/miembro` - Añadir Pageable
+- [ ] `GET /api/v1/usuarios/buscar` - Añadir Pageable
+
+**Tiempo estimado:** 1-2 horas
+
+---
+
+### 8. Añadir Filtros y Ordenación
+- [ ] Implementar parámetros `?sort=campo,asc|desc`
+- [ ] Implementar parámetros `?estado=ACTIVA`
+- [ ] Implementar parámetros `?fechaDesde=&fechaHasta=`
+- [ ] Documentar en Swagger los query params disponibles
+
+**Tiempo estimado:** 2-3 horas
+
+---
+
+### 9. Mejorar Documentación OpenAPI
+- [ ] Añadir `@SecurityScheme` para Bearer JWT en `OpenApiConfig.java`
+- [ ] Añadir `@SecurityRequirement` en controladores protegidos
+- [ ] Verificar que Swagger UI muestra botón "Authorize"
+- [ ] Añadir ejemplos de request/response en endpoints complejos
+
+**Tiempo estimado:** 1-2 horas
+
+---
+
+### 10. Unificar Roles del Sistema
+- [ ] Revisar uso de `ROLE_SUPPORT` vs `ROLE_AGENTE` vs `ROLE_ADMIN`
+- [ ] Definir roles oficiales: `ROLE_USER`, `ROLE_AGENTE`, `ROLE_ADMIN`
+- [ ] Actualizar `SecurityConfig.java`
+- [ ] Actualizar `@PreAuthorize` en controladores
+- [ ] Actualizar `UserPrincipal.java`
+
+**Tiempo estimado:** 1-2 horas
+
+---
+
+### 11. Mover Credenciales a Variables de Entorno
+- [ ] Crear `application-dev.properties` para desarrollo
+- [ ] Crear `application-prod.properties` para producción
+- [ ] Externalizar `spring.datasource.password`
+- [ ] Externalizar `jwt.secret-key`
+- [ ] Externalizar `joinly.encryption.key`
+- [ ] Documentar variables en README
+
+**Tiempo estimado:** 1 hora
+
+---
+
+## 🟢 DESEABLES (Valor añadido) - Semana 3+
+
+### 12. Endpoint de Renovación Manual de Suscripción
+- [ ] Endpoint `POST /api/v1/suscripciones/{id}/renovar`
+- [ ] Lógica para extender fecha de renovación
+- [ ] Notificación a miembros
+
+**Tiempo estimado:** 1-2 horas
+
+---
+
+### 13. Sistema de Valoraciones
+- [ ] Crear entidad `Valoracion.java`
+- [ ] Crear `ValoracionRepository.java`
+- [ ] Crear `ValoracionService.java`
+- [ ] Crear `ValoracionController.java`
+- [ ] Endpoints para valorar anfitriones/suscripciones
+- [ ] Calcular rating promedio
+
+**Tiempo estimado:** 3-4 horas
+
+---
+
+### 14. Rate Limiting para Prevenir Abuse
+- [ ] Añadir dependencia Bucket4j o similar
+- [ ] Configurar límites por endpoint
+- [ ] Añadir headers `X-RateLimit-*` en respuestas
+
+**Tiempo estimado:** 2-3 horas
+
+---
+
+### 15. Implementar Auditoría con LOG_AUDITORIA
+- [ ] Crear `LogAuditoriaService.java`
+- [ ] Registrar eventos de login/logout
+- [ ] Registrar cambios en suscripciones
+- [ ] Registrar acceso a credenciales
+- [ ] Endpoint admin para consultar logs
+
+**Tiempo estimado:** 3-4 horas
+
+---
+
+### 16. Verificación de Email con Token Real
+- [ ] Generar token único al registrar
+- [ ] Endpoint `GET /api/v1/auth/verify-email?token=xxx`
+- [ ] Enviar email con enlace (mock o real con JavaMailSender)
+- [ ] Marcar email como verificado
+
+**Tiempo estimado:** 2-3 horas
+
+---
+
+### 17. Aprovechar Características Java 25
+- [ ] Activar Virtual Threads: `spring.threads.virtual.enabled=true`
+- [ ] Usar Pattern Matching for switch donde aplique
+- [ ] Eliminar métodos `@Deprecated` en DTOs
+- [ ] Considerar Sealed Classes para jerarquías de DTOs
+
+**Tiempo estimado:** 2-3 horas
+
+---
+
+## 📁 Estructura de Archivos Nuevos a Crear
+
+```
+backend/
+├── README.md                          [PENDIENTE - Crítico]
+├── src/main/resources/
+│   ├── db/migration/
+│   │   └── V1__Initial_Schema.sql     [PENDIENTE - Crítico]
+│   ├── application-dev.properties     [PENDIENTE - Importante]
+│   └── application-prod.properties    [PENDIENTE - Importante]
+├── src/main/java/.../controllers/
+│   ├── ServicioController.java        [PENDIENTE - Importante]
+│   └── MetodoPagoController.java      [PENDIENTE - Importante]
+├── src/main/java/.../services/
+│   └── MetodoPagoService.java         [PENDIENTE - Importante]
+├── src/test/java/.../controllers/
+│   ├── AuthControllerIntegrationTest.java           [PENDIENTE - Crítico]
+│   ├── UnidadFamiliarControllerIntegrationTest.java [PENDIENTE - Crítico]
+│   ├── SuscripcionControllerIntegrationTest.java    [PENDIENTE - Crítico]
+│   └── PagoControllerIntegrationTest.java           [PENDIENTE - Crítico]
+```
+
+---
+
+## 📈 Progreso General
+
+| Fase | Tareas | Completadas | Porcentaje |
+|------|--------|-------------|------------|
+| Críticas | 4 | 0 | 0% |
+| Importantes | 7 | 0 | 0% |
+| Deseables | 6 | 0 | 0% |
+| **TOTAL** | **17** | **0** | **0%** |
+
+---
+
+## 📝 Historial de Cambios
+
+| Fecha | Tarea | Estado | Notas |
+|-------|-------|--------|-------|
+| 14/12/2025 | Auditoría inicial | ✅ Completada | Documento creado |
+
+---
+
+## 🎯 Próximos Pasos Recomendados
+
+1. **Hoy:** Empezar con Flyway (tarea más crítica para la rúbrica)
+2. **Mañana:** Refactorizar autenticación (seguridad)
+3. **Siguiente:** README y tests
+
+¿Necesitas ayuda con alguna tarea específica? Puedo implementarla directamente.
