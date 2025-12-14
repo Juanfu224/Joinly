@@ -6,6 +6,8 @@ import com.alberti.joinly.dto.unidad.UnidadFamiliarResponse;
 import com.alberti.joinly.services.UnidadFamiliarService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,17 +22,27 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/unidades")
 @RequiredArgsConstructor
-@Tag(name = "Unidades Familiares", description = "Gestión de grupos/unidades familiares")
+@Tag(name = "Unidades Familiares", description = "API para gestionar grupos familiares. Un grupo puede tener múltiples miembros " +
+        "y suscripciones compartidas. Cada grupo tiene un administrador y un código de invitación único.")
 public class UnidadFamiliarController {
 
     private final UnidadFamiliarService unidadFamiliarService;
 
     @PostMapping
-    @Operation(summary = "Crear unidad familiar")
+    @Operation(
+            summary = "Crear grupo familiar",
+            description = "Crea un nuevo grupo familiar con el usuario como administrador. " +
+                    "Se genera automáticamente un código de invitación de 12 caracteres. " +
+                    "Límite: un usuario puede administrar máximo 10 grupos.")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Unidad familiar creada exitosamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos"),
-            @ApiResponse(responseCode = "422", description = "Límite de grupos alcanzado")
+            @ApiResponse(responseCode = "201", description = "Grupo creado exitosamente",
+                    content = @Content(schema = @Schema(implementation = UnidadFamiliarResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Nombre vacío o inválido",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado",
+                    content = @Content),
+            @ApiResponse(responseCode = "422", description = "Has alcanzado el límite de 10 grupos",
+                    content = @Content)
     })
     public ResponseEntity<UnidadFamiliarResponse> crearUnidad(
             @Parameter(description = "ID del usuario administrador", required = true) @RequestHeader("X-User-Id") Long idUsuario,
@@ -157,12 +169,18 @@ public class UnidadFamiliarController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Eliminar unidad familiar")
+    @Operation(
+            summary = "Eliminar grupo familiar",
+            description = "Elimina (soft delete) un grupo familiar. El grupo no puede tener suscripciones activas. " +
+                    "Solo el administrador puede realizar esta acción.")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Unidad eliminada exitosamente"),
-            @ApiResponse(responseCode = "400", description = "No se puede eliminar con suscripciones activas"),
-            @ApiResponse(responseCode = "403", description = "Solo el administrador puede eliminar el grupo"),
-            @ApiResponse(responseCode = "404", description = "Unidad no encontrada")
+            @ApiResponse(responseCode = "204", description = "Grupo eliminado exitosamente"),
+            @ApiResponse(responseCode = "400", description = "El grupo tiene suscripciones activas que deben cancelarse primero",
+                    content = @Content),
+            @ApiResponse(responseCode = "403", description = "Solo el administrador puede eliminar el grupo",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Grupo no encontrado",
+                    content = @Content)
     })
     public ResponseEntity<Void> eliminarUnidad(
             @Parameter(description = "ID de la unidad") @PathVariable Long id,

@@ -7,6 +7,8 @@ import com.alberti.joinly.dto.suscripcion.SuscripcionSummary;
 import com.alberti.joinly.services.SuscripcionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,18 +23,26 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/suscripciones")
 @RequiredArgsConstructor
-@Tag(name = "Suscripciones", description = "Gestión de suscripciones compartidas")
+@Tag(name = "Suscripciones", description = "API para gestionar suscripciones compartidas (Netflix, Spotify, etc.) " +
+        "dentro de grupos familiares. Incluye gestión de plazas y estados.")
 public class SuscripcionController {
 
     private final SuscripcionService suscripcionService;
 
     @PostMapping
-    @Operation(summary = "Crear suscripción")
+    @Operation(
+            summary = "Crear suscripción compartida",
+            description = "Crea una nueva suscripción dentro de un grupo familiar. El anfitrión debe ser miembro activo del grupo. " +
+                    "Se crean automáticamente todas las plazas, asignando la primera al anfitrión si se indica.")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Suscripción creada exitosamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos"),
-            @ApiResponse(responseCode = "404", description = "Unidad, servicio o usuario no encontrado"),
-            @ApiResponse(responseCode = "422", description = "El usuario no es miembro del grupo o límite alcanzado")
+            @ApiResponse(responseCode = "201", description = "Suscripción creada con todas sus plazas",
+                    content = @Content(schema = @Schema(implementation = SuscripcionResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos o número de plazas excede máximo del servicio",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Unidad, servicio o usuario no encontrado",
+                    content = @Content),
+            @ApiResponse(responseCode = "422", description = "El anfitrión no es miembro del grupo o se alcanzó límite de suscripciones (20)",
+                    content = @Content)
     })
     public ResponseEntity<SuscripcionResponse> crearSuscripcion(
             @Parameter(description = "ID del usuario anfitrión") @RequestHeader("X-User-Id") Long idAnfitrion,
@@ -155,12 +165,18 @@ public class SuscripcionController {
     }
 
     @DeleteMapping("/plazas/{idPlaza}")
-    @Operation(summary = "Liberar plaza")
+    @Operation(
+            summary = "Liberar plaza",
+            description = "Libera una plaza ocupada, dejándola disponible para otros usuarios. " +
+                    "El propietario puede liberar su plaza, y el anfitrión puede liberar cualquier plaza excepto la suya propia si es plaza de anfitrión.")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Plaza liberada exitosamente"),
-            @ApiResponse(responseCode = "400", description = "El anfitrión no puede liberar su plaza reservada"),
-            @ApiResponse(responseCode = "403", description = "No tienes permiso para liberar esta plaza"),
-            @ApiResponse(responseCode = "404", description = "Plaza no encontrada")
+            @ApiResponse(responseCode = "400", description = "El anfitrión no puede liberar su plaza reservada (esPlazaAnfitrion=true)",
+                    content = @Content),
+            @ApiResponse(responseCode = "403", description = "No tienes permiso para liberar esta plaza",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Plaza no encontrada",
+                    content = @Content)
     })
     public ResponseEntity<Void> liberarPlaza(
             @Parameter(description = "ID de la plaza") @PathVariable Long idPlaza,

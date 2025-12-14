@@ -57,6 +57,32 @@ public class SuscripcionService {
         return plazaRepository.findPlazasOcupadasPorUsuario(idUsuario);
     }
 
+    /**
+     * Crea una nueva suscripción compartida dentro de un grupo familiar.
+     * <p>
+     * Este método realiza las siguientes operaciones atómicamente:
+     * <ol>
+     *   <li>Valida que el anfitrión sea miembro activo del grupo</li>
+     *   <li>Verifica que el número de plazas no exceda el máximo del servicio</li>
+     *   <li>Comprueba el límite de suscripciones activas del grupo (máx. {@value #MAX_SUSCRIPCIONES_POR_GRUPO})</li>
+     *   <li>Calcula el precio por plaza según si el anfitrión ocupa plaza</li>
+     *   <li>Crea todas las plazas, asignando la primera al anfitrión si corresponde</li>
+     * </ol>
+     * <p>
+     * <b>Cálculo del precio por plaza:</b> Si el anfitrión ocupa plaza, el precio total
+     * se divide entre (numPlazas - 1), ya que el anfitrión paga la suscripción completa.
+     *
+     * @param idUnidad           ID del grupo familiar propietario
+     * @param idAnfitrion        ID del usuario anfitrión (debe ser miembro activo)
+     * @param idServicio         ID del servicio de streaming/suscripción
+     * @param precioTotal        Precio mensual total de la suscripción
+     * @param numPlazasTotal     Número de plazas a crear (no exceder máximo del servicio)
+     * @param fechaInicio        Fecha de inicio de la suscripción
+     * @param periodicidad       Ciclo de renovación (MENSUAL, TRIMESTRAL, SEMESTRAL, ANUAL)
+     * @param anfitrionOcupaPlaza Si true, la plaza 1 se asigna automáticamente al anfitrión
+     * @return La suscripción creada con todas sus plazas
+     * @throws IllegalArgumentException si validaciones fallan
+     */
     @Transactional
     public Suscripcion crearSuscripcion(
             Long idUnidad,
@@ -142,6 +168,24 @@ public class SuscripcionService {
         plazaRepository.saveAll(plazas);
     }
 
+    /**
+     * Calcula el precio que debe pagar cada miembro por su plaza.
+     * <p>
+     * La fórmula aplicada es:
+     * <pre>
+     * Si anfitrionOcupaPlaza:
+     *     precioPorPlaza = precioTotal / (numPlazasTotal - 1)
+     * Si no:
+     *     precioPorPlaza = precioTotal / numPlazasTotal
+     * </pre>
+     * El anfitrión no paga precio por plaza porque ya paga la suscripción completa
+     * y reparte el coste entre los demás miembros.
+     *
+     * @param precioTotal        Coste total de la suscripción
+     * @param numPlazasTotal     Número total de plazas
+     * @param anfitrionOcupaPlaza Si el anfitrión usa una de las plazas
+     * @return Precio por plaza redondeado a 2 decimales (HALF_UP), o ZERO si no hay plazas pagantes
+     */
     public BigDecimal calcularPrecioPorPlaza(BigDecimal precioTotal, short numPlazasTotal, boolean anfitrionOcupaPlaza) {
         // El anfitrión no paga si ocupa plaza (él ya paga el servicio completo y reparte costes)
         int plazasPagantes = anfitrionOcupaPlaza ? numPlazasTotal - 1 : numPlazasTotal;
@@ -201,6 +245,22 @@ public class SuscripcionService {
         return plazaRepository.save(plaza);
     }
 
+    /**
+     * Libera una plaza ocupada, dejándola disponible para otros usuarios.
+     * <p>
+     * Permisos requeridos:
+     * <ul>
+     *   <li>El propietario de la plaza puede liberarla</li>
+     *   <li>El anfitrión puede liberar cualquier plaza (excepto la suya si es plaza de anfitrión)</li>
+     * </ul>
+     * <p>
+     * <b>Restricción:</b> El anfitrión no puede liberar su propia plaza reservada
+     * ({@code esPlazaAnfitrion = true}) ya que ésta es inherente a la suscripción.
+     *
+     * @param idPlaza      ID de la plaza a liberar
+     * @param idSolicitante ID del usuario que solicita la liberación
+     * @throws IllegalArgumentException si la plaza no existe, sin permisos, o intento de liberar plaza de anfitrión
+     */
     @Transactional
     public void liberarPlaza(Long idPlaza, Long idSolicitante) {
         var plaza = plazaRepository.findById(idPlaza)

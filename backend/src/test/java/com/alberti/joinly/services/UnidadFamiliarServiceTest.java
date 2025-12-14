@@ -1,20 +1,20 @@
 package com.alberti.joinly.services;
 
-import com.alberti.joinly.dto.UnidadFamiliarResponse;
-import com.alberti.joinly.entities.enums.*;
+import com.alberti.joinly.entities.enums.EstadoMiembro;
+import com.alberti.joinly.entities.enums.EstadoUnidadFamiliar;
+import com.alberti.joinly.entities.enums.RolMiembro;
 import com.alberti.joinly.entities.grupo.MiembroUnidad;
 import com.alberti.joinly.entities.grupo.UnidadFamiliar;
 import com.alberti.joinly.entities.usuario.Usuario;
-import com.alberti.joinly.exceptions.*;
-import com.alberti.joinly.repositories.*;
+import com.alberti.joinly.repositories.MiembroUnidadRepository;
+import com.alberti.joinly.repositories.SuscripcionRepository;
+import com.alberti.joinly.repositories.UnidadFamiliarRepository;
+import com.alberti.joinly.repositories.UsuarioRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -26,14 +26,10 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
-/**
- * Tests unitarios para UnidadFamiliarService.
- * Valida la lógica de negocio de creación y gestión de grupos familiares.
- */
 @ExtendWith(MockitoExtension.class)
-@DisplayName("UnidadFamiliarService Unit Tests")
+@DisplayName("UnidadFamiliarService Tests")
 class UnidadFamiliarServiceTest {
 
     @Mock
@@ -49,594 +45,424 @@ class UnidadFamiliarServiceTest {
     private SuscripcionRepository suscripcionRepository;
 
     @InjectMocks
-    private UnidadFamiliarService unidadFamiliarService;
+    private UnidadFamiliarService service;
 
-    // Test fixtures
-    private Usuario administrador;
-    private Usuario nuevoMiembro;
+    private Usuario usuarioAdmin;
+    private Usuario usuarioMiembro;
     private UnidadFamiliar unidadFamiliar;
+    private MiembroUnidad miembroUnidad;
 
     @BeforeEach
     void setUp() {
-        administrador = Usuario.builder()
+        usuarioAdmin = Usuario.builder()
                 .id(1L)
                 .nombre("Admin")
                 .email("admin@test.com")
-                .password("hash")
-                .estado(EstadoUsuario.ACTIVO)
-                .fechaRegistro(LocalDateTime.now())
                 .build();
 
-        nuevoMiembro = Usuario.builder()
+        usuarioMiembro = Usuario.builder()
                 .id(2L)
-                .nombre("Nuevo Miembro")
-                .email("nuevo@test.com")
-                .password("hash")
-                .estado(EstadoUsuario.ACTIVO)
-                .fechaRegistro(LocalDateTime.now())
+                .nombre("Miembro")
+                .email("miembro@test.com")
                 .build();
 
         unidadFamiliar = UnidadFamiliar.builder()
-                .id(10L)
-                .nombre("Familia Test")
-                .codigoInvitacion("TEST12345678")
-                .administrador(administrador)
+                .id(100L)
+                .nombre("Grupo Test")
+                .descripcion("Descripción del grupo")
+                .codigoInvitacion("ABC123DEF456")
+                .administrador(usuarioAdmin)
+                .fechaCreacion(LocalDateTime.now())
                 .estado(EstadoUnidadFamiliar.ACTIVO)
                 .maxMiembros((short) 10)
-                .fechaCreacion(LocalDateTime.now())
+                .build();
+
+        miembroUnidad = MiembroUnidad.builder()
+                .id(1L)
+                .unidad(unidadFamiliar)
+                .usuario(usuarioMiembro)
+                .rol(RolMiembro.MIEMBRO)
+                .estado(EstadoMiembro.ACTIVO)
+                .fechaUnion(LocalDateTime.now())
                 .build();
     }
 
-    // ======================== TESTS: CREAR UNIDAD FAMILIAR ========================
+    // ==================== TESTS DE BÚSQUEDA ====================
 
     @Nested
-    @DisplayName("crearUnidadFamiliar()")
-    class CrearUnidadFamiliarTests {
+    @DisplayName("Búsqueda de unidades familiares")
+    class BusquedaTests {
 
         @Test
-        @DisplayName("Debe crear unidad familiar exitosamente")
-        void debeCrearUnidadFamiliarExitosamente() {
-            // Given
-            given(usuarioRepository.findById(1L)).willReturn(Optional.of(administrador));
-            given(unidadFamiliarRepository.contarGruposActivosPorUsuario(1L)).willReturn(0L);
-            given(unidadFamiliarRepository.save(any(UnidadFamiliar.class))).willAnswer(inv -> {
-                UnidadFamiliar uf = inv.getArgument(0);
-                uf.setId(10L);
-                return uf;
-            });
-            given(miembroUnidadRepository.save(any(MiembroUnidad.class))).willAnswer(inv -> inv.getArgument(0));
+        @DisplayName("Debe encontrar unidad familiar por ID")
+        void debeBuscarPorId() {
+            when(unidadFamiliarRepository.findById(100L)).thenReturn(Optional.of(unidadFamiliar));
 
-            // When
-            UnidadFamiliar resultado = unidadFamiliarService.crearUnidadFamiliar(
-                    1L, "Mi Familia", (short) 8);
+            var resultado = service.buscarPorId(100L);
 
-            // Then
-            assertThat(resultado).isNotNull();
-            assertThat(resultado.getNombre()).isEqualTo("Mi Familia");
-            assertThat(resultado.getAdministrador()).isEqualTo(administrador);
-            assertThat(resultado.getEstado()).isEqualTo(EstadoUnidadFamiliar.ACTIVO);
-            assertThat(resultado.getMaxMiembros()).isEqualTo((short) 8);
-            assertThat(resultado.getCodigoInvitacion()).isNotNull().hasSize(12);
-
-            // Verify que el administrador se agregó como miembro
-            ArgumentCaptor<MiembroUnidad> miembroCaptor = ArgumentCaptor.forClass(MiembroUnidad.class);
-            then(miembroUnidadRepository).should().save(miembroCaptor.capture());
-
-            MiembroUnidad miembro = miembroCaptor.getValue();
-            assertThat(miembro.getUsuario()).isEqualTo(administrador);
-            assertThat(miembro.getRol()).isEqualTo(RolMiembro.ADMIN);
-            assertThat(miembro.getEstado()).isEqualTo(EstadoMiembro.ACTIVO);
+            assertThat(resultado).isPresent();
+            assertThat(resultado.get().getNombre()).isEqualTo("Grupo Test");
+            verify(unidadFamiliarRepository).findById(100L);
         }
 
         @Test
-        @DisplayName("Debe generar código de invitación único")
-        void debeGenerarCodigoInvitacionUnico() {
-            // Given
-            given(usuarioRepository.findById(1L)).willReturn(Optional.of(administrador));
-            given(unidadFamiliarRepository.contarGruposActivosPorUsuario(1L)).willReturn(0L);
-            
-            // Primera vez: código existe, segunda vez: no existe
-            given(unidadFamiliarRepository.existsByCodigoInvitacion(anyString()))
-                    .willReturn(true)
-                    .willReturn(false);
-            
-            given(unidadFamiliarRepository.save(any(UnidadFamiliar.class))).willAnswer(inv -> {
-                UnidadFamiliar uf = inv.getArgument(0);
-                uf.setId(10L);
-                return uf;
-            });
-            given(miembroUnidadRepository.save(any(MiembroUnidad.class))).willAnswer(inv -> inv.getArgument(0));
+        @DisplayName("Debe retornar vacío cuando no existe la unidad")
+        void debeRetornarVacioCuandoNoExiste() {
+            when(unidadFamiliarRepository.findById(999L)).thenReturn(Optional.empty());
 
-            // When
-            UnidadFamiliar resultado = unidadFamiliarService.crearUnidadFamiliar(1L, "Mi Familia", (short) 8);
+            var resultado = service.buscarPorId(999L);
 
-            // Then
-            assertThat(resultado.getCodigoInvitacion()).hasSize(12);
-            then(unidadFamiliarRepository).should(times(2)).existsByCodigoInvitacion(anyString());
+            assertThat(resultado).isEmpty();
         }
 
         @Test
-        @DisplayName("Debe lanzar excepción cuando usuario no existe")
-        void debeLanzarExcepcionCuandoUsuarioNoExiste() {
-            // Given
-            given(usuarioRepository.findById(99L)).willReturn(Optional.empty());
+        @DisplayName("Debe encontrar unidad por código de invitación")
+        void debeBuscarPorCodigo() {
+            when(unidadFamiliarRepository.findByCodigoInvitacion("ABC123DEF456"))
+                    .thenReturn(Optional.of(unidadFamiliar));
 
-            // When/Then
-            assertThatThrownBy(() -> unidadFamiliarService.crearUnidadFamiliar(99L, "Mi Familia", (short) 8))
-                    .isInstanceOf(ResourceNotFoundException.class)
-                    .hasMessageContaining("Usuario");
-        }
+            var resultado = service.buscarPorCodigo("abc123def456"); // Minúsculas
 
-        @Test
-        @DisplayName("Debe lanzar excepción cuando usuario tiene máximo de grupos")
-        void debeLanzarExcepcionCuandoLimiteGruposAlcanzado() {
-            // Given
-            given(usuarioRepository.findById(1L)).willReturn(Optional.of(administrador));
-            given(unidadFamiliarRepository.contarGruposActivosPorUsuario(1L)).willReturn(5L); // Máximo típico
-
-            // When/Then
-            assertThatThrownBy(() -> unidadFamiliarService.crearUnidadFamiliar(1L, "Mi Familia", (short) 8))
-                    .isInstanceOf(LimiteAlcanzadoException.class)
-                    .hasMessageContaining("máximo");
-        }
-
-        @ParameterizedTest
-        @ValueSource(strings = {"", "  ", "Ab"})
-        @DisplayName("Debe lanzar excepción con nombre inválido")
-        void debeLanzarExcepcionConNombreInvalido(String nombreInvalido) {
-            // Given
-            given(usuarioRepository.findById(1L)).willReturn(Optional.of(administrador));
-            given(unidadFamiliarRepository.contarGruposActivosPorUsuario(1L)).willReturn(0L);
-
-            // When/Then
-            assertThatThrownBy(() -> unidadFamiliarService.crearUnidadFamiliar(1L, nombreInvalido, (short) 8))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("nombre");
-        }
-
-        @ParameterizedTest
-        @ValueSource(shorts = {0, 1, 51})
-        @DisplayName("Debe lanzar excepción con número de miembros inválido")
-        void debeLanzarExcepcionConMaxMiembrosInvalido(short maxMiembros) {
-            // Given
-            given(usuarioRepository.findById(1L)).willReturn(Optional.of(administrador));
-            given(unidadFamiliarRepository.contarGruposActivosPorUsuario(1L)).willReturn(0L);
-
-            // When/Then
-            assertThatThrownBy(() -> unidadFamiliarService.crearUnidadFamiliar(1L, "Mi Familia", maxMiembros))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("miembros");
+            assertThat(resultado).isPresent();
+            assertThat(resultado.get().getCodigoInvitacion()).isEqualTo("ABC123DEF456");
         }
     }
 
-    // ======================== TESTS: AGREGAR MIEMBRO ========================
+    // ==================== TESTS DE LISTADOS ====================
 
     @Nested
-    @DisplayName("agregarMiembro()")
-    class AgregarMiembroTests {
+    @DisplayName("Listado de grupos y miembros")
+    class ListadoTests {
 
         @Test
-        @DisplayName("Administrador puede agregar miembro exitosamente")
-        void adminPuedeAgregarMiembro() {
-            // Given
-            given(unidadFamiliarRepository.findById(10L)).willReturn(Optional.of(unidadFamiliar));
-            given(usuarioRepository.findById(2L)).willReturn(Optional.of(nuevoMiembro));
-            given(miembroUnidadRepository.existsByUsuarioIdAndUnidadIdAndEstado(2L, 10L, EstadoMiembro.ACTIVO))
-                    .willReturn(false);
-            given(miembroUnidadRepository.countByUnidadIdAndEstado(10L, EstadoMiembro.ACTIVO))
-                    .willReturn(5L); // < maxMiembros
-            given(miembroUnidadRepository.save(any(MiembroUnidad.class))).willAnswer(inv -> {
-                MiembroUnidad mu = inv.getArgument(0);
-                mu.setId(100L);
-                return mu;
-            });
+        @DisplayName("Debe listar grupos administrados por un usuario")
+        void debeListarGruposAdministrados() {
+            when(unidadFamiliarRepository.findUnidadesAdministradasActivas(1L))
+                    .thenReturn(List.of(unidadFamiliar));
 
-            // When
-            MiembroUnidad resultado = unidadFamiliarService.agregarMiembro(10L, 2L, 1L, RolMiembro.MIEMBRO);
+            var resultado = service.listarGruposAdministrados(1L);
 
-            // Then
-            assertThat(resultado.getUsuario()).isEqualTo(nuevoMiembro);
-            assertThat(resultado.getUnidad()).isEqualTo(unidadFamiliar);
+            assertThat(resultado).hasSize(1);
+            assertThat(resultado.get(0).getNombre()).isEqualTo("Grupo Test");
+        }
+
+        @Test
+        @DisplayName("Debe listar grupos donde el usuario es miembro")
+        void debeListarGruposDondeEsMiembro() {
+            when(unidadFamiliarRepository.findUnidadesDondeEsMiembroActivo(2L))
+                    .thenReturn(List.of(unidadFamiliar));
+
+            var resultado = service.listarGruposDondeEsMiembro(2L);
+
+            assertThat(resultado).hasSize(1);
+        }
+
+        @Test
+        @DisplayName("Debe listar miembros activos de una unidad")
+        void debeListarMiembrosActivos() {
+            when(miembroUnidadRepository.findByUnidadIdAndEstadoConUsuario(100L, EstadoMiembro.ACTIVO))
+                    .thenReturn(List.of(miembroUnidad));
+
+            var resultado = service.listarMiembrosActivos(100L);
+
+            assertThat(resultado).hasSize(1);
+            assertThat(resultado.get(0).getUsuario().getNombre()).isEqualTo("Miembro");
+        }
+    }
+
+    // ==================== TESTS DE CREACIÓN ====================
+
+    @Nested
+    @DisplayName("Creación de unidades familiares")
+    class CreacionTests {
+
+        @Test
+        @DisplayName("Debe crear unidad familiar exitosamente")
+        void debeCrearUnidadFamiliar() {
+            when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuarioAdmin));
+            when(miembroUnidadRepository.contarGruposActivosDelUsuario(1L)).thenReturn(0L);
+            when(unidadFamiliarRepository.existsByCodigoInvitacion(anyString())).thenReturn(false);
+            when(unidadFamiliarRepository.save(any(UnidadFamiliar.class)))
+                    .thenAnswer(inv -> {
+                        UnidadFamiliar uf = inv.getArgument(0);
+                        uf.setId(100L);
+                        return uf;
+                    });
+            when(miembroUnidadRepository.save(any(MiembroUnidad.class)))
+                    .thenAnswer(inv -> inv.getArgument(0));
+
+            var resultado = service.crearUnidadFamiliar(1L, "Mi Familia", "Grupo familiar");
+
+            assertThat(resultado).isNotNull();
+            assertThat(resultado.getNombre()).isEqualTo("Mi Familia");
+            assertThat(resultado.getDescripcion()).isEqualTo("Grupo familiar");
+            assertThat(resultado.getAdministrador().getId()).isEqualTo(1L);
+            assertThat(resultado.getEstado()).isEqualTo(EstadoUnidadFamiliar.ACTIVO);
+            assertThat(resultado.getCodigoInvitacion()).isNotNull().hasSize(12);
+
+            // Verificar que se añadió al administrador como miembro
+            ArgumentCaptor<MiembroUnidad> miembroCaptor = ArgumentCaptor.forClass(MiembroUnidad.class);
+            verify(miembroUnidadRepository).save(miembroCaptor.capture());
+            assertThat(miembroCaptor.getValue().getRol()).isEqualTo(RolMiembro.ADMINISTRADOR);
+        }
+
+        @Test
+        @DisplayName("Debe fallar si usuario no existe")
+        void debeFallarSiUsuarioNoExiste() {
+            when(usuarioRepository.findById(999L)).thenReturn(Optional.empty());
+
+            assertThatThrownBy(() -> service.crearUnidadFamiliar(999L, "Grupo", null))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("Usuario administrador no encontrado");
+        }
+
+        @Test
+        @DisplayName("Debe fallar si usuario alcanzó límite de grupos")
+        void debeFallarSiAlcanzoLimiteGrupos() {
+            when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuarioAdmin));
+            when(miembroUnidadRepository.contarGruposActivosDelUsuario(1L)).thenReturn(10L);
+
+            assertThatThrownBy(() -> service.crearUnidadFamiliar(1L, "Grupo", null))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("límite máximo de grupos");
+        }
+    }
+
+    // ==================== TESTS DE GESTIÓN DE MIEMBROS ====================
+
+    @Nested
+    @DisplayName("Gestión de miembros")
+    class GestionMiembrosTests {
+
+        @Test
+        @DisplayName("Debe agregar miembro correctamente")
+        void debeAgregarMiembro() {
+            when(unidadFamiliarRepository.findById(100L)).thenReturn(Optional.of(unidadFamiliar));
+            when(usuarioRepository.findById(2L)).thenReturn(Optional.of(usuarioMiembro));
+            when(miembroUnidadRepository.existsByUsuarioIdAndUnidadIdAndEstado(2L, 100L, EstadoMiembro.ACTIVO))
+                    .thenReturn(false);
+            when(unidadFamiliarRepository.contarMiembrosActivos(100L)).thenReturn(1L);
+            when(miembroUnidadRepository.contarGruposActivosDelUsuario(2L)).thenReturn(0L);
+            when(miembroUnidadRepository.save(any(MiembroUnidad.class)))
+                    .thenAnswer(inv -> inv.getArgument(0));
+
+            var resultado = service.agregarMiembro(100L, 2L);
+
+            assertThat(resultado).isNotNull();
             assertThat(resultado.getRol()).isEqualTo(RolMiembro.MIEMBRO);
             assertThat(resultado.getEstado()).isEqualTo(EstadoMiembro.ACTIVO);
         }
 
         @Test
-        @DisplayName("Debe lanzar excepción cuando quien agrega no es admin")
-        void debeLanzarExcepcionCuandoNoEsAdmin() {
-            // Given
-            given(unidadFamiliarRepository.findById(10L)).willReturn(Optional.of(unidadFamiliar));
-            given(usuarioRepository.findById(2L)).willReturn(Optional.of(nuevoMiembro));
+        @DisplayName("Debe fallar si unidad no existe")
+        void debeFallarSiUnidadNoExiste() {
+            when(unidadFamiliarRepository.findById(999L)).thenReturn(Optional.empty());
 
-            // When/Then - Usuario 99 intenta agregar pero no es admin
-            assertThatThrownBy(() -> unidadFamiliarService.agregarMiembro(10L, 2L, 99L, RolMiembro.MIEMBRO))
-                    .isInstanceOf(UnauthorizedException.class)
-                    .hasMessageContaining("administrador");
+            assertThatThrownBy(() -> service.agregarMiembro(999L, 2L))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("Unidad familiar no encontrada");
         }
 
         @Test
-        @DisplayName("Debe lanzar excepción cuando usuario ya es miembro")
-        void debeLanzarExcepcionCuandoYaEsMiembro() {
-            // Given
-            given(unidadFamiliarRepository.findById(10L)).willReturn(Optional.of(unidadFamiliar));
-            given(usuarioRepository.findById(2L)).willReturn(Optional.of(nuevoMiembro));
-            given(miembroUnidadRepository.existsByUsuarioIdAndUnidadIdAndEstado(2L, 10L, EstadoMiembro.ACTIVO))
-                    .willReturn(true);
+        @DisplayName("Debe fallar si usuario ya es miembro")
+        void debeFallarSiYaEsMiembro() {
+            when(unidadFamiliarRepository.findById(100L)).thenReturn(Optional.of(unidadFamiliar));
+            when(usuarioRepository.findById(2L)).thenReturn(Optional.of(usuarioMiembro));
+            when(miembroUnidadRepository.existsByUsuarioIdAndUnidadIdAndEstado(2L, 100L, EstadoMiembro.ACTIVO))
+                    .thenReturn(true);
 
-            // When/Then
-            assertThatThrownBy(() -> unidadFamiliarService.agregarMiembro(10L, 2L, 1L, RolMiembro.MIEMBRO))
-                    .isInstanceOf(DuplicateResourceException.class)
-                    .hasMessageContaining("ya es miembro");
+            assertThatThrownBy(() -> service.agregarMiembro(100L, 2L))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("ya es miembro activo");
         }
 
         @Test
-        @DisplayName("Debe lanzar excepción cuando grupo está lleno")
-        void debeLanzarExcepcionCuandoGrupoLleno() {
-            // Given
-            given(unidadFamiliarRepository.findById(10L)).willReturn(Optional.of(unidadFamiliar));
-            given(usuarioRepository.findById(2L)).willReturn(Optional.of(nuevoMiembro));
-            given(miembroUnidadRepository.existsByUsuarioIdAndUnidadIdAndEstado(2L, 10L, EstadoMiembro.ACTIVO))
-                    .willReturn(false);
-            given(miembroUnidadRepository.countByUnidadIdAndEstado(10L, EstadoMiembro.ACTIVO))
-                    .willReturn(10L); // = maxMiembros
+        @DisplayName("Debe fallar si grupo está lleno")
+        void debeFallarSiGrupoLleno() {
+            when(unidadFamiliarRepository.findById(100L)).thenReturn(Optional.of(unidadFamiliar));
+            when(usuarioRepository.findById(2L)).thenReturn(Optional.of(usuarioMiembro));
+            when(miembroUnidadRepository.existsByUsuarioIdAndUnidadIdAndEstado(2L, 100L, EstadoMiembro.ACTIVO))
+                    .thenReturn(false);
+            when(unidadFamiliarRepository.contarMiembrosActivos(100L)).thenReturn(10L); // Lleno
 
-            // When/Then
-            assertThatThrownBy(() -> unidadFamiliarService.agregarMiembro(10L, 2L, 1L, RolMiembro.MIEMBRO))
-                    .isInstanceOf(LimiteAlcanzadoException.class)
-                    .hasMessageContaining("máximo");
+            assertThatThrownBy(() -> service.agregarMiembro(100L, 2L))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("máximo de miembros");
         }
 
         @Test
-        @DisplayName("Debe lanzar excepción cuando grupo está inactivo")
-        void debeLanzarExcepcionCuandoGrupoInactivo() {
-            // Given
-            unidadFamiliar.setEstado(EstadoUnidadFamiliar.DISUELTO);
-            given(unidadFamiliarRepository.findById(10L)).willReturn(Optional.of(unidadFamiliar));
+        @DisplayName("Debe fallar si unidad no está activa")
+        void debeFallarSiUnidadNoActiva() {
+            unidadFamiliar.setEstado(EstadoUnidadFamiliar.ELIMINADO);
+            when(unidadFamiliarRepository.findById(100L)).thenReturn(Optional.of(unidadFamiliar));
+            when(usuarioRepository.findById(2L)).thenReturn(Optional.of(usuarioMiembro));
 
-            // When/Then
-            assertThatThrownBy(() -> unidadFamiliarService.agregarMiembro(10L, 2L, 1L, RolMiembro.MIEMBRO))
-                    .isInstanceOf(BusinessException.class)
-                    .hasMessageContaining("no está activo");
+            assertThatThrownBy(() -> service.agregarMiembro(100L, 2L))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("no está activa");
         }
     }
 
-    // ======================== TESTS: UNIRSE CON CÓDIGO ========================
+    // ==================== TESTS DE EXPULSIÓN ====================
 
     @Nested
-    @DisplayName("unirseConCodigo()")
-    class UnirseConCodigoTests {
+    @DisplayName("Expulsión de miembros")
+    class ExpulsionTests {
 
         @Test
-        @DisplayName("Usuario puede unirse con código válido")
-        void usuarioPuedeUnirseConCodigoValido() {
-            // Given
-            given(unidadFamiliarRepository.findByCodigoInvitacion("TEST12345678"))
-                    .willReturn(Optional.of(unidadFamiliar));
-            given(usuarioRepository.findById(2L)).willReturn(Optional.of(nuevoMiembro));
-            given(miembroUnidadRepository.existsByUsuarioIdAndUnidadIdAndEstado(2L, 10L, EstadoMiembro.ACTIVO))
-                    .willReturn(false);
-            given(miembroUnidadRepository.countByUnidadIdAndEstado(10L, EstadoMiembro.ACTIVO))
-                    .willReturn(5L);
-            given(miembroUnidadRepository.save(any(MiembroUnidad.class))).willAnswer(inv -> {
-                MiembroUnidad mu = inv.getArgument(0);
-                mu.setId(100L);
-                return mu;
-            });
+        @DisplayName("Admin puede expulsar miembro")
+        void adminPuedeExpulsarMiembro() {
+            when(unidadFamiliarRepository.findById(100L)).thenReturn(Optional.of(unidadFamiliar));
+            when(miembroUnidadRepository.findByUsuarioIdAndUnidadId(2L, 100L))
+                    .thenReturn(Optional.of(miembroUnidad));
+            when(miembroUnidadRepository.save(any(MiembroUnidad.class)))
+                    .thenAnswer(inv -> inv.getArgument(0));
 
-            // When
-            MiembroUnidad resultado = unidadFamiliarService.unirseConCodigo("TEST12345678", 2L);
+            service.expulsarMiembro(100L, 2L, 1L); // Admin (1L) expulsa a miembro (2L)
 
-            // Then
-            assertThat(resultado.getUsuario()).isEqualTo(nuevoMiembro);
-            assertThat(resultado.getRol()).isEqualTo(RolMiembro.MIEMBRO);
+            assertThat(miembroUnidad.getEstado()).isEqualTo(EstadoMiembro.EXPULSADO);
+            assertThat(miembroUnidad.getFechaBaja()).isNotNull();
         }
 
         @Test
-        @DisplayName("Debe lanzar excepción con código inválido")
-        void debeLanzarExcepcionConCodigoInvalido() {
-            // Given
-            given(unidadFamiliarRepository.findByCodigoInvitacion("INVALID12345"))
-                    .willReturn(Optional.empty());
+        @DisplayName("No admin no puede expulsar")
+        void noAdminNoPuedeExpulsar() {
+            when(unidadFamiliarRepository.findById(100L)).thenReturn(Optional.of(unidadFamiliar));
 
-            // When/Then
-            assertThatThrownBy(() -> unidadFamiliarService.unirseConCodigo("INVALID12345", 2L))
-                    .isInstanceOf(ResourceNotFoundException.class)
-                    .hasMessageContaining("código");
+            assertThatThrownBy(() -> service.expulsarMiembro(100L, 2L, 3L)) // Usuario 3 no es admin
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("Solo el administrador");
         }
 
         @Test
-        @DisplayName("Administrador no puede unirse a su propio grupo")
-        void adminNoPuedeUnirseASuGrupo() {
-            // Given
-            given(unidadFamiliarRepository.findByCodigoInvitacion("TEST12345678"))
-                    .willReturn(Optional.of(unidadFamiliar));
-            given(usuarioRepository.findById(1L)).willReturn(Optional.of(administrador));
-            given(miembroUnidadRepository.existsByUsuarioIdAndUnidadIdAndEstado(1L, 10L, EstadoMiembro.ACTIVO))
-                    .willReturn(true);
+        @DisplayName("Admin no puede expulsarse a sí mismo")
+        void adminNoPuedeAutoexpulsarse() {
+            when(unidadFamiliarRepository.findById(100L)).thenReturn(Optional.of(unidadFamiliar));
 
-            // When/Then
-            assertThatThrownBy(() -> unidadFamiliarService.unirseConCodigo("TEST12345678", 1L))
-                    .isInstanceOf(DuplicateResourceException.class)
-                    .hasMessageContaining("ya es miembro");
+            assertThatThrownBy(() -> service.expulsarMiembro(100L, 1L, 1L))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("no puede expulsarse a sí mismo");
         }
     }
 
-    // ======================== TESTS: ELIMINAR MIEMBRO ========================
+    // ==================== TESTS DE ABANDONO ====================
 
     @Nested
-    @DisplayName("eliminarMiembro()")
-    class EliminarMiembroTests {
-
-        private MiembroUnidad miembroExistente;
-
-        @BeforeEach
-        void setUp() {
-            miembroExistente = MiembroUnidad.builder()
-                    .id(100L)
-                    .unidad(unidadFamiliar)
-                    .usuario(nuevoMiembro)
-                    .rol(RolMiembro.MIEMBRO)
-                    .estado(EstadoMiembro.ACTIVO)
-                    .build();
-        }
-
-        @Test
-        @DisplayName("Administrador puede eliminar miembro")
-        void adminPuedeEliminarMiembro() {
-            // Given
-            given(miembroUnidadRepository.findByUsuarioIdAndUnidadIdAndEstado(2L, 10L, EstadoMiembro.ACTIVO))
-                    .willReturn(Optional.of(miembroExistente));
-            given(unidadFamiliarRepository.findById(10L)).willReturn(Optional.of(unidadFamiliar));
-            given(miembroUnidadRepository.save(any(MiembroUnidad.class))).willAnswer(inv -> inv.getArgument(0));
-
-            // When
-            unidadFamiliarService.eliminarMiembro(10L, 2L, 1L);
-
-            // Then
-            assertThat(miembroExistente.getEstado()).isEqualTo(EstadoMiembro.ELIMINADO);
-            assertThat(miembroExistente.getFechaBaja()).isNotNull();
-        }
+    @DisplayName("Abandono de grupo")
+    class AbandonoTests {
 
         @Test
         @DisplayName("Miembro puede abandonar grupo")
-        void miembroPuedeAbandonarGrupo() {
-            // Given
-            given(miembroUnidadRepository.findByUsuarioIdAndUnidadIdAndEstado(2L, 10L, EstadoMiembro.ACTIVO))
-                    .willReturn(Optional.of(miembroExistente));
-            given(unidadFamiliarRepository.findById(10L)).willReturn(Optional.of(unidadFamiliar));
-            given(miembroUnidadRepository.save(any(MiembroUnidad.class))).willAnswer(inv -> inv.getArgument(0));
+        void miembroPuedeAbandonar() {
+            when(unidadFamiliarRepository.findById(100L)).thenReturn(Optional.of(unidadFamiliar));
+            when(miembroUnidadRepository.findByUsuarioIdAndUnidadId(2L, 100L))
+                    .thenReturn(Optional.of(miembroUnidad));
+            when(miembroUnidadRepository.save(any(MiembroUnidad.class)))
+                    .thenAnswer(inv -> inv.getArgument(0));
 
-            // When - miembro se elimina a sí mismo
-            unidadFamiliarService.eliminarMiembro(10L, 2L, 2L);
+            service.abandonarGrupo(100L, 2L);
 
-            // Then
-            assertThat(miembroExistente.getEstado()).isEqualTo(EstadoMiembro.ELIMINADO);
+            assertThat(miembroUnidad.getEstado()).isEqualTo(EstadoMiembro.ABANDONO);
+            assertThat(miembroUnidad.getFechaBaja()).isNotNull();
         }
 
         @Test
-        @DisplayName("Administrador no puede eliminarse a sí mismo")
-        void adminNoPuedeEliminarseASiMismo() {
-            // Given
-            MiembroUnidad miembroAdmin = MiembroUnidad.builder()
-                    .id(99L)
-                    .unidad(unidadFamiliar)
-                    .usuario(administrador)
-                    .rol(RolMiembro.ADMIN)
-                    .estado(EstadoMiembro.ACTIVO)
-                    .build();
-            given(miembroUnidadRepository.findByUsuarioIdAndUnidadIdAndEstado(1L, 10L, EstadoMiembro.ACTIVO))
-                    .willReturn(Optional.of(miembroAdmin));
-            given(unidadFamiliarRepository.findById(10L)).willReturn(Optional.of(unidadFamiliar));
+        @DisplayName("Admin no puede abandonar grupo")
+        void adminNoPuedeAbandonar() {
+            when(unidadFamiliarRepository.findById(100L)).thenReturn(Optional.of(unidadFamiliar));
 
-            // When/Then
-            assertThatThrownBy(() -> unidadFamiliarService.eliminarMiembro(10L, 1L, 1L))
-                    .isInstanceOf(BusinessException.class)
-                    .hasMessageContaining("administrador");
-        }
-
-        @Test
-        @DisplayName("Usuario sin permiso no puede eliminar miembro")
-        void usuarioSinPermisoNoPuedeEliminarMiembro() {
-            // Given
-            given(miembroUnidadRepository.findByUsuarioIdAndUnidadIdAndEstado(2L, 10L, EstadoMiembro.ACTIVO))
-                    .willReturn(Optional.of(miembroExistente));
-            given(unidadFamiliarRepository.findById(10L)).willReturn(Optional.of(unidadFamiliar));
-
-            // When/Then - Usuario 99 intenta eliminar a usuario 2
-            assertThatThrownBy(() -> unidadFamiliarService.eliminarMiembro(10L, 2L, 99L))
-                    .isInstanceOf(UnauthorizedException.class)
-                    .hasMessageContaining("permiso");
+            assertThatThrownBy(() -> service.abandonarGrupo(100L, 1L)) // 1L es el admin
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("administrador no puede abandonar");
         }
     }
 
-    // ======================== TESTS: TRANSFERIR ADMINISTRACIÓN ========================
+    // ==================== TESTS DE ELIMINACIÓN ====================
 
     @Nested
-    @DisplayName("transferirAdministracion()")
-    class TransferirAdministracionTests {
+    @DisplayName("Eliminación de unidad familiar")
+    class EliminacionTests {
 
-        private MiembroUnidad miembroNuevoAdmin;
+        @Test
+        @DisplayName("Admin puede eliminar grupo sin suscripciones")
+        void adminPuedeEliminarGrupo() {
+            when(unidadFamiliarRepository.findById(100L)).thenReturn(Optional.of(unidadFamiliar));
+            when(suscripcionRepository.contarSuscripcionesActivasEnUnidad(100L)).thenReturn(0L);
+            when(unidadFamiliarRepository.save(any(UnidadFamiliar.class)))
+                    .thenAnswer(inv -> inv.getArgument(0));
 
-        @BeforeEach
-        void setUp() {
-            miembroNuevoAdmin = MiembroUnidad.builder()
-                    .id(100L)
-                    .unidad(unidadFamiliar)
-                    .usuario(nuevoMiembro)
-                    .rol(RolMiembro.MIEMBRO)
-                    .estado(EstadoMiembro.ACTIVO)
-                    .build();
+            service.eliminarUnidadFamiliar(100L, 1L);
+
+            assertThat(unidadFamiliar.getEstado()).isEqualTo(EstadoUnidadFamiliar.ELIMINADO);
         }
 
         @Test
-        @DisplayName("Administrador puede transferir administración")
-        void adminPuedeTransferirAdministracion() {
-            // Given
-            MiembroUnidad miembroAdminActual = MiembroUnidad.builder()
-                    .id(99L)
-                    .unidad(unidadFamiliar)
-                    .usuario(administrador)
-                    .rol(RolMiembro.ADMIN)
-                    .estado(EstadoMiembro.ACTIVO)
-                    .build();
+        @DisplayName("No puede eliminar grupo con suscripciones activas")
+        void noPuedeEliminarConSuscripciones() {
+            when(unidadFamiliarRepository.findById(100L)).thenReturn(Optional.of(unidadFamiliar));
+            when(suscripcionRepository.contarSuscripcionesActivasEnUnidad(100L)).thenReturn(3L);
 
-            given(unidadFamiliarRepository.findById(10L)).willReturn(Optional.of(unidadFamiliar));
-            given(usuarioRepository.findById(2L)).willReturn(Optional.of(nuevoMiembro));
-            given(miembroUnidadRepository.findByUsuarioIdAndUnidadIdAndEstado(2L, 10L, EstadoMiembro.ACTIVO))
-                    .willReturn(Optional.of(miembroNuevoAdmin));
-            given(miembroUnidadRepository.findByUsuarioIdAndUnidadIdAndEstado(1L, 10L, EstadoMiembro.ACTIVO))
-                    .willReturn(Optional.of(miembroAdminActual));
-            given(unidadFamiliarRepository.save(any(UnidadFamiliar.class))).willAnswer(inv -> inv.getArgument(0));
-            given(miembroUnidadRepository.save(any(MiembroUnidad.class))).willAnswer(inv -> inv.getArgument(0));
-
-            // When
-            unidadFamiliarService.transferirAdministracion(10L, 2L, 1L);
-
-            // Then
-            assertThat(unidadFamiliar.getAdministrador()).isEqualTo(nuevoMiembro);
-            assertThat(miembroNuevoAdmin.getRol()).isEqualTo(RolMiembro.ADMIN);
-            assertThat(miembroAdminActual.getRol()).isEqualTo(RolMiembro.MIEMBRO);
-        }
-
-        @Test
-        @DisplayName("No administrador no puede transferir administración")
-        void noAdminNoPuedeTransferirAdministracion() {
-            // Given
-            given(unidadFamiliarRepository.findById(10L)).willReturn(Optional.of(unidadFamiliar));
-
-            // When/Then - Usuario 99 no es admin
-            assertThatThrownBy(() -> unidadFamiliarService.transferirAdministracion(10L, 2L, 99L))
-                    .isInstanceOf(UnauthorizedException.class)
-                    .hasMessageContaining("administrador");
-        }
-    }
-
-    // ======================== TESTS: DISOLVER GRUPO ========================
-
-    @Nested
-    @DisplayName("disolverGrupo()")
-    class DisolverGrupoTests {
-
-        @Test
-        @DisplayName("Administrador puede disolver grupo sin suscripciones activas")
-        void adminPuedeDisolverGrupoSinSuscripciones() {
-            // Given
-            given(unidadFamiliarRepository.findById(10L)).willReturn(Optional.of(unidadFamiliar));
-            given(suscripcionRepository.contarSuscripcionesActivasEnUnidad(10L)).willReturn(0L);
-            given(miembroUnidadRepository.findByUnidadIdAndEstado(10L, EstadoMiembro.ACTIVO))
-                    .willReturn(List.of());
-            given(unidadFamiliarRepository.save(any(UnidadFamiliar.class))).willAnswer(inv -> inv.getArgument(0));
-
-            // When
-            unidadFamiliarService.disolverGrupo(10L, 1L);
-
-            // Then
-            assertThat(unidadFamiliar.getEstado()).isEqualTo(EstadoUnidadFamiliar.DISUELTO);
-        }
-
-        @Test
-        @DisplayName("No puede disolver grupo con suscripciones activas")
-        void noPuedeDisolverGrupoConSuscripciones() {
-            // Given
-            given(unidadFamiliarRepository.findById(10L)).willReturn(Optional.of(unidadFamiliar));
-            given(suscripcionRepository.contarSuscripcionesActivasEnUnidad(10L)).willReturn(2L);
-
-            // When/Then
-            assertThatThrownBy(() -> unidadFamiliarService.disolverGrupo(10L, 1L))
-                    .isInstanceOf(BusinessException.class)
+            assertThatThrownBy(() -> service.eliminarUnidadFamiliar(100L, 1L))
+                    .isInstanceOf(IllegalArgumentException.class)
                     .hasMessageContaining("suscripciones activas");
         }
 
         @Test
-        @DisplayName("No administrador no puede disolver grupo")
-        void noAdminNoPuedeDisolverGrupo() {
-            // Given
-            given(unidadFamiliarRepository.findById(10L)).willReturn(Optional.of(unidadFamiliar));
+        @DisplayName("No admin no puede eliminar grupo")
+        void noAdminNoPuedeEliminar() {
+            when(unidadFamiliarRepository.findById(100L)).thenReturn(Optional.of(unidadFamiliar));
 
-            // When/Then
-            assertThatThrownBy(() -> unidadFamiliarService.disolverGrupo(10L, 99L))
-                    .isInstanceOf(UnauthorizedException.class)
-                    .hasMessageContaining("administrador");
+            assertThatThrownBy(() -> service.eliminarUnidadFamiliar(100L, 2L))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("Solo el administrador");
         }
     }
 
-    // ======================== TESTS: CONSULTAS ========================
+    // ==================== TESTS DE VERIFICACIÓN ====================
 
     @Nested
-    @DisplayName("Consultas")
-    class ConsultasTests {
+    @DisplayName("Verificación de roles y membresías")
+    class VerificacionTests {
 
         @Test
-        @DisplayName("Debe obtener grupos donde usuario es miembro activo")
-        void debeObtenerGruposDeUsuario() {
-            // Given
-            given(unidadFamiliarRepository.findByUsuarioMiembroActivo(2L))
-                    .willReturn(List.of(unidadFamiliar));
+        @DisplayName("Debe verificar si es miembro activo")
+        void debeVerificarMiembroActivo() {
+            when(miembroUnidadRepository.existsByUsuarioIdAndUnidadIdAndEstado(2L, 100L, EstadoMiembro.ACTIVO))
+                    .thenReturn(true);
 
-            // When
-            List<UnidadFamiliarResponse> resultado = unidadFamiliarService.obtenerGruposDeUsuario(2L);
+            boolean resultado = service.esMiembroActivo(100L, 2L);
 
-            // Then
-            assertThat(resultado).hasSize(1);
-            assertThat(resultado.getFirst().nombre()).isEqualTo("Familia Test");
+            assertThat(resultado).isTrue();
         }
 
         @Test
-        @DisplayName("Debe obtener miembros activos de un grupo")
-        void debeObtenerMiembrosDeGrupo() {
-            // Given
-            MiembroUnidad miembro1 = MiembroUnidad.builder()
-                    .id(100L)
-                    .unidad(unidadFamiliar)
-                    .usuario(administrador)
-                    .rol(RolMiembro.ADMIN)
-                    .estado(EstadoMiembro.ACTIVO)
-                    .build();
-            MiembroUnidad miembro2 = MiembroUnidad.builder()
-                    .id(101L)
-                    .unidad(unidadFamiliar)
-                    .usuario(nuevoMiembro)
-                    .rol(RolMiembro.MIEMBRO)
-                    .estado(EstadoMiembro.ACTIVO)
-                    .build();
+        @DisplayName("Debe verificar si es administrador")
+        void debeVerificarAdministrador() {
+            when(unidadFamiliarRepository.findById(100L)).thenReturn(Optional.of(unidadFamiliar));
 
-            given(unidadFamiliarRepository.findById(10L)).willReturn(Optional.of(unidadFamiliar));
-            given(miembroUnidadRepository.findByUnidadIdAndEstado(10L, EstadoMiembro.ACTIVO))
-                    .willReturn(List.of(miembro1, miembro2));
+            boolean resultado = service.esAdministrador(100L, 1L);
 
-            // When
-            var resultado = unidadFamiliarService.obtenerMiembros(10L);
-
-            // Then
-            assertThat(resultado).hasSize(2);
+            assertThat(resultado).isTrue();
         }
 
         @Test
-        @DisplayName("Debe regenerar código de invitación")
-        void debeRegenerarCodigoInvitacion() {
-            // Given
-            String codigoAnterior = unidadFamiliar.getCodigoInvitacion();
-            given(unidadFamiliarRepository.findById(10L)).willReturn(Optional.of(unidadFamiliar));
-            given(unidadFamiliarRepository.existsByCodigoInvitacion(anyString())).willReturn(false);
-            given(unidadFamiliarRepository.save(any(UnidadFamiliar.class))).willAnswer(inv -> inv.getArgument(0));
+        @DisplayName("Debe retornar false si no es administrador")
+        void debeRetornarFalseSiNoEsAdmin() {
+            when(unidadFamiliarRepository.findById(100L)).thenReturn(Optional.of(unidadFamiliar));
 
-            // When
-            String nuevoCodigo = unidadFamiliarService.regenerarCodigoInvitacion(10L, 1L);
+            boolean resultado = service.esAdministrador(100L, 999L);
 
-            // Then
-            assertThat(nuevoCodigo).isNotEqualTo(codigoAnterior);
-            assertThat(nuevoCodigo).hasSize(12);
+            assertThat(resultado).isFalse();
         }
 
         @Test
-        @DisplayName("Solo admin puede regenerar código de invitación")
-        void soloAdminPuedeRegenerarCodigo() {
-            // Given
-            given(unidadFamiliarRepository.findById(10L)).willReturn(Optional.of(unidadFamiliar));
+        @DisplayName("Debe retornar false si unidad no existe")
+        void debeRetornarFalseSiUnidadNoExiste() {
+            when(unidadFamiliarRepository.findById(999L)).thenReturn(Optional.empty());
 
-            // When/Then
-            assertThatThrownBy(() -> unidadFamiliarService.regenerarCodigoInvitacion(10L, 99L))
-                    .isInstanceOf(UnauthorizedException.class);
+            boolean resultado = service.esAdministrador(999L, 1L);
+
+            assertThat(resultado).isFalse();
         }
     }
 }

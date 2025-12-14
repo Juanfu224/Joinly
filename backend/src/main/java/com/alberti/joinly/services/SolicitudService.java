@@ -41,6 +41,26 @@ public class SolicitudService {
         return solicitudRepository.findSolicitudesPendientesSuscripcion(idSuscripcion);
     }
 
+    /**
+     * Crea una solicitud de unión a un grupo familiar mediante código de invitación.
+     * <p>
+     * Validaciones realizadas:
+     * <ul>
+     *   <li>El grupo debe estar en estado ACTIVO</li>
+     *   <li>El solicitante no puede ser ya miembro activo del grupo</li>
+     *   <li>No puede existir otra solicitud PENDIENTE del mismo usuario al mismo grupo</li>
+     *   <li>El grupo no puede haber alcanzado su límite máximo de miembros</li>
+     * </ul>
+     *
+     * @param idSolicitante    ID del usuario que realiza la solicitud
+     * @param codigoInvitacion Código de invitación de 12 caracteres (case-insensitive)
+     * @param mensaje          Mensaje opcional para el administrador del grupo
+     * @return La solicitud creada con estado PENDIENTE
+     * @throws ResourceNotFoundException si el usuario o grupo no existe
+     * @throws BusinessException si el grupo no está activo
+     * @throws DuplicateResourceException si ya es miembro o tiene solicitud pendiente
+     * @throws LimiteAlcanzadoException si el grupo está lleno
+     */
     @Transactional
     public Solicitud crearSolicitudUnionGrupo(Long idSolicitante, String codigoInvitacion, String mensaje) {
         var solicitante = usuarioRepository.findById(idSolicitante)
@@ -84,6 +104,28 @@ public class SolicitudService {
         return solicitudRepository.save(solicitud);
     }
 
+    /**
+     * Crea una solicitud para ocupar una plaza en una suscripción compartida.
+     * <p>
+     * Validaciones realizadas:
+     * <ul>
+     *   <li>La suscripción debe estar en estado ACTIVA</li>
+     *   <li>El solicitante debe ser miembro activo del grupo que posee la suscripción</li>
+     *   <li>El solicitante no puede tener ya una plaza en esta suscripción</li>
+     *   <li>No puede existir otra solicitud PENDIENTE del mismo usuario a la misma suscripción</li>
+     *   <li>Debe haber al menos una plaza disponible</li>
+     * </ul>
+     *
+     * @param idSolicitante  ID del usuario que realiza la solicitud
+     * @param idSuscripcion  ID de la suscripción a la que desea unirse
+     * @param mensaje        Mensaje opcional para el anfitrión de la suscripción
+     * @return La solicitud creada con estado PENDIENTE
+     * @throws ResourceNotFoundException si el usuario o suscripción no existe
+     * @throws BusinessException si la suscripción no está activa
+     * @throws UnauthorizedException si el usuario no es miembro del grupo
+     * @throws DuplicateResourceException si ya tiene plaza o solicitud pendiente
+     * @throws NoPlazasDisponiblesException si no hay plazas libres
+     */
     @Transactional
     public Solicitud crearSolicitudUnionSuscripcion(Long idSolicitante, Long idSuscripcion, String mensaje) {
         var solicitante = usuarioRepository.findById(idSolicitante)
@@ -131,6 +173,30 @@ public class SolicitudService {
         return solicitudRepository.save(solicitud);
     }
 
+    /**
+     * Aprueba una solicitud pendiente y ejecuta la acción correspondiente según el tipo.
+     * <p>
+     * Comportamiento según tipo de solicitud:
+     * <ul>
+     *   <li><b>UNION_GRUPO</b>: Crea un nuevo {@link MiembroUnidad} con rol MIEMBRO</li>
+     *   <li><b>UNION_SUSCRIPCION</b>: Asigna la primera plaza disponible al solicitante</li>
+     * </ul>
+     * <p>
+     * El aprobador debe ser:
+     * <ul>
+     *   <li>Para solicitudes de grupo: el administrador del grupo</li>
+     *   <li>Para solicitudes de suscripción: el anfitrión de la suscripción</li>
+     * </ul>
+     *
+     * @param idSolicitud ID de la solicitud a aprobar
+     * @param idAprobador ID del usuario que aprueba (admin del grupo o anfitrión)
+     * @return La solicitud actualizada con estado APROBADA
+     * @throws ResourceNotFoundException si la solicitud no existe
+     * @throws BusinessException si la solicitud no está en estado PENDIENTE
+     * @throws UnauthorizedException si el aprobador no tiene permisos
+     * @throws LimiteAlcanzadoException si se alcanzó el límite de miembros/plazas
+     * @throws NoPlazasDisponiblesException si no hay plazas disponibles (para suscripciones)
+     */
     @Transactional
     public Solicitud aprobarSolicitud(Long idSolicitud, Long idAprobador) {
         var solicitud = solicitudRepository.findByIdConSolicitante(idSolicitud)

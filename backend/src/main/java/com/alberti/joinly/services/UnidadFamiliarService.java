@@ -54,6 +54,23 @@ public class UnidadFamiliarService {
         return miembroUnidadRepository.findByUnidadIdAndEstadoConUsuario(idUnidad, EstadoMiembro.ACTIVO);
     }
 
+    /**
+     * Crea un nuevo grupo familiar y registra al creador como administrador.
+     * <p>
+     * Este método realiza las siguientes operaciones atómicamente:
+     * <ol>
+     *   <li>Verifica que el usuario no haya alcanzado el límite de grupos (máx. {@value #MAX_GRUPOS_POR_USUARIO})</li>
+     *   <li>Genera un código de invitación único de {@value #LONGITUD_CODIGO} caracteres alfanuméricos</li>
+     *   <li>Crea la unidad familiar con estado ACTIVO y límite de 10 miembros por defecto</li>
+     *   <li>Añade al administrador como primer miembro con rol ADMINISTRADOR</li>
+     * </ol>
+     *
+     * @param idAdministrador ID del usuario que será administrador del grupo
+     * @param nombre          Nombre del grupo familiar (obligatorio)
+     * @param descripcion     Descripción opcional del grupo
+     * @return La unidad familiar creada con su código de invitación
+     * @throws IllegalArgumentException si el usuario no existe o alcanzó límite de grupos
+     */
     @Transactional
     public UnidadFamiliar crearUnidadFamiliar(Long idAdministrador, String nombre, String descripcion) {
         var administrador = usuarioRepository.findById(idAdministrador)
@@ -98,6 +115,21 @@ public class UnidadFamiliarService {
         return agregarMiembroInterno(unidad, usuario, RolMiembro.MIEMBRO);
     }
 
+    /**
+     * Valida si un usuario puede unirse a un grupo familiar.
+     * <p>
+     * Validaciones realizadas:
+     * <ul>
+     *   <li>El grupo debe estar en estado ACTIVO</li>
+     *   <li>El usuario no puede ser ya miembro activo</li>
+     *   <li>El grupo no puede haber alcanzado su límite de miembros</li>
+     *   <li>El usuario no puede pertenecer a más de {@value #MAX_GRUPOS_POR_USUARIO} grupos</li>
+     * </ul>
+     *
+     * @param unidad  El grupo familiar al que se desea unir
+     * @param usuario El usuario que solicita unirse
+     * @throws IllegalArgumentException si alguna validación falla
+     */
     private void validarPuedeUnirse(UnidadFamiliar unidad, Usuario usuario) {
         // Verificar que la unidad esté activa
         if (unidad.getEstado() != EstadoUnidadFamiliar.ACTIVO) {
@@ -177,6 +209,22 @@ public class UnidadFamiliarService {
         miembroUnidadRepository.save(miembro);
     }
 
+    /**
+     * Elimina (soft delete) una unidad familiar cambiando su estado a ELIMINADO.
+     * <p>
+     * <b>Precondiciones:</b>
+     * <ul>
+     *   <li>Solo el administrador del grupo puede eliminarlo</li>
+     *   <li>El grupo no puede tener suscripciones activas asociadas</li>
+     * </ul>
+     * <p>
+     * Nota: Este es un soft delete, los datos permanecen para auditoría.
+     * Las membresías no se modifican ya que el estado de la unidad impide nuevas operaciones.
+     *
+     * @param idUnidad      ID del grupo a eliminar
+     * @param idSolicitante ID del usuario que solicita (debe ser administrador)
+     * @throws IllegalArgumentException si el grupo no existe, no es admin, o tiene suscripciones activas
+     */
     @Transactional
     public void eliminarUnidadFamiliar(Long idUnidad, Long idSolicitante) {
         var unidad = unidadFamiliarRepository.findById(idUnidad)

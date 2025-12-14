@@ -159,7 +159,8 @@ class SuscripcionServiceTest {
             assertThat(resultado.getEstado()).isEqualTo(EstadoSuscripcion.ACTIVA);
 
             // Verify que se crearon 5 plazas
-            ArgumentCaptor<List<Plaza>> plazasCaptor = ArgumentCaptor.forClass(List.class);
+            @SuppressWarnings({"unchecked", "rawtypes"})
+            ArgumentCaptor<List<Plaza>> plazasCaptor = ArgumentCaptor.forClass((Class) List.class);
             then(plazaRepository).should().saveAll(plazasCaptor.capture());
             
             List<Plaza> plazasCreadas = plazasCaptor.getValue();
@@ -209,7 +210,8 @@ class SuscripcionServiceTest {
             assertThat(resultado).isNotNull();
 
             // Verify que todas las plazas están disponibles
-            ArgumentCaptor<List<Plaza>> plazasCaptor = ArgumentCaptor.forClass(List.class);
+            @SuppressWarnings({"unchecked", "rawtypes"})
+            ArgumentCaptor<List<Plaza>> plazasCaptor = ArgumentCaptor.forClass((Class) List.class);
             then(plazaRepository).should().saveAll(plazasCaptor.capture());
             
             List<Plaza> plazasCreadas = plazasCaptor.getValue();
