@@ -55,7 +55,7 @@ public class UserPrincipal implements UserDetails {
      * Los roles/authorities se asignan de la siguiente manera:
      * <ul>
      *   <li>Todos los usuarios obtienen ROLE_USER</li>
-     *   <li>Si esAgenteSoporte = true, también obtiene ROLE_SUPPORT</li>
+     *   <li>Si esAgenteSoporte = true, también obtiene ROLE_AGENTE</li>
      * </ul>
      *
      * @param usuario Entidad Usuario de la base de datos
@@ -66,7 +66,7 @@ public class UserPrincipal implements UserDetails {
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
         
         if (Boolean.TRUE.equals(usuario.getEsAgenteSoporte())) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_SUPPORT"));
+            authorities.add(new SimpleGrantedAuthority("ROLE_AGENTE"));
         }
 
         return new UserPrincipal(

@@ -47,44 +47,4 @@ public record AuthResponse(
         @Schema(description = "Mensaje descriptivo del resultado", example = "Inicio de sesión exitoso")
         String mensaje
 ) {
-    /**
-     * Crea una respuesta para un registro exitoso sin tokens (backward compatibility).
-     *
-     * @param id     ID del usuario registrado
-     * @param nombre Nombre del usuario
-     * @param email  Email del usuario
-     * @return AuthResponse sin tokens
-     * @deprecated Usar el builder completo con tokens
-     */
-    @Deprecated(since = "1.0", forRemoval = true)
-    public static AuthResponse registered(Long id, String nombre, String email) {
-        return AuthResponse.builder()
-                .id(id)
-                .nombre(nombre)
-                .email(email)
-                .mensaje("Usuario registrado exitosamente")
-                .build();
-    }
-
-    /**
-     * Crea una respuesta para un login exitoso (backward compatibility).
-     *
-     * @param id     ID del usuario
-     * @param nombre Nombre del usuario
-     * @param email  Email del usuario
-     * @param token  Token JWT de acceso
-     * @return AuthResponse con token
-     * @deprecated Usar el builder completo con ambos tokens
-     */
-    @Deprecated(since = "1.0", forRemoval = true)
-    public static AuthResponse loggedIn(Long id, String nombre, String email, String token) {
-        return AuthResponse.builder()
-                .id(id)
-                .nombre(nombre)
-                .email(email)
-                .accessToken(token)
-                .tokenType("Bearer")
-                .mensaje("Inicio de sesión exitoso")
-                .build();
-    }
 }
