@@ -1,10 +1,8 @@
 package com.alberti.joinly;
 
-import com.alberti.joinly.config.CorsProperties;
-import com.alberti.joinly.config.JwtProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 /**
  * Clase principal de la aplicación Joinly.
@@ -17,7 +15,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
  * @since 2025
  */
 @SpringBootApplication
-@EnableConfigurationProperties({JwtProperties.class, CorsProperties.class})
+@ConfigurationPropertiesScan
 public class JoinlyApplication {
 
 	public static void main(String[] args) {

@@ -3,24 +3,19 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Run Joinly Application",
+            "name": "Spring Boot - Joinly",
             "request": "launch",
             "mainClass": "com.alberti.joinly.JoinlyApplication",
             "projectName": "joinly",
-            "cwd": "${workspaceFolder}/backend",
-            "envFile": "${workspaceFolder}/backend/.env",
-            "args": "",
-            "console": "internalConsole"
+            "cwd": "${workspaceFolder}/backend"
         },
         {
             "type": "java",
-            "name": "Debug Joinly Application",
+            "name": "Spring Boot - Debug",
             "request": "launch",
             "mainClass": "com.alberti.joinly.JoinlyApplication",
             "projectName": "joinly",
-            "cwd": "${workspaceFolder}/backend",
-            "envFile": "${workspaceFolder}/backend/.env",
-            "console": "internalConsole"
+            "cwd": "${workspaceFolder}/backend"
         }
     ]
 }

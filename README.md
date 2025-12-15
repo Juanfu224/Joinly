@@ -7,36 +7,38 @@ Sistema de gestión de suscripciones compartidas
 - Node.js 18+
 - Maven (incluido con mvnw)
 
-## Configuración Inicial
+## Configuración
 
-1. **Copiar archivo de configuración:**
+1. **Variables de entorno:**
    ```bash
    cp .env.example .env
    ```
-
-2. **Editar `.env` con tus valores reales:**
+   Editar `.env` con valores reales:
    - Contraseñas de MySQL
-   - Claves JWT: `openssl rand -base64 64`
-   - Clave de encriptación: `openssl rand -base64 32`
+   - JWT secret: `openssl rand -base64 64`
+   - Encryption key: `openssl rand -base64 32`
 
-3. **Inicio rápido (recomendado):**
-   ```bash
-   ./start-dev.sh
-   ```
+## Ejecución
 
-   O manualmente:
+1. **Base de datos:**
    ```bash
-   # Levantar MySQL
    docker-compose up -d
-   
-   # Backend
-   cd backend && ./mvnw spring-boot:run
-   
-   # Frontend (otra terminal)
-   cd frontend && npm install && npm start
    ```
 
-## Stack Tecnológico
+2. **Backend:**
+   ```bash
+   cd backend
+   ./mvnw spring-boot:run
+   ```
+
+3. **Frontend:**
+   ```bash
+   cd frontend
+   npm install
+   npm start
+   ```
+
+## Stack
 - **Backend**: Spring Boot 4.0 + Java 25
 - **Frontend**: Angular 19
 - **Base de datos**: MySQL 8

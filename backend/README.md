@@ -14,27 +14,24 @@ Joinly es una plataforma que permite a grupos de personas (familias, amigos, com
 - **Spring Data JPA**
 - **MySQL 8.x**
 - **Flyway** para migraciones de base de datos
-- **Maven** para gestión de dependencias
+- **Maven** (incluido Maven Wrapper)
 - **Swagger/OpenAPI** para documentación de API
 - **JUnit 5** y **MockMvc** para testing
 - **Lombok** para reducir código boilerplate
 
 ## Requisitos Previos
 
-Antes de comenzar, asegúrate de tener instalado:
-
 - **Java Development Kit (JDK) 25** o superior
-- **Maven 3.9+**
-- **MySQL 8.x** o superior
-- **Git** para clonar el repositorio
+- **Docker y Docker Compose** (recomendado para la base de datos)
+- **Git**
 
-### Verificar instalaciones
+### Verificar instalación de Java
 
 ```bash
 java -version    # Debe mostrar Java 25 o superior
-mvn -version     # Debe mostrar Maven 3.9 o superior
-mysql --version  # Debe mostrar MySQL 8.x
 ```
+
+**Nota:** No necesitas instalar Maven. El proyecto incluye Maven Wrapper (`./mvnw`).
 
 ## Instalación y Configuración
 
@@ -45,9 +42,15 @@ git clone https://github.com/Juanfu224/Joinly.git
 cd Joinly/backend
 ```
 
-### 2. Configurar Base de Datos
+### 2. Configurar Variables de Entorno
 
-Crear la base de datos en MySQL:
+Crea un archivo `.env` en el directorio `backend/` basado en `.env.example`:
+
+```bash
+cp .env.example .env
+```
+
+Edita el archivo `.env` con tus valores:
 
 ```bash
 mysql -u root -p

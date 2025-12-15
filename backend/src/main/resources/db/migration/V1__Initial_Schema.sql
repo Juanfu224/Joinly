@@ -283,12 +283,12 @@ CREATE TABLE credencial (
     id_credencial BIGINT AUTO_INCREMENT PRIMARY KEY,
     id_suscripcion BIGINT NOT NULL,
     tipo VARCHAR(20) NOT NULL,
-    etiqueta VARCHAR(100),
+    etiqueta VARCHAR(50) NOT NULL,
     valor_encriptado TEXT NOT NULL,
     instrucciones TEXT,
+    fecha_actualizacion DATETIME,
     visible_para_miembros BOOLEAN NOT NULL DEFAULT TRUE,
     created_at DATETIME NOT NULL,
-    updated_at DATETIME,
     
     CONSTRAINT fk_credencial_suscripcion FOREIGN KEY (id_suscripcion) REFERENCES suscripcion(id_suscripcion) ON DELETE CASCADE,
     CONSTRAINT chk_credencial_tipo CHECK (tipo IN ('EMAIL', 'USUARIO', 'PASSWORD', 'PERFIL', 'PIN', 'ENLACE', 'OTRO'))

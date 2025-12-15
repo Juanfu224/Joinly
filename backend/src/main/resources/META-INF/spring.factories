@@ -1,2 +1,2 @@
 org.springframework.context.ApplicationContextInitializer=\
-  com.alberti.joinly.config.DotenvInitializer
+com.alberti.joinly.config.DotenvConfig
