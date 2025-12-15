@@ -1,10 +1,10 @@
-# 🤝 Guía de Contribución - Joinly
+# Guía de Contribución - Joinly
 
 Gracias por tu interés en contribuir a Joinly. Esta guía te ayudará a entender cómo puedes participar en el desarrollo del proyecto.
 
 ---
 
-## 📋 Tabla de Contenidos
+## Tabla de Contenidos
 
 - [Código de Conducta](#código-de-conducta)
 - [¿Cómo puedo contribuir?](#cómo-puedo-contribuir)
@@ -17,21 +17,21 @@ Gracias por tu interés en contribuir a Joinly. Esta guía te ayudará a entende
 
 ---
 
-## 📜 Código de Conducta
+## Código de Conducta
 
 Este proyecto se adhiere a un código de conducta profesional y respetuoso:
 
-- ✅ Sé respetuoso con otros colaboradores
-- ✅ Acepta críticas constructivas
-- ✅ Enfócate en lo mejor para la comunidad
-- ✅ Muestra empatía hacia otros miembros
-- ❌ No uses lenguaje ofensivo o inapropiado
-- ❌ No ataques personalmente a otros
-- ❌ No publiques información privada de otros sin permiso
+- Sé respetuoso con otros colaboradores
+- Acepta críticas constructivas
+- Enfócate en lo mejor para la comunidad
+- Muestra empatía hacia otros miembros
+- No uses lenguaje ofensivo o inapropiado
+- No ataques personalmente a otros
+- No publiques información privada de otros sin permiso
 
 ---
 
-## 🛠 ¿Cómo puedo contribuir?
+## ¿Cómo puedo contribuir?
 
 ### 1. Reportar Bugs
 
@@ -68,7 +68,7 @@ Para proponer nuevas funcionalidades:
 
 ---
 
-## 🔄 Proceso de Desarrollo
+## Proceso de Desarrollo
 
 ### 1. Fork y Clone
 
@@ -108,10 +108,10 @@ git checkout -b fix/nombre-bug
 
 Sigue las [convenciones de código](#estándares-de-código) y asegúrate de:
 
-- ✅ Escribir código limpio y legible
-- ✅ Añadir comentarios donde sea necesario
-- ✅ Seguir los patrones existentes
-- ✅ Escribir tests para tu código
+- Escribir código limpio y legible
+- Añadir comentarios donde sea necesario
+- Seguir los patrones existentes
+- Escribir tests para tu código
 
 ### 4. Testing
 
@@ -152,16 +152,16 @@ Abre un PR en GitHub desde tu rama hacia `main` del repositorio original.
 
 ---
 
-## 💻 Estándares de Código
+## Estándares de Código
 
 ### Backend (Java)
 
 **Convenciones:**
-- ✅ Seguir [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)
-- ✅ Usar Lombok para reducir boilerplate
-- ✅ Documentar clases y métodos públicos con Javadoc
-- ✅ Nombres descriptivos para variables y métodos
-- ✅ Máximo 120 caracteres por línea
+- Seguir [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)
+- Usar Lombok para reducir boilerplate
+- Documentar clases y métodos públicos con Javadoc
+- Nombres descriptivos para variables y métodos
+- Máximo 120 caracteres por línea
 
 **Estructura de clases:**
 ```java
@@ -198,10 +198,10 @@ public class MiServicio {
 ### Frontend (Angular/TypeScript)
 
 **Convenciones:**
-- ✅ Seguir [Angular Style Guide](https://angular.dev/style-guide)
-- ✅ TypeScript en modo strict
-- ✅ Usar standalone components
-- ✅ Máximo 120 caracteres por línea
+- Seguir [Angular Style Guide](https://angular.dev/style-guide)
+- TypeScript en modo strict
+- Usar standalone components
+- Máximo 120 caracteres por línea
 
 **Componentes:**
 ```typescript
@@ -253,10 +253,10 @@ export class MiService {
 ### CSS/SCSS
 
 **Convenciones:**
-- ✅ Usar metodología BEM
-- ✅ Seguir arquitectura ITCSS
-- ✅ Preferir CSS Variables para tokens
-- ✅ Mobile-first para media queries
+- Usar metodología BEM
+- Seguir arquitectura ITCSS
+- Preferir CSS Variables para tokens
+- Mobile-first para media queries
 
 **Ejemplo BEM:**
 ```scss
@@ -286,7 +286,7 @@ export class MiService {
 
 ---
 
-## 📝 Commits y Mensajes
+## Commits y Mensajes
 
 ### Formato de Commits
 
@@ -331,15 +331,15 @@ git commit -m "test(pagos): añadir tests de integración para reembolsos"
 
 ### Reglas para Commits
 
-- ✅ Presente imperativo ("añadir" no "añadido")
-- ✅ Primera línea máximo 72 caracteres
-- ✅ Descripción en español
-- ✅ Un commit por cambio lógico
-- ✅ No incluir archivos generados
+- Presente imperativo ("añadir" no "añadido")
+- Primera línea máximo 72 caracteres
+- Descripción en español
+- Un commit por cambio lógico
+- No incluir archivos generados
 
 ---
 
-## 🔀 Pull Requests
+## Pull Requests
 
 ### Checklist antes de Crear PR
 
@@ -365,33 +365,33 @@ Ejemplos:
 Usa la siguiente plantilla:
 
 ```markdown
-## 📋 Descripción
+## Descripción
 
 Breve descripción de los cambios
 
-## 🎯 Motivación
+## Motivación
 
 Por qué son necesarios estos cambios
 
-## 🔍 Tipo de Cambio
+## Tipo de Cambio
 
 - [ ] Bug fix
 - [ ] Nueva funcionalidad
 - [ ] Breaking change
 - [ ] Documentación
 
-## ✅ Checklist
+## Checklist
 
 - [ ] Tests añadidos/actualizados
 - [ ] Documentación actualizada
 - [ ] Código sigue estándares
 - [ ] Sin conflictos con main
 
-## 📸 Screenshots (si aplica)
+## Screenshots (si aplica)
 
 Capturas de pantalla para cambios visuales
 
-## 🧪 Testing
+## Testing
 
 Cómo se probaron los cambios
 ```
@@ -405,7 +405,7 @@ Cómo se probaron los cambios
 
 ---
 
-## 🐛 Reportar Bugs
+## Reportar Bugs
 
 ### Plantilla de Bug Report
 
@@ -440,7 +440,7 @@ Cualquier otro contexto sobre el problema
 
 ---
 
-## 💡 Sugerir Mejoras
+## Sugerir Mejoras
 
 ### Plantilla de Feature Request
 
@@ -460,7 +460,7 @@ Screenshots, mockups, ejemplos de otras apps, etc.
 
 ---
 
-## 🎨 Documentación
+## Documentación
 
 ### Documentar Código
 
@@ -511,7 +511,7 @@ export class AuthService {
 
 ---
 
-## 🔧 Herramientas Útiles
+## Herramientas Útiles
 
 ### Formateo de Código
 
@@ -552,7 +552,7 @@ npm run lint:fix
 
 ---
 
-## 📚 Recursos
+## Recursos
 
 - [README Principal](README.md)
 - [Backend README](backend/README.md)
@@ -563,7 +563,7 @@ npm run lint:fix
 
 ---
 
-## ❓ ¿Necesitas Ayuda?
+## ¿Necesitas Ayuda?
 
 Si tienes dudas o necesitas ayuda:
 
@@ -573,12 +573,12 @@ Si tienes dudas o necesitas ayuda:
 
 ---
 
-## 🙏 Agradecimientos
+## Agradecimientos
 
 Gracias por contribuir a Joinly. Cada contribución, grande o pequeña, es valiosa y apreciada.
 
 ---
 
 <div align="center">
-  <b>¡Feliz coding! 🚀</b>
+  <b>¡Feliz coding!  </b>
 </div>

@@ -1,4 +1,4 @@
-# 📋 TO-DO LIST - Mejoras y Correcciones Backend Joinly
+# TO-DO LIST - Mejoras y Correcciones Backend Joinly
 
 > **Última actualización:** 15/12/2025  
 > **Autor de la auditoría:** GitHub Copilot (Arquitecto de Software)  
@@ -7,21 +7,21 @@
 
 ---
 
-## 📊 Resumen del Estado de la Rúbrica
+## Resumen del Estado de la Rúbrica
 
 | Categoría | Estado | Puntuación |
 |-----------|--------|------------|
-| API REST (70%) | ✅ Excelente | 92/100 |
-| MVC - Estructura | ✅ Excelente | 95/100 |
-| Modelo de Datos (30%) | ✅ Bueno | 88/100 |
-| **Documentación** | ✅ Excelente | 95/100 |
-| **Tests de Integración** | ✅ Completo | 95/100 |
+| API REST (70%) |   Excelente | 92/100 |
+| MVC - Estructura |   Excelente | 95/100 |
+| Modelo de Datos (30%) |   Bueno | 88/100 |
+| **Documentación** |   Excelente | 95/100 |
+| **Tests de Integración** |   Completo | 95/100 |
 
 ---
 
-## 🔴 CRÍTICAS (Bloquean entrega) - ✅ TODAS COMPLETADAS
+## CRÍTICAS (Bloquean entrega) -   TODAS COMPLETADAS
 
-### 1. ~~Implementar Migraciones con Flyway~~ ✅ COMPLETADO
+### 1. ~~Implementar Migraciones con Flyway~~   COMPLETADO
 - [x] Añadir dependencia Flyway en `pom.xml`
 - [x] Crear directorio `src/main/resources/db/migration/`
 - [x] Crear script `V1__Initial_Schema.sql` con todas las tablas (19 tablas)
@@ -37,7 +37,7 @@
 
 ---
 
-### 2. ~~Refactorizar Autenticación (Eliminar X-User-Id)~~ ✅ COMPLETADO
+### 2. ~~Refactorizar Autenticación (Eliminar X-User-Id)~~   COMPLETADO
 - [x] Crear método helper para extraer usuario del SecurityContext (`@CurrentUser`)
 - [x] Refactorizar `AuthController.java` (no aplica - endpoints públicos)
 - [x] Refactorizar `UsuarioController.java` (no usaba X-User-Id)
@@ -70,7 +70,7 @@
 
 ---
 
-### 3. ~~Escribir README Completo~~ ✅ COMPLETADO
+### 3. ~~Escribir README Completo~~   COMPLETADO
 - [x] Crear `backend/README.md`
 - [x] Sección: Descripción del proyecto
 - [x] Sección: Tecnologías utilizadas (Java 25, Spring Boot 4, MySQL, JWT)
@@ -95,7 +95,7 @@
 
 ---
 
-### 4. ~~Añadir Tests de Integración~~ ✅ COMPLETADO
+### 4. ~~Añadir Tests de Integración~~   COMPLETADO
 - [x] `AuthControllerIntegrationTest.java`
   - [x] Test registro exitoso
   - [x] Test registro con email duplicado
@@ -285,26 +285,26 @@
 
 ---
 
-## 📁 Estructura de Archivos Nuevos a Crear
+## Estructura de Archivos Nuevos a Crear
 
 ```
 backend/
-├── README.md                          [✅ COMPLETADO]
-├── src/main/resources/
-│   ├── db/migration/
-│   │   └── V1__Initial_Schema.sql     [✅ COMPLETADO]
-│   ├── application-dev.properties     [PENDIENTE - Importante]
-│   └── application-prod.properties    [PENDIENTE - Importante]
-├── src/main/java/.../controllers/
-│   ├── ServicioController.java        [PENDIENTE - Importante]
-│   └── MetodoPagoController.java      [PENDIENTE - Importante]
-├── src/main/java/.../services/
-│   └── MetodoPagoService.java         [PENDIENTE - Importante]
-├── src/test/java/.../controllers/
-│   ├── AuthControllerIntegrationTest.java           [✅ COMPLETADO]
-│   ├── UnidadFamiliarControllerIntegrationTest.java [✅ COMPLETADO]
-│   ├── SuscripcionControllerIntegrationTest.java    [✅ COMPLETADO]
-│   └── PagoControllerIntegrationTest.java           [✅ COMPLETADO]
+  README.md                          [  COMPLETADO]
+  src/main/resources/
+      db/migration/
+          V1__Initial_Schema.sql     [  COMPLETADO]
+      application-dev.properties     [PENDIENTE - Importante]
+      application-prod.properties    [PENDIENTE - Importante]
+  src/main/java/.../controllers/
+      ServicioController.java        [PENDIENTE - Importante]
+      MetodoPagoController.java      [PENDIENTE - Importante]
+  src/main/java/.../services/
+      MetodoPagoService.java         [PENDIENTE - Importante]
+  src/test/java/.../controllers/
+      AuthControllerIntegrationTest.java           [  COMPLETADO]
+      UnidadFamiliarControllerIntegrationTest.java [  COMPLETADO]
+      SuscripcionControllerIntegrationTest.java    [  COMPLETADO]
+      PagoControllerIntegrationTest.java           [  COMPLETADO]
 ```
 
 ---

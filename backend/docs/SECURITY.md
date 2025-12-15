@@ -264,12 +264,12 @@ openssl rand -base64 32
    - Backups encriptados
 
 6. **Never Do**
-   - ❌ Hardcodear contraseñas en código
-   - ❌ Subir `.env` a Git
-   - ❌ Compartir claves por email/chat
-   - ❌ Usar claves de ejemplo en producción
-   - ❌ Reutilizar claves entre entornos
-   - ❌ Loggear valores de secrets
+   - Hardcodear contraseñas en código
+   - Subir `.env` a Git
+   - Compartir claves por email/chat
+   - Usar claves de ejemplo en producción
+   - Reutilizar claves entre entornos
+   - Loggear valores de secrets
 
 ## Recursos Adicionales
 

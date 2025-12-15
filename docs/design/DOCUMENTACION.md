@@ -502,26 +502,26 @@ En Joinly, implementamos ITCSS para resolver tres problemas fundamentales del CS
 
 ```
 src/styles/
-├── 00-settings/
-│   └── _variables.scss
-├── 01-tools/
-│   └── _mixins.scss
-├── 02-generic/
-│   └── _reset.scss
-├── 03-elements/
-│   ├── _base.scss
-│   ├── _encabezados.scss
-│   ├── _enlaces.scss
-│   ├── _formularios.scss
-│   ├── _index.scss
-│   ├── _listas.scss
-│   └── _multimedia.scss
-├── 04-layout/
-│   ├── _contenedor.scss
-│   ├── _flex.scss
-│   ├── _index.scss
-│   └── _rejilla.scss
-└── main.scss
+  00-settings/
+      _variables.scss
+  01-tools/
+      _mixins.scss
+  02-generic/
+      _reset.scss
+  03-elements/
+      _base.scss
+      _encabezados.scss
+      _enlaces.scss
+      _formularios.scss
+      _index.scss
+      _listas.scss
+      _multimedia.scss
+  04-layout/
+      _contenedor.scss
+      _flex.scss
+      _index.scss
+      _rejilla.scss
+  main.scss
 ```
 
 La numeración de las carpetas (`00-`, `01-`, `02-`...) no es decorativa: garantiza que cualquier herramienta de ordenación alfabética mantenga el orden correcto de especificidad.
@@ -836,26 +836,26 @@ El siguiente diagrama ilustra cómo la especificidad aumenta progresivamente a t
 
 ```
           ESPECIFICIDAD BAJA
-                 ▲
-                 │
-    ┌────────────┴────────────┐
-    │      00-settings        │  Variables (no compila)
-    │      01-tools           │  Mixins (no compila)
-    └────────────┬────────────┘
-                 │
-    ┌────────────┴────────────┐
-    │      02-generic         │  *, html, body
-    └────────────┬────────────┘
-                 │
-    ┌────────────┴────────────┐
-    │      03-elements        │  h1, a, input, p
-    └────────────┬────────────┘
-                 │
-    ┌────────────┴────────────┐
-    │      04-layout          │  .container, .grid
-    └────────────┬────────────┘
-                 │
-                 ▼
+                  
+                  
+     
+           00-settings           Variables (no compila)
+           01-tools              Mixins (no compila)
+     
+                  
+     
+           02-generic            *, html, body
+     
+                  
+     
+           03-elements           h1, a, input, p
+     
+                  
+     
+           04-layout             .container, .grid
+     
+                  
+                  
           ESPECIFICIDAD ALTA
 ```
 
@@ -2397,19 +2397,19 @@ PÁGINA DE REGISTRO - ESTRUCTURA DE HEADINGS
 ============================================
 
 <h1> Joinly (Logo/Nombre del sitio en Header)
-│
-├── <h2> Regístrate para empezar a organizar tus suscripciones
-│        (Título del formulario de registro)
-│
-└── FOOTER
-    ├── <h2> Producto
-    │        └── Enlaces: Inicio, Cómo funciona, Precios...
-    │
-    ├── <h2> Soporte y ayuda
-    │        └── Enlaces: FAQ, Abrir ticket, Seguridad...
-    │
-    └── <h2> Legal
-             └── Enlaces: Términos, Privacidad, Cookies...
+ 
+  <h2> Regístrate para empezar a organizar tus suscripciones
+         (Título del formulario de registro)
+ 
+  FOOTER
+      <h2> Producto
+               Enlaces: Inicio, Cómo funciona, Precios...
+     
+      <h2> Soporte y ayuda
+               Enlaces: FAQ, Abrir ticket, Seguridad...
+     
+      <h2> Legal
+               Enlaces: Términos, Privacidad, Cookies...
 ```
 
 **Análisis de la estructura:**

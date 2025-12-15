@@ -363,48 +363,48 @@ Los tests utilizan base de datos H2 en memoria para evitar afectar la base de da
 
 ```
 backend/
-├── src/
-│   ├── main/
-│   │   ├── java/com/alberti/joinly/
-│   │   │   ├── config/              # Configuración (Security, CORS, Swagger)
-│   │   │   ├── controllers/         # Controladores REST (10 controladores)
-│   │   │   ├── dto/                 # Data Transfer Objects
-│   │   │   │   ├── auth/           # DTOs de autenticación
-│   │   │   │   ├── usuario/        # DTOs de usuario
-│   │   │   │   ├── unidad/         # DTOs de unidades familiares
-│   │   │   │   ├── suscripcion/    # DTOs de suscripciones
-│   │   │   │   ├── pago/           # DTOs de pagos
-│   │   │   │   └── ...             # Otros DTOs
-│   │   │   ├── entities/            # Entidades JPA (20+ entidades)
-│   │   │   │   ├── usuario/        # Usuario, Token, MetodoPago
-│   │   │   │   ├── grupo/          # UnidadFamiliar, Miembro, Solicitud
-│   │   │   │   ├── suscripcion/    # Suscripción, Plaza, Servicio
-│   │   │   │   ├── pago/           # Pago, Disputa
-│   │   │   │   ├── notificacion/   # Notificación
-│   │   │   │   ├── soporte/        # TicketSoporte, Mensaje
-│   │   │   │   └── enums/          # Enumeraciones
-│   │   │   ├── exceptions/          # Excepciones personalizadas
-│   │   │   ├── repositories/        # Repositorios JPA (10+ repositorios)
-│   │   │   ├── security/            # Seguridad JWT
-│   │   │   │   ├── JwtService.java
-│   │   │   │   ├── JwtAuthenticationFilter.java
-│   │   │   │   └── CustomUserDetailsService.java
-│   │   │   ├── services/            # Servicios de negocio (10+ servicios)
-│   │   │   └── JoinlyApplication.java
-│   │   └── resources/
-│   │       ├── application.properties
-│   │       └── db/migration/
-│   │           └── V1__Initial_Schema.sql
-│   └── test/
-│       └── java/com/alberti/joinly/
-│           ├── controllers/         # Tests de integración
-│           └── services/            # Tests unitarios
-├── docs/
-│   ├── rubrica.txt                  # Rúbrica del proyecto
-│   ├── TODO_MEJORAS.md              # Lista de mejoras implementadas
-│   └── Modelo ER/                   # Diagrama de base de datos
-├── pom.xml
-└── README.md
+  src/
+      main/
+          java/com/alberti/joinly/
+              config/              # Configuración (Security, CORS, Swagger)
+              controllers/         # Controladores REST (10 controladores)
+              dto/                 # Data Transfer Objects
+                  auth/           # DTOs de autenticación
+                  usuario/        # DTOs de usuario
+                  unidad/         # DTOs de unidades familiares
+                  suscripcion/    # DTOs de suscripciones
+                  pago/           # DTOs de pagos
+                  ...             # Otros DTOs
+              entities/            # Entidades JPA (20+ entidades)
+                  usuario/        # Usuario, Token, MetodoPago
+                  grupo/          # UnidadFamiliar, Miembro, Solicitud
+                  suscripcion/    # Suscripción, Plaza, Servicio
+                  pago/           # Pago, Disputa
+                  notificacion/   # Notificación
+                  soporte/        # TicketSoporte, Mensaje
+                  enums/          # Enumeraciones
+              exceptions/          # Excepciones personalizadas
+              repositories/        # Repositorios JPA (10+ repositorios)
+              security/            # Seguridad JWT
+                  JwtService.java
+                  JwtAuthenticationFilter.java
+                  CustomUserDetailsService.java
+              services/            # Servicios de negocio (10+ servicios)
+              JoinlyApplication.java
+          resources/
+              application.properties
+              db/migration/
+                  V1__Initial_Schema.sql
+      test/
+          java/com/alberti/joinly/
+              controllers/         # Tests de integración
+              services/            # Tests unitarios
+  docs/
+      rubrica.txt                  # Rúbrica del proyecto
+      TODO_MEJORAS.md              # Lista de mejoras implementadas
+      Modelo ER/                   # Diagrama de base de datos
+  pom.xml
+  README.md
 ```
 
 ## Configuración Adicional

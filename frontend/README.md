@@ -6,7 +6,7 @@ Frontend moderno desarrollado con Angular 19, utilizando standalone components, 
 
 ---
 
-## 📋 Tabla de Contenidos
+## Tabla de Contenidos
 
 - [Características](#-características)
 - [Tecnologías](#-tecnologías)
@@ -21,23 +21,23 @@ Frontend moderno desarrollado con Angular 19, utilizando standalone components, 
 
 ---
 
-## ✨ Características
+## Características
 
-- 🎨 **Diseño Moderno y Responsivo** - Mobile-first, adaptable a todos los dispositivos
-- 🧩 **Standalone Components** - Nueva arquitectura Angular sin módulos
-- 🎭 **ViewEncapsulation None** - Control total sobre estilos globales
-- 📐 **Arquitectura ITCSS** - Estilos organizados por especificidad
-- 🔤 **Metodología BEM** - Nomenclatura CSS clara y mantenible
-- 🎨 **Design Tokens** - Sistema de variables CSS para consistencia
-- ♿ **Accesibilidad** - WCAG 2.1 nivel AA
-- 🔐 **Guards de Autenticación** - Protección de rutas privadas
-- 📡 **Servicios HTTP** - Comunicación con API REST
-- 🎭 **Interceptores** - Manejo automático de tokens JWT
-- 🎯 **Tipado Estricto** - TypeScript en modo strict
+- **Diseño Moderno y Responsivo** - Mobile-first, adaptable a todos los dispositivos
+- **Standalone Components** - Nueva arquitectura Angular sin módulos
+- **ViewEncapsulation None** - Control total sobre estilos globales
+- **Arquitectura ITCSS** - Estilos organizados por especificidad
+- **Metodología BEM** - Nomenclatura CSS clara y mantenible
+- **Design Tokens** - Sistema de variables CSS para consistencia
+- **Accesibilidad** - WCAG 2.1 nivel AA
+- **Guards de Autenticación** - Protección de rutas privadas
+- **Servicios HTTP** - Comunicación con API REST
+- **Interceptores** - Manejo automático de tokens JWT
+- **Tipado Estricto** - TypeScript en modo strict
 
 ---
 
-## 🛠 Tecnologías
+## Tecnologías
 
 - **Angular 19.0** - Framework principal
 - **TypeScript 5.x** - Lenguaje
@@ -50,7 +50,7 @@ Frontend moderno desarrollado con Angular 19, utilizando standalone components, 
 
 ---
 
-## 📦 Requisitos
+## Requisitos
 
 - **Node.js 18+**
 - **npm 9+** o **yarn**
@@ -65,7 +65,7 @@ npm -v     # Debe mostrar v9.x o superior
 
 ---
 
-## 🚀 Instalación
+## Instalación
 
 ### 1. Navegar al Directorio
 
@@ -87,7 +87,7 @@ yarn install
 
 ---
 
-## 💻 Desarrollo
+## Desarrollo
 
 ### Servidor de Desarrollo
 
@@ -122,7 +122,7 @@ ng serve --configuration production
 
 ---
 
-## 🏗 Build
+## Build
 
 ### Build de Desarrollo
 
@@ -145,16 +145,16 @@ npm run build
 Los archivos compilados se almacenarán en el directorio `dist/`. 
 
 **Optimizaciones aplicadas en producción:**
-- ✅ Minificación de JS y CSS
-- ✅ Tree shaking
-- ✅ Lazy loading de módulos
-- ✅ AOT compilation
-- ✅ Optimización de imágenes
-- ✅ Code splitting
+- Minificación de JS y CSS
+- Tree shaking
+- Lazy loading de módulos
+- AOT compilation
+- Optimización de imágenes
+- Code splitting
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ### Tests Unitarios
 
@@ -187,75 +187,75 @@ npx cypress open
 
 ---
 
-## 📁 Arquitectura
+## Arquitectura
 
 ### Estructura de Directorios
 
 ```
 frontend/
-├── src/
-│   ├── app/
-│   │   ├── components/           # Componentes reutilizables
-│   │   │   ├── shared/           # Componentes compartidos
-│   │   │   │   ├── button/       # Componente botón
-│   │   │   │   ├── form-input/   # Input de formulario
-│   │   │   │   └── register-form/ # Formulario registro
-│   │   │   └── ...
-│   │   ├── pages/                # Páginas/Vistas
-│   │   │   ├── home/
-│   │   │   ├── login/
-│   │   │   ├── register/
-│   │   │   ├── dashboard/
-│   │   │   └── ...
-│   │   ├── layout/               # Componentes de layout
-│   │   │   ├── header/
-│   │   │   ├── footer/
-│   │   │   └── main/
-│   │   ├── services/             # Servicios HTTP
-│   │   │   ├── auth.service.ts
-│   │   │   ├── api.service.ts
-│   │   │   └── ...
-│   │   ├── guards/               # Guards de rutas
-│   │   │   ├── auth.guard.ts
-│   │   │   └── ...
-│   │   ├── interceptors/         # HTTP Interceptors
-│   │   │   └── jwt.interceptor.ts
-│   │   ├── models/               # Interfaces y tipos
-│   │   │   ├── usuario.model.ts
-│   │   │   ├── suscripcion.model.ts
-│   │   │   └── ...
-│   │   ├── app.config.ts         # Configuración de la app
-│   │   ├── app.routes.ts         # Definición de rutas
-│   │   └── app.ts                # Componente principal
-│   ├── styles/                   # Estilos globales (ITCSS)
-│   │   ├── main.scss             # Archivo principal
-│   │   ├── 00-settings/          # Variables, tokens
-│   │   │   ├── _variables.scss
-│   │   │   └── _css-variables.scss
-│   │   ├── 01-tools/             # Mixins, funciones
-│   │   │   └── _mixins.scss
-│   │   ├── 02-generic/           # Reset, normalize
-│   │   │   └── _reset.scss
-│   │   ├── 03-elements/          # Estilos base HTML
-│   │   │   ├── _base.scss
-│   │   │   ├── _encabezados.scss
-│   │   │   └── ...
-│   │   └── 04-layout/            # Grid, flex, containers
-│   │       ├── _rejilla.scss
-│   │       ├── _flex.scss
-│   │       └── _contenedor.scss
-│   ├── assets/                   # Recursos estáticos
-│   │   ├── images/
-│   │   ├── icons/
-│   │   └── fonts/
-│   ├── index.html                # HTML principal
-│   ├── main.ts                   # Punto de entrada
-│   └── styles.scss               # Importa main.scss
-├── public/                       # Archivos públicos
-├── angular.json                  # Configuración Angular
-├── tsconfig.json                 # Configuración TypeScript
-├── package.json                  # Dependencias
-└── README.md                     # Este archivo
+  src/
+      app/
+          components/           # Componentes reutilizables
+              shared/           # Componentes compartidos
+                  button/       # Componente botón
+                  form-input/   # Input de formulario
+                  register-form/ # Formulario registro
+              ...
+          pages/                # Páginas/Vistas
+              home/
+              login/
+              register/
+              dashboard/
+              ...
+          layout/               # Componentes de layout
+              header/
+              footer/
+              main/
+          services/             # Servicios HTTP
+              auth.service.ts
+              api.service.ts
+              ...
+          guards/               # Guards de rutas
+              auth.guard.ts
+              ...
+          interceptors/         # HTTP Interceptors
+              jwt.interceptor.ts
+          models/               # Interfaces y tipos
+              usuario.model.ts
+              suscripcion.model.ts
+              ...
+          app.config.ts         # Configuración de la app
+          app.routes.ts         # Definición de rutas
+          app.ts                # Componente principal
+      styles/                   # Estilos globales (ITCSS)
+          main.scss             # Archivo principal
+          00-settings/          # Variables, tokens
+              _variables.scss
+              _css-variables.scss
+          01-tools/             # Mixins, funciones
+              _mixins.scss
+          02-generic/           # Reset, normalize
+              _reset.scss
+          03-elements/          # Estilos base HTML
+              _base.scss
+              _encabezados.scss
+              ...
+          04-layout/            # Grid, flex, containers
+              _rejilla.scss
+              _flex.scss
+              _contenedor.scss
+      assets/                   # Recursos estáticos
+          images/
+          icons/
+          fonts/
+      index.html                # HTML principal
+      main.ts                   # Punto de entrada
+      styles.scss               # Importa main.scss
+  public/                       # Archivos públicos
+  angular.json                  # Configuración Angular
+  tsconfig.json                 # Configuración TypeScript
+  package.json                  # Dependencias
+  README.md                     # Este archivo
 ```
 
 ### Standalone Components
@@ -301,7 +301,7 @@ export const routes: Routes = [
 
 ---
 
-## 🎨 Estilos y CSS
+## Estilos y CSS
 
 ### Arquitectura ITCSS
 
@@ -379,11 +379,11 @@ import { ViewEncapsulation } from '@angular/core';
 
 ---
 
-## 📚 Documentación Adicional
+## Documentación Adicional
 
 Para una guía completa de diseño, arquitectura CSS y principios de comunicación visual:
 
-👉 **[DOCUMENTACION.md](../docs/design/DOCUMENTACION.md)** (2600+ líneas)
+  **[DOCUMENTACION.md](../docs/design/DOCUMENTACION.md)** (2600+ líneas)
 
 Incluye:
 - Principios de comunicación visual (jerarquía, contraste, etc.)
@@ -396,7 +396,7 @@ Incluye:
 
 ---
 
-## 🔧 Scaffolding de Código
+## Scaffolding de Código
 
 Angular CLI incluye herramientas para generar código:
 
@@ -419,7 +419,7 @@ ng generate --help
 
 ---
 
-## 🔗 Recursos
+## Recursos
 
 - **[Angular Documentation](https://angular.dev/)** - Documentación oficial
 - **[Angular CLI Reference](https://angular.dev/tools/cli)** - Referencia CLI
@@ -429,7 +429,7 @@ ng generate --help
 
 ---
 
-## 📞 Contacto
+## Contacto
 
 - **Proyecto:** Joinly - Frontend
 - **Autor:** Juan
@@ -438,5 +438,5 @@ ng generate --help
 ---
 
 <div align="center">
-  <b>Desarrollado con Angular 19 💜</b>
+  <b>Desarrollado con Angular 19  </b>
 </div>

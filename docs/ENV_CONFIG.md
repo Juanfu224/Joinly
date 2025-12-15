@@ -33,13 +33,13 @@ export $(grep -v '^#' .env | xargs)
 Carga las variables antes de ejecutar Spring Boot.
 
 ## Mejores prácticas (Spring Boot 4.0 + Java 25)
-- ✅ Variables de entorno en `.env`
-- ✅ Valores por defecto en `application.properties`
-- ✅ ConfigurationProperties para propiedades personalizadas
-- ✅ Perfiles específicos con `application-{profile}.properties`
-- ✅ Secrets en producción con servicios especializados
-- ❌ No hardcodear valores sensibles en el código
-- ❌ No duplicar archivos `.env`
+- Variables de entorno en `.env`
+- Valores por defecto en `application.properties`
+- ConfigurationProperties para propiedades personalizadas
+- Perfiles específicos con `application-{profile}.properties`
+- Secrets en producción con servicios especializados
+- No hardcodear valores sensibles en el código
+- No duplicar archivos `.env`
 
 ## Generación de claves seguras
 ```bash

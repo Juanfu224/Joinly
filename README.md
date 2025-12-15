@@ -1,4 +1,4 @@
-# 🎯 Joinly
+# Joinly
 
 > **Plataforma inteligente de gestión de suscripciones compartidas**
 
@@ -12,7 +12,7 @@ Joinly es una solución completa para gestionar suscripciones digitales comparti
 
 ---
 
-## 📋 Tabla de Contenidos
+## Tabla de Contenidos
 
 - [Características](#-características)
 - [Stack Tecnológico](#-stack-tecnológico)
@@ -26,42 +26,42 @@ Joinly es una solución completa para gestionar suscripciones digitales comparti
 
 ---
 
-## ✨ Características
+## Características
 
-### 🏠 Gestión de Unidades Familiares
+### Gestión de Unidades Familiares
 - Crear grupos con código único de 12 dígitos
 - Sistema de solicitudes de membresía
 - Control de roles: Admin, Anfitrión, Miembro
 - Expulsión y abandono de grupos
 
-### 💳 Gestión de Suscripciones
+### Gestión de Suscripciones
 - Catálogo de servicios (Netflix, Spotify, Disney+, etc.)
 - Sistema de plazas disponibles/ocupadas
 - División automática de costes
 - Gestión de credenciales encriptadas (AES-256)
 - Estados: Activa, Pausada, Cancelada, Expirada
 
-### 💰 Sistema de Pagos
+### Sistema de Pagos
 - Retención de pagos hasta finalización de período
 - Liberación automática a anfitriones
 - Soporte para múltiples métodos de pago
 - Historial completo de transacciones
 - Sistema de reembolsos
 
-### 🎫 Soporte y Disputas
+### Soporte y Disputas
 - Sistema de tickets de soporte
 - Estados: Abierto, En Proceso, Resuelto, Cerrado
 - Gestión de disputas por pagos o acceso
 - Chat con agentes de soporte
 
-### 🔒 Seguridad
+### Seguridad
 - Autenticación JWT (Access + Refresh tokens)
 - Encriptación AES-256 para credenciales
 - Verificación de email
 - Protección CSRF y CORS configurado
 - Migraciones de BD con Flyway
 
-### 📊 Características Adicionales
+### Características Adicionales
 - API REST documentada con OpenAPI/Swagger
 - Notificaciones en tiempo real
 - Sistema de valoraciones
@@ -70,7 +70,7 @@ Joinly es una solución completa para gestionar suscripciones digitales comparti
 
 ---
 
-## 🛠 Stack Tecnológico
+## Stack Tecnológico
 
 ### Backend
 - **Java 25** (Virtual Threads, Pattern Matching)
@@ -98,7 +98,7 @@ Joinly es una solución completa para gestionar suscripciones digitales comparti
 
 ---
 
-## 📦 Requisitos
+## Requisitos
 
 ### Obligatorios
 - **Java Development Kit (JDK) 25** o superior
@@ -116,7 +116,7 @@ git --version    # Debe mostrar Git instalado
 
 ---
 
-## 🚀 Instalación Rápida
+## Instalación Rápida
 
 ### 1. Clonar el Repositorio
 
@@ -206,7 +206,7 @@ El frontend estará disponible en: `http://localhost:4200`
 
 ---
 
-## 📚 Documentación Completa
+## Documentación Completa
 
 - **[Backend README](backend/README.md)** - Configuración detallada del backend, endpoints, testing
 - **[Frontend README](frontend/README.md)** - Guía del frontend Angular
@@ -225,83 +225,83 @@ http://localhost:8080/swagger-ui.html
 ```
 
 **Principales módulos:**
-- 🔐 **Auth** - Registro, login, refresh token, verificación email
-- 👥 **Usuarios** - Perfil, búsqueda, actualización
-- 🏠 **Unidades Familiares** - Crear, unirse, gestionar miembros
-- 📺 **Suscripciones** - CRUD, ocupar/liberar plazas, gestión estados
-- 💳 **Pagos** - Procesar, listar, liberar, reembolsos
-- 🎫 **Solicitudes** - Aprobar/rechazar, estados
-- 🔑 **Credenciales** - Acceso encriptado a credenciales
-- 🔔 **Notificaciones** - Marcar leídas, listar
-- 🎟️ **Tickets Soporte** - Crear, responder, cerrar
-- ⚖️ **Disputas** - Abrir, resolver, escalar
-- 📋 **Servicios** - Catálogo de servicios disponibles
+- **Auth** - Registro, login, refresh token, verificación email
+- **Usuarios** - Perfil, búsqueda, actualización
+- **Unidades Familiares** - Crear, unirse, gestionar miembros
+- **Suscripciones** - CRUD, ocupar/liberar plazas, gestión estados
+- **Pagos** - Procesar, listar, liberar, reembolsos
+- **Solicitudes** - Aprobar/rechazar, estados
+- **Credenciales** - Acceso encriptado a credenciales
+- **Notificaciones** - Marcar leídas, listar
+- **Tickets Soporte** - Crear, responder, cerrar
+- **Disputas** - Abrir, resolver, escalar
+- **Servicios** - Catálogo de servicios disponibles
 
 ---
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 Joinly/
-├── backend/                    # Backend Spring Boot
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/com/alberti/joinly/
-│   │   │   │   ├── config/        # Configuraciones (Security, OpenAPI)
-│   │   │   │   ├── controllers/   # Endpoints REST
-│   │   │   │   ├── dto/           # Data Transfer Objects
-│   │   │   │   ├── entities/      # Entidades JPA (19 tablas)
-│   │   │   │   ├── exceptions/    # Manejo de excepciones
-│   │   │   │   ├── repositories/  # Repositorios JPA
-│   │   │   │   ├── security/      # JWT, UserDetails, filtros
-│   │   │   │   ├── services/      # Lógica de negocio
-│   │   │   │   └── utils/         # Utilidades (encriptación)
-│   │   │   └── resources/
-│   │   │       ├── application.properties
-│   │   │       └── db/migration/  # Scripts Flyway
-│   │   └── test/                  # Tests unitarios e integración
-│   ├── docs/                      # Documentación backend
-│   ├── pom.xml                    # Dependencias Maven
-│   └── README.md
-├── frontend/                   # Frontend Angular 19
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── components/       # Componentes reutilizables
-│   │   │   ├── layout/           # Header, Footer, Main
-│   │   │   ├── pages/            # Páginas/Rutas
-│   │   │   ├── services/         # Servicios HTTP
-│   │   │   └── guards/           # Guards de autenticación
-│   │   └── styles/               # SCSS con ITCSS
-│   │       ├── 00-settings/      # Variables, tokens
-│   │       ├── 01-tools/         # Mixins, funciones
-│   │       ├── 02-generic/       # Reset, normalize
-│   │       ├── 03-elements/      # Estilos base HTML
-│   │       └── 04-layout/        # Grid, flex, containers
-│   ├── package.json
-│   ├── angular.json
-│   └── README.md
-├── docs/                       # Documentación general
-│   ├── design/
-│   │   └── DOCUMENTACION.md      # 2600+ líneas de diseño
-│   └── ENV_CONFIG.md
-├── docker-compose.yml          # MySQL containerizado
-├── .env.example                # Plantilla variables de entorno
-├── .gitignore
-└── README.md                   # Este archivo
+  backend/                    # Backend Spring Boot
+      src/
+          main/
+              java/com/alberti/joinly/
+                  config/        # Configuraciones (Security, OpenAPI)
+                  controllers/   # Endpoints REST
+                  dto/           # Data Transfer Objects
+                  entities/      # Entidades JPA (19 tablas)
+                  exceptions/    # Manejo de excepciones
+                  repositories/  # Repositorios JPA
+                  security/      # JWT, UserDetails, filtros
+                  services/      # Lógica de negocio
+                  utils/         # Utilidades (encriptación)
+              resources/
+                  application.properties
+                  db/migration/  # Scripts Flyway
+          test/                  # Tests unitarios e integración
+      docs/                      # Documentación backend
+      pom.xml                    # Dependencias Maven
+      README.md
+  frontend/                   # Frontend Angular 19
+      src/
+          app/
+              components/       # Componentes reutilizables
+              layout/           # Header, Footer, Main
+              pages/            # Páginas/Rutas
+              services/         # Servicios HTTP
+              guards/           # Guards de autenticación
+          styles/               # SCSS con ITCSS
+              00-settings/      # Variables, tokens
+              01-tools/         # Mixins, funciones
+              02-generic/       # Reset, normalize
+              03-elements/      # Estilos base HTML
+              04-layout/        # Grid, flex, containers
+      package.json
+      angular.json
+      README.md
+  docs/                       # Documentación general
+      design/
+          DOCUMENTACION.md      # 2600+ líneas de diseño
+      ENV_CONFIG.md
+  docker-compose.yml          # MySQL containerizado
+  .env.example                # Plantilla variables de entorno
+  .gitignore
+  README.md                   # Este archivo
 ```
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ### Backend - Tests de Integración
 
 El backend incluye **55+ tests de integración** que cubren:
 
-- ✅ **AuthController** (9 tests) - Registro, login, refresh, verificación
-- ✅ **UnidadFamiliarController** (17 tests) - CRUD, membresía, códigos
-- ✅ **SuscripcionController** (18 tests) - CRUD, plazas, estados
-- ✅ **PagoController** (11 tests) - Procesar, liberar, reembolsos
+- **AuthController** (9 tests) - Registro, login, refresh, verificación
+- **UnidadFamiliarController** (17 tests) - CRUD, membresía, códigos
+- **SuscripcionController** (18 tests) - CRUD, plazas, estados
+- **PagoController** (11 tests) - Procesar, liberar, reembolsos
 
 **Ejecutar tests:**
 
@@ -332,7 +332,7 @@ npm test
 
 ---
 
-## 🤝 Contribución
+## Contribución
 
 Este es un proyecto académico para el módulo **Desarrollo Web en Entorno Servidor (DWES)** del ciclo **DAW (Desarrollo de Aplicaciones Web)**.
 
@@ -353,7 +353,7 @@ Este es un proyecto académico para el módulo **Desarrollo Web en Entorno Servi
 
 ---
 
-## 📄 Licencia
+## Licencia
 
 Este proyecto es parte de un trabajo académico para el ciclo de **Desarrollo de Aplicaciones Web (DAW)** en el módulo **Desarrollo Web en Entorno Servidor**.
 
@@ -364,7 +364,7 @@ Este proyecto es parte de un trabajo académico para el ciclo de **Desarrollo de
 
 ---
 
-## 📞 Contacto y Soporte
+## Contacto y Soporte
 
 - **GitHub:** [@Juanfu224](https://github.com/Juanfu224)
 - **Issues:** [Reportar problema](https://github.com/Juanfu224/Joinly/issues)
@@ -372,26 +372,26 @@ Este proyecto es parte de un trabajo académico para el ciclo de **Desarrollo de
 
 ---
 
-## 🎓 Sobre el Proyecto
+## Sobre el Proyecto
 
 Joinly fue desarrollado como proyecto final para demostrar competencias en:
 
-✅ Desarrollo de APIs REST con Spring Boot  
-✅ Autenticación y autorización con JWT  
-✅ Arquitectura MVC y capas bien definidas  
-✅ Persistencia de datos con JPA/Hibernate  
-✅ Migraciones de BD con Flyway  
-✅ Testing de integración completo  
-✅ Documentación profesional con Swagger  
-✅ Seguridad: encriptación, CORS, CSRF  
-✅ Frontend moderno con Angular 19  
-✅ Containerización con Docker  
-✅ Buenas prácticas y código limpio  
+  Desarrollo de APIs REST con Spring Boot  
+  Autenticación y autorización con JWT  
+  Arquitectura MVC y capas bien definidas  
+  Persistencia de datos con JPA/Hibernate  
+  Migraciones de BD con Flyway  
+  Testing de integración completo  
+  Documentación profesional con Swagger  
+  Seguridad: encriptación, CORS, CSRF  
+  Frontend moderno con Angular 19  
+  Containerización con Docker  
+  Buenas prácticas y código limpio  
 
-**Puntuación estimada:** 92/100 ⭐
+**Puntuación estimada:** 92/100  
 
 ---
 
 <div align="center">
-  <b>Desarrollado con ❤️ por Juan para el módulo DWES - DAW 2024/2025</b>
+  <b>Desarrollado con   por Juan para el módulo DWES - DAW 2024/2025</b>
 </div>
