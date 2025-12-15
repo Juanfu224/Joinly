@@ -2,6 +2,8 @@ package com.alberti.joinly.repositories;
 
 import com.alberti.joinly.entities.enums.EstadoSuscripcion;
 import com.alberti.joinly.entities.suscripcion.Suscripcion;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,6 +31,13 @@ public interface SuscripcionRepository extends JpaRepository<Suscripcion, Long> 
         WHERE s.unidad.id = :idUnidad AND s.estado = 'ACTIVA'
         """)
     List<Suscripcion> findSuscripcionesActivasConServicio(@Param("idUnidad") Long idUnidad);
+
+    @Query("""
+        SELECT s FROM Suscripcion s
+        JOIN FETCH s.servicio
+        WHERE s.unidad.id = :idUnidad AND s.estado = 'ACTIVA'
+        """)
+    Page<Suscripcion> findSuscripcionesActivasConServicioPaginado(@Param("idUnidad") Long idUnidad, Pageable pageable);
 
     @Query("""
         SELECT s FROM Suscripcion s

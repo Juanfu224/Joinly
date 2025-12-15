@@ -11,6 +11,8 @@ import com.alberti.joinly.exceptions.*;
 import com.alberti.joinly.repositories.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,6 +89,17 @@ public class SuscripcionService {
      */
     public List<Suscripcion> listarSuscripcionesActivasDeUnidad(Long idUnidad) {
         return suscripcionRepository.findSuscripcionesActivasConServicio(idUnidad);
+    }
+
+    /**
+     * Lista las suscripciones activas de una unidad familiar con paginación.
+     *
+     * @param idUnidad ID de la unidad familiar
+     * @param pageable Información de paginación y ordenamiento
+     * @return Página de suscripciones activas con información del servicio
+     */
+    public Page<Suscripcion> listarSuscripcionesActivasDeUnidadPaginado(Long idUnidad, Pageable pageable) {
+        return suscripcionRepository.findSuscripcionesActivasConServicioPaginado(idUnidad, pageable);
     }
 
     /**

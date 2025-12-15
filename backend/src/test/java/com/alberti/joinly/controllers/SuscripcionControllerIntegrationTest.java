@@ -356,13 +356,14 @@ class SuscripcionControllerIntegrationTest {
         }
 
         @Test
-        @DisplayName("✅ Debe listar suscripciones de unidad")
+        @DisplayName("✅ Debe listar suscripciones de unidad (paginado)")
         void listarPorUnidad() throws Exception {
             mockMvc.perform(get(API_SUSCRIPCIONES + "/unidad/" + unidadFamiliar.getId())
                             .header("Authorization", "Bearer " + anfitrionToken))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))))
-                    .andExpect(jsonPath("$[0].nombreServicio").value("Netflix Premium"));
+                    .andExpect(jsonPath("$.content", hasSize(greaterThanOrEqualTo(1))))
+                    .andExpect(jsonPath("$.content[0].nombreServicio").value("Netflix Premium"))
+                    .andExpect(jsonPath("$.totalElements").value(greaterThanOrEqualTo(1)));
         }
 
         @Test

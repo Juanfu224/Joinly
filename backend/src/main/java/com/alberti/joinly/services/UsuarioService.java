@@ -4,6 +4,8 @@ import com.alberti.joinly.entities.enums.EstadoUsuario;
 import com.alberti.joinly.entities.usuario.Usuario;
 import com.alberti.joinly.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,10 @@ public class UsuarioService {
 
     public List<Usuario> buscarPorNombre(String nombre) {
         return usuarioRepository.buscarPorNombreYEstado(nombre, EstadoUsuario.ACTIVO);
+    }
+
+    public Page<Usuario> buscarPorNombrePaginado(String nombre, Pageable pageable) {
+        return usuarioRepository.buscarPorNombreYEstadoPaginado(nombre, EstadoUsuario.ACTIVO, pageable);
     }
 
     public List<Usuario> listarAgentesSoporte() {

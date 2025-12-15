@@ -2,6 +2,8 @@ package com.alberti.joinly.repositories;
 
 import com.alberti.joinly.entities.enums.EstadoSolicitud;
 import com.alberti.joinly.entities.grupo.Solicitud;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,6 +16,8 @@ import java.util.Optional;
 public interface SolicitudRepository extends JpaRepository<Solicitud, Long> {
 
     List<Solicitud> findBySolicitanteIdAndEstado(Long idSolicitante, EstadoSolicitud estado);
+
+    Page<Solicitud> findBySolicitanteIdAndEstado(Long idSolicitante, EstadoSolicitud estado, Pageable pageable);
 
     List<Solicitud> findByUnidadIdAndEstado(Long idUnidad, EstadoSolicitud estado);
 

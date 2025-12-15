@@ -10,10 +10,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/usuarios")
@@ -59,17 +60,21 @@ public class UsuarioController {
     }
 
     @GetMapping("/buscar")
-    @Operation(summary = "Buscar usuarios por nombre")
+    @Operation(
+            summary = "Buscar usuarios por nombre",
+            description = "Busca usuarios por nombre con paginación. " +
+                    "Parámetros: page (número de página, base 0), size (elementos por página), " +
+                    "sort (campo,dirección ej: nombre,asc)"
+    )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Lista de usuarios encontrados")
+            @ApiResponse(responseCode = "200", description = "Página de usuarios encontrados")
     })
-    public ResponseEntity<List<UsuarioResponse>> buscarPorNombre(
-            @Parameter(description = "Nombre a buscar") @RequestParam String nombre) {
+    public ResponseEntity<Page<UsuarioResponse>> buscarPorNombre(
+            @Parameter(description = "Nombre a buscar") @RequestParam String nombre,
+            @PageableDefault(size = 10, sort = "nombre") Pageable pageable) {
 
-        var usuarios = usuarioService.buscarPorNombre(nombre)
-                .stream()
-                .map(UsuarioResponse::fromEntity)
-                .toList();
+        var usuarios = usuarioService.buscarPorNombrePaginado(nombre, pageable)
+                .map(UsuarioResponse::fromEntity);
 
         return ResponseEntity.ok(usuarios);
     }

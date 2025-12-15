@@ -299,12 +299,13 @@ class UnidadFamiliarControllerIntegrationTest {
         }
 
         @Test
-        @DisplayName("✅ Debe listar grupos donde es miembro")
+        @DisplayName("✅ Debe listar grupos donde es miembro (paginado)")
         void listarGruposDondeSoyMiembro() throws Exception {
             mockMvc.perform(get(API_UNIDADES + "/miembro")
                             .header("Authorization", "Bearer " + miembroToken))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))));
+                    .andExpect(jsonPath("$.content", hasSize(greaterThanOrEqualTo(1))))
+                    .andExpect(jsonPath("$.totalElements").value(greaterThanOrEqualTo(1)));
         }
     }
 

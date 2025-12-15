@@ -13,6 +13,8 @@ import com.alberti.joinly.repositories.UnidadFamiliarRepository;
 import com.alberti.joinly.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -97,6 +99,17 @@ public class UnidadFamiliarService {
      */
     public List<UnidadFamiliar> listarGruposDondeEsMiembro(Long idUsuario) {
         return unidadFamiliarRepository.findUnidadesDondeEsMiembroActivo(idUsuario);
+    }
+
+    /**
+     * Lista los grupos donde el usuario es miembro activo con paginación.
+     *
+     * @param idUsuario ID del usuario
+     * @param pageable  Información de paginación y ordenamiento
+     * @return Página de grupos donde es miembro
+     */
+    public Page<UnidadFamiliar> listarGruposDondeEsMiembroPaginado(Long idUsuario, Pageable pageable) {
+        return unidadFamiliarRepository.findUnidadesDondeEsMiembroActivoPaginado(idUsuario, pageable);
     }
 
     /**

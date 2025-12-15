@@ -7,6 +7,8 @@ import com.alberti.joinly.exceptions.*;
 import com.alberti.joinly.repositories.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,6 +70,18 @@ public class SolicitudService {
      */
     public List<Solicitud> listarSolicitudesUsuario(Long idUsuario, EstadoSolicitud estado) {
         return solicitudRepository.findBySolicitanteIdAndEstado(idUsuario, estado);
+    }
+
+    /**
+     * Lista las solicitudes de un usuario filtradas por estado con paginación.
+     *
+     * @param idUsuario ID del usuario solicitante
+     * @param estado    Estado de las solicitudes a buscar
+     * @param pageable  Información de paginación y ordenamiento
+     * @return Página de solicitudes del usuario con el estado especificado
+     */
+    public Page<Solicitud> listarSolicitudesUsuarioPaginado(Long idUsuario, EstadoSolicitud estado, Pageable pageable) {
+        return solicitudRepository.findBySolicitanteIdAndEstado(idUsuario, estado, pageable);
     }
 
     /**

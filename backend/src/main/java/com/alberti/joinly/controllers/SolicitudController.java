@@ -18,6 +18,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -114,18 +117,22 @@ public class SolicitudController {
     }
 
     @GetMapping("/mis-solicitudes")
-    @Operation(summary = "Listar mis solicitudes")
+    @Operation(
+            summary = "Listar mis solicitudes",
+            description = "Lista las solicitudes del usuario con paginación. " +
+                    "Parámetros: page (número de página, base 0), size (elementos por página), " +
+                    "sort (campo,dirección ej: fechaSolicitud,desc), estado (PENDIENTE, APROBADA, RECHAZADA)"
+    )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Lista de solicitudes")
+            @ApiResponse(responseCode = "200", description = "Página de solicitudes")
     })
-    public ResponseEntity<List<SolicitudResponse>> listarMisSolicitudes(
+    public ResponseEntity<Page<SolicitudResponse>> listarMisSolicitudes(
             @CurrentUser UserPrincipal currentUser,
-            @Parameter(description = "Estado de las solicitudes") @RequestParam(defaultValue = "PENDIENTE") EstadoSolicitud estado) {
+            @Parameter(description = "Estado de las solicitudes") @RequestParam(defaultValue = "PENDIENTE") EstadoSolicitud estado,
+            @PageableDefault(size = 10, sort = "fechaSolicitud") Pageable pageable) {
 
-        var solicitudes = solicitudService.listarSolicitudesUsuario(currentUser.getId(), estado)
-                .stream()
-                .map(SolicitudResponse::fromEntity)
-                .toList();
+        var solicitudes = solicitudService.listarSolicitudesUsuarioPaginado(currentUser.getId(), estado, pageable)
+                .map(SolicitudResponse::fromEntity);
 
         return ResponseEntity.ok(solicitudes);
     }

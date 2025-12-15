@@ -17,6 +17,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -89,17 +92,21 @@ public class SuscripcionController {
     }
 
     @GetMapping("/unidad/{idUnidad}")
-    @Operation(summary = "Listar suscripciones de unidad")
+    @Operation(
+            summary = "Listar suscripciones de unidad",
+            description = "Lista las suscripciones activas de una unidad familiar con paginación. " +
+                    "Parámetros: page (número de página, base 0), size (elementos por página), " +
+                    "sort (campo,dirección ej: fechaInicio,desc)"
+    )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Lista de suscripciones")
+            @ApiResponse(responseCode = "200", description = "Página de suscripciones")
     })
-    public ResponseEntity<List<SuscripcionSummary>> listarSuscripcionesDeUnidad(
-            @Parameter(description = "ID de la unidad familiar") @PathVariable Long idUnidad) {
+    public ResponseEntity<Page<SuscripcionSummary>> listarSuscripcionesDeUnidad(
+            @Parameter(description = "ID de la unidad familiar") @PathVariable Long idUnidad,
+            @PageableDefault(size = 10, sort = "fechaInicio") Pageable pageable) {
 
-        var suscripciones = suscripcionService.listarSuscripcionesActivasDeUnidad(idUnidad)
-                .stream()
-                .map(SuscripcionSummary::fromEntity)
-                .toList();
+        var suscripciones = suscripcionService.listarSuscripcionesActivasDeUnidadPaginado(idUnidad, pageable)
+                .map(SuscripcionSummary::fromEntity);
 
         return ResponseEntity.ok(suscripciones);
     }

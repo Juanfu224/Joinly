@@ -16,6 +16,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -109,17 +112,21 @@ public class UnidadFamiliarController {
     }
 
     @GetMapping("/miembro")
-    @Operation(summary = "Listar grupos como miembro")
+    @Operation(
+            summary = "Listar grupos como miembro",
+            description = "Lista los grupos donde el usuario es miembro activo con paginación. " +
+                    "Parámetros: page (número de página, base 0), size (elementos por página), " +
+                    "sort (campo,dirección ej: fechaCreacion,desc)"
+    )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Lista de grupos")
+            @ApiResponse(responseCode = "200", description = "Página de grupos")
     })
-    public ResponseEntity<List<UnidadFamiliarResponse>> listarGruposDondeSoyMiembro(
-            @CurrentUser UserPrincipal currentUser) {
+    public ResponseEntity<Page<UnidadFamiliarResponse>> listarGruposDondeSoyMiembro(
+            @CurrentUser UserPrincipal currentUser,
+            @PageableDefault(size = 10, sort = "fechaCreacion") Pageable pageable) {
 
-        var unidades = unidadFamiliarService.listarGruposDondeEsMiembro(currentUser.getId())
-                .stream()
-                .map(UnidadFamiliarResponse::fromEntity)
-                .toList();
+        var unidades = unidadFamiliarService.listarGruposDondeEsMiembroPaginado(currentUser.getId(), pageable)
+                .map(UnidadFamiliarResponse::fromEntity);
 
         return ResponseEntity.ok(unidades);
     }

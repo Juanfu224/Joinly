@@ -172,26 +172,71 @@
 
 ---
 
-### 6. Crear MetodoPagoController
-- [ ] Crear `MetodoPagoController.java`
-- [ ] Endpoint `GET /api/v1/metodos-pago` - Listar mis métodos
-- [ ] Endpoint `POST /api/v1/metodos-pago` - Registrar nuevo
-- [ ] Endpoint `PUT /api/v1/metodos-pago/{id}/predeterminado` - Marcar como default
-- [ ] Endpoint `DELETE /api/v1/metodos-pago/{id}` - Eliminar
-- [ ] Crear DTOs: `MetodoPagoResponse`, `CreateMetodoPagoRequest`
-- [ ] Crear `MetodoPagoService.java`
+### 6. ~~Crear MetodoPagoController~~   COMPLETADO
+- [x] Crear `MetodoPagoController.java`
+- [x] Endpoint `GET /api/v1/metodos-pago` - Listar mis métodos
+- [x] Endpoint `POST /api/v1/metodos-pago` - Registrar nuevo
+- [x] Endpoint `PUT /api/v1/metodos-pago/{id}/predeterminado` - Marcar como default
+- [x] Endpoint `DELETE /api/v1/metodos-pago/{id}` - Eliminar
+- [x] Crear DTOs: `MetodoPagoResponse`, `CreateMetodoPagoRequest`
+- [x] Crear `MetodoPagoService.java`
 
-**Tiempo estimado:** 2-3 horas
+**Archivos creados:**
+- `controllers/MetodoPagoController.java` - Controlador REST con 4 endpoints
+- `services/MetodoPagoService.java` - Lógica de negocio para métodos de pago
+- `dto/metodopago/MetodoPagoResponse.java` - DTO de respuesta con información segura (PCI-DSS)
+- `dto/metodopago/CreateMetodoPagoRequest.java` - DTO para registrar métodos tokenizados
+
+**Características implementadas:**
+- Gestión completa de métodos de pago tokenizados (PCI-DSS compliant)
+- Soft delete para mantener integridad referencial con pagos históricos
+- Control de unicidad del método predeterminado por usuario
+- Validación de permisos (solo propietario puede modificar sus métodos)
+- Documentación completa con OpenAPI/Swagger
+- Uso de records de Java 25 para DTOs inmutables
+- Seguimiento de buenas prácticas de Spring Boot 4.0
+
+**Completado:** 15/12/2025
 
 ---
 
-### 7. Implementar Paginación en Más Endpoints
-- [ ] `GET /api/v1/suscripciones/unidad/{id}` - Añadir Pageable
-- [ ] `GET /api/v1/solicitudes/mis-solicitudes` - Añadir Pageable
-- [ ] `GET /api/v1/unidades/miembro` - Añadir Pageable
-- [ ] `GET /api/v1/usuarios/buscar` - Añadir Pageable
+### 7. ~~Implementar Paginación en Más Endpoints~~  ✅ COMPLETADO
+- [x] `GET /api/v1/suscripciones/unidad/{id}` - Añadir Pageable
+- [x] `GET /api/v1/solicitudes/mis-solicitudes` - Añadir Pageable
+- [x] `GET /api/v1/unidades/miembro` - Añadir Pageable
+- [x] `GET /api/v1/usuarios/buscar` - Añadir Pageable
 
-**Tiempo estimado:** 1-2 horas
+**Archivos modificados:**
+- **Repositories:** Añadidos métodos paginados con `Page<T>` y `Pageable`
+  - `SuscripcionRepository.java` - `findSuscripcionesActivasConServicioPaginado`
+  - `SolicitudRepository.java` - `findBySolicitanteIdAndEstado` (sobrecarga paginada)
+  - `UnidadFamiliarRepository.java` - `findUnidadesDondeEsMiembroActivoPaginado`
+  - `UsuarioRepository.java` - `buscarPorNombreYEstadoPaginado`
+
+- **Services:** Añadidos métodos con soporte de paginación
+  - `SuscripcionService.java` - `listarSuscripcionesActivasDeUnidadPaginado`
+  - `SolicitudService.java` - `listarSolicitudesUsuarioPaginado`
+  - `UnidadFamiliarService.java` - `listarGruposDondeEsMiembroPaginado`
+  - `UsuarioService.java` - `buscarPorNombrePaginado`
+
+- **Controllers:** Modificados para retornar `Page<DTO>` con `@PageableDefault`
+  - `SuscripcionController.java` - Endpoint retorna `Page<SuscripcionSummary>`
+  - `SolicitudController.java` - Endpoint retorna `Page<SolicitudResponse>`
+  - `UnidadFamiliarController.java` - Endpoint retorna `Page<UnidadFamiliarResponse>`
+  - `UsuarioController.java` - Endpoint retorna `Page<UsuarioResponse>`
+
+- **Tests:** Actualizados para verificar estructura paginada
+  - `SuscripcionControllerIntegrationTest.java` - Verificación de `$.content` y `$.totalElements`
+  - `UnidadFamiliarControllerIntegrationTest.java` - Verificación de estructura Page
+
+**Características implementadas:**
+- Uso de `@PageableDefault` con valores por defecto (size=10)
+- Ordenamiento predeterminado según contexto de cada endpoint
+- Documentación Swagger actualizada con descripción de parámetros de paginación
+- Respuesta estándar de Spring Data: `{content: [], totalElements, totalPages, size, number, ...}`
+- Parámetros soportados: `?page=0&size=20&sort=campo,desc`
+
+**Completado:** 15/12/2025
 
 ---
 

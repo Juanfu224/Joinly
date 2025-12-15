@@ -24,4 +24,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     @Query("SELECT u FROM Usuario u WHERE LOWER(u.nombre) LIKE LOWER(CONCAT('%', :nombre, '%')) AND u.estado = :estado")
     List<Usuario> buscarPorNombreYEstado(@Param("nombre") String nombre, @Param("estado") EstadoUsuario estado);
+
+    @Query("SELECT u FROM Usuario u WHERE LOWER(u.nombre) LIKE LOWER(CONCAT('%', :nombre, '%')) AND u.estado = :estado")
+    org.springframework.data.domain.Page<Usuario> buscarPorNombreYEstadoPaginado(@Param("nombre") String nombre, @Param("estado") EstadoUsuario estado, org.springframework.data.domain.Pageable pageable);
 }
