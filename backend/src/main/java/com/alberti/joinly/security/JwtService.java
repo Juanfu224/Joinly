@@ -48,7 +48,27 @@ public class JwtService {
      * @param jwtProperties Propiedades JWT cargadas desde application.properties
      */
     public JwtService(JwtProperties jwtProperties) {
-        this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.secretKey()));
+        // Intentar decodificar como Base64, si falla usar como string directo
+        byte[] keyBytes;
+        try {
+            keyBytes = Decoders.BASE64.decode(jwtProperties.secretKey());
+        } catch (Exception e) {
+            // Si no es Base64 válido, usar el string directamente como bytes UTF-8
+            log.warn("JWT secret is not valid Base64, using as plain text. Consider using Base64 encoded secret for better security.");
+            keyBytes = jwtProperties.secretKey().getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        }
+        
+        // Verificar que la clave tenga al menos 256 bits (32 bytes)
+        if (keyBytes.length < 32) {
+            throw new IllegalArgumentException(
+                String.format("JWT secret key is too short (%d bytes). Must be at least 32 bytes (256 bits). " +
+                    "Current key provides only %d bits of security. " +
+                    "Please use a Base64 encoded secret of at least 32 bytes or a plain text secret of at least 32 characters.",
+                    keyBytes.length, keyBytes.length * 8)
+            );
+        }
+        
+        this.secretKey = Keys.hmacShaKeyFor(keyBytes);
         this.accessTokenExpiration = jwtProperties.accessTokenExpiration();
         this.refreshTokenExpiration = jwtProperties.refreshTokenExpiration();
     }

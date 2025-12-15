@@ -1,0 +1,26 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Run Joinly Application",
+            "request": "launch",
+            "mainClass": "com.alberti.joinly.JoinlyApplication",
+            "projectName": "joinly",
+            "cwd": "${workspaceFolder}/backend",
+            "envFile": "${workspaceFolder}/backend/.env",
+            "args": "",
+            "console": "internalConsole"
+        },
+        {
+            "type": "java",
+            "name": "Debug Joinly Application",
+            "request": "launch",
+            "mainClass": "com.alberti.joinly.JoinlyApplication",
+            "projectName": "joinly",
+            "cwd": "${workspaceFolder}/backend",
+            "envFile": "${workspaceFolder}/backend/.env",
+            "console": "internalConsole"
+        }
+    ]
+}
