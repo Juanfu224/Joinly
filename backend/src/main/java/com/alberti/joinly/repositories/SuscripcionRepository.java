@@ -39,6 +39,32 @@ public interface SuscripcionRepository extends JpaRepository<Suscripcion, Long> 
         """)
     Page<Suscripcion> findSuscripcionesActivasConServicioPaginado(@Param("idUnidad") Long idUnidad, Pageable pageable);
 
+    /**
+     * Busca suscripciones de una unidad con filtros opcionales de estado y rango de fechas.
+     * Soporta paginación y ordenación dinámica.
+     * 
+     * @param idUnidad ID de la unidad familiar
+     * @param estado Estado de la suscripción (puede ser null para todos los estados)
+     * @param fechaDesde Fecha inicio del rango (puede ser null)
+     * @param fechaHasta Fecha fin del rango (puede ser null)
+     * @param pageable Configuración de paginación y ordenación
+     * @return Página de suscripciones que cumplen los criterios
+     */
+    @Query("""
+        SELECT s FROM Suscripcion s
+        JOIN FETCH s.servicio
+        WHERE s.unidad.id = :idUnidad
+        AND (:estado IS NULL OR s.estado = :estado)
+        AND (:fechaDesde IS NULL OR s.fechaInicio >= :fechaDesde)
+        AND (:fechaHasta IS NULL OR s.fechaInicio <= :fechaHasta)
+        """)
+    Page<Suscripcion> findByUnidadIdWithFilters(
+            @Param("idUnidad") Long idUnidad,
+            @Param("estado") EstadoSuscripcion estado,
+            @Param("fechaDesde") LocalDate fechaDesde,
+            @Param("fechaHasta") LocalDate fechaHasta,
+            Pageable pageable);
+
     @Query("""
         SELECT s FROM Suscripcion s
         WHERE s.fechaRenovacion <= :fecha AND s.estado = 'ACTIVA' AND s.renovacionAutomatica = true

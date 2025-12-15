@@ -25,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -118,20 +119,38 @@ public class SolicitudController {
 
     @GetMapping("/mis-solicitudes")
     @Operation(
-            summary = "Listar mis solicitudes",
-            description = "Lista las solicitudes del usuario con paginación. " +
-                    "Parámetros: page (número de página, base 0), size (elementos por página), " +
-                    "sort (campo,dirección ej: fechaSolicitud,desc), estado (PENDIENTE, APROBADA, RECHAZADA)"
+            summary = "Listar mis solicitudes con filtros",
+            description = """
+                    Lista las solicitudes del usuario con filtros opcionales y paginación.
+                    
+                    **Parámetros de paginación:**
+                    - page: Número de página (base 0, default: 0)
+                    - size: Elementos por página (default: 10)
+                    - sort: Ordenación (ej: fechaSolicitud,desc o estado,asc)
+                    
+                    **Filtros disponibles:**
+                    - estado: PENDIENTE, APROBADA, RECHAZADA, CANCELADA (opcional)
+                    - fechaDesde: Fecha inicio (formato: YYYY-MM-DD)
+                    - fechaHasta: Fecha fin (formato: YYYY-MM-DD)
+                    
+                    **Ejemplos:**
+                    - `/api/v1/solicitudes/mis-solicitudes?estado=PENDIENTE`
+                    - `/api/v1/solicitudes/mis-solicitudes?fechaDesde=2024-01-01&fechaHasta=2024-12-31`
+                    - `/api/v1/solicitudes/mis-solicitudes?estado=APROBADA&sort=fechaSolicitud,desc&page=0&size=20`
+                    """
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Página de solicitudes")
+            @ApiResponse(responseCode = "200", description = "Página de solicitudes que cumplen los criterios")
     })
     public ResponseEntity<Page<SolicitudResponse>> listarMisSolicitudes(
             @CurrentUser UserPrincipal currentUser,
-            @Parameter(description = "Estado de las solicitudes") @RequestParam(defaultValue = "PENDIENTE") EstadoSolicitud estado,
+            @Parameter(description = "Estado de las solicitudes (opcional)") @RequestParam(required = false) EstadoSolicitud estado,
+            @Parameter(description = "Fecha inicio del rango (formato: YYYY-MM-DD)") @RequestParam(required = false) LocalDate fechaDesde,
+            @Parameter(description = "Fecha fin del rango (formato: YYYY-MM-DD)") @RequestParam(required = false) LocalDate fechaHasta,
             @PageableDefault(size = 10, sort = "fechaSolicitud") Pageable pageable) {
 
-        var solicitudes = solicitudService.listarSolicitudesUsuarioPaginado(currentUser.getId(), estado, pageable)
+        var solicitudes = solicitudService.listarSolicitudesUsuarioConFiltros(
+                currentUser.getId(), estado, fechaDesde, fechaHasta, pageable)
                 .map(SolicitudResponse::fromEntity);
 
         return ResponseEntity.ok(solicitudes);

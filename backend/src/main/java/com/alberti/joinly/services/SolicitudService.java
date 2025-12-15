@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -83,7 +84,24 @@ public class SolicitudService {
     public Page<Solicitud> listarSolicitudesUsuarioPaginado(Long idUsuario, EstadoSolicitud estado, Pageable pageable) {
         return solicitudRepository.findBySolicitanteIdAndEstado(idUsuario, estado, pageable);
     }
-
+    /**
+     * Lista las solicitudes de un usuario con filtros opcionales.
+     *
+     * @param idUsuario ID del usuario solicitante
+     * @param estado Estado de la solicitud (opcional)
+     * @param fechaDesde Fecha inicio del rango (opcional)
+     * @param fechaHasta Fecha fin del rango (opcional)
+     * @param pageable Información de paginación y ordenamiento
+     * @return Página de solicitudes que cumplen los criterios
+     */
+    public Page<Solicitud> listarSolicitudesUsuarioConFiltros(
+            Long idUsuario,
+            EstadoSolicitud estado,
+            LocalDate fechaDesde,
+            LocalDate fechaHasta,
+            Pageable pageable) {
+        return solicitudRepository.findBySolicitanteIdWithFilters(idUsuario, estado, fechaDesde, fechaHasta, pageable);
+    }
     /**
      * Lista las solicitudes pendientes de un grupo familiar.
      *

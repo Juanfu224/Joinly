@@ -4,6 +4,7 @@ import com.alberti.joinly.dto.suscripcion.CreateSuscripcionRequest;
 import com.alberti.joinly.dto.suscripcion.PlazaResponse;
 import com.alberti.joinly.dto.suscripcion.SuscripcionResponse;
 import com.alberti.joinly.dto.suscripcion.SuscripcionSummary;
+import com.alberti.joinly.entities.enums.EstadoSuscripcion;
 import com.alberti.joinly.security.CurrentUser;
 import com.alberti.joinly.security.UserPrincipal;
 import com.alberti.joinly.services.SuscripcionService;
@@ -24,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -93,19 +95,38 @@ public class SuscripcionController {
 
     @GetMapping("/unidad/{idUnidad}")
     @Operation(
-            summary = "Listar suscripciones de unidad",
-            description = "Lista las suscripciones activas de una unidad familiar con paginación. " +
-                    "Parámetros: page (número de página, base 0), size (elementos por página), " +
-                    "sort (campo,dirección ej: fechaInicio,desc)"
+            summary = "Listar suscripciones de unidad con filtros",
+            description = """
+                    Lista las suscripciones de una unidad familiar con filtros opcionales y paginación.
+                    
+                    **Parámetros de paginación:**
+                    - page: Número de página (base 0, default: 0)
+                    - size: Elementos por página (default: 10)
+                    - sort: Ordenación (ej: fechaInicio,desc o estado,asc)
+                    
+                    **Filtros disponibles:**
+                    - estado: ACTIVA, PAUSADA, CANCELADA, FINALIZADA
+                    - fechaDesde: Fecha inicio (formato: YYYY-MM-DD)
+                    - fechaHasta: Fecha fin (formato: YYYY-MM-DD)
+                    
+                    **Ejemplos:**
+                    - `/api/v1/suscripciones/unidad/1?estado=ACTIVA`
+                    - `/api/v1/suscripciones/unidad/1?fechaDesde=2024-01-01&fechaHasta=2024-12-31`
+                    - `/api/v1/suscripciones/unidad/1?estado=ACTIVA&sort=fechaInicio,desc&page=0&size=20`
+                    """
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Página de suscripciones")
+            @ApiResponse(responseCode = "200", description = "Página de suscripciones que cumplen los criterios")
     })
     public ResponseEntity<Page<SuscripcionSummary>> listarSuscripcionesDeUnidad(
             @Parameter(description = "ID de la unidad familiar") @PathVariable Long idUnidad,
+            @Parameter(description = "Estado de la suscripción (opcional)") @RequestParam(required = false) EstadoSuscripcion estado,
+            @Parameter(description = "Fecha inicio del rango (formato: YYYY-MM-DD)") @RequestParam(required = false) LocalDate fechaDesde,
+            @Parameter(description = "Fecha fin del rango (formato: YYYY-MM-DD)") @RequestParam(required = false) LocalDate fechaHasta,
             @PageableDefault(size = 10, sort = "fechaInicio") Pageable pageable) {
 
-        var suscripciones = suscripcionService.listarSuscripcionesActivasDeUnidadPaginado(idUnidad, pageable)
+        var suscripciones = suscripcionService.listarSuscripcionesDeUnidadConFiltros(
+                idUnidad, estado, fechaDesde, fechaHasta, pageable)
                 .map(SuscripcionSummary::fromEntity);
 
         return ResponseEntity.ok(suscripciones);

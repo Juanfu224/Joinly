@@ -68,6 +68,25 @@ public class PagoService {
         return pagoRepository.findPagosConDetallesPorUsuario(idUsuario, pageable);
     }
 
+    /**
+     * Lista los pagos de un usuario con filtros opcionales.
+     *
+     * @param idUsuario ID del usuario
+     * @param estado Estado del pago (opcional)
+     * @param fechaDesde Fecha inicio del rango (opcional)
+     * @param fechaHasta Fecha fin del rango (opcional)
+     * @param pageable Información de paginación y ordenamiento
+     * @return Página de pagos que cumplen los criterios
+     */
+    public Page<Pago> listarPagosUsuarioConFiltros(
+            Long idUsuario,
+            EstadoPago estado,
+            LocalDate fechaDesde,
+            LocalDate fechaHasta,
+            Pageable pageable) {
+        return pagoRepository.findPagosConDetallesPorUsuarioWithFilters(idUsuario, estado, fechaDesde, fechaHasta, pageable);
+    }
+
     public List<Pago> listarPagosSuscripcion(Long idSuscripcion) {
         return pagoRepository.findPagosPorSuscripcion(idSuscripcion);
     }

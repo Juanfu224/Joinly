@@ -240,13 +240,41 @@
 
 ---
 
-### 8. Añadir Filtros y Ordenación
-- [ ] Implementar parámetros `?sort=campo,asc|desc`
-- [ ] Implementar parámetros `?estado=ACTIVA`
-- [ ] Implementar parámetros `?fechaDesde=&fechaHasta=`
-- [ ] Documentar en Swagger los query params disponibles
+### 8. ~~Añadir Filtros y Ordenación~~  ✅ COMPLETADO
+- [x] Implementar parámetros `?sort=campo,asc|desc` (mediante Pageable)
+- [x] Implementar parámetros `?estado=ACTIVA|PAUSADA|CANCELADA`
+- [x] Implementar parámetros `?fechaDesde=&fechaHasta=`
+- [x] Documentar en Swagger los query params disponibles
 
-**Tiempo estimado:** 2-3 horas
+**Archivos modificados:**
+- **Repositories:** Añadidos métodos con filtros opcionales
+  - `SuscripcionRepository.java` - `findByUnidadIdWithFilters` (estado, fechaDesde, fechaHasta)
+  - `SolicitudRepository.java` - `findBySolicitanteIdWithFilters` (estado, fechaDesde, fechaHasta)
+  - `PagoRepository.java` - `findPagosConDetallesPorUsuarioWithFilters` (estado, fechaDesde, fechaHasta)
+
+- **Services:** Añadidos métodos con soporte de filtros
+  - `SuscripcionService.java` - `listarSuscripcionesDeUnidadConFiltros`
+  - `SolicitudService.java` - `listarSolicitudesUsuarioConFiltros`
+  - `PagoService.java` - `listarPagosUsuarioConFiltros`
+
+- **Controllers:** Modificados para aceptar filtros opcionales con `@RequestParam(required = false)`
+  - `SuscripcionController.java` - GET `/unidad/{idUnidad}` con filtros estado, fechaDesde, fechaHasta
+  - `SolicitudController.java` - GET `/mis-solicitudes` con filtros estado, fechaDesde, fechaHasta
+  - `PagoController.java` - GET `/mis-pagos` con filtros estado, fechaDesde, fechaHasta
+
+**Características implementadas:**
+- Patrón JPQL con filtros opcionales: `:param IS NULL OR field = :param`
+- Uso de `CAST` para comparación de fechas con LocalDate
+- Parámetros `@RequestParam(required = false)` para flexibilidad
+- Documentación completa en Swagger con ejemplos de valores
+- Ordenación dinámica mediante `Pageable` con `sort=campo,asc|desc`
+- Validación de enums (EstadoSuscripcion, EstadoSolicitud, EstadoPago)
+- Soporte de rangos de fechas parciales (solo desde, solo hasta, o ambos)
+
+**Compilación exitosa:** ✅ 151 archivos compilados sin errores  
+**Tests ejecutados:** ✅ 146 tests pasados, 0 fallos  
+
+**Completado:** 15/12/2025
 
 ---
 

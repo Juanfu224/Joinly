@@ -28,6 +28,34 @@ public interface PagoRepository extends JpaRepository<Pago, Long> {
             """)
     Page<Pago> findPagosConDetallesPorUsuario(@Param("idUsuario") Long idUsuario, Pageable pageable);
 
+    /**
+     * Busca pagos de un usuario con filtros opcionales de estado y rango de fechas.
+     * Soporta paginación y ordenación dinámica.
+     * 
+     * @param idUsuario ID del usuario
+     * @param estado Estado del pago (puede ser null para todos los estados)
+     * @param fechaDesde Fecha inicio del rango (puede ser null)
+     * @param fechaHasta Fecha fin del rango (puede ser null)
+     * @param pageable Configuración de paginación y ordenación
+     * @return Página de pagos que cumplen los criterios
+     */
+    @Query("""
+            SELECT p FROM Pago p
+            JOIN FETCH p.plaza pl
+            JOIN FETCH pl.suscripcion s
+            JOIN FETCH s.servicio
+            WHERE p.usuario.id = :idUsuario
+            AND (:estado IS NULL OR p.estado = :estado)
+            AND (:fechaDesde IS NULL OR CAST(p.fechaPago AS LocalDate) >= :fechaDesde)
+            AND (:fechaHasta IS NULL OR CAST(p.fechaPago AS LocalDate) <= :fechaHasta)
+            """)
+    Page<Pago> findPagosConDetallesPorUsuarioWithFilters(
+            @Param("idUsuario") Long idUsuario,
+            @Param("estado") EstadoPago estado,
+            @Param("fechaDesde") LocalDate fechaDesde,
+            @Param("fechaHasta") LocalDate fechaHasta,
+            Pageable pageable);
+
     @Query("""
             SELECT p FROM Pago p
             JOIN FETCH p.usuario

@@ -103,6 +103,25 @@ public class SuscripcionService {
     }
 
     /**
+     * Lista las suscripciones de una unidad familiar con filtros opcionales.
+     *
+     * @param idUnidad ID de la unidad familiar
+     * @param estado Estado de la suscripción (opcional)
+     * @param fechaDesde Fecha inicio del rango (opcional)
+     * @param fechaHasta Fecha fin del rango (opcional)
+     * @param pageable Información de paginación y ordenamiento
+     * @return Página de suscripciones que cumplen los criterios
+     */
+    public Page<Suscripcion> listarSuscripcionesDeUnidadConFiltros(
+            Long idUnidad,
+            EstadoSuscripcion estado,
+            LocalDate fechaDesde,
+            LocalDate fechaHasta,
+            Pageable pageable) {
+        return suscripcionRepository.findByUnidadIdWithFilters(idUnidad, estado, fechaDesde, fechaHasta, pageable);
+    }
+
+    /**
      * Lista las suscripciones donde el usuario es anfitrión.
      *
      * @param idAnfitrion ID del usuario anfitrión

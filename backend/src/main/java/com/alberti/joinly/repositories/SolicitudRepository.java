@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,31 @@ public interface SolicitudRepository extends JpaRepository<Solicitud, Long> {
     List<Solicitud> findBySolicitanteIdAndEstado(Long idSolicitante, EstadoSolicitud estado);
 
     Page<Solicitud> findBySolicitanteIdAndEstado(Long idSolicitante, EstadoSolicitud estado, Pageable pageable);
+
+    /**
+     * Busca solicitudes de un usuario con filtros opcionales de estado y rango de fechas.
+     * Soporta paginación y ordenación dinámica.
+     * 
+     * @param idSolicitante ID del usuario solicitante
+     * @param estado Estado de la solicitud (puede ser null para todos los estados)
+     * @param fechaDesde Fecha inicio del rango (puede ser null)
+     * @param fechaHasta Fecha fin del rango (puede ser null)
+     * @param pageable Configuración de paginación y ordenación
+     * @return Página de solicitudes que cumplen los criterios
+     */
+    @Query("""
+        SELECT s FROM Solicitud s
+        WHERE s.solicitante.id = :idSolicitante
+        AND (:estado IS NULL OR s.estado = :estado)
+        AND (:fechaDesde IS NULL OR CAST(s.fechaSolicitud AS LocalDate) >= :fechaDesde)
+        AND (:fechaHasta IS NULL OR CAST(s.fechaSolicitud AS LocalDate) <= :fechaHasta)
+        """)
+    Page<Solicitud> findBySolicitanteIdWithFilters(
+            @Param("idSolicitante") Long idSolicitante,
+            @Param("estado") EstadoSolicitud estado,
+            @Param("fechaDesde") LocalDate fechaDesde,
+            @Param("fechaHasta") LocalDate fechaHasta,
+            Pageable pageable);
 
     List<Solicitud> findByUnidadIdAndEstado(Long idUnidad, EstadoSolicitud estado);
 

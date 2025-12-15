@@ -3,6 +3,7 @@ package com.alberti.joinly.controllers;
 import com.alberti.joinly.dto.pago.CreatePagoRequest;
 import com.alberti.joinly.dto.pago.PagoResponse;
 import com.alberti.joinly.dto.pago.ReembolsoRequest;
+import com.alberti.joinly.entities.enums.EstadoPago;
 import com.alberti.joinly.security.CurrentUser;
 import com.alberti.joinly.security.UserPrincipal;
 import com.alberti.joinly.services.PagoService;
@@ -22,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -68,12 +70,39 @@ public class PagoController {
     }
 
     @GetMapping("/mis-pagos")
-    @Operation(summary = "Listar mis pagos con paginación")
+    @Operation(
+            summary = "Listar mis pagos con filtros y paginación",
+            description = """
+                    Lista los pagos del usuario con filtros opcionales y paginación.
+                    
+                    **Parámetros de paginación:**
+                    - page: Número de página (base 0, default: 0)
+                    - size: Elementos por página (default: 20)
+                    - sort: Ordenación (ej: fechaPago,desc o monto,asc)
+                    
+                    **Filtros disponibles:**
+                    - estado: PENDIENTE, FALLIDO, RETENIDO, LIBERADO, REEMBOLSADO, REEMBOLSO_PARCIAL, DISPUTADO (opcional)
+                    - fechaDesde: Fecha inicio (formato: YYYY-MM-DD)
+                    - fechaHasta: Fecha fin (formato: YYYY-MM-DD)
+                    
+                    **Ejemplos:**
+                    - `/api/v1/pagos/mis-pagos?estado=LIBERADO`
+                    - `/api/v1/pagos/mis-pagos?fechaDesde=2024-01-01&fechaHasta=2024-12-31`
+                    - `/api/v1/pagos/mis-pagos?estado=RETENIDO&sort=fechaPago,desc&page=0&size=50`
+                    """
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Página de pagos que cumplen los criterios")
+    })
     public ResponseEntity<Page<PagoResponse>> listarMisPagos(
             @CurrentUser UserPrincipal currentUser,
+            @Parameter(description = "Estado del pago (opcional)") @RequestParam(required = false) EstadoPago estado,
+            @Parameter(description = "Fecha inicio del rango (formato: YYYY-MM-DD)") @RequestParam(required = false) LocalDate fechaDesde,
+            @Parameter(description = "Fecha fin del rango (formato: YYYY-MM-DD)") @RequestParam(required = false) LocalDate fechaHasta,
             @PageableDefault(size = 20, sort = "fechaPago") Pageable pageable) {
 
-        var pagos = pagoService.listarPagosUsuario(currentUser.getId(), pageable)
+        var pagos = pagoService.listarPagosUsuarioConFiltros(
+                currentUser.getId(), estado, fechaDesde, fechaHasta, pageable)
                 .map(PagoResponse::fromEntity);
 
         return ResponseEntity.ok(pagos);
