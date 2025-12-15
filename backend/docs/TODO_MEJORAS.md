@@ -342,15 +342,32 @@
 
 ---
 
-### 11. Mover Credenciales a Variables de Entorno
-- [ ] Crear `application-dev.properties` para desarrollo
-- [ ] Crear `application-prod.properties` para producción
-- [ ] Externalizar `spring.datasource.password`
-- [ ] Externalizar `jwt.secret-key`
-- [ ] Externalizar `joinly.encryption.key`
-- [ ] Documentar variables en README
+### 11. ~~Mover Credenciales a Variables de Entorno~~  ✅ COMPLETADO
+- [x] Crear `application-dev.properties` para desarrollo
+- [x] Crear `application-prod.properties` para producción
+- [x] Externalizar `spring.datasource.password`
+- [x] Externalizar `jwt.secret-key`
+- [x] Externalizar `joinly.encryption.key`
+- [x] Documentar variables en README
 
-**Tiempo estimado:** 1 hora
+**Archivos creados/modificados:**
+- `application-dev.properties` - Perfil desarrollo (valores por defecto, logs DEBUG)
+- `application-prod.properties` - Perfil producción (sin defaults, seguridad reforzada)
+- `application.properties` - Base con variables de entorno obligatorias
+- `.env.example` - Plantilla simplificada
+
+**Variables externalizadas:**
+- `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` - Base de datos
+- `JWT_SECRET_KEY` - Clave JWT (Base64, 512 bits)
+- `ENCRYPTION_KEY` - Clave AES-256 (Base64, 32 bytes)
+
+**Uso:**
+```bash
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev   # Desarrollo
+./mvnw spring-boot:run -Dspring-boot.run.profiles=prod  # Producción
+```
+
+**Completado:** 15/12/2025
 
 ---
 
@@ -421,22 +438,22 @@
 
 ```
 backend/
-  README.md                          [  COMPLETADO]
+  README.md                          [✅ COMPLETADO]
   src/main/resources/
       db/migration/
-          V1__Initial_Schema.sql     [  COMPLETADO]
-      application-dev.properties     [PENDIENTE - Importante]
-      application-prod.properties    [PENDIENTE - Importante]
+          V1__Initial_Schema.sql     [✅ COMPLETADO]
+      application-dev.properties     [✅ COMPLETADO]
+      application-prod.properties    [✅ COMPLETADO]
   src/main/java/.../controllers/
-      ServicioController.java        [PENDIENTE - Importante]
-      MetodoPagoController.java      [PENDIENTE - Importante]
+      ServicioController.java        [✅ COMPLETADO]
+      MetodoPagoController.java      [✅ COMPLETADO]
   src/main/java/.../services/
-      MetodoPagoService.java         [PENDIENTE - Importante]
+      MetodoPagoService.java         [✅ COMPLETADO]
   src/test/java/.../controllers/
-      AuthControllerIntegrationTest.java           [  COMPLETADO]
-      UnidadFamiliarControllerIntegrationTest.java [  COMPLETADO]
-      SuscripcionControllerIntegrationTest.java    [  COMPLETADO]
-      PagoControllerIntegrationTest.java           [  COMPLETADO]
+      AuthControllerIntegrationTest.java           [✅ COMPLETADO]
+      UnidadFamiliarControllerIntegrationTest.java [✅ COMPLETADO]
+      SuscripcionControllerIntegrationTest.java    [✅ COMPLETADO]
+      PagoControllerIntegrationTest.java           [✅ COMPLETADO]
 ```
 
 ---

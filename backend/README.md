@@ -82,32 +82,67 @@ nano .env
 O usar cualquier editor de texto. El archivo debe contener:
 
 ```properties
-# Base de datos
+# ========================================
+# Variables de Entorno - Joinly Backend
+# ========================================
+
+# Base de datos (REQUERIDO)
 DB_URL=jdbc:mysql://localhost:3306/bbdd_joinly
 DB_USERNAME=root
 DB_PASSWORD=tu_contraseña_mysql
 
-# JWT - Generar claves seguras con: openssl rand -base64 64
-JWT_SECRET_KEY=tu_clave_jwt_aleatoria_generada
+# JWT (REQUERIDO)
+# Generar con: openssl rand -base64 64
+JWT_SECRET_KEY=tu_clave_jwt_aleatoria_generada_de_512_bits
+JWT_ACCESS_TOKEN_EXPIRATION=3600000
+JWT_REFRESH_TOKEN_EXPIRATION=2592000000
 
-# Encriptación - Generar con: openssl rand -base64 32
-ENCRYPTION_KEY=tu_clave_encriptacion_aleatoria
+# Encriptación AES-256 (REQUERIDO)
+# Generar con: openssl rand -base64 32
+ENCRYPTION_KEY=tu_clave_encriptacion_aleatoria_256_bits
+
+# CORS (Opcional - valores por defecto en application.properties)
+CORS_ALLOWED_ORIGIN_1=http://localhost:4200
+CORS_ALLOWED_ORIGIN_2=http://localhost:3000
+
+# Jobs programados (Opcional)
+JOBS_ENABLED=true
 ```
 
 **Generar Claves Seguras:**
 
 ```bash
-# Generar clave JWT (64 bytes en base64)
+# Generar clave JWT (64 bytes = 512 bits en base64)
 openssl rand -base64 64
 
-# Generar clave de encriptación (32 bytes en base64)
+# Generar clave de encriptación (32 bytes = 256 bits en base64)
 openssl rand -base64 32
+```
+
+**Perfiles de Configuración:**
+
+El proyecto incluye tres archivos de configuración:
+
+- **`application.properties`** - Configuración base común para todos los entornos
+- **`application-dev.properties`** - Configuración específica de desarrollo (valores por defecto, logs detallados)
+- **`application-prod.properties`** - Configuración específica de producción (sin valores por defecto, seguridad reforzada)
+
+Para ejecutar con un perfil específico:
+
+```bash
+# Desarrollo (con valores por defecto para desarrollo rápido)
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+
+# Producción (requiere todas las variables de entorno)
+./mvnw spring-boot:run -Dspring-boot.run.profiles=prod
 ```
 
 **IMPORTANTE:** 
 - El archivo `.env` NO se sube a Git (está en `.gitignore`)
 - Cada desarrollador debe tener su propio archivo `.env`
-- En producción, usar variables de entorno del sistema o un servicio de gestión de secretos
+- En **desarrollo**: usar perfil `dev` con valores por defecto seguros
+- En **producción**: usar perfil `prod` y definir TODAS las variables de entorno en el sistema/contenedor
+- Nunca commitear credenciales reales al repositorio
 
 ### 4. Compilar el Proyecto
 
