@@ -142,17 +142,33 @@
 
 ## 🟡 IMPORTANTES (Mejoran nota) - Semana 2
 
-### 5. Crear ServicioController (CRUD Catálogo)
-- [ ] Crear `ServicioController.java`
-- [ ] Endpoint `GET /api/v1/servicios` - Listar todos (público)
-- [ ] Endpoint `GET /api/v1/servicios/{id}` - Obtener por ID
-- [ ] Endpoint `GET /api/v1/servicios/categoria/{categoria}` - Filtrar por categoría
-- [ ] Endpoint `POST /api/v1/servicios` - Crear (solo admin)
-- [ ] Endpoint `PUT /api/v1/servicios/{id}` - Actualizar (solo admin)
-- [ ] Endpoint `DELETE /api/v1/servicios/{id}` - Eliminar (solo admin)
-- [ ] Crear DTOs: `ServicioResponse`, `CreateServicioRequest`, `UpdateServicioRequest`
+### 5. ~~Crear ServicioController (CRUD Catálogo)~~   COMPLETADO
+- [x] Crear `ServicioController.java`
+- [x] Endpoint `GET /api/v1/servicios` - Listar todos (público)
+- [x] Endpoint `GET /api/v1/servicios/{id}` - Obtener por ID
+- [x] Endpoint `GET /api/v1/servicios/categoria/{categoria}` - Filtrar por categoría
+- [x] Endpoint `POST /api/v1/servicios` - Crear (solo admin)
+- [x] Endpoint `PUT /api/v1/servicios/{id}` - Actualizar (solo admin)
+- [x] Endpoint `DELETE /api/v1/servicios/{id}` - Eliminar (solo admin)
+- [x] Crear DTOs: `ServicioResponse`, `CreateServicioRequest`, `UpdateServicioRequest`
 
-**Tiempo estimado:** 2-3 horas
+**Archivos creados:**
+- `controllers/ServicioController.java` - Controlador REST con 7 endpoints
+- `services/ServicioService.java` - Lógica de negocio para CRUD de servicios
+- `dto/servicio/ServicioResponse.java` - DTO de respuesta completo
+- `dto/servicio/CreateServicioRequest.java` - DTO para crear servicios (con validaciones)
+- `dto/servicio/UpdateServicioRequest.java` - DTO para actualización parcial
+
+**Características implementadas:**
+- Endpoints públicos para lectura (GET), restringidos a admin para escritura (POST/PUT/DELETE)
+- Soft delete para mantener integridad referencial
+- Validación de nombres duplicados
+- Actualización parcial (solo campos no nulos)
+- Documentación completa con OpenAPI/Swagger
+- Uso de records de Java 25 para DTOs inmutables
+- Seguimiento de buenas prácticas de Spring Boot 4.0
+
+**Completado:** 15/12/2025
 
 ---
 
