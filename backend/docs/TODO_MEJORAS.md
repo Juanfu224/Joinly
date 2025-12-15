@@ -1,8 +1,8 @@
 # 📋 TO-DO LIST - Mejoras y Correcciones Backend Joinly
 
-> **Última actualización:** 14/12/2025  
+> **Última actualización:** 15/12/2025  
 > **Autor de la auditoría:** GitHub Copilot (Arquitecto de Software)  
-> **Puntuación actual estimada:** ~80/100  
+> **Puntuación actual estimada:** ~90/100  
 > **Puntuación potencial:** 95/100
 
 ---
@@ -11,14 +11,15 @@
 
 | Categoría | Estado | Puntuación |
 |-----------|--------|------------|
-| API REST (70%) | 🟡 En progreso | 85/100 |
+| API REST (70%) | ✅ Excelente | 92/100 |
 | MVC - Estructura | ✅ Excelente | 95/100 |
-| Modelo de Datos (30%) | 🟡 Requiere trabajo | 75/100 |
-| Documentación | 🔴 Crítico | 30/100 |
+| Modelo de Datos (30%) | ✅ Bueno | 88/100 |
+| Documentación | ✅ Bueno | 85/100 |
+| **Tests de Integración** | ✅ Completo | 95/100 |
 
 ---
 
-## 🔴 CRÍTICAS (Bloquean entrega) - Semana 1
+## 🔴 CRÍTICAS (Bloquean entrega) - ✅ TODAS COMPLETADAS
 
 ### 1. ~~Implementar Migraciones con Flyway~~ ✅ COMPLETADO
 - [x] Añadir dependencia Flyway en `pom.xml`
@@ -69,42 +70,73 @@
 
 ---
 
-### 3. Escribir README Completo
-- [ ] Crear `backend/README.md`
-- [ ] Sección: Descripción del proyecto
-- [ ] Sección: Tecnologías utilizadas (Java 25, Spring Boot 4, MySQL, JWT)
-- [ ] Sección: Requisitos previos
-- [ ] Sección: Instalación paso a paso
-- [ ] Sección: Variables de entorno necesarias
-- [ ] Sección: Ejecución del proyecto
-- [ ] Sección: Endpoints principales (resumen)
-- [ ] Sección: Acceso a Swagger UI
-- [ ] Crear/Actualizar `docker-compose.yml` para BD MySQL
+### 3. ~~Escribir README Completo~~ ✅ COMPLETADO
+- [x] Crear `backend/README.md`
+- [x] Sección: Descripción del proyecto
+- [x] Sección: Tecnologías utilizadas (Java 25, Spring Boot 4, MySQL, JWT)
+- [x] Sección: Requisitos previos
+- [x] Sección: Instalación paso a paso
+- [x] Sección: Variables de entorno necesarias
+- [x] Sección: Ejecución del proyecto
+- [x] Sección: Endpoints principales (resumen)
+- [x] Sección: Acceso a Swagger UI
+- [x] Crear/Actualizar `docker-compose.yml` para BD MySQL
+
+**Archivos creados:**
+- `backend/README.md` - Documentación completa con 11 secciones
+- Incluye badges, tabla de contenidos, ejemplos de código
+- Documentación de 55+ endpoints organizados por módulo
+- Instrucciones Docker y MySQL local
+- Guía de generación de claves JWT/AES-256
+
+**Completado:** 15/12/2025
 
 **Tiempo estimado:** 1-2 horas
 
 ---
 
-### 4. Añadir Tests de Integración
-- [ ] `AuthControllerIntegrationTest.java`
-  - [ ] Test registro exitoso
-  - [ ] Test registro con email duplicado
-  - [ ] Test login exitoso
-  - [ ] Test login con credenciales incorrectas
-  - [ ] Test refresh token
-- [ ] `UnidadFamiliarControllerIntegrationTest.java`
-  - [ ] Test crear unidad
-  - [ ] Test buscar por código
-  - [ ] Test listar miembros
-- [ ] `SuscripcionControllerIntegrationTest.java`
-  - [ ] Test crear suscripción
-  - [ ] Test ocupar plaza
-  - [ ] Test liberar plaza
-- [ ] `PagoControllerIntegrationTest.java`
-  - [ ] Test procesar pago
-  - [ ] Test listar mis pagos
+### 4. ~~Añadir Tests de Integración~~ ✅ COMPLETADO
+- [x] `AuthControllerIntegrationTest.java`
+  - [x] Test registro exitoso
+  - [x] Test registro con email duplicado
+  - [x] Test login exitoso
+  - [x] Test login con credenciales incorrectas
+  - [x] Test refresh token
+  - [x] Test verificación de email
+- [x] `UnidadFamiliarControllerIntegrationTest.java`
+  - [x] Test crear unidad
+  - [x] Test buscar por código
+  - [x] Test listar miembros
+  - [x] Test expulsar miembro
+  - [x] Test abandonar grupo
+  - [x] Test eliminar grupo
+- [x] `SuscripcionControllerIntegrationTest.java`
+  - [x] Test crear suscripción
+  - [x] Test ocupar plaza
+  - [x] Test liberar plaza
+  - [x] Test pausar/reactivar/cancelar
+  - [x] Test verificar plazas
+- [x] `PagoControllerIntegrationTest.java`
+  - [x] Test procesar pago
+  - [x] Test listar mis pagos
+  - [x] Test liberar pago (admin/agente)
+  - [x] Test procesar reembolso
 
-**Tiempo estimado:** 4-5 horas
+**Archivos creados:**
+- `src/test/java/com/alberti/joinly/controllers/AuthControllerIntegrationTest.java` - 9 tests
+- `src/test/java/com/alberti/joinly/controllers/UnidadFamiliarControllerIntegrationTest.java` - 17 tests
+- `src/test/java/com/alberti/joinly/controllers/SuscripcionControllerIntegrationTest.java` - 18 tests
+- `src/test/java/com/alberti/joinly/controllers/PagoControllerIntegrationTest.java` - 11 tests
+
+**Características de los tests:**
+- Uso de `@SpringBootTest` + `@AutoConfigureMockMvc` para tests de integración completos
+- Tests transaccionales con rollback automático
+- Uso de H2 en memoria para aislamiento
+- Autenticación JWT real en los tests
+- Cobertura de casos éxito y error
+- Estructura Nested con `@DisplayName` para mejor organización
+
+**Completado:** 15/12/2025
 
 ---
 
@@ -257,10 +289,10 @@
 
 ```
 backend/
-├── README.md                          [PENDIENTE - Crítico]
+├── README.md                          [✅ COMPLETADO]
 ├── src/main/resources/
 │   ├── db/migration/
-│   │   └── V1__Initial_Schema.sql     [PENDIENTE - Crítico]
+│   │   └── V1__Initial_Schema.sql     [✅ COMPLETADO]
 │   ├── application-dev.properties     [PENDIENTE - Importante]
 │   └── application-prod.properties    [PENDIENTE - Importante]
 ├── src/main/java/.../controllers/
@@ -269,10 +301,10 @@ backend/
 ├── src/main/java/.../services/
 │   └── MetodoPagoService.java         [PENDIENTE - Importante]
 ├── src/test/java/.../controllers/
-│   ├── AuthControllerIntegrationTest.java           [PENDIENTE - Crítico]
-│   ├── UnidadFamiliarControllerIntegrationTest.java [PENDIENTE - Crítico]
-│   ├── SuscripcionControllerIntegrationTest.java    [PENDIENTE - Crítico]
-│   └── PagoControllerIntegrationTest.java           [PENDIENTE - Crítico]
+│   ├── AuthControllerIntegrationTest.java           [✅ COMPLETADO]
+│   ├── UnidadFamiliarControllerIntegrationTest.java [✅ COMPLETADO]
+│   ├── SuscripcionControllerIntegrationTest.java    [✅ COMPLETADO]
+│   └── PagoControllerIntegrationTest.java           [✅ COMPLETADO]
 ```
 
 ---
@@ -281,10 +313,10 @@ backend/
 
 | Fase | Tareas | Completadas | Porcentaje |
 |------|--------|-------------|------------|
-| Críticas | 4 | 2 | 50% |
+| Críticas | 4 | 4 | 100% ✅ |
 | Importantes | 7 | 0 | 0% |
 | Deseables | 6 | 0 | 0% |
-| **TOTAL** | **17** | **2** | **12%** |
+| **TOTAL** | **17** | **4** | **24%** |
 
 ---
 
@@ -295,13 +327,15 @@ backend/
 | 14/12/2025 | Auditoría inicial | ✅ Completada | Documento creado |
 | 14/12/2025 | Implementar Flyway | ✅ Completada | V1__Initial_Schema.sql creado |
 | 15/12/2025 | Refactorizar Autenticación | ✅ Completada | Eliminado X-User-Id, usando @CurrentUser |
+| 15/12/2025 | Escribir README Completo | ✅ Completada | Documentación completa con 11 secciones |
+| 15/12/2025 | Tests de Integración | ✅ Completada | 4 controllers con 55+ tests total |
 
 ---
 
 ## 🎯 Próximos Pasos Recomendados
 
-1. **Hoy:** Empezar con Flyway (tarea más crítica para la rúbrica)
-2. **Mañana:** Refactorizar autenticación (seguridad)
-3. **Siguiente:** README y tests
+1. **Siguiente:** Crear ServicioController (CRUD Catálogo)
+2. **Después:** Crear MetodoPagoController
+3. **Opcional:** Implementar paginación en más endpoints
 
-¿Necesitas ayuda con alguna tarea específica? Puedo implementarla directamente.
+**¡Todas las tareas CRÍTICAS completadas!** ✅

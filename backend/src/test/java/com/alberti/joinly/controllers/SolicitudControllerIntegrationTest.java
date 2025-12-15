@@ -25,9 +25,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -63,13 +60,8 @@ class SolicitudControllerIntegrationTest {
             return mapper;
         }
         
-        @Bean
-        SecurityFilterChain testSecurityFilterChain(HttpSecurity http) throws Exception {
-            return http
-                    .csrf(AbstractHttpConfigurer::disable)
-                    .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-                    .build();
-        }
+        // NOTA: SecurityFilterChain removido para evitar conflictos con @SpringBootTest tests
+        // Este test usa @WebMvcTest y está deshabilitado. Los nuevos tests de integración usan @SpringBootTest.
     }
 
     @Autowired

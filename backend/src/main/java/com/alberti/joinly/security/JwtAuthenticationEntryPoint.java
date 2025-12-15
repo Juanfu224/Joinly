@@ -2,6 +2,7 @@ package com.alberti.joinly.security;
 
 import com.alberti.joinly.dto.common.ApiErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,8 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
+            .registerModule(new JavaTimeModule());
 
     /**
      * Maneja las peticiones no autenticadas retornando un error 401.

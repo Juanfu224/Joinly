@@ -63,21 +63,21 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
+		
+		<!-- Spring Boot Starter Test - Includes JUnit 5, AssertJ, Mockito, etc. -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa-test</artifactId>
+			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<!-- Spring Boot WebMvc Test - MockMvc & AutoConfigureMockMvc for Spring Boot 4 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf-test</artifactId>
+			<artifactId>spring-boot-webmvc-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webmvc-test</artifactId>
-			<scope>test</scope>
-		</dependency>
+		
 		<!-- OpenAPI / Swagger UI -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
