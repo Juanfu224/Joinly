@@ -100,9 +100,11 @@ public class SecurityConfig {
                         // Endpoints de solo lectura públicos (GET)
                         .requestMatchers(HttpMethod.GET, "/api/v1/servicios/**").permitAll()
                         
-                        // Endpoints que requieren rol de soporte
-                        .requestMatchers("/api/v1/soporte/**").hasRole("SUPPORT")
-                        .requestMatchers("/api/v1/admin/**").hasRole("SUPPORT")
+                        // Endpoints que requieren rol de administrador
+                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                        
+                        // Endpoints que requieren rol de agente o superior
+                        .requestMatchers("/api/v1/soporte/**").hasAnyRole("AGENTE", "ADMIN")
                         
                         // Todos los demás endpoints requieren autenticación
                         .anyRequest().authenticated()

@@ -19,7 +19,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     List<Usuario> findByEstado(EstadoUsuario estado);
 
-    @Query("SELECT u FROM Usuario u WHERE u.esAgenteSoporte = true AND u.estado = 'ACTIVO'")
+    @Query("SELECT u FROM Usuario u WHERE (u.rol = 'AGENTE' OR u.rol = 'ADMIN') AND u.estado = 'ACTIVO'")
     List<Usuario> findAgentesSoporteActivos();
 
     @Query("SELECT u FROM Usuario u WHERE LOWER(u.nombre) LIKE LOWER(CONCAT('%', :nombre, '%')) AND u.estado = :estado")

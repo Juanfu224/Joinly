@@ -74,7 +74,7 @@ public class DisputaController {
     }
 
     @GetMapping("/pendientes")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('AGENTE')")
+    @PreAuthorize("hasAnyRole('AGENTE', 'ADMIN')")
     @Operation(summary = "Listar disputas pendientes", description = "Solo para agentes de soporte")
     public ResponseEntity<List<DisputaResponse>> listarDisputasPendientes() {
         var disputas = disputaService.listarDisputasPendientes()
@@ -86,8 +86,8 @@ public class DisputaController {
     }
 
     @GetMapping("/asignadas")
-    @PreAuthorize("hasRole('AGENTE')")
-    @Operation(summary = "Listar mis disputas asignadas", description = "Solo para agentes de soporte")
+    @PreAuthorize("hasAnyRole('AGENTE', 'ADMIN')")
+    @Operation(summary = "Listar mis disputas asignadas", description = "Solo para agentes de soporte y administradores")
     public ResponseEntity<List<DisputaResponse>> listarMisDisputasAsignadas(
             @CurrentUser UserPrincipal currentUser) {
 
@@ -100,7 +100,7 @@ public class DisputaController {
     }
 
     @PostMapping("/{id}/asignar")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('AGENTE')")
+    @PreAuthorize("hasAnyRole('AGENTE', 'ADMIN')")
     @Operation(summary = "Asignar agente a disputa")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Agente asignado"),
@@ -116,7 +116,7 @@ public class DisputaController {
     }
 
     @PostMapping("/{id}/resolver")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('AGENTE')")
+    @PreAuthorize("hasAnyRole('AGENTE', 'ADMIN')")
     @Operation(summary = "Resolver una disputa", description = "Resuelve la disputa aplicando reembolsos si corresponde")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Disputa resuelta"),

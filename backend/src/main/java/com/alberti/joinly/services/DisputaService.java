@@ -144,7 +144,8 @@ public class DisputaService {
         var agente = usuarioRepository.findById(idAgente)
                 .orElseThrow(() -> new ResourceNotFoundException("Agente", "id", idAgente));
 
-        if (!agente.getEsAgenteSoporte()) {
+        if (agente.getRol() != com.alberti.joinly.entities.enums.RolUsuario.AGENTE 
+                && agente.getRol() != com.alberti.joinly.entities.enums.RolUsuario.ADMIN) {
             throw new BusinessException("El usuario no es agente de soporte");
         }
 
@@ -183,7 +184,8 @@ public class DisputaService {
         var agente = usuarioRepository.findById(idAgente)
                 .orElseThrow(() -> new ResourceNotFoundException("Agente", "id", idAgente));
 
-        if (!agente.getEsAgenteSoporte()) {
+        if (agente.getRol() != com.alberti.joinly.entities.enums.RolUsuario.AGENTE 
+                && agente.getRol() != com.alberti.joinly.entities.enums.RolUsuario.ADMIN) {
             throw new UnauthorizedException("Solo agentes de soporte pueden resolver disputas");
         }
 

@@ -199,7 +199,7 @@ class SuscripcionControllerIntegrationTest {
                 .fechaRegistro(LocalDateTime.now())
                 .estado(EstadoUsuario.ACTIVO)
                 .emailVerificado(true)
-                .esAgenteSoporte(false)
+                .rol(com.alberti.joinly.entities.enums.RolUsuario.USER)
                 .build();
         return usuarioRepository.save(usuario);
     }

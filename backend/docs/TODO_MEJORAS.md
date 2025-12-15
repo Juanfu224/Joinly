@@ -312,14 +312,33 @@
 
 ---
 
-### 10. Unificar Roles del Sistema
-- [ ] Revisar uso de `ROLE_SUPPORT` vs `ROLE_AGENTE` vs `ROLE_ADMIN`
-- [ ] Definir roles oficiales: `ROLE_USER`, `ROLE_AGENTE`, `ROLE_ADMIN`
-- [ ] Actualizar `SecurityConfig.java`
-- [ ] Actualizar `@PreAuthorize` en controladores
-- [ ] Actualizar `UserPrincipal.java`
+### 10. ~~Unificar Roles del Sistema~~  ✅ COMPLETADO
+- [x] Revisar uso de `ROLE_SUPPORT` vs `ROLE_AGENTE` vs `ROLE_ADMIN`
+- [x] Definir roles oficiales: `ROLE_USER`, `ROLE_AGENTE`, `ROLE_ADMIN`
+- [x] Actualizar `SecurityConfig.java`
+- [x] Actualizar `@PreAuthorize` en controladores
+- [x] Actualizar `UserPrincipal.java`
 
-**Tiempo estimado:** 1-2 horas
+**Archivos creados:**
+- `entities/enums/RolUsuario.java` - Enum con los tres roles oficiales del sistema
+
+**Archivos modificados:**
+- `entities/usuario/Usuario.java` - Añadido campo `rol` de tipo RolUsuario (deprecado `esAgenteSoporte`)
+- `security/UserPrincipal.java` - Sistema jerárquico de roles: USER < AGENTE < ADMIN
+- `config/SecurityConfig.java` - Actualizado `.hasRole("SUPPORT")` a `.hasAnyRole("AGENTE", "ADMIN")`
+- `controllers/PagoController.java` - Actualizado `@PreAuthorize` con `hasAnyRole('AGENTE', 'ADMIN')`
+- `controllers/TicketSoporteController.java` - Actualizado `@PreAuthorize` consistentemente
+- `controllers/DisputaController.java` - Actualizado `@PreAuthorize` consistentemente
+- `controllers/ServicioController.java` - Ya usaba `hasRole('ADMIN')` correctamente
+
+**Características implementadas:**
+- Jerarquía de roles: ADMIN hereda permisos de AGENTE, AGENTE hereda de USER
+- Sistema unificado sin conflictos entre ROLE_SUPPORT/ROLE_AGENTE
+- Uso de `hasAnyRole('AGENTE', 'ADMIN')` en lugar de `hasRole('ADMIN') or hasRole('AGENTE')`
+- Campo legacy `esAgenteSoporte` marcado como `@Deprecated` para compatibilidad
+- Seguimiento de buenas prácticas de Java 25 y Spring Security 6
+
+**Completado:** 15/12/2025
 
 ---
 

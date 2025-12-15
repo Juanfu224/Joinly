@@ -122,7 +122,7 @@ public class PagoController {
     }
 
     @PostMapping("/{id}/liberar")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('AGENTE')")
+    @PreAuthorize("hasAnyRole('AGENTE', 'ADMIN')")
     @Operation(summary = "Liberar un pago retenido", description = "Solo para administradores o agentes")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Pago liberado"),
@@ -135,7 +135,7 @@ public class PagoController {
     }
 
     @PostMapping("/reembolso")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('AGENTE')")
+    @PreAuthorize("hasAnyRole('AGENTE', 'ADMIN')")
     @Operation(summary = "Procesar un reembolso", description = "Reembolsa total o parcialmente un pago")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Reembolso procesado"),

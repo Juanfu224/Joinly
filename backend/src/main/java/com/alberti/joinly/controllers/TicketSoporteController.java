@@ -82,7 +82,7 @@ public class TicketSoporteController {
     }
 
     @GetMapping("/sin-asignar")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('AGENTE')")
+    @PreAuthorize("hasAnyRole('AGENTE', 'ADMIN')")
     @Operation(summary = "Listar tickets sin asignar", description = "Solo para agentes")
     public ResponseEntity<List<TicketSoporteResponse>> listarTicketsSinAsignar() {
         var tickets = ticketService.listarTicketsSinAsignar()
@@ -97,8 +97,8 @@ public class TicketSoporteController {
     }
 
     @GetMapping("/asignados")
-    @PreAuthorize("hasRole('AGENTE')")
-    @Operation(summary = "Listar mis tickets asignados", description = "Solo para agentes")
+    @PreAuthorize("hasAnyRole('AGENTE', 'ADMIN')")
+    @Operation(summary = "Listar mis tickets asignados", description = "Solo para agentes y administradores")
     public ResponseEntity<List<TicketSoporteResponse>> listarMisTicketsAsignados(
             @CurrentUser UserPrincipal currentUser) {
 
@@ -114,7 +114,7 @@ public class TicketSoporteController {
     }
 
     @PostMapping("/{id}/asignar")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('AGENTE')")
+    @PreAuthorize("hasAnyRole('AGENTE', 'ADMIN')")
     @Operation(summary = "Asignar agente a ticket")
     public ResponseEntity<TicketSoporteResponse> asignarAgente(
             @PathVariable Long id,
@@ -157,7 +157,7 @@ public class TicketSoporteController {
     }
 
     @PostMapping("/{id}/resolver")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('AGENTE')")
+    @PreAuthorize("hasAnyRole('AGENTE', 'ADMIN')")
     @Operation(summary = "Marcar ticket como resuelto")
     public ResponseEntity<TicketSoporteResponse> resolverTicket(
             @PathVariable Long id,

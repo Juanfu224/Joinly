@@ -85,7 +85,7 @@ public class AuthService {
                 .fechaRegistro(LocalDateTime.now())
                 .estado(EstadoUsuario.ACTIVO)
                 .emailVerificado(false)
-                .esAgenteSoporte(false)
+                .rol(com.alberti.joinly.entities.enums.RolUsuario.USER)
                 .build();
 
         var usuarioGuardado = usuarioRepository.save(usuario);

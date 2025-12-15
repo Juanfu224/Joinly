@@ -1,5 +1,6 @@
 package com.alberti.joinly.security;
 
+import com.alberti.joinly.entities.enums.RolUsuario;
 import com.alberti.joinly.entities.usuario.Usuario;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,7 +29,7 @@ public class UserPrincipal implements UserDetails {
     private final String password;
     private final String nombre;
     private final boolean emailVerificado;
-    private final boolean esAgenteSoporte;
+    private final RolUsuario rol;
     private final boolean activo;
     private final Collection<? extends GrantedAuthority> authorities;
 
@@ -37,14 +38,14 @@ public class UserPrincipal implements UserDetails {
      * Usar el método factory {@link #fromUsuario(Usuario)} para crear instancias.
      */
     private UserPrincipal(Long id, String email, String password, String nombre,
-                          boolean emailVerificado, boolean esAgenteSoporte, boolean activo,
+                          boolean emailVerificado, RolUsuario rol, boolean activo,
                           Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.nombre = nombre;
         this.emailVerificado = emailVerificado;
-        this.esAgenteSoporte = esAgenteSoporte;
+        this.rol = rol;
         this.activo = activo;
         this.authorities = authorities;
     }
@@ -52,22 +53,36 @@ public class UserPrincipal implements UserDetails {
     /**
      * Crea una instancia de UserPrincipal a partir de una entidad Usuario.
      * <p>
-     * Los roles/authorities se asignan de la siguiente manera:
+     * Los roles/authorities se asignan según el rol del usuario:
      * <ul>
-     *   <li>Todos los usuarios obtienen ROLE_USER</li>
-     *   <li>Si esAgenteSoporte = true, también obtiene ROLE_AGENTE</li>
+     *   <li>{@code ROLE_USER} - Todos los usuarios</li>
+     *   <li>{@code ROLE_AGENTE} - Usuarios con rol AGENTE o ADMIN</li>
+     *   <li>{@code ROLE_ADMIN} - Solo usuarios con rol ADMIN</li>
      * </ul>
+     * <p>
+     * Los roles son jerárquicos: ADMIN hereda permisos de AGENTE, y AGENTE hereda de USER.
      *
      * @param usuario Entidad Usuario de la base de datos
      * @return Nueva instancia de UserPrincipal
      */
     public static UserPrincipal fromUsuario(Usuario usuario) {
-        var authorities = new java.util.ArrayList<GrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        var rol = usuario.getRol() != null ? usuario.getRol() : RolUsuario.USER;
         
-        if (Boolean.TRUE.equals(usuario.getEsAgenteSoporte())) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_AGENTE"));
-        }
+        // Asignación jerárquica de authorities usando switch expression (Java 25)
+        var authorities = switch (rol) {
+            case USER -> List.of(
+                new SimpleGrantedAuthority("ROLE_USER")
+            );
+            case AGENTE -> List.of(
+                new SimpleGrantedAuthority("ROLE_USER"),
+                new SimpleGrantedAuthority("ROLE_AGENTE")
+            );
+            case ADMIN -> List.of(
+                new SimpleGrantedAuthority("ROLE_USER"),
+                new SimpleGrantedAuthority("ROLE_AGENTE"),
+                new SimpleGrantedAuthority("ROLE_ADMIN")
+            );
+        };
 
         return new UserPrincipal(
                 usuario.getId(),
@@ -75,9 +90,9 @@ public class UserPrincipal implements UserDetails {
                 usuario.getPassword(),
                 usuario.getNombre(),
                 Boolean.TRUE.equals(usuario.getEmailVerificado()),
-                Boolean.TRUE.equals(usuario.getEsAgenteSoporte()),
+                rol,
                 usuario.getEstado() == com.alberti.joinly.entities.enums.EstadoUsuario.ACTIVO,
-                List.copyOf(authorities)
+                authorities
         );
     }
 

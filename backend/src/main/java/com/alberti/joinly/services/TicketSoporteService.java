@@ -145,7 +145,8 @@ public class TicketSoporteService {
         var agente = usuarioRepository.findById(idAgente)
                 .orElseThrow(() -> new ResourceNotFoundException("Agente", "id", idAgente));
 
-        if (!agente.getEsAgenteSoporte()) {
+        if (agente.getRol() != com.alberti.joinly.entities.enums.RolUsuario.AGENTE 
+                && agente.getRol() != com.alberti.joinly.entities.enums.RolUsuario.ADMIN) {
             throw new BusinessException("El usuario no es agente de soporte");
         }
 
@@ -175,7 +176,8 @@ public class TicketSoporteService {
 
         // Validar acceso
         var esUsuarioTicket = ticket.getUsuario().getId().equals(idAutor);
-        var esAgente = autor.getEsAgenteSoporte();
+        var esAgente = autor.getRol() == com.alberti.joinly.entities.enums.RolUsuario.AGENTE 
+                || autor.getRol() == com.alberti.joinly.entities.enums.RolUsuario.ADMIN;
 
         if (!esUsuarioTicket && !esAgente) {
             throw new UnauthorizedException("No tienes acceso a este ticket");
@@ -237,7 +239,8 @@ public class TicketSoporteService {
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario", "id", idUsuario));
 
         // Determinar si puede ver mensajes internos
-        var incluirInternos = usuario.getEsAgenteSoporte();
+        var incluirInternos = usuario.getRol() == com.alberti.joinly.entities.enums.RolUsuario.AGENTE 
+                || usuario.getRol() == com.alberti.joinly.entities.enums.RolUsuario.ADMIN;
 
         return mensajeRepository.findMensajesPorTicket(idTicket, incluirInternos);
     }
@@ -255,7 +258,8 @@ public class TicketSoporteService {
         var agente = usuarioRepository.findById(idAgente)
                 .orElseThrow(() -> new ResourceNotFoundException("Agente", "id", idAgente));
 
-        if (!agente.getEsAgenteSoporte()) {
+        if (agente.getRol() != com.alberti.joinly.entities.enums.RolUsuario.AGENTE 
+                && agente.getRol() != com.alberti.joinly.entities.enums.RolUsuario.ADMIN) {
             throw new UnauthorizedException("Solo agentes pueden resolver tickets");
         }
 
@@ -279,7 +283,8 @@ public class TicketSoporteService {
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario", "id", idUsuario));
 
         var esUsuarioTicket = ticket.getUsuario().getId().equals(idUsuario);
-        var esAgente = usuario.getEsAgenteSoporte();
+        var esAgente = usuario.getRol() == com.alberti.joinly.entities.enums.RolUsuario.AGENTE 
+                || usuario.getRol() == com.alberti.joinly.entities.enums.RolUsuario.ADMIN;
 
         if (!esUsuarioTicket && !esAgente) {
             throw new UnauthorizedException("No tienes permiso para cerrar este ticket");

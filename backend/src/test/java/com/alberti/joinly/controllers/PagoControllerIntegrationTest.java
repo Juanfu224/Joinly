@@ -214,7 +214,7 @@ class PagoControllerIntegrationTest {
                 .fechaRegistro(LocalDateTime.now())
                 .estado(EstadoUsuario.ACTIVO)
                 .emailVerificado(true)
-                .esAgenteSoporte(esAgente)
+                .rol(esAgente ? com.alberti.joinly.entities.enums.RolUsuario.AGENTE : com.alberti.joinly.entities.enums.RolUsuario.USER)
                 .build();
         return usuarioRepository.save(user);
     }

@@ -2,6 +2,7 @@ package com.alberti.joinly.entities.usuario;
 
 import com.alberti.joinly.entities.base.BaseEntity;
 import com.alberti.joinly.entities.enums.EstadoUsuario;
+import com.alberti.joinly.entities.enums.RolUsuario;
 import com.alberti.joinly.entities.grupo.MiembroUnidad;
 import com.alberti.joinly.entities.grupo.Solicitud;
 import com.alberti.joinly.entities.grupo.UnidadFamiliar;
@@ -24,7 +25,10 @@ import java.util.List;
 
 /**
  * Representa a cada persona registrada en la plataforma.
- * Los agentes de soporte son usuarios con esAgenteSoporte = true.
+ * <p>
+ * Los usuarios tienen asignado un rol que determina sus permisos:
+ * {@link RolUsuario#USER}, {@link RolUsuario#AGENTE} o {@link RolUsuario#ADMIN}.
+ * <p>
  * Permite soft delete mediante estado = ELIMINADO.
  */
 @Entity
@@ -91,6 +95,16 @@ public class Usuario extends BaseEntity {
     @Column(name = "fecha_ultimo_acceso")
     private LocalDateTime fechaUltimoAcceso;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "rol", nullable = false, length = 20)
+    @Builder.Default
+    private RolUsuario rol = RolUsuario.USER;
+
+    /**
+     * @deprecated Usar campo {@link #rol} en su lugar.
+     * Se mantiene temporalmente para compatibilidad con datos existentes.
+     */
+    @Deprecated(since = "1.1", forRemoval = true)
     @Column(name = "es_agente_soporte", nullable = false)
     @Builder.Default
     private Boolean esAgenteSoporte = false;

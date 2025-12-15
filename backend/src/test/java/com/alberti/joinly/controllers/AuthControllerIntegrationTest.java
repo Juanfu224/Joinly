@@ -73,7 +73,7 @@ class AuthControllerIntegrationTest {
                 .fechaRegistro(LocalDateTime.now())
                 .estado(EstadoUsuario.ACTIVO)
                 .emailVerificado(false)
-                .esAgenteSoporte(false)
+                .rol(com.alberti.joinly.entities.enums.RolUsuario.USER)
                 .build();
         usuarioExistente = usuarioRepository.save(usuarioExistente);
     }
