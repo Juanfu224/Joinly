@@ -278,13 +278,37 @@
 
 ---
 
-### 9. Mejorar Documentación OpenAPI
-- [ ] Añadir `@SecurityScheme` para Bearer JWT en `OpenApiConfig.java`
-- [ ] Añadir `@SecurityRequirement` en controladores protegidos
-- [ ] Verificar que Swagger UI muestra botón "Authorize"
-- [ ] Añadir ejemplos de request/response en endpoints complejos
+### 9. ~~Mejorar Documentación OpenAPI~~  ✅ COMPLETADO
+- [x] Añadir `@SecurityScheme` para Bearer JWT en `OpenApiConfig.java`
+- [x] Añadir `@SecurityRequirement` en controladores protegidos
+- [x] Verificar que Swagger UI muestra botón "Authorize"
+- [x] Añadir ejemplos de request/response en endpoints complejos
 
-**Tiempo estimado:** 1-2 horas
+**Archivos modificados:**
+- `OpenApiConfig.java` - Ya tenía `@SecurityScheme` correctamente configurado con tipo HTTP Bearer JWT
+- DTOs mejorados con ejemplos usando `@Schema`:
+  - `dto/auth/LoginRequest.java` - Ejemplos de email y password
+  - `dto/auth/RegisterRequest.java` - Ejemplos completos de registro
+  - `dto/auth/AuthResponse.java` - Ya tenía ejemplos completos
+  - `dto/suscripcion/CreateSuscripcionRequest.java` - Ejemplos detallados de creación
+  - `dto/suscripcion/SuscripcionResponse.java` - Documentación completa de respuesta
+  - `dto/unidad/CreateUnidadRequest.java` - Ejemplos de grupo familiar
+  - `dto/pago/CreatePagoRequest.java` - Ejemplos de pago
+  - `dto/servicio/CreateServicioRequest.java` - Ejemplos de servicio con descripciones
+  - `dto/metodopago/CreateMetodoPagoRequest.java` - Ejemplos de método de pago tokenizado
+
+**Características implementadas:**
+- Todos los controladores protegidos ya tenían `@SecurityRequirement(name = "bearerAuth")`
+- Swagger UI muestra el botón "Authorize" en la esquina superior derecha
+- Ejemplos claros y realistas en todos los DTOs principales
+- Documentación `@Schema` con descriptions y examples para mejor UX en Swagger
+- Uso de Java 25 records para DTOs inmutables
+- Seguimiento de buenas prácticas de OpenAPI 3.0
+
+**Compilación exitosa:** ✅ 151 archivos compilados sin errores  
+**Tests ejecutados:** ✅ 146 tests pasados, 0 fallos
+
+**Completado:** 15/12/2025
 
 ---
 
