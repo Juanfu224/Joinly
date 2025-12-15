@@ -3,11 +3,14 @@ package com.alberti.joinly.controllers;
 import com.alberti.joinly.dto.pago.CreatePagoRequest;
 import com.alberti.joinly.dto.pago.PagoResponse;
 import com.alberti.joinly.dto.pago.ReembolsoRequest;
+import com.alberti.joinly.security.CurrentUser;
+import com.alberti.joinly.security.UserPrincipal;
 import com.alberti.joinly.services.PagoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,7 @@ import java.util.List;
 @RequestMapping("/api/v1/pagos")
 @RequiredArgsConstructor
 @Tag(name = "Pagos", description = "API para gestión de pagos de suscripciones compartidas")
+@SecurityRequirement(name = "bearerAuth")
 public class PagoController {
 
     private final PagoService pagoService;
@@ -38,11 +42,11 @@ public class PagoController {
             @ApiResponse(responseCode = "422", description = "Violación de regla de negocio")
     })
     public ResponseEntity<PagoResponse> procesarPago(
-            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario,
+            @CurrentUser UserPrincipal currentUser,
             @Valid @RequestBody CreatePagoRequest request) {
 
         var pago = pagoService.procesarPago(
-                idUsuario,
+                currentUser.getId(),
                 request.idPlaza(),
                 request.idMetodoPago(),
                 request.monto()
@@ -66,10 +70,10 @@ public class PagoController {
     @GetMapping("/mis-pagos")
     @Operation(summary = "Listar mis pagos con paginación")
     public ResponseEntity<Page<PagoResponse>> listarMisPagos(
-            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario,
+            @CurrentUser UserPrincipal currentUser,
             @PageableDefault(size = 20, sort = "fechaPago") Pageable pageable) {
 
-        var pagos = pagoService.listarPagosUsuario(idUsuario, pageable)
+        var pagos = pagoService.listarPagosUsuario(currentUser.getId(), pageable)
                 .map(PagoResponse::fromEntity);
 
         return ResponseEntity.ok(pagos);

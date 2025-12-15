@@ -2,11 +2,13 @@ package com.alberti.joinly.controllers;
 
 import com.alberti.joinly.dto.credencial.CredencialRequest;
 import com.alberti.joinly.dto.credencial.CredencialResponse;
+import com.alberti.joinly.security.CurrentUser;
+import com.alberti.joinly.security.UserPrincipal;
 import com.alberti.joinly.services.CredencialService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -21,6 +23,7 @@ import java.util.List;
 @RequestMapping("/api/v1/suscripciones/{idSuscripcion}/credenciales")
 @RequiredArgsConstructor
 @Tag(name = "Credenciales", description = "API para gestión de credenciales de suscripciones (encriptadas)")
+@SecurityRequirement(name = "bearerAuth")
 public class CredencialController {
 
     private final CredencialService credencialService;
@@ -34,9 +37,9 @@ public class CredencialController {
     })
     public ResponseEntity<List<CredencialResponse>> listarCredenciales(
             @PathVariable Long idSuscripcion,
-            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        var credenciales = credencialService.obtenerCredencialesParaUsuario(idSuscripcion, idUsuario)
+        var credenciales = credencialService.obtenerCredencialesParaUsuario(idSuscripcion, currentUser.getId())
                 .stream()
                 .map(c -> CredencialResponse.fromEntity(c, credencialService.desencriptarValor(c)))
                 .toList();
@@ -53,9 +56,9 @@ public class CredencialController {
     })
     public ResponseEntity<List<CredencialResponse>> listarTodasCredenciales(
             @PathVariable Long idSuscripcion,
-            @Parameter(description = "ID del anfitrión") @RequestHeader("X-User-Id") Long idAnfitrion) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        var credenciales = credencialService.obtenerTodasCredenciales(idSuscripcion, idAnfitrion)
+        var credenciales = credencialService.obtenerTodasCredenciales(idSuscripcion, currentUser.getId())
                 .stream()
                 .map(c -> CredencialResponse.fromEntity(c, credencialService.desencriptarValor(c)))
                 .toList();
@@ -72,10 +75,10 @@ public class CredencialController {
     })
     public ResponseEntity<CredencialResponse> crearCredencial(
             @PathVariable Long idSuscripcion,
-            @Parameter(description = "ID del anfitrión") @RequestHeader("X-User-Id") Long idAnfitrion,
+            @CurrentUser UserPrincipal currentUser,
             @Valid @RequestBody CredencialRequest request) {
 
-        var credencial = credencialService.crearCredencial(idSuscripcion, idAnfitrion, request);
+        var credencial = credencialService.crearCredencial(idSuscripcion, currentUser.getId(), request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(CredencialResponse.fromEntity(credencial, request.valor()));
     }
@@ -90,12 +93,12 @@ public class CredencialController {
     public ResponseEntity<CredencialResponse> actualizarCredencial(
             @PathVariable Long idSuscripcion,
             @PathVariable Long idCredencial,
-            @Parameter(description = "ID del anfitrión") @RequestHeader("X-User-Id") Long idAnfitrion,
+            @CurrentUser UserPrincipal currentUser,
             @Valid @RequestBody CredencialRequest request,
             HttpServletRequest httpRequest) {
 
         var ip = httpRequest.getRemoteAddr();
-        var credencial = credencialService.actualizarCredencial(idCredencial, idAnfitrion, request, ip);
+        var credencial = credencialService.actualizarCredencial(idCredencial, currentUser.getId(), request, ip);
 
         return ResponseEntity.ok(CredencialResponse.fromEntity(credencial, request.valor()));
     }
@@ -110,9 +113,9 @@ public class CredencialController {
     public ResponseEntity<Void> eliminarCredencial(
             @PathVariable Long idSuscripcion,
             @PathVariable Long idCredencial,
-            @Parameter(description = "ID del anfitrión") @RequestHeader("X-User-Id") Long idAnfitrion) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        credencialService.eliminarCredencial(idCredencial, idAnfitrion);
+        credencialService.eliminarCredencial(idCredencial, currentUser.getId());
         return ResponseEntity.noContent().build();
     }
 }

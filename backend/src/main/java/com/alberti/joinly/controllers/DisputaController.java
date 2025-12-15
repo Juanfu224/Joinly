@@ -3,11 +3,13 @@ package com.alberti.joinly.controllers;
 import com.alberti.joinly.dto.disputa.CreateDisputaRequest;
 import com.alberti.joinly.dto.disputa.DisputaResponse;
 import com.alberti.joinly.dto.disputa.ResolverDisputaRequest;
+import com.alberti.joinly.security.CurrentUser;
+import com.alberti.joinly.security.UserPrincipal;
 import com.alberti.joinly.services.DisputaService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ import java.util.List;
 @RequestMapping("/api/v1/disputas")
 @RequiredArgsConstructor
 @Tag(name = "Disputas", description = "API para gestión de disputas sobre pagos")
+@SecurityRequirement(name = "bearerAuth")
 public class DisputaController {
 
     private final DisputaService disputaService;
@@ -39,10 +42,10 @@ public class DisputaController {
             @ApiResponse(responseCode = "422", description = "Ya existe disputa activa o pago ya liberado")
     })
     public ResponseEntity<DisputaResponse> abrirDisputa(
-            @Parameter(description = "ID del usuario reclamante") @RequestHeader("X-User-Id") Long idReclamante,
+            @CurrentUser UserPrincipal currentUser,
             @Valid @RequestBody CreateDisputaRequest request) {
 
-        var disputa = disputaService.abrirDisputa(idReclamante, request);
+        var disputa = disputaService.abrirDisputa(currentUser.getId(), request);
         return ResponseEntity.status(HttpStatus.CREATED).body(DisputaResponse.fromEntity(disputa));
     }
 
@@ -61,10 +64,10 @@ public class DisputaController {
     @GetMapping("/mis-disputas")
     @Operation(summary = "Listar mis disputas")
     public ResponseEntity<Page<DisputaResponse>> listarMisDisputas(
-            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario,
+            @CurrentUser UserPrincipal currentUser,
             @PageableDefault(size = 20, sort = "fechaApertura") Pageable pageable) {
 
-        var disputas = disputaService.listarDisputasUsuario(idUsuario, pageable)
+        var disputas = disputaService.listarDisputasUsuario(currentUser.getId(), pageable)
                 .map(DisputaResponse::fromEntity);
 
         return ResponseEntity.ok(disputas);
@@ -86,9 +89,9 @@ public class DisputaController {
     @PreAuthorize("hasRole('AGENTE')")
     @Operation(summary = "Listar mis disputas asignadas", description = "Solo para agentes de soporte")
     public ResponseEntity<List<DisputaResponse>> listarMisDisputasAsignadas(
-            @Parameter(description = "ID del agente") @RequestHeader("X-User-Id") Long idAgente) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        var disputas = disputaService.listarDisputasAsignadas(idAgente)
+        var disputas = disputaService.listarDisputasAsignadas(currentUser.getId())
                 .stream()
                 .map(DisputaResponse::fromEntity)
                 .toList();
@@ -106,9 +109,9 @@ public class DisputaController {
     })
     public ResponseEntity<DisputaResponse> asignarAgente(
             @PathVariable Long id,
-            @Parameter(description = "ID del agente") @RequestHeader("X-User-Id") Long idAgente) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        var disputa = disputaService.asignarAgente(id, idAgente);
+        var disputa = disputaService.asignarAgente(id, currentUser.getId());
         return ResponseEntity.ok(DisputaResponse.fromEntity(disputa));
     }
 
@@ -123,10 +126,10 @@ public class DisputaController {
     })
     public ResponseEntity<DisputaResponse> resolverDisputa(
             @PathVariable Long id,
-            @Parameter(description = "ID del agente") @RequestHeader("X-User-Id") Long idAgente,
+            @CurrentUser UserPrincipal currentUser,
             @Valid @RequestBody ResolverDisputaRequest request) {
 
-        var disputa = disputaService.resolverDisputa(id, idAgente, request);
+        var disputa = disputaService.resolverDisputa(id, currentUser.getId(), request);
         return ResponseEntity.ok(DisputaResponse.fromEntity(disputa));
     }
 }

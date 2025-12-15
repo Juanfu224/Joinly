@@ -36,31 +36,36 @@
 
 ---
 
-### 2. Refactorizar Autenticación (Eliminar X-User-Id)
-- [ ] Crear método helper para extraer usuario del SecurityContext
-- [ ] Refactorizar `AuthController.java` (si aplica)
-- [ ] Refactorizar `UsuarioController.java`
-- [ ] Refactorizar `UnidadFamiliarController.java`
-- [ ] Refactorizar `SuscripcionController.java`
-- [ ] Refactorizar `SolicitudController.java`
-- [ ] Refactorizar `PagoController.java`
-- [ ] Refactorizar `CredencialController.java`
-- [ ] Refactorizar `NotificacionController.java`
-- [ ] Refactorizar `TicketSoporteController.java`
-- [ ] Refactorizar `DisputaController.java`
-- [ ] Actualizar documentación Swagger de los endpoints
+### 2. ~~Refactorizar Autenticación (Eliminar X-User-Id)~~ ✅ COMPLETADO
+- [x] Crear método helper para extraer usuario del SecurityContext (`@CurrentUser`)
+- [x] Refactorizar `AuthController.java` (no aplica - endpoints públicos)
+- [x] Refactorizar `UsuarioController.java` (no usaba X-User-Id)
+- [x] Refactorizar `UnidadFamiliarController.java`
+- [x] Refactorizar `SuscripcionController.java`
+- [x] Refactorizar `SolicitudController.java`
+- [x] Refactorizar `PagoController.java`
+- [x] Refactorizar `CredencialController.java`
+- [x] Refactorizar `NotificacionController.java`
+- [x] Refactorizar `TicketSoporteController.java`
+- [x] Refactorizar `DisputaController.java`
+- [x] Actualizar documentación Swagger de los endpoints
 
-**Patrón a usar:**
+**Patrón implementado:**
 ```java
 // ANTES (inseguro)
 @RequestHeader("X-User-Id") Long idUsuario
 
 // DESPUÉS (correcto)
-@AuthenticationPrincipal UserPrincipal principal
-// Y luego: principal.getId()
+@CurrentUser UserPrincipal currentUser
+// Y luego: currentUser.getId()
 ```
 
-**Tiempo estimado:** 3-4 horas
+**Archivos modificados:**
+- Nuevo: `security/CurrentUser.java` - Anotación personalizada
+- `config/OpenApiConfig.java` - Añadido esquema de seguridad Bearer
+- Todos los controladores refactorizados con `@SecurityRequirement(name = "bearerAuth")`
+
+**Completado:** 15/12/2025
 
 ---
 
@@ -276,10 +281,10 @@ backend/
 
 | Fase | Tareas | Completadas | Porcentaje |
 |------|--------|-------------|------------|
-| Críticas | 4 | 0 | 0% |
+| Críticas | 4 | 2 | 50% |
 | Importantes | 7 | 0 | 0% |
 | Deseables | 6 | 0 | 0% |
-| **TOTAL** | **17** | **0** | **0%** |
+| **TOTAL** | **17** | **2** | **12%** |
 
 ---
 
@@ -288,6 +293,8 @@ backend/
 | Fecha | Tarea | Estado | Notas |
 |-------|-------|--------|-------|
 | 14/12/2025 | Auditoría inicial | ✅ Completada | Documento creado |
+| 14/12/2025 | Implementar Flyway | ✅ Completada | V1__Initial_Schema.sql creado |
+| 15/12/2025 | Refactorizar Autenticación | ✅ Completada | Eliminado X-User-Id, usando @CurrentUser |
 
 ---
 

@@ -4,11 +4,13 @@ import com.alberti.joinly.dto.soporte.CreateMensajeTicketRequest;
 import com.alberti.joinly.dto.soporte.CreateTicketRequest;
 import com.alberti.joinly.dto.soporte.MensajeTicketResponse;
 import com.alberti.joinly.dto.soporte.TicketSoporteResponse;
+import com.alberti.joinly.security.CurrentUser;
+import com.alberti.joinly.security.UserPrincipal;
 import com.alberti.joinly.services.TicketSoporteService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ import java.util.List;
 @RequestMapping("/api/v1/soporte/tickets")
 @RequiredArgsConstructor
 @Tag(name = "Soporte", description = "API para sistema de tickets de soporte al cliente")
+@SecurityRequirement(name = "bearerAuth")
 public class TicketSoporteController {
 
     private final TicketSoporteService ticketService;
@@ -38,10 +41,10 @@ public class TicketSoporteController {
             @ApiResponse(responseCode = "422", description = "Límite de tickets activos alcanzado")
     })
     public ResponseEntity<TicketSoporteResponse> crearTicket(
-            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario,
+            @CurrentUser UserPrincipal currentUser,
             @Valid @RequestBody CreateTicketRequest request) {
 
-        var ticket = ticketService.crearTicket(idUsuario, request);
+        var ticket = ticketService.crearTicket(currentUser.getId(), request);
         var totalMensajes = ticketService.contarMensajesTicket(ticket.getId());
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -66,10 +69,10 @@ public class TicketSoporteController {
     @GetMapping("/mis-tickets")
     @Operation(summary = "Listar mis tickets")
     public ResponseEntity<Page<TicketSoporteResponse>> listarMisTickets(
-            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario,
+            @CurrentUser UserPrincipal currentUser,
             @PageableDefault(size = 20, sort = "fechaApertura") Pageable pageable) {
 
-        var tickets = ticketService.listarTicketsUsuario(idUsuario, pageable)
+        var tickets = ticketService.listarTicketsUsuario(currentUser.getId(), pageable)
                 .map(ticket -> {
                     var totalMensajes = ticketService.contarMensajesTicket(ticket.getId());
                     return TicketSoporteResponse.fromEntity(ticket, totalMensajes);
@@ -97,9 +100,9 @@ public class TicketSoporteController {
     @PreAuthorize("hasRole('AGENTE')")
     @Operation(summary = "Listar mis tickets asignados", description = "Solo para agentes")
     public ResponseEntity<List<TicketSoporteResponse>> listarMisTicketsAsignados(
-            @Parameter(description = "ID del agente") @RequestHeader("X-User-Id") Long idAgente) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        var tickets = ticketService.listarTicketsAgente(idAgente)
+        var tickets = ticketService.listarTicketsAgente(currentUser.getId())
                 .stream()
                 .map(ticket -> {
                     var totalMensajes = ticketService.contarMensajesTicket(ticket.getId());
@@ -115,9 +118,9 @@ public class TicketSoporteController {
     @Operation(summary = "Asignar agente a ticket")
     public ResponseEntity<TicketSoporteResponse> asignarAgente(
             @PathVariable Long id,
-            @Parameter(description = "ID del agente") @RequestHeader("X-User-Id") Long idAgente) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        var ticket = ticketService.asignarAgente(id, idAgente);
+        var ticket = ticketService.asignarAgente(id, currentUser.getId());
         var totalMensajes = ticketService.contarMensajesTicket(id);
 
         return ResponseEntity.ok(TicketSoporteResponse.fromEntity(ticket, totalMensajes));
@@ -127,9 +130,9 @@ public class TicketSoporteController {
     @Operation(summary = "Obtener mensajes de un ticket")
     public ResponseEntity<List<MensajeTicketResponse>> obtenerMensajes(
             @PathVariable Long id,
-            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        var mensajes = ticketService.obtenerMensajes(id, idUsuario)
+        var mensajes = ticketService.obtenerMensajes(id, currentUser.getId())
                 .stream()
                 .map(MensajeTicketResponse::fromEntity)
                 .toList();
@@ -146,10 +149,10 @@ public class TicketSoporteController {
     })
     public ResponseEntity<MensajeTicketResponse> agregarMensaje(
             @PathVariable Long id,
-            @Parameter(description = "ID del autor") @RequestHeader("X-User-Id") Long idAutor,
+            @CurrentUser UserPrincipal currentUser,
             @Valid @RequestBody CreateMensajeTicketRequest request) {
 
-        var mensaje = ticketService.agregarMensaje(id, idAutor, request);
+        var mensaje = ticketService.agregarMensaje(id, currentUser.getId(), request);
         return ResponseEntity.status(HttpStatus.CREATED).body(MensajeTicketResponse.fromEntity(mensaje));
     }
 
@@ -158,9 +161,9 @@ public class TicketSoporteController {
     @Operation(summary = "Marcar ticket como resuelto")
     public ResponseEntity<TicketSoporteResponse> resolverTicket(
             @PathVariable Long id,
-            @Parameter(description = "ID del agente") @RequestHeader("X-User-Id") Long idAgente) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        var ticket = ticketService.resolverTicket(id, idAgente);
+        var ticket = ticketService.resolverTicket(id, currentUser.getId());
         var totalMensajes = ticketService.contarMensajesTicket(id);
 
         return ResponseEntity.ok(TicketSoporteResponse.fromEntity(ticket, totalMensajes));
@@ -170,10 +173,10 @@ public class TicketSoporteController {
     @Operation(summary = "Cerrar ticket con valoración opcional")
     public ResponseEntity<TicketSoporteResponse> cerrarTicket(
             @PathVariable Long id,
-            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario,
+            @CurrentUser UserPrincipal currentUser,
             @RequestParam(required = false) Short satisfaccion) {
 
-        var ticket = ticketService.cerrarTicket(id, idUsuario, satisfaccion);
+        var ticket = ticketService.cerrarTicket(id, currentUser.getId(), satisfaccion);
         var totalMensajes = ticketService.contarMensajesTicket(id);
 
         return ResponseEntity.ok(TicketSoporteResponse.fromEntity(ticket, totalMensajes));

@@ -3,6 +3,8 @@ package com.alberti.joinly.controllers;
 import com.alberti.joinly.dto.unidad.CreateUnidadRequest;
 import com.alberti.joinly.dto.unidad.MiembroUnidadResponse;
 import com.alberti.joinly.dto.unidad.UnidadFamiliarResponse;
+import com.alberti.joinly.security.CurrentUser;
+import com.alberti.joinly.security.UserPrincipal;
 import com.alberti.joinly.services.UnidadFamiliarService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -10,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Tag(name = "Unidades Familiares", description = "API para gestionar grupos familiares. Un grupo puede tener múltiples miembros " +
         "y suscripciones compartidas. Cada grupo tiene un administrador y un código de invitación único.")
+@SecurityRequirement(name = "bearerAuth")
 public class UnidadFamiliarController {
 
     private final UnidadFamiliarService unidadFamiliarService;
@@ -45,11 +49,11 @@ public class UnidadFamiliarController {
                     content = @Content)
     })
     public ResponseEntity<UnidadFamiliarResponse> crearUnidad(
-            @Parameter(description = "ID del usuario administrador", required = true) @RequestHeader("X-User-Id") Long idUsuario,
+            @CurrentUser UserPrincipal currentUser,
             @Valid @RequestBody CreateUnidadRequest request) {
 
         var unidad = unidadFamiliarService.crearUnidadFamiliar(
-                idUsuario,
+                currentUser.getId(),
                 request.nombre(),
                 request.descripcion());
 
@@ -94,9 +98,9 @@ public class UnidadFamiliarController {
             @ApiResponse(responseCode = "200", description = "Lista de grupos")
     })
     public ResponseEntity<List<UnidadFamiliarResponse>> listarGruposAdministrados(
-            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        var unidades = unidadFamiliarService.listarGruposAdministrados(idUsuario)
+        var unidades = unidadFamiliarService.listarGruposAdministrados(currentUser.getId())
                 .stream()
                 .map(UnidadFamiliarResponse::fromEntity)
                 .toList();
@@ -110,9 +114,9 @@ public class UnidadFamiliarController {
             @ApiResponse(responseCode = "200", description = "Lista de grupos")
     })
     public ResponseEntity<List<UnidadFamiliarResponse>> listarGruposDondeSoyMiembro(
-            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        var unidades = unidadFamiliarService.listarGruposDondeEsMiembro(idUsuario)
+        var unidades = unidadFamiliarService.listarGruposDondeEsMiembro(currentUser.getId())
                 .stream()
                 .map(UnidadFamiliarResponse::fromEntity)
                 .toList();
@@ -147,9 +151,9 @@ public class UnidadFamiliarController {
     public ResponseEntity<Void> expulsarMiembro(
             @Parameter(description = "ID de la unidad") @PathVariable Long idUnidad,
             @Parameter(description = "ID del usuario a expulsar") @PathVariable Long idUsuario,
-            @Parameter(description = "ID del administrador") @RequestHeader("X-User-Id") Long idSolicitante) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        unidadFamiliarService.expulsarMiembro(idUnidad, idUsuario, idSolicitante);
+        unidadFamiliarService.expulsarMiembro(idUnidad, idUsuario, currentUser.getId());
         return ResponseEntity.noContent().build();
     }
 
@@ -162,9 +166,9 @@ public class UnidadFamiliarController {
     })
     public ResponseEntity<Void> abandonarGrupo(
             @Parameter(description = "ID de la unidad") @PathVariable Long idUnidad,
-            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        unidadFamiliarService.abandonarGrupo(idUnidad, idUsuario);
+        unidadFamiliarService.abandonarGrupo(idUnidad, currentUser.getId());
         return ResponseEntity.noContent().build();
     }
 
@@ -184,9 +188,9 @@ public class UnidadFamiliarController {
     })
     public ResponseEntity<Void> eliminarUnidad(
             @Parameter(description = "ID de la unidad") @PathVariable Long id,
-            @Parameter(description = "ID del administrador") @RequestHeader("X-User-Id") Long idSolicitante) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        unidadFamiliarService.eliminarUnidadFamiliar(id, idSolicitante);
+        unidadFamiliarService.eliminarUnidadFamiliar(id, currentUser.getId());
         return ResponseEntity.noContent().build();
     }
 
@@ -197,9 +201,9 @@ public class UnidadFamiliarController {
     })
     public ResponseEntity<Boolean> esMiembro(
             @Parameter(description = "ID de la unidad") @PathVariable Long idUnidad,
-            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        var esMiembro = unidadFamiliarService.esMiembroActivo(idUnidad, idUsuario);
+        var esMiembro = unidadFamiliarService.esMiembroActivo(idUnidad, currentUser.getId());
         return ResponseEntity.ok(esMiembro);
     }
 
@@ -210,9 +214,9 @@ public class UnidadFamiliarController {
     })
     public ResponseEntity<Boolean> esAdministrador(
             @Parameter(description = "ID de la unidad") @PathVariable Long idUnidad,
-            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        var esAdmin = unidadFamiliarService.esAdministrador(idUnidad, idUsuario);
+        var esAdmin = unidadFamiliarService.esAdministrador(idUnidad, currentUser.getId());
         return ResponseEntity.ok(esAdmin);
     }
 }

@@ -5,6 +5,8 @@ import com.alberti.joinly.dto.solicitud.CreateSolicitudSuscripcionRequest;
 import com.alberti.joinly.dto.solicitud.RejectSolicitudRequest;
 import com.alberti.joinly.dto.solicitud.SolicitudResponse;
 import com.alberti.joinly.entities.enums.EstadoSolicitud;
+import com.alberti.joinly.security.CurrentUser;
+import com.alberti.joinly.security.UserPrincipal;
 import com.alberti.joinly.services.SolicitudService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Tag(name = "Solicitudes", description = "API para gestionar solicitudes de unión a grupos familiares y suscripciones compartidas. " +
         "Las solicitudes siguen el flujo: PENDIENTE → APROBADA/RECHAZADA/CANCELADA")
+@SecurityRequirement(name = "bearerAuth")
 public class SolicitudController {
 
     private final SolicitudService solicitudService;
@@ -48,11 +52,11 @@ public class SolicitudController {
                     content = @Content)
     })
     public ResponseEntity<SolicitudResponse> solicitarUnionGrupo(
-            @Parameter(description = "ID del solicitante") @RequestHeader("X-User-Id") Long idSolicitante,
+            @CurrentUser UserPrincipal currentUser,
             @Valid @RequestBody CreateSolicitudGrupoRequest request) {
 
         var solicitud = solicitudService.crearSolicitudUnionGrupo(
-                idSolicitante,
+                currentUser.getId(),
                 request.codigoInvitacion(),
                 request.mensaje());
 
@@ -81,11 +85,11 @@ public class SolicitudController {
                     content = @Content)
     })
     public ResponseEntity<SolicitudResponse> solicitarUnionSuscripcion(
-            @Parameter(description = "ID del solicitante") @RequestHeader("X-User-Id") Long idSolicitante,
+            @CurrentUser UserPrincipal currentUser,
             @Valid @RequestBody CreateSolicitudSuscripcionRequest request) {
 
         var solicitud = solicitudService.crearSolicitudUnionSuscripcion(
-                idSolicitante,
+                currentUser.getId(),
                 request.idSuscripcion(),
                 request.mensaje());
 
@@ -115,10 +119,10 @@ public class SolicitudController {
             @ApiResponse(responseCode = "200", description = "Lista de solicitudes")
     })
     public ResponseEntity<List<SolicitudResponse>> listarMisSolicitudes(
-            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario,
+            @CurrentUser UserPrincipal currentUser,
             @Parameter(description = "Estado de las solicitudes") @RequestParam(defaultValue = "PENDIENTE") EstadoSolicitud estado) {
 
-        var solicitudes = solicitudService.listarSolicitudesUsuario(idUsuario, estado)
+        var solicitudes = solicitudService.listarSolicitudesUsuario(currentUser.getId(), estado)
                 .stream()
                 .map(SolicitudResponse::fromEntity)
                 .toList();
@@ -177,9 +181,9 @@ public class SolicitudController {
     })
     public ResponseEntity<SolicitudResponse> aprobarSolicitud(
             @Parameter(description = "ID de la solicitud") @PathVariable Long id,
-            @Parameter(description = "ID del aprobador") @RequestHeader("X-User-Id") Long idAprobador) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        var solicitud = solicitudService.aprobarSolicitud(id, idAprobador);
+        var solicitud = solicitudService.aprobarSolicitud(id, currentUser.getId());
         return ResponseEntity.ok(SolicitudResponse.fromEntity(solicitud));
     }
 
@@ -200,11 +204,11 @@ public class SolicitudController {
     })
     public ResponseEntity<SolicitudResponse> rechazarSolicitud(
             @Parameter(description = "ID de la solicitud") @PathVariable Long id,
-            @Parameter(description = "ID del aprobador") @RequestHeader("X-User-Id") Long idAprobador,
+            @CurrentUser UserPrincipal currentUser,
             @Valid @RequestBody(required = false) RejectSolicitudRequest request) {
 
         var motivoRechazo = request != null ? request.motivoRechazo() : null;
-        var solicitud = solicitudService.rechazarSolicitud(id, idAprobador, motivoRechazo);
+        var solicitud = solicitudService.rechazarSolicitud(id, currentUser.getId(), motivoRechazo);
         return ResponseEntity.ok(SolicitudResponse.fromEntity(solicitud));
     }
 
@@ -225,9 +229,9 @@ public class SolicitudController {
     })
     public ResponseEntity<SolicitudResponse> cancelarSolicitud(
             @Parameter(description = "ID de la solicitud") @PathVariable Long id,
-            @Parameter(description = "ID del solicitante") @RequestHeader("X-User-Id") Long idSolicitante) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        var solicitud = solicitudService.cancelarSolicitud(id, idSolicitante);
+        var solicitud = solicitudService.cancelarSolicitud(id, currentUser.getId());
         return ResponseEntity.ok(SolicitudResponse.fromEntity(solicitud));
     }
 
@@ -237,10 +241,10 @@ public class SolicitudController {
             @ApiResponse(responseCode = "200", description = "Resultado de la verificación")
     })
     public ResponseEntity<Boolean> tieneSolicitudPendienteGrupo(
-            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario,
+            @CurrentUser UserPrincipal currentUser,
             @Parameter(description = "ID de la unidad familiar") @PathVariable Long idUnidad) {
 
-        var tienePendiente = solicitudService.tieneSolicitudPendienteGrupo(idUsuario, idUnidad);
+        var tienePendiente = solicitudService.tieneSolicitudPendienteGrupo(currentUser.getId(), idUnidad);
         return ResponseEntity.ok(tienePendiente);
     }
 
@@ -250,10 +254,10 @@ public class SolicitudController {
             @ApiResponse(responseCode = "200", description = "Resultado de la verificación")
     })
     public ResponseEntity<Boolean> tieneSolicitudPendienteSuscripcion(
-            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario,
+            @CurrentUser UserPrincipal currentUser,
             @Parameter(description = "ID de la suscripción") @PathVariable Long idSuscripcion) {
 
-        var tienePendiente = solicitudService.tieneSolicitudPendienteSuscripcion(idUsuario, idSuscripcion);
+        var tienePendiente = solicitudService.tieneSolicitudPendienteSuscripcion(currentUser.getId(), idSuscripcion);
         return ResponseEntity.ok(tienePendiente);
     }
 }

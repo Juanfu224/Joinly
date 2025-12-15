@@ -4,6 +4,8 @@ import com.alberti.joinly.dto.suscripcion.CreateSuscripcionRequest;
 import com.alberti.joinly.dto.suscripcion.PlazaResponse;
 import com.alberti.joinly.dto.suscripcion.SuscripcionResponse;
 import com.alberti.joinly.dto.suscripcion.SuscripcionSummary;
+import com.alberti.joinly.security.CurrentUser;
+import com.alberti.joinly.security.UserPrincipal;
 import com.alberti.joinly.services.SuscripcionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -11,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Tag(name = "Suscripciones", description = "API para gestionar suscripciones compartidas (Netflix, Spotify, etc.) " +
         "dentro de grupos familiares. Incluye gestión de plazas y estados.")
+@SecurityRequirement(name = "bearerAuth")
 public class SuscripcionController {
 
     private final SuscripcionService suscripcionService;
@@ -45,12 +49,12 @@ public class SuscripcionController {
                     content = @Content)
     })
     public ResponseEntity<SuscripcionResponse> crearSuscripcion(
-            @Parameter(description = "ID del usuario anfitrión") @RequestHeader("X-User-Id") Long idAnfitrion,
+            @CurrentUser UserPrincipal currentUser,
             @Valid @RequestBody CreateSuscripcionRequest request) {
 
         var suscripcion = suscripcionService.crearSuscripcion(
                 request.idUnidad(),
-                idAnfitrion,
+                currentUser.getId(),
                 request.idServicio(),
                 request.precioTotal(),
                 request.numPlazasTotal(),
@@ -106,9 +110,9 @@ public class SuscripcionController {
             @ApiResponse(responseCode = "200", description = "Lista de suscripciones")
     })
     public ResponseEntity<List<SuscripcionSummary>> listarMisSuscripcionesComoAnfitrion(
-            @Parameter(description = "ID del usuario anfitrión") @RequestHeader("X-User-Id") Long idAnfitrion) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        var suscripciones = suscripcionService.listarSuscripcionesDeAnfitrion(idAnfitrion)
+        var suscripciones = suscripcionService.listarSuscripcionesDeAnfitrion(currentUser.getId())
                 .stream()
                 .map(SuscripcionSummary::fromEntity)
                 .toList();
@@ -138,9 +142,9 @@ public class SuscripcionController {
             @ApiResponse(responseCode = "200", description = "Lista de plazas ocupadas")
     })
     public ResponseEntity<List<PlazaResponse>> listarMisPlazas(
-            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        var plazas = suscripcionService.listarPlazasOcupadasPorUsuario(idUsuario)
+        var plazas = suscripcionService.listarPlazasOcupadasPorUsuario(currentUser.getId())
                 .stream()
                 .map(PlazaResponse::fromEntity)
                 .toList();
@@ -158,9 +162,9 @@ public class SuscripcionController {
     })
     public ResponseEntity<PlazaResponse> ocuparPlaza(
             @Parameter(description = "ID de la suscripción") @PathVariable Long idSuscripcion,
-            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        var plaza = suscripcionService.ocuparPlaza(idSuscripcion, idUsuario);
+        var plaza = suscripcionService.ocuparPlaza(idSuscripcion, currentUser.getId());
         return ResponseEntity.ok(PlazaResponse.fromEntity(plaza));
     }
 
@@ -180,9 +184,9 @@ public class SuscripcionController {
     })
     public ResponseEntity<Void> liberarPlaza(
             @Parameter(description = "ID de la plaza") @PathVariable Long idPlaza,
-            @Parameter(description = "ID del solicitante") @RequestHeader("X-User-Id") Long idSolicitante) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        suscripcionService.liberarPlaza(idPlaza, idSolicitante);
+        suscripcionService.liberarPlaza(idPlaza, currentUser.getId());
         return ResponseEntity.noContent().build();
     }
 
@@ -195,9 +199,9 @@ public class SuscripcionController {
     })
     public ResponseEntity<Void> pausarSuscripcion(
             @Parameter(description = "ID de la suscripción") @PathVariable Long id,
-            @Parameter(description = "ID del anfitrión") @RequestHeader("X-User-Id") Long idSolicitante) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        suscripcionService.pausarSuscripcion(id, idSolicitante);
+        suscripcionService.pausarSuscripcion(id, currentUser.getId());
         return ResponseEntity.noContent().build();
     }
 
@@ -211,9 +215,9 @@ public class SuscripcionController {
     })
     public ResponseEntity<Void> reactivarSuscripcion(
             @Parameter(description = "ID de la suscripción") @PathVariable Long id,
-            @Parameter(description = "ID del anfitrión") @RequestHeader("X-User-Id") Long idSolicitante) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        suscripcionService.reactivarSuscripcion(id, idSolicitante);
+        suscripcionService.reactivarSuscripcion(id, currentUser.getId());
         return ResponseEntity.noContent().build();
     }
 
@@ -226,9 +230,9 @@ public class SuscripcionController {
     })
     public ResponseEntity<Void> cancelarSuscripcion(
             @Parameter(description = "ID de la suscripción") @PathVariable Long id,
-            @Parameter(description = "ID del anfitrión") @RequestHeader("X-User-Id") Long idSolicitante) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        suscripcionService.cancelarSuscripcion(id, idSolicitante);
+        suscripcionService.cancelarSuscripcion(id, currentUser.getId());
         return ResponseEntity.noContent().build();
     }
 
@@ -239,9 +243,9 @@ public class SuscripcionController {
     })
     public ResponseEntity<Boolean> tienePlaza(
             @Parameter(description = "ID de la suscripción") @PathVariable Long idSuscripcion,
-            @Parameter(description = "ID del usuario") @RequestHeader("X-User-Id") Long idUsuario) {
+            @CurrentUser UserPrincipal currentUser) {
 
-        var tienePlaza = suscripcionService.usuarioTienePlazaEnSuscripcion(idSuscripcion, idUsuario);
+        var tienePlaza = suscripcionService.usuarioTienePlazaEnSuscripcion(idSuscripcion, currentUser.getId());
         return ResponseEntity.ok(tienePlaza);
     }
 }
