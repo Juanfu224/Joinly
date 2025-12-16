@@ -1,0 +1,194 @@
+@use '../../../styles/01-tools/mixins' as *;
+
+// ==========================================================================
+// COMPONENTE: CARD
+// ==========================================================================
+// Tarjetas reutilizables con múltiples variantes
+// Variantes: feature, action, info, list
+
+.c-card {
+  display: flex;
+  background-color: var(--color-blanco);
+  border-radius: var(--radio-grande);
+  padding: var(--espaciado-4);
+  box-shadow: 0 2px 6px rgba(20, 20, 43, 0.06);
+
+  @include transicion;
+
+  // ==========================================================================
+  // ELEMENTOS BASE (aplicables a todas las variantes)
+  // ==========================================================================
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radio-medio);
+    flex-shrink: 0;
+  }
+
+  &__contenido {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__titulo {
+    font-weight: var(--peso-fuente-semi-negrita);
+    color: var(--color-texto-fuerte);
+    line-height: var(--altura-linea-compacta);
+  }
+
+  &__descripcion,
+  &__valor,
+  &__metadata {
+    color: var(--color-texto-base);
+    line-height: var(--altura-linea-normal);
+  }
+
+  // ==========================================================================
+  // ESTADO: HOVER
+  // ==========================================================================
+
+  &:not(&--no-hover):not(&--list):hover {
+    box-shadow: 0 8px 28px rgba(20, 20, 43, 0.1);
+    transform: translateY(-2px);
+    cursor: pointer;
+  }
+
+  // ==========================================================================
+  // MODIFICADOR: Sin hover
+  // ==========================================================================
+
+  &--no-hover {
+    cursor: default;
+  }
+
+  // ==========================================================================
+  // VARIANTE: FEATURE
+  // ==========================================================================
+
+  &--feature {
+    flex-direction: column;
+    gap: var(--espaciado-3);
+
+    .c-card__icon {
+      inline-size: 4rem;
+      block-size: 4rem;
+      font-size: var(--tamano-texto-extra-grande);
+    }
+
+    .c-card__contenido {
+      gap: var(--espaciado-2);
+    }
+
+    .c-card__titulo {
+      font-size: var(--tamano-texto-grande);
+    }
+
+    .c-card__descripcion {
+      font-size: var(--tamano-texto-regular);
+    }
+
+    .c-card__valor,
+    .c-card__metadata,
+    .c-card__badge,
+    .c-card__accion {
+      display: none;
+    }
+  }
+
+  // ==========================================================================
+  // VARIANTE: ACTION e INFO (comparten estilos base)
+  // ==========================================================================
+
+  &--action,
+  &--info {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--espaciado-3);
+    padding: var(--espaciado-3);
+
+    .c-card__icon {
+      inline-size: 3.5rem;
+      block-size: 3.5rem;
+      font-size: 1.5rem;
+    }
+
+    .c-card__contenido {
+      gap: var(--espaciado-1);
+      flex: 1;
+    }
+
+    .c-card__titulo {
+      font-size: var(--tamano-texto-regular);
+    }
+
+    .c-card__badge,
+    .c-card__accion {
+      display: none;
+    }
+  }
+
+  &--action {
+    .c-card__descripcion {
+      font-size: var(--tamano-texto-pequeno);
+    }
+
+    .c-card__valor,
+    .c-card__metadata {
+      display: none;
+    }
+  }
+
+  &--info {
+    .c-card__valor {
+      font-size: var(--tamano-texto-pequeno);
+    }
+
+    .c-card__descripcion,
+    .c-card__metadata {
+      display: none;
+    }
+  }
+
+  // ==========================================================================
+  // VARIANTE: LIST
+  // ==========================================================================
+
+  &--list {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--espaciado-3);
+
+    .c-card__contenido {
+      gap: var(--espaciado-1);
+      flex: 1;
+    }
+
+    .c-card__titulo {
+      font-size: var(--tamano-texto-grande);
+    }
+
+    .c-card__metadata {
+      font-size: var(--tamano-texto-pequeno);
+    }
+
+    .c-card__badge {
+      display: flex;
+      align-items: center;
+      gap: var(--espaciado-1);
+      font-size: var(--tamano-texto-pequeno);
+      font-weight: var(--peso-fuente-medio);
+    }
+
+    .c-card__accion {
+      flex-shrink: 0;
+    }
+
+    .c-card__icon,
+    .c-card__descripcion,
+    .c-card__valor {
+      display: none;
+    }
+  }
+}

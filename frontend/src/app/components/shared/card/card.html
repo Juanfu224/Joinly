@@ -1,0 +1,31 @@
+<article [class]="cardClasses()">
+  <div class="c-card__icon">
+    <ng-content select="[slot='icon']" />
+  </div>
+
+  <div class="c-card__contenido">
+    <div class="c-card__titulo">
+      <ng-content select="[slot='title']" />
+    </div>
+
+    <div class="c-card__descripcion">
+      <ng-content select="[slot='description']" />
+    </div>
+
+    <div class="c-card__valor">
+      <ng-content select="[slot='value']" />
+    </div>
+
+    <div class="c-card__metadata">
+      <ng-content select="[slot='metadata']" />
+    </div>
+  </div>
+
+  <div class="c-card__badge">
+    <ng-content select="[slot='badge']" />
+  </div>
+
+  <div class="c-card__accion">
+    <ng-content select="[slot='action']" />
+  </div>
+</article>
