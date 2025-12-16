@@ -1,0 +1,40 @@
+<div class="c-form-checkbox__wrapper">
+  <input
+    type="checkbox"
+    class="c-form-checkbox__input"
+    [id]="computedId()"
+    [name]="name()"
+    [checked]="checked()"
+    [disabled]="disabled()"
+    [attr.aria-required]="required()"
+    [attr.aria-invalid]="errorMessage() ? true : null"
+    [attr.aria-describedby]="ariaDescribedBy()"
+    (change)="onCheckboxChange($event)"
+    (blur)="onBlur()"
+  />
+  <label class="c-form-checkbox__label" [attr.for]="computedId()">
+    {{ label() }}
+    @if (required()) {
+      <span class="c-form-checkbox__required" aria-hidden="true">*</span>
+    }
+  </label>
+</div>
+
+@if (errorMessage()) {
+  <span
+    [id]="errorId()"
+    class="c-form-checkbox__error"
+    role="alert"
+  >
+    {{ errorMessage() }}
+  </span>
+}
+
+@if (helpText() && !errorMessage()) {
+  <span
+    [id]="helpTextId()"
+    class="c-form-checkbox__help"
+  >
+    {{ helpText() }}
+  </span>
+}

@@ -1,0 +1,85 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-1);
+  width: 100%;
+}
+
+.c-form-select {
+  &__label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--radio-pequeno);
+    color: var(--color-texto-fuerte);
+    font-size: var(--tamano-texto-pequeno);
+    font-weight: var(--peso-fuente-semi-negrita);
+  }
+
+  &__required {
+    color: var(--color-error);
+  }
+
+  &__wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  &__field {
+    width: 100%;
+    padding: var(--espaciado-1) var(--espaciado-5) var(--espaciado-1) var(--espaciado-2);
+    color: var(--color-texto-base);
+    font-size: var(--tamano-texto-regular);
+    background-color: transparent;
+    border: var(--borde-medio) solid var(--color-borde-base);
+    border-radius: var(--radio-medio);
+    appearance: none;
+    cursor: pointer;
+    transition:
+      border-color var(--duracion-rapida) var(--transicion-estandar),
+      box-shadow var(--duracion-rapida) var(--transicion-estandar);
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-principal);
+      box-shadow: 0 0 0 var(--borde-medio) color-mix(in srgb, var(--color-principal) 25%, transparent);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+      background-color: var(--color-superficie-blanca-alt);
+    }
+
+    &[aria-invalid="true"] {
+      border-color: var(--color-error);
+    }
+
+    option:disabled {
+      color: var(--color-borde-fuerte);
+    }
+  }
+
+  &__icon {
+    position: absolute;
+    top: 50%;
+    right: var(--espaciado-2);
+    transform: translateY(-50%);
+    color: var(--color-texto-normal);
+    pointer-events: none;
+    transition: transform var(--duracion-rapida) var(--transicion-estandar);
+
+    .c-form-select__field:focus ~ & {
+      color: var(--color-principal);
+    }
+  }
+
+  &__error {
+    color: var(--color-error);
+    font-size: var(--tamano-texto-pequeno);
+  }
+
+  &__help {
+    color: var(--color-texto-normal);
+    font-size: var(--tamano-texto-pequeno);
+  }
+}

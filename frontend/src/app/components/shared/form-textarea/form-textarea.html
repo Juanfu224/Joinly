@@ -1,0 +1,41 @@
+<label class="c-form-textarea__label" [attr.for]="computedId()">
+  {{ label() }}
+  @if (required()) {
+    <span class="c-form-textarea__required" aria-hidden="true">*</span>
+  }
+</label>
+
+<textarea
+  class="c-form-textarea__field"
+  [id]="computedId()"
+  [name]="name()"
+  [placeholder]="placeholder()"
+  [rows]="rows()"
+  [attr.maxlength]="maxLength()"
+  [value]="value()"
+  [disabled]="disabled()"
+  [attr.aria-required]="required()"
+  [attr.aria-invalid]="errorMessage() ? true : null"
+  [attr.aria-describedby]="ariaDescribedBy()"
+  (input)="onInput($event)"
+  (blur)="onBlur()"
+></textarea>
+
+@if (errorMessage()) {
+  <span
+    [id]="errorId()"
+    class="c-form-textarea__error"
+    role="alert"
+  >
+    {{ errorMessage() }}
+  </span>
+}
+
+@if (helpText() && !errorMessage()) {
+  <span
+    [id]="helpTextId()"
+    class="c-form-textarea__help"
+  >
+    {{ helpText() }}
+  </span>
+}

@@ -1,0 +1,118 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.c-form-radio-group {
+  &__fieldset {
+    margin: 0;
+    padding: 0;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaciado-2);
+  }
+
+  &__legend {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--radio-pequeno);
+    padding: 0;
+    margin-bottom: var(--espaciado-1);
+    color: var(--color-texto-fuerte);
+    font-size: var(--tamano-texto-pequeno);
+    font-weight: var(--peso-fuente-semi-negrita);
+  }
+
+  &__required {
+    color: var(--color-error);
+  }
+
+  &__options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaciado-2);
+
+    &--inline {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: var(--espaciado-3);
+    }
+  }
+
+  &__option {
+    display: flex;
+    align-items: center;
+    gap: var(--espaciado-2);
+  }
+
+  &__input {
+    appearance: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    background-color: transparent;
+    border: var(--borde-medio) solid var(--color-borde-base);
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition:
+      border-color var(--duracion-rapida) var(--transicion-estandar),
+      background-color var(--duracion-rapida) var(--transicion-estandar),
+      box-shadow var(--duracion-rapida) var(--transicion-estandar);
+
+    &:checked {
+      border-color: var(--color-principal);
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 0.625rem;
+        height: 0.625rem;
+        background-color: var(--color-principal);
+        border-radius: 50%;
+      }
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-principal);
+      box-shadow: 0 0 0 var(--borde-medio) color-mix(in srgb, var(--color-principal) 25%, transparent);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+      background-color: var(--color-superficie-blanca-alt);
+    }
+  }
+
+  &__label {
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-texto-base);
+    font-size: var(--tamano-texto-regular);
+    cursor: pointer;
+    user-select: none;
+
+    .c-form-radio-group__input:disabled ~ & {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+
+  &__error {
+    display: block;
+    color: var(--color-error);
+    font-size: var(--tamano-texto-pequeno);
+  }
+
+  &__help {
+    display: block;
+    color: var(--color-texto-normal);
+    font-size: var(--tamano-texto-pequeno);
+  }
+}

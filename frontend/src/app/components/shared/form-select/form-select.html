@@ -1,0 +1,56 @@
+<label class="c-form-select__label" [attr.for]="computedId()">
+  {{ label() }}
+  @if (required()) {
+    <span class="c-form-select__required" aria-hidden="true">*</span>
+  }
+</label>
+
+<div class="c-form-select__wrapper">
+  <select
+    class="c-form-select__field"
+    [id]="computedId()"
+    [name]="name()"
+    [value]="value()"
+    [disabled]="disabled()"
+    [attr.aria-required]="required()"
+    [attr.aria-invalid]="errorMessage() ? true : null"
+    [attr.aria-describedby]="ariaDescribedBy()"
+    (change)="onSelectChange($event)"
+    (blur)="onBlur()"
+  >
+    <option value="" disabled [selected]="value() === ''">
+      {{ placeholder() }}
+    </option>
+    @for (option of options(); track option.value) {
+      <option
+        [value]="option.value"
+        [disabled]="option.disabled ?? false"
+        [selected]="value() === option.value"
+      >
+        {{ option.label }}
+      </option>
+    }
+  </select>
+  <svg class="c-form-select__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</div>
+
+@if (errorMessage()) {
+  <span
+    [id]="errorId()"
+    class="c-form-select__error"
+    role="alert"
+  >
+    {{ errorMessage() }}
+  </span>
+}
+
+@if (helpText() && !errorMessage()) {
+  <span
+    [id]="helpTextId()"
+    class="c-form-select__help"
+  >
+    {{ helpText() }}
+  </span>
+}
