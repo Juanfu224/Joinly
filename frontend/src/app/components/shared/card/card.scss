@@ -6,8 +6,13 @@
 // Tarjetas reutilizables con múltiples variantes
 // Variantes: feature, action, info, list
 
+:host {
+  display: block;
+}
+
 .c-card {
   display: flex;
+  block-size: 100%;
   background-color: var(--color-blanco);
   border-radius: var(--radio-grande);
   padding: var(--espaciado-4);
@@ -20,10 +25,6 @@
   // ==========================================================================
 
   &__icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radio-medio);
     flex-shrink: 0;
   }
 
@@ -79,12 +80,6 @@
     flex-direction: column;
     gap: var(--espaciado-3);
 
-    .c-card__icon {
-      inline-size: 4rem;
-      block-size: 4rem;
-      font-size: var(--tamano-texto-extra-grande);
-    }
-
     .c-card__contenido {
       gap: var(--espaciado-2);
     }
@@ -115,12 +110,6 @@
     align-items: center;
     gap: var(--espaciado-3);
     padding: var(--espaciado-3);
-
-    .c-card__icon {
-      inline-size: 3.5rem;
-      block-size: 3.5rem;
-      font-size: 1.5rem;
-    }
 
     .c-card__contenido {
       gap: var(--espaciado-1);

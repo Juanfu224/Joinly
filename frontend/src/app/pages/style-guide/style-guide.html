@@ -1,6 +1,5 @@
 <main class="p-style-guide">
   <div class="p-style-guide__contenido l-contenedor">
-
     <!-- ===================================================================
          SECCIÓN: TARJETAS DE CARACTERÍSTICAS
          =================================================================== -->
@@ -8,84 +7,97 @@
       <div class="p-style-guide__seccion-encabezado">
         <h2 id="titulo-ventajas" class="p-style-guide__subtitulo">Tarjetas de Características</h2>
         <p class="p-style-guide__nota">
-          Cards verticales para mostrar características o ventajas. Uso: landing pages, secciones destacadas.
+          Cards verticales para mostrar características o ventajas. Uso: landing pages, secciones
+          destacadas.
         </p>
       </div>
 
       <!-- Con fondo gris y hover deshabilitado -->
       <div class="p-style-guide__demo">
-        <h3 class="p-style-guide__demo-titulo">Con fondo gris (fondoGris=true, disableHover=true)</h3>
         <div class="p-style-guide__rejilla p-style-guide__rejilla--3col">
-          <app-card variant="feature" [disableHover]="true" [fondoGris]="true">
+          <app-card variant="feature">
             <div slot="icon" class="c-card-icon c-card-icon--amarillo">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path
+                  d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
               </svg>
             </div>
             <h3 slot="title">Grupos familiares</h3>
-            <p slot="description">Crea unidades familiares y gestiona todas tus suscripciones compartidas</p>
+            <p slot="description">
+              Crea unidades familiares y gestiona todas tus suscripciones compartidas
+            </p>
           </app-card>
 
-          <app-card variant="feature" [disableHover]="true" [fondoGris]="true">
+          <app-card variant="feature">
             <div slot="icon" class="c-card-icon c-card-icon--naranja">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <line x1="12" y1="1" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M17 5H9.5C8.57174 5 7.6815 5.36875 7.02513 6.02513C6.36875 6.6815 6 7.57174 6 8.5C6 9.42826 6.36875 10.3185 7.02513 10.9749C7.6815 11.6313 8.57174 12 9.5 12H14.5C15.4283 12 16.3185 12.3687 16.9749 13.0251C17.6313 13.6815 18 14.5717 18 15.5C18 16.4283 17.6313 17.3185 16.9749 17.9749C16.3185 18.6313 15.4283 19 14.5 19H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <line
+                  x1="12"
+                  y1="1"
+                  x2="12"
+                  y2="23"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M17 5H9.5C8.57174 5 7.6815 5.36875 7.02513 6.02513C6.36875 6.6815 6 7.57174 6 8.5C6 9.42826 6.36875 10.3185 7.02513 10.9749C7.6815 11.6313 8.57174 12 9.5 12H14.5C15.4283 12 16.3185 12.3687 16.9749 13.0251C17.6313 13.6815 18 14.5717 18 15.5C18 16.4283 17.6313 17.3185 16.9749 17.9749C16.3185 18.6313 15.4283 19 14.5 19H6"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
               </svg>
             </div>
             <h3 slot="title">Pagos seguros</h3>
-            <p slot="description">Los pagos se retienen de forma segura hasta el final del periodo</p>
+            <p slot="description">
+              Los pagos se retienen de forma segura hasta el final del periodo
+            </p>
           </app-card>
 
-          <app-card variant="feature" [disableHover]="true" [fondoGris]="true">
+          <app-card variant="feature">
             <div slot="icon" class="c-card-icon c-card-icon--azul">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <polyline points="20 6 9 17 4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline
+                  points="20 6 9 17 4 12"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
               </svg>
             </div>
             <h3 slot="title">Tranquilidad total</h3>
-            <p slot="description">Sistema de soporte para garantizar confianza entre todos los miembros</p>
-          </app-card>
-        </div>
-      </div>
-
-      <!-- Con fondo blanco y hover habilitado -->
-      <div class="p-style-guide__demo">
-        <h3 class="p-style-guide__demo-titulo">Con fondo blanco y hover habilitado (por defecto)</h3>
-        <div class="p-style-guide__rejilla p-style-guide__rejilla--3col">
-          <app-card variant="feature">
-            <div slot="icon" class="c-card-icon c-card-icon--morado">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-                <polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <h3 slot="title">Ahorra tiempo</h3>
-            <p slot="description">Gestiona todas tus suscripciones desde un solo lugar sin complicaciones</p>
-          </app-card>
-
-          <app-card variant="feature">
-            <div slot="icon" class="c-card-icon c-card-icon--amarillo">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <h3 slot="title">Sin comisiones ocultas</h3>
-            <p slot="description">Precios transparentes sin sorpresas. Solo pagas lo que corresponde</p>
-          </app-card>
-
-          <app-card variant="feature">
-            <div slot="icon" class="c-card-icon c-card-icon--azul">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
-                <path d="M7 11V7C7 5.67392 7.52678 4.40215 8.46447 3.46447C9.40215 2.52678 10.6739 2 12 2C13.3261 2 14.5979 2.52678 15.5355 3.46447C16.4732 4.40215 17 5.67392 17 7V11" stroke="currentColor" stroke-width="2"/>
-              </svg>
-            </div>
-            <h3 slot="title">100% Seguro</h3>
-            <p slot="description">Tus datos están protegidos con los más altos estándares de seguridad</p>
+            <p slot="description">
+              Sistema de soporte para garantizar confianza entre todos los miembros
+            </p>
           </app-card>
         </div>
       </div>
@@ -107,8 +119,26 @@
           <app-card variant="action">
             <div slot="icon" class="c-card-icon c-card-icon--naranja">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <line
+                  x1="12"
+                  y1="5"
+                  x2="12"
+                  y2="19"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <line
+                  x1="5"
+                  y1="12"
+                  x2="19"
+                  y2="12"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
               </svg>
             </div>
             <h3 slot="title">Crear unidad familiar</h3>
@@ -118,8 +148,20 @@
           <app-card variant="action">
             <div slot="icon" class="c-card-icon c-card-icon--azul">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <polyline points="9,22 9,12 15,12 15,22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path
+                  d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <polyline
+                  points="9,22 9,12 15,12 15,22"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
               </svg>
             </div>
             <h3 slot="title">Unirse a un grupo</h3>
@@ -145,10 +187,48 @@
           <app-card variant="info">
             <div slot="icon" class="c-card-icon c-card-icon--naranja">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <rect
+                  x="3"
+                  y="4"
+                  width="18"
+                  height="18"
+                  rx="2"
+                  ry="2"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <line
+                  x1="16"
+                  y1="2"
+                  x2="16"
+                  y2="6"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <line
+                  x1="8"
+                  y1="2"
+                  x2="8"
+                  y2="6"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <line
+                  x1="3"
+                  y1="10"
+                  x2="21"
+                  y2="10"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
               </svg>
             </div>
             <h4 slot="title">Renovación</h4>
@@ -158,10 +238,34 @@
           <app-card variant="info">
             <div slot="icon" class="c-card-icon c-card-icon--morado">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path
+                  d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
               </svg>
             </div>
             <h4 slot="title">Plazas disponibles</h4>
@@ -171,8 +275,23 @@
           <app-card variant="info">
             <div slot="icon" class="c-card-icon c-card-icon--amarillo">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <line x1="12" y1="1" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M17 5H9.5C8.57174 5 7.6815 5.36875 7.02513 6.02513C6.36875 6.6815 6 7.57174 6 8.5C6 9.42826 6.36875 10.3185 7.02513 10.9749C7.6815 11.6313 8.57174 12 9.5 12H14.5C15.4283 12 16.3185 12.3687 16.9749 13.0251C17.6313 13.6815 18 14.5717 18 15.5C18 16.4283 17.6313 17.3185 16.9749 17.9749C16.3185 18.6313 15.4283 19 14.5 19H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <line
+                  x1="12"
+                  y1="1"
+                  x2="12"
+                  y2="23"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M17 5H9.5C8.57174 5 7.6815 5.36875 7.02513 6.02513C6.36875 6.6815 6 7.57174 6 8.5C6 9.42826 6.36875 10.3185 7.02513 10.9749C7.6815 11.6313 8.57174 12 9.5 12H14.5C15.4283 12 16.3185 12.3687 16.9749 13.0251C17.6313 13.6815 18 14.5717 18 15.5C18 16.4283 17.6313 17.3185 16.9749 17.9749C16.3185 18.6313 15.4283 19 14.5 19H6"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
               </svg>
             </div>
             <h4 slot="title">Tu aporte</h4>
@@ -200,8 +319,20 @@
             <p slot="metadata">4,25€ · Renueva el 15/01/26</p>
             <span slot="badge" class="c-card-badge">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path
+                  d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
               </svg>
               4
             </span>
@@ -213,17 +344,59 @@
             <p slot="metadata">3 suscripciones activas</p>
             <span slot="badge" class="c-card-badge">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path
+                  d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
               </svg>
               6
             </span>
             <app-button slot="action" variant="purple" size="sm">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <line
+                  x1="12"
+                  y1="5"
+                  x2="12"
+                  y2="19"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <line
+                  x1="5"
+                  y1="12"
+                  x2="19"
+                  y2="12"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
               </svg>
               Invitar
             </app-button>
@@ -231,7 +404,6 @@
         </div>
       </div>
     </section>
-
 
     <!-- ===================================================================
          SECCIÓN: BOTONES
@@ -317,47 +489,119 @@
         <div class="p-style-guide__grupo-botones">
           <app-button variant="primary">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <line
+                x1="12"
+                y1="5"
+                x2="12"
+                y2="19"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <line
+                x1="5"
+                y1="12"
+                x2="19"
+                y2="12"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
             </svg>
             Añadir
           </app-button>
           <app-button variant="danger">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <polyline points="3 6 5 6 21 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <polyline
+                points="3 6 5 6 21 6"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
             </svg>
             Eliminar
           </app-button>
           <app-button variant="purple">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M17 21V19C17 16.2386 14.7614 15 12 15H5C2.23858 15 1 17.2386 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
-              <path d="M23 21V19C23 17.5 21.5 16 20 15.13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M16 3.13C17.5 3.5 19 5.5 19 7C19 8.5 17.5 10.5 16 10.88" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path
+                d="M17 21V19C17 16.2386 14.7614 15 12 15H5C2.23858 15 1 17.2386 1 19V21"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+              <path
+                d="M23 21V19C23 17.5 21.5 16 20 15.13"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M16 3.13C17.5 3.5 19 5.5 19 7C19 8.5 17.5 10.5 16 10.88"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
             </svg>
             Invitar
           </app-button>
           <app-button variant="ghost">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M11 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path
+                d="M11 19l-7-7 7-7"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M4 12h16"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
             Volver
           </app-button>
           <app-button variant="secondary">
             Descargar
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path
+                d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <polyline
+                points="7 10 12 15 17 10"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <line
+                x1="12"
+                y1="15"
+                x2="12"
+                y2="3"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </app-button>
         </div>
       </div>
     </section>
-
-    
 
     <!-- ===================================================================
          SECCIÓN: ALERTAS
@@ -366,52 +610,46 @@
       <div class="p-style-guide__seccion-encabezado">
         <h2 id="titulo-alertas" class="p-style-guide__subtitulo">Alertas</h2>
         <p class="p-style-guide__nota">
-          Componentes de feedback para informar al usuario. Uso: mensajes de éxito, error, advertencia e información.
+          Componentes de feedback para informar al usuario. Uso: mensajes de éxito, error,
+          advertencia e información.
         </p>
       </div>
 
       <div class="p-style-guide__demo">
         <div class="p-style-guide__grupo-alertas">
           @if (showAlertSuccess()) {
-            <app-alert
-              type="success"
-              message="¡Operación completada con éxito! Tu suscripción ha sido actualizada."
-              [closeable]="true"
-              (closed)="closeAlert('success')"
-            />
-          }
-
-          @if (showAlertError()) {
-            <app-alert
-              type="error"
-              message="Ha ocurrido un error al procesar tu solicitud. Por favor, inténtalo de nuevo."
-              [closeable]="true"
-              (closed)="closeAlert('error')"
-            />
-          }
-
-          @if (showAlertWarning()) {
-            <app-alert
-              type="warning"
-              message="Tu suscripción expira en 3 días. Renueva ahora para no perder el acceso."
-              [closeable]="true"
-              (closed)="closeAlert('warning')"
-            />
-          }
-
-          @if (showAlertInfo()) {
-            <app-alert
-              type="info"
-              message="Se ha enviado un código de verificación a tu correo electrónico."
-              [closeable]="true"
-              (closed)="closeAlert('info')"
-            />
-          }
-
-          @if (!showAlertSuccess() || !showAlertError() || !showAlertWarning() || !showAlertInfo()) {
-            <app-button variant="ghost" size="sm" (click)="resetAlerts()">
-              Restaurar alertas cerradas
-            </app-button>
+          <app-alert
+            type="success"
+            message="¡Operación completada con éxito! Tu suscripción ha sido actualizada."
+            [closeable]="true"
+            (closed)="closeAlert('success')"
+          />
+          } @if (showAlertError()) {
+          <app-alert
+            type="error"
+            message="Ha ocurrido un error al procesar tu solicitud. Por favor, inténtalo de nuevo."
+            [closeable]="true"
+            (closed)="closeAlert('error')"
+          />
+          } @if (showAlertWarning()) {
+          <app-alert
+            type="warning"
+            message="Tu suscripción expira en 3 días. Renueva ahora para no perder el acceso."
+            [closeable]="true"
+            (closed)="closeAlert('warning')"
+          />
+          } @if (showAlertInfo()) {
+          <app-alert
+            type="info"
+            message="Se ha enviado un código de verificación a tu correo electrónico."
+            [closeable]="true"
+            (closed)="closeAlert('info')"
+          />
+          } @if (!showAlertSuccess() || !showAlertError() || !showAlertWarning() ||
+          !showAlertInfo()) {
+          <app-button variant="ghost" size="sm" (click)="resetAlerts()">
+            Restaurar alertas cerradas
+          </app-button>
           }
         </div>
       </div>
@@ -433,7 +671,8 @@
       <div class="p-style-guide__seccion-encabezado">
         <h2 id="titulo-form-input" class="p-style-guide__subtitulo">Form Input</h2>
         <p class="p-style-guide__nota">
-          Campo de entrada de texto con soporte para diferentes tipos (text, email, password, number, tel, url, search), validación y estados.
+          Campo de entrada de texto con soporte para diferentes tipos (text, email, password,
+          number, tel, url, search), validación y estados.
         </p>
       </div>
 
@@ -441,11 +680,7 @@
       <div class="p-style-guide__demo">
         <h3 class="p-style-guide__demo-titulo">Tipos de Input</h3>
         <div class="p-style-guide__grupo-formulario">
-          <app-form-input
-            label="Texto (type=text)"
-            type="text"
-            placeholder="Escribe algo..."
-          />
+          <app-form-input label="Texto (type=text)" type="text" placeholder="Escribe algo..." />
           <app-form-input
             label="Email (type=email)"
             type="email"
@@ -456,21 +691,9 @@
             type="password"
             placeholder="••••••••"
           />
-          <app-form-input
-            label="Número (type=number)"
-            type="number"
-            placeholder="0"
-          />
-          <app-form-input
-            label="Teléfono (type=tel)"
-            type="tel"
-            placeholder="+34 600 000 000"
-          />
-          <app-form-input
-            label="URL (type=url)"
-            type="url"
-            placeholder="https://ejemplo.com"
-          />
+          <app-form-input label="Número (type=number)" type="number" placeholder="0" />
+          <app-form-input label="Teléfono (type=tel)" type="tel" placeholder="+34 600 000 000" />
+          <app-form-input label="URL (type=url)" type="url" placeholder="https://ejemplo.com" />
         </div>
       </div>
 
@@ -478,20 +701,13 @@
       <div class="p-style-guide__demo">
         <h3 class="p-style-guide__demo-titulo">Estados</h3>
         <div class="p-style-guide__grupo-formulario">
-          <app-form-input
-            label="Normal"
-            placeholder="Estado normal"
-          />
+          <app-form-input label="Normal" placeholder="Estado normal" />
           <app-form-input
             label="Con texto de ayuda"
             placeholder="Campo con ayuda"
             helpText="Este es un texto de ayuda contextual"
           />
-          <app-form-input
-            label="Requerido"
-            placeholder="Campo obligatorio"
-            [required]="true"
-          />
+          <app-form-input label="Requerido" placeholder="Campo obligatorio" [required]="true" />
           <app-form-input
             label="Con error"
             placeholder="Campo con error"
@@ -542,7 +758,8 @@
       <div class="p-style-guide__seccion-encabezado">
         <h2 id="titulo-form-select" class="p-style-guide__subtitulo">Form Select</h2>
         <p class="p-style-guide__nota">
-          Selector desplegable con opciones configurables, soporte para opciones deshabilitadas y validación.
+          Selector desplegable con opciones configurables, soporte para opciones deshabilitadas y
+          validación.
         </p>
       </div>
 
@@ -589,16 +806,15 @@
       <div class="p-style-guide__seccion-encabezado">
         <h2 id="titulo-form-checkbox" class="p-style-guide__subtitulo">Form Checkbox</h2>
         <p class="p-style-guide__nota">
-          Casillas de verificación para opciones booleanas con soporte para validación y texto de ayuda.
+          Casillas de verificación para opciones booleanas con soporte para validación y texto de
+          ayuda.
         </p>
       </div>
 
       <div class="p-style-guide__demo">
         <div class="p-style-guide__grupo-formulario p-style-guide__grupo-formulario--compacto">
           <!-- Checkbox básico -->
-          <app-form-checkbox
-            label="Acepto recibir notificaciones por email"
-          />
+          <app-form-checkbox label="Acepto recibir notificaciones por email" />
 
           <!-- Checkbox requerido -->
           <app-form-checkbox
@@ -669,7 +885,8 @@
       <div class="p-style-guide__seccion-encabezado">
         <h2 id="titulo-breadcrumbs" class="p-style-guide__subtitulo">Breadcrumbs</h2>
         <p class="p-style-guide__nota">
-          Navegación de migas de pan para indicar la ubicación actual dentro de la jerarquía de la aplicación.
+          Navegación de migas de pan para indicar la ubicación actual dentro de la jerarquía de la
+          aplicación.
         </p>
       </div>
 
@@ -679,18 +896,17 @@
           <app-breadcrumbs [items]="breadcrumbItems" />
 
           <!-- Breadcrumbs con dos niveles -->
-          <app-breadcrumbs [items]="[
-            { label: 'Inicio', url: '/' },
-            { label: 'Configuración' }
-          ]" />
+          <app-breadcrumbs [items]="[{ label: 'Inicio', url: '/' }, { label: 'Configuración' }]" />
 
           <!-- Breadcrumbs con ruta larga -->
-          <app-breadcrumbs [items]="[
-            { label: 'Inicio', url: '/' },
-            { label: 'Grupos', url: '/grupos' },
-            { label: 'Familia López', url: '/grupos/1' },
-            { label: 'Netflix Premium' }
-          ]" />
+          <app-breadcrumbs
+            [items]="[
+              { label: 'Inicio', url: '/' },
+              { label: 'Grupos', url: '/grupos' },
+              { label: 'Familia López', url: '/grupos/1' },
+              { label: 'Netflix Premium' }
+            ]"
+          />
         </div>
       </div>
     </section>
@@ -750,6 +966,5 @@
         </div>
       </div>
     </section>
-
   </div>
 </main>

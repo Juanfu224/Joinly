@@ -194,69 +194,6 @@
 }
 
 // ---------------------------------------------------------------------------
-// COMPONENTE: .c-card-icon
-// ---------------------------------------------------------------------------
-.c-card-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--espaciado-2);
-  border-radius: var(--radio-medio);
-  flex-shrink: 0;
-
-  svg {
-    display: block;
-    inline-size: 1.5rem;
-    block-size: 1.5rem;
-    pointer-events: none;
-  }
-
-  // ---------------------------------------------------------------------------
-  // MODIFICADOR: .c-card-icon--amarillo
-  // ---------------------------------------------------------------------------
-  &--amarillo {
-    background-color: var(--color-amarillo);
-    color: var(--color-fondo-claro);
-    box-shadow:
-      0 4px 6px -4px rgba(250, 204, 21, 0.3),
-      0 10px 15px -3px rgba(250, 204, 21, 0.3);
-  }
-
-  // ---------------------------------------------------------------------------
-  // MODIFICADOR: .c-card-icon--naranja
-  // ---------------------------------------------------------------------------
-  &--naranja {
-    background-color: var(--color-naranja-principal);
-    color: var(--color-fondo-claro);
-    box-shadow:
-      0 4px 6px -4px rgba(249, 115, 22, 0.3),
-      0 10px 15px -3px rgba(249, 115, 22, 0.3);
-  }
-
-  // ---------------------------------------------------------------------------
-  // MODIFICADOR: .c-card-icon--azul
-  // ---------------------------------------------------------------------------
-  &--azul {
-    background-color: var(--color-azul);
-    color: var(--color-fondo-claro);
-    box-shadow:
-      0 4px 6px -4px rgba(96, 165, 250, 0.3),
-      0 10px 15px -3px rgba(96, 165, 250, 0.3);
-  }
-
-  // ---------------------------------------------------------------------------
-  // MODIFICADOR: .c-card-icon--morado
-  // ---------------------------------------------------------------------------
-  &--morado {
-    background-color: var(--color-morado-principal);
-    color: var(--color-fondo-claro);
-    box-shadow:
-      0 4px 6px -4px rgba(147, 51, 234, 0.3),
-      0 10px 15px -3px rgba(147, 51, 234, 0.3);
-  }
-}
-
-// ---------------------------------------------------------------------------
 // COMPONENTE: .c-card-badge
 // ---------------------------------------------------------------------------
 .c-card-badge {

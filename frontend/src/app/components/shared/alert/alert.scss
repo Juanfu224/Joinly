@@ -8,16 +8,18 @@
 // Se posiciona dentro del contenedor alert-container
 
 .c-alert {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
   gap: var(--espaciado-2);
+  
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  padding-block: var(--espaciado-1);
+  padding-inline: var(--espaciado-2);
 
-  width: 100%;
-  padding: var(--espaciado-1) var(--espaciado-2);
-
-  border-radius: var(--radio-medio) 0 0 var(--radio-medio);
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-start-start-radius: var(--radio-medio);
+  border-end-start-radius: var(--radio-medio);
+  box-shadow: 0 0.25rem 0.25rem rgb(0 0 0 / 0.25);
 
   font-family: var(--font-primaria);
   font-size: var(--tamano-texto-grande);
@@ -40,34 +42,46 @@
     }
   }
 
+  // Optimización de rendimiento
+  will-change: transform, opacity;
+
   // ==========================================================================
   // ELEMENTOS BEM
   // ==========================================================================
 
   &__message {
     margin: 0;
-    flex: 1;
+    min-inline-size: 0;
     color: var(--color-fondo-claro);
-    text-align: center;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
 
   &__close {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
+    
     padding: var(--espaciado-1);
     margin: calc(var(--espaciado-1) * -1);
+    
     background: transparent;
     border: none;
-    cursor: pointer;
-    color: var(--color-fondo-claro);
     border-radius: var(--radio-pequeno);
+    
+    color: var(--color-fondo-claro);
+    cursor: pointer;
 
     @include transicion;
     @include foco-visible;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgb(255 255 255 / 0.2);
+    }
+
+    &:active {
+      transform: scale(0.95);
     }
   }
 
@@ -91,13 +105,13 @@
   &--warning {
     background-color: var(--color-advertencia);
 
-    & .c-alert__message,
-    & .c-alert__close {
+    .c-alert__message,
+    .c-alert__close {
       color: var(--color-texto-oscuro);
     }
 
-    & .c-alert__close:hover {
-      background: rgba(0, 0, 0, 0.1);
+    .c-alert__close:hover {
+      background: rgb(0 0 0 / 0.1);
     }
   }
 
@@ -111,5 +125,12 @@
 
   @media (max-width: 47.9375rem) {
     border-radius: var(--radio-medio);
+  }
+
+  // Reducir el padding en pantallas muy peque\u00f1as
+  @media (max-width: 23.4375rem) {
+    padding-block: calc(var(--espaciado-1) * 0.75);
+    padding-inline: var(--espaciado-1);
+    font-size: var(--tamano-texto-regular);
   }
 }

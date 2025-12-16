@@ -5,23 +5,34 @@
 
 .c-alert-container {
   position: fixed;
-  top: var(--espaciado-3);
-  right: var(--espaciado-3);
+  inset-block-start: var(--espaciado-3);
+  inset-inline-end: var(--espaciado-3);
   z-index: var(--z-toast);
 
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   gap: var(--espaciado-2);
 
-  max-width: 25rem;
+  max-inline-size: 32rem;
+  min-inline-size: 18rem;
+
+  // Optimización: reduce el pintado del navegador
+  pointer-events: none;
+
+  // Las alertas individuales pueden recibir eventos
+  > * {
+    pointer-events: auto;
+  }
 
   // ==========================================================================
   // RESPONSIVE
   // ==========================================================================
 
   @media (max-width: 47.9375rem) {
-    left: var(--espaciado-2);
-    right: var(--espaciado-2);
-    max-width: none;
+    inset-inline: var(--espaciado-2);
+    align-items: stretch;
+    max-inline-size: none;
+    min-inline-size: 0;
   }
 }

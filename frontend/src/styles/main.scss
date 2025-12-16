@@ -53,12 +53,11 @@
 @use '04-layout' as layout;
 
 // ==========================================================================
-// 6️⃣ COMPONENTS - Componentes reutilizables (PRÓXIMAMENTE)
+// 6️⃣ COMPONENTS - Componentes reutilizables
 // ==========================================================================
-// Aquí irán los componentes UI con prefijo .c-
-// Ejemplos: .c-boton, .c-tarjeta, .c-modal, .c-navbar
-//
-// @use '05-components' as componentes;
+// Componentes UI globales con prefijo .c-
+// Usados para helpers que funcionan con contenido proyectado (ng-content).
+@use '05-components' as componentes;
 
 // ==========================================================================
 // 7️⃣ UTILITIES - Clases de utilidad (PRÓXIMAMENTE)

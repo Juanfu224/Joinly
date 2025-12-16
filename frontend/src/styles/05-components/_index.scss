@@ -1,0 +1,7 @@
+// ==========================================================================
+// 05-COMPONENTS - Componentes UI Globales
+// ==========================================================================
+// Estilos para componentes que necesitan ser accesibles globalmente.
+// Usados principalmente para helpers que funcionan con ng-content proyectado.
+
+@forward 'card-icon';
