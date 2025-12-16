@@ -1,42 +1,54 @@
 @use '../../../styles/00-settings/variables' as *;
 @use '../../../styles/01-tools/mixins' as *;
 
+// ==========================================================================
+// FOOTER - Componente BEM
+// ==========================================================================
+
 :host {
   display: block;
 }
 
 .c-footer {
-  flex-shrink: 0;
   background-color: var(--color-superficie-footer);
   color: var(--color-gris-medio);
-  padding-block-start: var(--espaciado-6);
+  padding-block: var(--espaciado-6) var(--espaciado-4);
 
   @include responder-a('tablet') {
-    padding-block-start: var(--espaciado-8);
+    padding-block: var(--espaciado-8) var(--espaciado-5);
   }
 }
 
-.c-footer__contenedor {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--espaciado-4);
+// ==========================================================================
+// CONTENIDO PRINCIPAL
+// ==========================================================================
+
+.c-footer__contenido {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-6);
 
   @include responder-a('tablet') {
-    grid-template-columns: minmax(16rem, 1.2fr) 2fr;
-    gap: var(--espaciado-6);
-    align-items: start;
-  }
-
-  @include responder-a('escritorio') {
-    grid-template-columns: minmax(20rem, 1fr) 2.5fr;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
     gap: var(--espaciado-8);
   }
 }
 
+// ==========================================================================
+// MARCA (Logo + Descripción)
+// ==========================================================================
+
 .c-footer__marca {
   display: flex;
   flex-direction: column;
-  gap: var(--espaciado-2);
+  gap: var(--espaciado-3);
+  flex-shrink: 0;
+
+  @include responder-a('tablet') {
+    max-inline-size: 24rem;
+  }
 }
 
 .c-footer__logo {
@@ -44,6 +56,7 @@
   align-items: center;
   gap: var(--espaciado-1);
   text-decoration: none;
+  inline-size: fit-content;
 
   @include foco-visible;
   @include transicion(opacity);
@@ -54,31 +67,23 @@
 }
 
 .c-footer__logo-icono {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-acento);
-  inline-size: 2.0625rem;
+  inline-size: 2.125rem;
   block-size: 2.1875rem;
-
-  svg {
-    inline-size: 100%;
-    block-size: 100%;
-  }
+  color: var(--color-acento);
 }
 
 .c-footer__logo-texto {
   font-family: 'DM Sans', var(--font-primaria);
   font-size: 2rem;
   font-weight: var(--peso-fuente-negrita);
-  line-height: 1.1;
+  line-height: 1;
 }
 
-.c-footer__logo-nombre {
+.c-footer__logo-join {
   color: var(--color-gris-medio);
 }
 
-.c-footer__logo-acento {
+.c-footer__logo-ly {
   color: var(--color-acento);
 }
 
@@ -86,61 +91,30 @@
   font-size: var(--tamano-texto-grande);
   line-height: var(--altura-linea-relajada);
   color: var(--color-gris-medio);
-  max-inline-size: 24rem;
   margin: 0;
 }
 
-.c-footer__redes {
-  margin-block-start: var(--espaciado-3);
-}
-
-.c-footer__redes-lista {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--espaciado-1);
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.c-footer__red {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  inline-size: 2.5rem;
-  block-size: 2.5rem;
-  color: var(--color-gris-medio);
-  background-color: transparent;
-  border-radius: var(--radio-medio);
-  text-decoration: none;
-
-  @include transicion(all);
-  @include foco-visible;
-
-  &:hover {
-    color: var(--color-fondo-claro-normal);
-    background-color: rgba(255, 255, 255, 0.1);
-    transform: translateY(-2px);
-  }
-
-  svg {
-    inline-size: 1.25rem;
-    block-size: 1.25rem;
-  }
-}
+// ==========================================================================
+// NAVEGACIÓN (3 columnas)
+// ==========================================================================
 
 .c-footer__nav {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--espaciado-4);
+  grid-template-columns: 1fr;
+  gap: var(--espaciado-5);
+
+  @include responder-a('movil') {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
   @include responder-a('tablet') {
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--espaciado-3);
+    gap: var(--espaciado-6);
+    flex-grow: 1;
   }
 
   @include responder-a('escritorio') {
-    gap: var(--espaciado-4);
+    gap: var(--espaciado-8);
   }
 }
 
@@ -151,7 +125,7 @@
 }
 
 .c-footer__titulo {
-  font-size: var(--tamano-h4);
+  font-size: var(--tamano-texto-xl);
   font-weight: var(--peso-fuente-semi-negrita);
   color: var(--color-fondo-claro-normal);
   margin: 0 0 var(--espaciado-1);
@@ -161,7 +135,6 @@
 .c-footer__lista {
   display: flex;
   flex-direction: column;
-  gap: 0;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -170,8 +143,7 @@
 .c-footer__enlace {
   display: inline-flex;
   align-items: center;
-  min-block-size: 2.75rem;
-  padding-block: 0.5rem;
+  padding-block: 0.25rem;
   font-size: var(--tamano-texto-grande);
   line-height: var(--altura-linea-relajada);
   color: var(--color-gris-medio);
@@ -185,23 +157,25 @@
   }
 }
 
+// ==========================================================================
+// INFERIOR (Separador + Copyright)
+// ==========================================================================
+
 .c-footer__inferior {
-  margin-block-start: var(--espaciado-4);
-  padding-block-end: var(--espaciado-4);
+  margin-block-start: var(--espaciado-6);
 
   @include responder-a('tablet') {
-    margin-block-start: var(--espaciado-6);
+    margin-block-start: var(--espaciado-8);
   }
 }
 
 .c-footer__separador {
   border: none;
-  border-block-start: var(--borde-delgado) solid var(--color-fondo-claro-normal);
-  opacity: 0.15;
-  margin: 0 0 var(--espaciado-3);
+  border-block-start: 1px solid var(--color-fondo-claro-normal);
+  margin: 0 0 var(--espaciado-4);
 
   @include responder-a('tablet') {
-    margin-block-end: var(--espaciado-4);
+    margin-block-end: var(--espaciado-5);
   }
 }
 

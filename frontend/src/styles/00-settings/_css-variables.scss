@@ -85,6 +85,9 @@
   --color-superficie-azul: var(--color-fondo-claro-azul);
   --color-superficie-footer: var(--color-footer);
 
+  // Alias adicionales para compatibilidad
+  --color-fondo-claro-normal: var(--color-fondo-claro);
+
   // Bordes
   --color-borde-base: var(--color-gris-medio);
   --color-borde-fuerte: var(--color-gris-oscuro);
@@ -122,13 +125,22 @@
   --tamano-h3: clamp(1.5rem, 2.5vw + 0.5rem, 2rem);
   --tamano-h4: clamp(1.125rem, 1.5vw + 0.5rem, 1.25rem);
 
+  // Escala de tamaños de texto
+  --tamano-texto-5xl: clamp(2.5rem, 5vw + 1rem, 4rem); // 40-64px
+  --tamano-texto-4xl: clamp(2rem, 4vw + 0.5rem, 3rem); // 32-48px
+  --tamano-texto-3xl: clamp(1.5rem, 2.5vw + 0.5rem, 2rem); // 24-32px
+  --tamano-texto-2xl: clamp(1.25rem, 1.5vw + 0.5rem, 1.5rem); // 20-24px
+  --tamano-texto-xl: clamp(1.125rem, 1vw + 0.5rem, 1.25rem); // 18-20px
+
   // Cuerpo de texto
-  --tamano-texto-grande: clamp(1.0625rem, 0.5vw + 1rem, 1.125rem);
-  --tamano-texto-regular: clamp(0.9375rem, 0.5vw + 0.875rem, 1rem);
-  --tamano-texto-pequeno: clamp(0.8125rem, 0.5vw + 0.75rem, 0.875rem);
-  --tamano-caption: clamp(0.6875rem, 0.5vw + 0.625rem, 0.75rem);
+  --tamano-texto-grande: clamp(1.0625rem, 0.5vw + 1rem, 1.125rem); // 17-18px
+  --tamano-texto-normal: clamp(0.9375rem, 0.5vw + 0.875rem, 1rem); // 15-16px
+  --tamano-texto-regular: clamp(0.9375rem, 0.5vw + 0.875rem, 1rem); // Alias
+  --tamano-texto-pequeno: clamp(0.8125rem, 0.5vw + 0.75rem, 0.875rem); // 13-14px
+  --tamano-caption: clamp(0.6875rem, 0.5vw + 0.625rem, 0.75rem); // 11-12px
 
   // --- ALTURAS DE LÍNEA ---
+  --altura-linea-apretada: 1.1;
   --altura-linea-ajustada: 1.1;
   --altura-linea-compacta: 1.25;
   --altura-linea-normal: 1.5;
@@ -174,11 +186,16 @@
   --borde-medio: 2px;
   --borde-grueso: 4px;
 
-  // Radios
-  --radio-pequeno: 0.25rem;
-  --radio-medio: 0.5rem;
-  --radio-grande: 1.125rem;
+  // Radios (border-radius)
+  --radio-pequeno: 0.25rem; // 4px
+  --radio-medio: 0.5rem; // 8px
+  --radio-grande: 1.125rem; // 18px
   --radio-completo: 9999px;
+
+  // Alias semánticos para esquinas
+  --radio-esquina-pequena: var(--radio-pequeno);
+  --radio-esquina-media: var(--radio-medio);
+  --radio-esquina-grande: var(--radio-grande);
 }
 
 // ==========================================================================

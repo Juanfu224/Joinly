@@ -41,7 +41,7 @@
 // ---------------------------------------------------------------------------
 .c-header__logo {
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   gap: var(--espaciado-1);
   text-decoration: none;
   flex-shrink: 0;
@@ -55,14 +55,13 @@
 }
 
 .c-header__logo-icono {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-block;
   color: var(--color-acento-oscuro);
   inline-size: 2.0625rem;
   block-size: 2.1875rem;
 
   svg {
+    display: block;
     inline-size: 100%;
     block-size: 100%;
   }
@@ -72,7 +71,7 @@
   font-family: 'DM Sans', var(--font-primaria);
   font-size: 2rem;
   font-weight: var(--peso-fuente-negrita);
-  line-height: 1.1;
+  line-height: 1;
   letter-spacing: 0;
 }
 
@@ -82,6 +81,84 @@
 
 .c-header__logo-acento {
   color: var(--color-acento-oscuro);
+}
+
+// ---------------------------------------------------------------------------
+// MODIFICADORES: Variantes de color del logotipo
+// ---------------------------------------------------------------------------
+// Variante: Claro naranja (texto claro + acento naranja)
+.c-header__logo--claro-naranja {
+  .c-header__logo-icono {
+    color: var(--color-acento);
+  }
+
+  .c-header__logo-nombre {
+    color: var(--color-gris-medio);
+  }
+
+  .c-header__logo-acento {
+    color: var(--color-acento);
+  }
+}
+
+// Variante: Morado (texto oscuro + acento morado oscuro)
+.c-header__logo--morado {
+  .c-header__logo-icono {
+    color: var(--color-principal-oscuro);
+  }
+
+  .c-header__logo-nombre {
+    color: var(--color-texto-fuerte);
+  }
+
+  .c-header__logo-acento {
+    color: var(--color-principal-oscuro);
+  }
+}
+
+// Variante: Claro morado (texto claro + acento morado principal)
+.c-header__logo--claro-morado {
+  .c-header__logo-icono {
+    color: var(--color-principal);
+  }
+
+  .c-header__logo-nombre {
+    color: var(--color-gris-medio);
+  }
+
+  .c-header__logo-acento {
+    color: var(--color-principal);
+  }
+}
+
+// Variante: Azul (texto oscuro + acento azul)
+.c-header__logo--azul {
+  .c-header__logo-icono {
+    color: var(--color-secundario-alt);
+  }
+
+  .c-header__logo-nombre {
+    color: var(--color-texto-fuerte);
+  }
+
+  .c-header__logo-acento {
+    color: var(--color-secundario-alt);
+  }
+}
+
+// Variante: Amarillo (texto oscuro + acento amarillo)
+.c-header__logo--amarillo {
+  .c-header__logo-icono {
+    color: var(--color-secundario);
+  }
+
+  .c-header__logo-nombre {
+    color: var(--color-texto-fuerte);
+  }
+
+  .c-header__logo-acento {
+    color: var(--color-secundario);
+  }
 }
 
 // ---------------------------------------------------------------------------
