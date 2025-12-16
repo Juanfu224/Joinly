@@ -1,8 +1,8 @@
 // ==========================================================================
 // PÁGINA: STYLE GUIDE (.p-style-guide)
 // ==========================================================================
-// Página de guía de estilos para mostrar todos los componentes.
-// Documenta visualmente el sistema de diseño de la aplicación.
+// Guía visual de componentes reutilizables.
+// Documenta el sistema de diseño completo de la aplicación.
 // Sigue metodología BEM y arquitectura ITCSS.
 
 @use '../../../styles/00-settings/variables' as *;
@@ -18,12 +18,12 @@
 }
 
 // ---------------------------------------------------------------------------
-// PÁGINA: .p-style-guide
+// BLOQUE: .p-style-guide
 // ---------------------------------------------------------------------------
 .p-style-guide {
   display: flex;
   flex-direction: column;
-  gap: var(--espaciado-8);
+  gap: var(--espaciado-10);
   padding-block: var(--espaciado-6);
 
   @include responder-a('tablet') {
@@ -36,47 +36,58 @@
 }
 
 // ---------------------------------------------------------------------------
-// ELEMENTO: Encabezado del Style Guide
+// ELEMENTO: .p-style-guide__encabezado
 // ---------------------------------------------------------------------------
 .p-style-guide__encabezado {
-  padding-block: var(--espaciado-6);
-  background-color: var(--color-superficie-blanca);
-  box-shadow: 0 5px 14px rgba(20, 20, 43, 0.05);
+  padding-block: var(--espaciado-8);
+  background: linear-gradient(
+    135deg,
+    var(--color-morado-principal) 0%,
+    var(--color-morado-oscuro) 100%
+  );
   border-radius: var(--radio-esquina-grande);
+
+  @include responder-a('tablet') {
+    padding-block: var(--espaciado-10);
+  }
 }
 
 .p-style-guide__titulo {
   font-size: var(--tamano-texto-4xl);
   font-weight: var(--peso-fuente-negrita);
   line-height: var(--altura-linea-apretada);
-  color: var(--color-texto-oscuro);
+  color: var(--color-blanco);
   margin: 0;
 
-  @include responder-a('escritorio') {
+  @include responder-a('tablet') {
     font-size: var(--tamano-texto-5xl);
+  }
+
+  @include responder-a('escritorio') {
+    font-size: var(--tamano-texto-6xl);
   }
 }
 
 .p-style-guide__descripcion {
   font-size: var(--tamano-texto-grande);
   line-height: var(--altura-linea-relajada);
-  color: var(--color-texto-normal);
-  margin-block-start: var(--espaciado-2);
+  color: rgba(255, 255, 255, 0.9);
+  margin-block-start: var(--espaciado-3);
   margin-block-end: 0;
-  max-inline-size: 60ch;
+  max-inline-size: 65ch;
 }
 
 // ---------------------------------------------------------------------------
-// ELEMENTO: Contenido principal
+// ELEMENTO: .p-style-guide__contenido
 // ---------------------------------------------------------------------------
 .p-style-guide__contenido {
   display: flex;
   flex-direction: column;
-  gap: var(--espaciado-8);
+  gap: var(--espaciado-10);
 }
 
 // ---------------------------------------------------------------------------
-// ELEMENTO: Sección de componentes
+// ELEMENTO: .p-style-guide__seccion
 // ---------------------------------------------------------------------------
 .p-style-guide__seccion {
   display: flex;
@@ -84,17 +95,21 @@
   gap: var(--espaciado-4);
 }
 
+.p-style-guide__seccion-encabezado {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-2);
+}
+
 .p-style-guide__subtitulo {
-  font-size: var(--tamano-texto-3xl);
+  font-size: var(--tamano-texto-2xl);
   font-weight: var(--peso-fuente-negrita);
   line-height: var(--altura-linea-apretada);
   color: var(--color-texto-oscuro);
   margin: 0;
-  padding-block-end: var(--espaciado-2);
-  border-block-end: 2px solid var(--color-gris-medio);
 
   @include responder-a('tablet') {
-    font-size: var(--tamano-texto-4xl);
+    font-size: var(--tamano-texto-3xl);
   }
 }
 
@@ -103,26 +118,19 @@
   line-height: var(--altura-linea-relajada);
   color: var(--color-texto-normal);
   margin: 0;
-  padding: var(--espaciado-3);
-  background-color: var(--color-fondo-claro-secundario);
-  border-radius: var(--radio-esquina-media);
-  border-inline-start: 4px solid var(--color-acento);
 }
 
 // ---------------------------------------------------------------------------
-// ELEMENTO: Demo de componente
+// ELEMENTO: .p-style-guide__demo
 // ---------------------------------------------------------------------------
 .p-style-guide__demo {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaciado-4);
-  padding: var(--espaciado-4);
+  padding: var(--espaciado-6);
   background-color: var(--color-superficie-blanca);
   border-radius: var(--radio-esquina-grande);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--color-gris-medio);
 
   @include responder-a('tablet') {
-    padding: var(--espaciado-6);
+    padding: var(--espaciado-8);
   }
 
   // Resetear estilos de header y footer en el demo
@@ -130,11 +138,133 @@
   app-footer {
     position: static;
   }
+
+  // ---------------------------------------------------------------------------
+  // MODIFICADOR: .p-style-guide__demo--full
+  // ---------------------------------------------------------------------------
+  &--full {
+    padding: 0;
+    overflow: hidden;
+  }
 }
 
 // ---------------------------------------------------------------------------
-// UTILIDADES: Espaciado adicional para secciones
+// ELEMENTO: .p-style-guide__rejilla
 // ---------------------------------------------------------------------------
-.p-style-guide__seccion + .p-style-guide__seccion {
-  margin-block-start: var(--espaciado-6);
+.p-style-guide__rejilla {
+  display: grid;
+  gap: var(--espaciado-4);
+
+  @include responder-a('tablet') {
+    gap: var(--espaciado-5);
+  }
+
+  // ---------------------------------------------------------------------------
+  // MODIFICADOR: .p-style-guide__rejilla--3col
+  // ---------------------------------------------------------------------------
+  &--3col {
+    grid-template-columns: 1fr;
+
+    @include responder-a('tablet') {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include responder-a('escritorio') {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // MODIFICADOR: .p-style-guide__rejilla--2col
+  // ---------------------------------------------------------------------------
+  &--2col {
+    grid-template-columns: 1fr;
+
+    @include responder-a('tablet') {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// COMPONENTE: .c-card-icon
+// ---------------------------------------------------------------------------
+.c-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--espaciado-2);
+  border-radius: var(--radio-medio);
+  flex-shrink: 0;
+
+  svg {
+    display: block;
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    pointer-events: none;
+  }
+
+  // ---------------------------------------------------------------------------
+  // MODIFICADOR: .c-card-icon--amarillo
+  // ---------------------------------------------------------------------------
+  &--amarillo {
+    background-color: var(--color-amarillo);
+    color: var(--color-fondo-claro);
+    box-shadow:
+      0 4px 6px -4px rgba(250, 204, 21, 0.3),
+      0 10px 15px -3px rgba(250, 204, 21, 0.3);
+  }
+
+  // ---------------------------------------------------------------------------
+  // MODIFICADOR: .c-card-icon--naranja
+  // ---------------------------------------------------------------------------
+  &--naranja {
+    background-color: var(--color-naranja-principal);
+    color: var(--color-fondo-claro);
+    box-shadow:
+      0 4px 6px -4px rgba(249, 115, 22, 0.3),
+      0 10px 15px -3px rgba(249, 115, 22, 0.3);
+  }
+
+  // ---------------------------------------------------------------------------
+  // MODIFICADOR: .c-card-icon--azul
+  // ---------------------------------------------------------------------------
+  &--azul {
+    background-color: var(--color-azul);
+    color: var(--color-fondo-claro);
+    box-shadow:
+      0 4px 6px -4px rgba(96, 165, 250, 0.3),
+      0 10px 15px -3px rgba(96, 165, 250, 0.3);
+  }
+
+  // ---------------------------------------------------------------------------
+  // MODIFICADOR: .c-card-icon--morado
+  // ---------------------------------------------------------------------------
+  &--morado {
+    background-color: var(--color-morado-principal);
+    color: var(--color-fondo-claro);
+    box-shadow:
+      0 4px 6px -4px rgba(147, 51, 234, 0.3),
+      0 10px 15px -3px rgba(147, 51, 234, 0.3);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// COMPONENTE: .c-card-badge
+// ---------------------------------------------------------------------------
+.c-card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaciado-1);
+  color: var(--color-texto-oscuro);
+  font-size: var(--tamano-texto-regular);
+  font-weight: var(--peso-fuente-medio);
+  line-height: 1;
+
+  svg {
+    display: block;
+    inline-size: 1rem;
+    block-size: 1rem;
+    flex-shrink: 0;
+  }
 }

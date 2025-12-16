@@ -60,6 +60,11 @@ export class CardComponent {
   disableHover = input<boolean>(false);
 
   /**
+   * Aplica fondo gris claro en lugar de blanco
+   */
+  fondoGris = input<boolean>(false);
+
+  /**
    * Clases CSS computadas basadas en las propiedades
    */
   cardClasses = computed(() => {
@@ -70,6 +75,10 @@ export class CardComponent {
 
     if (this.disableHover()) {
       classes.push('c-card--no-hover');
+    }
+
+    if (this.fondoGris()) {
+      classes.push('c-card--fondo-gris');
     }
 
     return classes.join(' ');
