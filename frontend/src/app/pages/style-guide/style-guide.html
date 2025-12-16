@@ -2,154 +2,6 @@
   <div class="p-style-guide__contenido l-contenedor">
 
     <!-- ===================================================================
-         SECCIÓN: HEADER Y FOOTER
-         =================================================================== -->
-    <section class="p-style-guide__seccion" aria-labelledby="titulo-layout">
-      <div class="p-style-guide__seccion-encabezado">
-        <h2 id="titulo-layout" class="p-style-guide__subtitulo">Layout: Header y Footer</h2>
-        <p class="p-style-guide__nota">
-          Componentes de estructura principal para la navegación y cierre de página.
-        </p>
-      </div>
-
-      <!-- Header -->
-      <div class="p-style-guide__demo p-style-guide__demo--full">
-        <h3 class="p-style-guide__demo-titulo p-style-guide__demo-titulo--interno">Header</h3>
-        <app-header />
-      </div>
-
-      <!-- Footer -->
-      <div class="p-style-guide__demo p-style-guide__demo--full">
-        <h3 class="p-style-guide__demo-titulo p-style-guide__demo-titulo--interno">Footer</h3>
-        <app-footer />
-      </div>
-    </section>
-
-    <!-- ===================================================================
-         SECCIÓN: BOTONES
-         =================================================================== -->
-    <section class="p-style-guide__seccion" aria-labelledby="titulo-botones">
-      <div class="p-style-guide__seccion-encabezado">
-        <h2 id="titulo-botones" class="p-style-guide__subtitulo">Botones</h2>
-        <p class="p-style-guide__nota">
-          Sistema completo de botones con variantes, tamaños y estados.
-        </p>
-      </div>
-
-      <!-- Variantes de botones -->
-      <div class="p-style-guide__demo">
-        <h3 class="p-style-guide__demo-titulo">Variantes</h3>
-        <div class="p-style-guide__grupo-botones">
-          <app-button variant="primary">Primary</app-button>
-          <app-button variant="secondary">Secondary</app-button>
-          <app-button variant="ghost">Ghost</app-button>
-          <app-button variant="danger">Danger</app-button>
-          <app-button variant="purple">Purple</app-button>
-        </div>
-      </div>
-
-      <!-- Tamaños de botones -->
-      <div class="p-style-guide__demo">
-        <h3 class="p-style-guide__demo-titulo">Tamaños</h3>
-        <div class="p-style-guide__grupo-botones p-style-guide__grupo-botones--alineado">
-          <app-button variant="primary" size="sm">Small</app-button>
-          <app-button variant="primary" size="md">Medium</app-button>
-          <app-button variant="primary" size="lg">Large</app-button>
-        </div>
-        <div class="p-style-guide__grupo-botones p-style-guide__grupo-botones--alineado">
-          <app-button variant="secondary" size="sm">Small</app-button>
-          <app-button variant="secondary" size="md">Medium</app-button>
-          <app-button variant="secondary" size="lg">Large</app-button>
-        </div>
-        <div class="p-style-guide__grupo-botones p-style-guide__grupo-botones--alineado">
-          <app-button variant="purple" size="sm">Small</app-button>
-          <app-button variant="purple" size="md">Medium</app-button>
-          <app-button variant="purple" size="lg">Large</app-button>
-        </div>
-      </div>
-
-      <!-- Estados de botones -->
-      <div class="p-style-guide__demo">
-        <h3 class="p-style-guide__demo-titulo">Estados</h3>
-        <div class="p-style-guide__grupo-botones">
-          <app-button variant="primary">Normal</app-button>
-          <app-button variant="primary" [disabled]="true">Disabled</app-button>
-        </div>
-        <div class="p-style-guide__grupo-botones">
-          <app-button variant="secondary">Normal</app-button>
-          <app-button variant="secondary" [disabled]="true">Disabled</app-button>
-        </div>
-        <div class="p-style-guide__grupo-botones">
-          <app-button variant="ghost">Normal</app-button>
-          <app-button variant="ghost" [disabled]="true">Disabled</app-button>
-        </div>
-        <div class="p-style-guide__grupo-botones">
-          <app-button variant="danger">Normal</app-button>
-          <app-button variant="danger" [disabled]="true">Disabled</app-button>
-        </div>
-        <div class="p-style-guide__grupo-botones">
-          <app-button variant="purple">Normal</app-button>
-          <app-button variant="purple" [disabled]="true">Disabled</app-button>
-        </div>
-      </div>
-
-      <!-- Botón Full Width -->
-      <div class="p-style-guide__demo">
-        <h3 class="p-style-guide__demo-titulo">Full Width</h3>
-        <div class="p-style-guide__grupo-formulario">
-          <app-button variant="primary" [fullWidth]="true">Primary Full Width</app-button>
-          <app-button variant="secondary" [fullWidth]="true">Secondary Full Width</app-button>
-          <app-button variant="purple" [fullWidth]="true">Purple Full Width</app-button>
-        </div>
-      </div>
-
-      <!-- Botones con iconos -->
-      <div class="p-style-guide__demo">
-        <h3 class="p-style-guide__demo-titulo">Con Iconos</h3>
-        <div class="p-style-guide__grupo-botones">
-          <app-button variant="primary">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            Añadir
-          </app-button>
-          <app-button variant="danger">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <polyline points="3 6 5 6 21 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            Eliminar
-          </app-button>
-          <app-button variant="purple">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M17 21V19C17 16.2386 14.7614 15 12 15H5C2.23858 15 1 17.2386 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
-              <path d="M23 21V19C23 17.5 21.5 16 20 15.13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M16 3.13C17.5 3.5 19 5.5 19 7C19 8.5 17.5 10.5 16 10.88" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            Invitar
-          </app-button>
-          <app-button variant="ghost">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M11 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Volver
-          </app-button>
-          <app-button variant="secondary">
-            Descargar
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </app-button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===================================================================
          SECCIÓN: TARJETAS DE CARACTERÍSTICAS
          =================================================================== -->
     <section class="p-style-guide__seccion" aria-labelledby="titulo-ventajas">
@@ -379,6 +231,133 @@
         </div>
       </div>
     </section>
+
+
+    <!-- ===================================================================
+         SECCIÓN: BOTONES
+         =================================================================== -->
+    <section class="p-style-guide__seccion" aria-labelledby="titulo-botones">
+      <div class="p-style-guide__seccion-encabezado">
+        <h2 id="titulo-botones" class="p-style-guide__subtitulo">Botones</h2>
+        <p class="p-style-guide__nota">
+          Sistema completo de botones con variantes, tamaños y estados.
+        </p>
+      </div>
+
+      <!-- Variantes de botones -->
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Variantes</h3>
+        <div class="p-style-guide__grupo-botones">
+          <app-button variant="primary">Primary</app-button>
+          <app-button variant="secondary">Secondary</app-button>
+          <app-button variant="ghost">Ghost</app-button>
+          <app-button variant="danger">Danger</app-button>
+          <app-button variant="purple">Purple</app-button>
+        </div>
+      </div>
+
+      <!-- Tamaños de botones -->
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Tamaños</h3>
+        <div class="p-style-guide__grupo-botones p-style-guide__grupo-botones--alineado">
+          <app-button variant="primary" size="sm">Small</app-button>
+          <app-button variant="primary" size="md">Medium</app-button>
+          <app-button variant="primary" size="lg">Large</app-button>
+        </div>
+        <div class="p-style-guide__grupo-botones p-style-guide__grupo-botones--alineado">
+          <app-button variant="secondary" size="sm">Small</app-button>
+          <app-button variant="secondary" size="md">Medium</app-button>
+          <app-button variant="secondary" size="lg">Large</app-button>
+        </div>
+        <div class="p-style-guide__grupo-botones p-style-guide__grupo-botones--alineado">
+          <app-button variant="purple" size="sm">Small</app-button>
+          <app-button variant="purple" size="md">Medium</app-button>
+          <app-button variant="purple" size="lg">Large</app-button>
+        </div>
+      </div>
+
+      <!-- Estados de botones -->
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Estados</h3>
+        <div class="p-style-guide__grupo-botones">
+          <app-button variant="primary">Normal</app-button>
+          <app-button variant="primary" [disabled]="true">Disabled</app-button>
+        </div>
+        <div class="p-style-guide__grupo-botones">
+          <app-button variant="secondary">Normal</app-button>
+          <app-button variant="secondary" [disabled]="true">Disabled</app-button>
+        </div>
+        <div class="p-style-guide__grupo-botones">
+          <app-button variant="ghost">Normal</app-button>
+          <app-button variant="ghost" [disabled]="true">Disabled</app-button>
+        </div>
+        <div class="p-style-guide__grupo-botones">
+          <app-button variant="danger">Normal</app-button>
+          <app-button variant="danger" [disabled]="true">Disabled</app-button>
+        </div>
+        <div class="p-style-guide__grupo-botones">
+          <app-button variant="purple">Normal</app-button>
+          <app-button variant="purple" [disabled]="true">Disabled</app-button>
+        </div>
+      </div>
+
+      <!-- Botón Full Width -->
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Full Width</h3>
+        <div class="p-style-guide__grupo-formulario">
+          <app-button variant="primary" [fullWidth]="true">Primary Full Width</app-button>
+          <app-button variant="secondary" [fullWidth]="true">Secondary Full Width</app-button>
+          <app-button variant="purple" [fullWidth]="true">Purple Full Width</app-button>
+        </div>
+      </div>
+
+      <!-- Botones con iconos -->
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Con Iconos</h3>
+        <div class="p-style-guide__grupo-botones">
+          <app-button variant="primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Añadir
+          </app-button>
+          <app-button variant="danger">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <polyline points="3 6 5 6 21 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Eliminar
+          </app-button>
+          <app-button variant="purple">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M17 21V19C17 16.2386 14.7614 15 12 15H5C2.23858 15 1 17.2386 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+              <path d="M23 21V19C23 17.5 21.5 16 20 15.13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M16 3.13C17.5 3.5 19 5.5 19 7C19 8.5 17.5 10.5 16 10.88" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Invitar
+          </app-button>
+          <app-button variant="ghost">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M11 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Volver
+          </app-button>
+          <app-button variant="secondary">
+            Descargar
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </app-button>
+        </div>
+      </div>
+    </section>
+
+    
 
     <!-- ===================================================================
          SECCIÓN: ALERTAS

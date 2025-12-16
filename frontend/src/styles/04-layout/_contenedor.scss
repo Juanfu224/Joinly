@@ -1,49 +1,57 @@
 // ==========================================================================
 // CONTENEDOR PRINCIPAL (.l-contenedor)
 // ==========================================================================
-// El contenedor centra el contenido horizontalmente y limita su ancho máximo.
-// Evita que el contenido se estire infinitamente en pantallas muy anchas.
+// Contenedor de layout con padding lateral consistente.
+// Implementa el estándar 80/20: 80% contenido, 20% espaciado.
+//
+// 📐 ESPECIFICACIONES (viewport 1920px):
+// ┌──────────────────────────────────────────────────────────┐
+// │  ←192px→                              ←192px→            │
+// │         ┌──────────────────────────┐                     │
+// │         │   Contenido (1536px)     │                     │
+// │         │      80% viewport        │                     │
+// │         └──────────────────────────┘                     │
+// └──────────────────────────────────────────────────────────┘
+//
+// CARACTERÍSTICAS:
+// - Padding lateral fluido: clamp(1rem, 10vw, 12rem)
+// - Centrado horizontal: margin-inline: auto
+// - Variantes: --estrecho, --mediano, --amplio, --fluido
 //
 // USO:
-// <div class="l-contenedor">
-//   <!-- Contenido centrado aquí -->
-// </div>
+// Aplica en secciones que requieran el espaciado lateral estándar.
+// Ejemplos: headers, footers, contenido principal, formularios.
+//
+// <section>
+//   <div class="l-contenedor">
+//     <!-- Contenido -->
+//   </div>
+// </section>
+//
+// REFERENCIA FIGMA:
+// https://www.figma.com/design/8q36kcT9LEqoXs99ZBxfV5/Joinly?node-id=859-546
 
 .l-contenedor {
-  // Ocupa todo el ancho disponible hasta el máximo
   width: 100%;
-  max-width: var(--bp-escritorio-grande); // 1280px
-
-  // Centrado horizontal con márgenes automáticos
   margin-inline: auto;
+  padding-inline: var(--contenedor-padding-lateral); // Estándar 80/20
 
-  // Padding lateral de seguridad (evita que toque los bordes en móvil)
-  padding-inline: var(--espaciado-2);
-
-  // ---------------------------------------------------------------------------
-  // Variante: Más padding (para secciones con más respiro)
-  // ---------------------------------------------------------------------------
+  // Variante: Más padding (secciones con respiro adicional)
   &--amplio {
     padding-inline: var(--espaciado-4);
   }
 
-  // ---------------------------------------------------------------------------
-  // Variante: Sin límite de ancho (ocupa todo el viewport)
-  // ---------------------------------------------------------------------------
+  // Variante: Sin límite de ancho (full viewport)
   &--fluido {
     max-width: none;
   }
 
-  // ---------------------------------------------------------------------------
-  // Variante: Estrecho (ideal para formularios, login, modales)
-  // ---------------------------------------------------------------------------
+  // Variante: Estrecho (formularios, login, modales)
   &--estrecho {
     max-width: 32rem; // 512px
   }
 
-  // ---------------------------------------------------------------------------
-  // Variante: Mediano (ideal para contenido de lectura, artículos)
-  // ---------------------------------------------------------------------------
+  // Variante: Mediano (contenido de lectura, artículos)
   &--mediano {
     max-width: 48rem; // 768px
   }

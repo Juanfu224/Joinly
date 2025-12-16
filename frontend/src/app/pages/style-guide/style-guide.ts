@@ -38,9 +38,7 @@ import { FooterComponent } from '../../layout/footer/footer';
     FormSelectComponent,
     FormCheckboxComponent,
     FormRadioGroupComponent,
-    BreadcrumbsComponent,
-    HeaderComponent,
-    FooterComponent,
+    BreadcrumbsComponent
   ],
   templateUrl: './style-guide.html',
   styleUrl: './style-guide.scss',

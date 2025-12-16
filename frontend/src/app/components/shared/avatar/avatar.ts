@@ -24,6 +24,7 @@ type AvatarVariant = 'default' | 'outline';
   templateUrl: './avatar.html',
   styleUrl: './avatar.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'c-avatar-host' },
 })
 export class AvatarComponent {
   /** URL de la imagen del avatar */

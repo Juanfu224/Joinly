@@ -163,6 +163,21 @@
   --espaciado-10: 5rem;
   --espaciado-12: 6rem;
   --espaciado-16: 8rem;
+
+  // --- ESPACIADO DE CONTENEDOR ---
+  /**
+   * Padding lateral del contenedor principal
+   * Implementa el estándar 80/20: 80% contenido, 20% espaciado
+   * 
+   * Valores responsive:
+   * - Móvil:   1rem (16px) - mínimo
+   * - Fluido:  10vw - escalado proporcional
+   * - Desktop: 12rem (192px) - estándar 80/20 en viewport 1920px
+   * 
+   * Cálculo: 1920px × 0.80 = 1536px contenido → (1920-1536)/2 = 192px/lado
+   * Referencia: 04-layout/_contenedor.scss
+   */
+  --contenedor-padding-lateral: clamp(1rem, 10vw, 12rem);
 }
 
 // ==========================================================================

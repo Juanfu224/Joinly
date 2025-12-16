@@ -3,20 +3,16 @@
 // ==========================================================================
 // Avatar de usuario con imagen o iniciales.
 // Soporta múltiples tamaños y variantes.
+// Sigue metodología BEM y arquitectura ITCSS.
 
 @use '../../../../styles/00-settings/variables' as *;
 
 // ---------------------------------------------------------------------------
-// COLORES DE FONDO PARA INICIALES
+// HOST: Encapsulación del componente Angular
 // ---------------------------------------------------------------------------
-$avatar-backgrounds: (
-  var(--color-morado-principal),
-  var(--color-naranja-principal),
-  var(--color-azul),
-  var(--color-amarillo),
-  #10b981, // Verde
-  #f43f5e, // Rosa
-);
+:host {
+  display: inline-block;
+}
 
 // ---------------------------------------------------------------------------
 // BLOQUE: .c-avatar

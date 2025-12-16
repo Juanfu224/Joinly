@@ -2,9 +2,14 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
-    path: 'style-guide',
+    path: '',
     loadComponent: () =>
       import('./pages/style-guide/style-guide').then((m) => m.StyleGuideComponent),
     title: 'Guía de Estilos - Joinly',
+  },
+  {
+    path: 'style-guide',
+    redirectTo: '',
+    pathMatch: 'full',
   },
 ];

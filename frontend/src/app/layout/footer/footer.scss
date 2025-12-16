@@ -162,25 +162,25 @@
 // ==========================================================================
 
 .c-footer__inferior {
-  margin-block-start: var(--espaciado-6);
+  margin-block-start: var(--espaciado-8);
 
   @include responder-a('tablet') {
-    margin-block-start: var(--espaciado-8);
+    margin-block-start: var(--espaciado-10);
   }
 }
 
 .c-footer__separador {
   border: none;
-  border-block-start: 1px solid var(--color-fondo-claro-normal);
-  margin: 0 0 var(--espaciado-4);
+  border-block-start: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 0 0 var(--espaciado-5);
 
   @include responder-a('tablet') {
-    margin-block-end: var(--espaciado-5);
+    margin-block-end: var(--espaciado-6);
   }
 }
 
 .c-footer__copyright {
-  font-size: var(--tamano-texto-grande);
+  font-size: var(--tamano-texto-base);
   line-height: var(--altura-linea-relajada);
   color: var(--color-gris-medio);
   text-align: center;
