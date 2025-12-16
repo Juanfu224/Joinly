@@ -1,7 +1,7 @@
 // ==========================================================================
 // COMPONENTE: HEADER (.c-header)
 // ==========================================================================
-// Cabecera principal de la aplicación con logotipo, navegación y acciones.
+// Cabecera principal de la aplicación con logotipo y acciones de usuario.
 // Sigue metodología BEM y arquitectura ITCSS.
 // Basado en diseño Figma: https://www.figma.com/design/8q36kcT9LEqoXs99ZBxfV5/Joinly
 
@@ -22,7 +22,7 @@
   position: sticky;
   inset-block-start: 0;
   z-index: var(--z-fixed);
-  background-color: #fefefe;
+  background-color: var(--color-superficie-blanca);
   box-shadow: 0 5px 14px rgba(20, 20, 43, 0.05);
 
   // Contenedor interno con layout flex
@@ -32,6 +32,7 @@
     justify-content: space-between;
     min-block-size: 5.5rem;
     gap: var(--espaciado-2);
+    padding-block: var(--espaciado-2);
   }
 }
 
@@ -84,79 +85,12 @@
 }
 
 // ---------------------------------------------------------------------------
-// ELEMENTO: Navegación (.c-header__nav)
-// ---------------------------------------------------------------------------
-.c-header__nav {
-  display: none;
-
-  @include responder-a('escritorio') {
-    display: block;
-    margin-inline: auto;
-  }
-}
-
-.c-header__nav-lista {
-  display: flex;
-  align-items: center;
-  gap: var(--espaciado-4);
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.c-header__nav-item {
-  margin: 0;
-}
-
-.c-header__nav-enlace {
-  display: inline-block;
-  padding-block: var(--espaciado-1);
-  font-size: var(--tamano-texto-regular);
-  font-weight: var(--peso-fuente-medio);
-  color: var(--color-texto-base);
-  text-decoration: none;
-  position: relative;
-
-  @include transicion(color);
-  @include foco-visible;
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset-block-end: 0;
-    inset-inline: 0;
-    block-size: 2px;
-    background-color: transparent;
-    border-radius: var(--radio-completo);
-
-    @include transicion(background-color);
-  }
-
-  &:hover {
-    color: var(--color-principal);
-  }
-}
-
-.c-header__nav-enlace--activo {
-  color: var(--color-principal);
-  font-weight: var(--peso-fuente-semi-negrita);
-
-  &::after {
-    background-color: var(--color-principal);
-  }
-}
-
-// ---------------------------------------------------------------------------
 // ELEMENTO: Área de utilidad (.c-header__utilidad)
 // ---------------------------------------------------------------------------
 .c-header__utilidad {
-  display: none;
+  display: flex;
   align-items: center;
   gap: var(--espaciado-2);
-
-  @include responder-a('escritorio') {
-    display: flex;
-  }
 }
 
 // ---------------------------------------------------------------------------
@@ -193,7 +127,7 @@
 }
 
 .c-header__btn--primario {
-  color: #fefefe;
+  color: var(--color-superficie-blanca);
   background-color: var(--color-acento);
   border: var(--borde-delgado) solid transparent;
   box-shadow:
@@ -205,121 +139,5 @@
     box-shadow:
       0 4px 6px -4px rgba(234, 88, 12, 0.4),
       0 10px 15px -3px rgba(234, 88, 12, 0.4);
-  }
-}
-
-// ---------------------------------------------------------------------------
-// ELEMENTO: Menú toggle móvil (.c-header__menu-toggle)
-// ---------------------------------------------------------------------------
-.c-header__menu-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  inline-size: 2.75rem;
-  block-size: 2.75rem;
-  padding: 0;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  border-radius: var(--radio-medio);
-
-  @include foco-visible;
-  @include transicion(background-color);
-
-  @include responder-a('escritorio') {
-    display: none;
-  }
-
-  &:hover {
-    background-color: var(--color-superficie-blanca-alt);
-  }
-
-}
-
-// Estado abierto del menú - Clases BEM planas para evitar anidamiento excesivo
-.c-header__menu-toggle[aria-expanded='true'] .c-header__menu-linea--superior {
-  transform: translateY(7px) rotate(45deg);
-}
-
-.c-header__menu-toggle[aria-expanded='true'] .c-header__menu-linea--central {
-  opacity: 0;
-  transform: scaleX(0);
-}
-
-.c-header__menu-toggle[aria-expanded='true'] .c-header__menu-linea--inferior {
-  transform: translateY(-7px) rotate(-45deg);
-}
-
-.c-header__menu-icono {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  inline-size: 1.5rem;
-  block-size: 1.5rem;
-}
-
-.c-header__menu-linea {
-  display: block;
-  inline-size: 100%;
-  block-size: 2px;
-  background-color: var(--color-texto-fuerte);
-  border-radius: var(--radio-completo);
-  transform-origin: center;
-
-  @include transicion(all);
-}
-
-// DEPRECADO: Mantener compatibilidad con span sin clase
-.c-header__menu-icono span {
-  display: block;
-  inline-size: 100%;
-  block-size: 2px;
-  background-color: var(--color-texto-fuerte);
-  border-radius: var(--radio-completo);
-  transform-origin: center;
-
-  @include transicion(all);
-}
-
-// ---------------------------------------------------------------------------
-// LEGACY: Soporte para estructura anterior con nth-child
-// ---------------------------------------------------------------------------
-.c-header__menu-toggle[aria-expanded='true'] .c-header__menu-icono span:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-
-.c-header__menu-toggle[aria-expanded='true'] .c-header__menu-icono span:nth-child(2) {
-  opacity: 0;
-  transform: scaleX(0);
-}
-
-.c-header__menu-toggle[aria-expanded='true'] .c-header__menu-icono span:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
-}
-
-// ---------------------------------------------------------------------------
-// FIN DEL COMPONENTE HEADER
-// ---------------------------------------------------------------------------
-// NOTA: El siguiente bloque está deprecado y se eliminará
-.c-header__menu-icono--legacy {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  inline-size: 1.5rem;
-  block-size: 1.5rem;
-
-  span {
-    display: block;
-    inline-size: 100%;
-    block-size: 2px;
-    background-color: var(--color-texto-fuerte);
-    border-radius: var(--radio-completo);
-    transform-origin: center;
-
-    @include transicion(all);
   }
 }

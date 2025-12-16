@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 /**
  * Componente de cabecera principal de la aplicación.
- * Contiene el logotipo, navegación principal y área de utilidad.
+ * Contiene el logotipo y área de utilidad con botones de acceso.
  *
  * @usageNotes
  * ```html
@@ -13,7 +13,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink],
   templateUrl: './header.html',
   styleUrl: './header.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
