@@ -1,0 +1,27 @@
+<!-- Navegación de migas de pan con lista ordenada semántica -->
+<nav class="c-breadcrumbs" aria-label="Navegación de ruta">
+  <!-- Lista ordenada: representa la jerarquía de navegación -->
+  <ol class="c-breadcrumbs__list">
+    @for (item of items; track item.label; let isLast = $last) {
+      <li class="c-breadcrumbs__item">
+        <!-- Elementos intermedios: enlaces navegables -->
+        @if (item.url && !isLast) {
+          <a 
+            [routerLink]="item.url" 
+            class="c-breadcrumbs__link"
+            [attr.aria-current]="isLast ? 'page' : null"
+          >
+            {{ item.label }}
+          </a>
+          <span class="c-breadcrumbs__separator" aria-hidden="true"> / </span>
+        } @else {
+          <!-- Último elemento: página actual sin enlace -->
+          <span class="c-breadcrumbs__current">{{ item.label }}</span>
+          @if (!isLast) {
+            <span class="c-breadcrumbs__separator" aria-hidden="true"> / </span>
+          }
+        }
+      </li>
+    }
+  </ol>
+</nav>

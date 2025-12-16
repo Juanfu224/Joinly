@@ -1,0 +1,103 @@
+@use '../../../../styles/01-tools/mixins' as *;
+
+// ==========================================================================
+// COMPONENTE: BREADCRUMBS
+// ==========================================================================
+// Navegación de migas de pan (breadcrumbs) con lista ordenada.
+// Muestra la ruta de navegación actual de forma semántica y accesible.
+//
+// Estructura HTML esperada:
+// - nav.c-breadcrumbs
+//   - ol.c-breadcrumbs__list
+//     - li.c-breadcrumbs__item
+//       - a.c-breadcrumbs__link (enlaces intermedios)
+//       - span.c-breadcrumbs__current (página actual)
+//       - span.c-breadcrumbs__separator (separador visual)
+//
+// Características:
+// - Responsive con scroll horizontal oculto en móviles
+// - Navegación accesible con ARIA
+// - Transiciones suaves
+// - Integrado con Angular Router
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.c-breadcrumbs {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none; // Firefox: ocultar scrollbar
+  
+  // Chrome, Safari, Edge: ocultar scrollbar
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  // ==========================================================================
+  // ELEMENTOS
+  // ==========================================================================
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--espaciado-1);
+    margin: 0;
+    padding: 0;
+    font-size: var(--tamano-texto-regular);
+    font-weight: var(--peso-fuente-regular);
+    line-height: var(--altura-linea-normal);
+    color: var(--color-morado-oscuro);
+    list-style: none;
+  }
+
+  &__item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--espaciado-1);
+    white-space: nowrap; // Evita que los items se rompan en múltiples líneas
+  }
+
+  &__link {
+    color: var(--color-morado-oscuro);
+    text-decoration: none;
+    transition: opacity var(--duracion-rapida) var(--transicion-salida);
+
+    // Estado: Hover
+    &:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+    }
+
+    // Estado: Foco (navegación con teclado)
+    &:focus-visible {
+      outline: var(--borde-medio) solid var(--color-morado-oscuro);
+      outline-offset: var(--radio-pequeno);
+      border-radius: var(--radio-pequeno);
+    }
+  }
+
+  // Elemento actual (no navegable)
+  &__current {
+    color: var(--color-morado-oscuro);
+  }
+
+  // Separador visual entre elementos
+  &__separator {
+    color: var(--color-morado-oscuro);
+    user-select: none; // No seleccionable con el ratón
+    pointer-events: none; // No recibe eventos de click
+  }
+
+  // ==========================================================================
+  // RESPONSIVE
+  // ==========================================================================
+
+  @include responder-a('movil') {
+    &__list {
+      font-size: var(--tamano-texto-pequeno);
+    }
+  }
+}

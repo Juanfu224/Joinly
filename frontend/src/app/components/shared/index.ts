@@ -10,3 +10,4 @@ export { FormTextareaComponent } from './form-textarea/form-textarea';
 export { FormSelectComponent, type SelectOption } from './form-select/form-select';
 export { FormCheckboxComponent } from './form-checkbox/form-checkbox';
 export { FormRadioGroupComponent, type RadioOption } from './form-radio-group/form-radio-group';
+export { BreadcrumbsComponent, type BreadcrumbItem } from './breadcrumbs/breadcrumbs';
