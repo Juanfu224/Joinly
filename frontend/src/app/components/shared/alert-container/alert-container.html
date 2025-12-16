@@ -1,0 +1,10 @@
+<div class="c-alert-container">
+  @for (alert of alerts(); track alert.id) {
+    <app-alert
+      [type]="alert.type"
+      [message]="alert.message"
+      [closeable]="true"
+      (closed)="onClose(alert.id)"
+    />
+  }
+</div>

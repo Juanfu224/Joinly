@@ -1,0 +1,115 @@
+@use '../../../../styles/01-tools/mixins' as *;
+
+// ==========================================================================
+// COMPONENTE: ALERT
+// ==========================================================================
+// Bloque BEM principal para alertas/notificaciones individuales.
+// Soporta tipos: success, error, warning, info
+// Se posiciona dentro del contenedor alert-container
+
+.c-alert {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaciado-2);
+
+  width: 100%;
+  padding: var(--espaciado-1) var(--espaciado-2);
+
+  border-radius: var(--radio-medio) 0 0 var(--radio-medio);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+
+  font-family: var(--font-primaria);
+  font-size: var(--tamano-texto-grande);
+  font-weight: var(--peso-fuente-regular);
+  line-height: var(--altura-linea-relajada);
+
+  @include transicion;
+
+  // Animación de entrada
+  animation: slideIn var(--duracion-base) var(--transicion-estandar);
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  // ==========================================================================
+  // ELEMENTOS BEM
+  // ==========================================================================
+
+  &__message {
+    margin: 0;
+    flex: 1;
+    color: var(--color-fondo-claro);
+    text-align: center;
+  }
+
+  &__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--espaciado-1);
+    margin: calc(var(--espaciado-1) * -1);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--color-fondo-claro);
+    border-radius: var(--radio-pequeno);
+
+    @include transicion;
+    @include foco-visible;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  &__close-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  // ==========================================================================
+  // MODIFICADORES (TIPOS DE ALERTA)
+  // ==========================================================================
+
+  &--success {
+    background-color: var(--color-exito);
+  }
+
+  &--error {
+    background-color: var(--color-error);
+  }
+
+  &--warning {
+    background-color: var(--color-advertencia);
+
+    & .c-alert__message,
+    & .c-alert__close {
+      color: var(--color-texto-oscuro);
+    }
+
+    & .c-alert__close:hover {
+      background: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  &--info {
+    background-color: var(--color-informacion);
+  }
+
+  // ==========================================================================
+  // RESPONSIVE
+  // ==========================================================================
+
+  @media (max-width: 47.9375rem) {
+    border-radius: var(--radio-medio);
+  }
+}

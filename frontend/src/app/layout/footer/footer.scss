@@ -1,24 +1,10 @@
-// ==========================================================================
-// COMPONENTE: FOOTER (.c-footer)
-// ==========================================================================
-// Pie de página de la aplicación con navegación, redes sociales y copyright.
-// Sigue metodología BEM y arquitectura ITCSS.
-// Basado en diseño Figma: https://www.figma.com/design/8q36kcT9LEqoXs99ZBxfV5/Joinly
-
 @use '../../../styles/00-settings/variables' as *;
 @use '../../../styles/01-tools/mixins' as *;
 
-// ---------------------------------------------------------------------------
-// HOST: Encapsulación del componente Angular
-// ---------------------------------------------------------------------------
 :host {
   display: block;
-  flex-shrink: 0;
 }
 
-// ---------------------------------------------------------------------------
-// BLOQUE: .c-footer
-// ---------------------------------------------------------------------------
 .c-footer {
   flex-shrink: 0;
   background-color: var(--color-superficie-footer);
@@ -47,9 +33,6 @@
   }
 }
 
-// ---------------------------------------------------------------------------
-// ELEMENTO: Marca (.c-footer__marca)
-// ---------------------------------------------------------------------------
 .c-footer__marca {
   display: flex;
   flex-direction: column;
@@ -107,9 +90,6 @@
   margin: 0;
 }
 
-// ---------------------------------------------------------------------------
-// ELEMENTO: Redes sociales (.c-footer__redes)
-// ---------------------------------------------------------------------------
 .c-footer__redes {
   margin-block-start: var(--espaciado-3);
 }
@@ -149,9 +129,6 @@
   }
 }
 
-// ---------------------------------------------------------------------------
-// ELEMENTO: Navegación (.c-footer__nav)
-// ---------------------------------------------------------------------------
 .c-footer__nav {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -177,8 +154,7 @@
   font-size: var(--tamano-h4);
   font-weight: var(--peso-fuente-semi-negrita);
   color: var(--color-fondo-claro-normal);
-  margin-block: 0 var(--espaciado-1);
-  margin-inline: 0;
+  margin: 0 0 var(--espaciado-1);
   line-height: var(--altura-linea-compacta);
 }
 
@@ -194,7 +170,7 @@
 .c-footer__enlace {
   display: inline-flex;
   align-items: center;
-  min-block-size: 2.75rem; // 44px mínimo para accesibilidad táctil WCAG
+  min-block-size: 2.75rem;
   padding-block: 0.5rem;
   font-size: var(--tamano-texto-grande);
   line-height: var(--altura-linea-relajada);
@@ -209,9 +185,6 @@
   }
 }
 
-// ---------------------------------------------------------------------------
-// ELEMENTO: Parte inferior (.c-footer__inferior)
-// ---------------------------------------------------------------------------
 .c-footer__inferior {
   margin-block-start: var(--espaciado-4);
   padding-block-end: var(--espaciado-4);
@@ -225,8 +198,7 @@
   border: none;
   border-block-start: var(--borde-delgado) solid var(--color-fondo-claro-normal);
   opacity: 0.15;
-  margin-block: 0 var(--espaciado-3);
-  margin-inline: 0;
+  margin: 0 0 var(--espaciado-3);
 
   @include responder-a('tablet') {
     margin-block-end: var(--espaciado-4);
