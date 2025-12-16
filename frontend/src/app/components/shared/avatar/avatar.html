@@ -1,0 +1,14 @@
+<span [class]="avatarClasses()">
+  @if (showImage()) {
+    <img
+      [src]="src()"
+      [alt]="alt()"
+      class="c-avatar__imagen"
+      loading="lazy"
+    />
+  } @else {
+    <span class="c-avatar__iniciales" aria-label="Iniciales de {{ name() || 'usuario' }}">
+      {{ initials() || '?' }}
+    </span>
+  }
+</span>

@@ -1,0 +1,100 @@
+// ==========================================================================
+// COMPONENTE: AVATAR (.c-avatar)
+// ==========================================================================
+// Avatar de usuario con imagen o iniciales.
+// Soporta múltiples tamaños y variantes.
+
+@use '../../../../styles/00-settings/variables' as *;
+
+// ---------------------------------------------------------------------------
+// COLORES DE FONDO PARA INICIALES
+// ---------------------------------------------------------------------------
+$avatar-backgrounds: (
+  var(--color-morado-principal),
+  var(--color-naranja-principal),
+  var(--color-azul),
+  var(--color-amarillo),
+  #10b981, // Verde
+  #f43f5e, // Rosa
+);
+
+// ---------------------------------------------------------------------------
+// BLOQUE: .c-avatar
+// ---------------------------------------------------------------------------
+.c-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: var(--color-morado-principal);
+  color: var(--color-blanco);
+  font-weight: var(--peso-fuente-semibold);
+  line-height: 1;
+  user-select: none;
+
+  // ---------------------------------------------------------------------------
+  // TAMAÑOS
+  // ---------------------------------------------------------------------------
+  &--xs {
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    font-size: var(--tamano-texto-xs);
+  }
+
+  &--sm {
+    inline-size: 2rem;
+    block-size: 2rem;
+    font-size: var(--tamano-texto-pequeno);
+  }
+
+  &--md {
+    inline-size: 2.5rem;
+    block-size: 2.5rem;
+    font-size: var(--tamano-texto-normal);
+  }
+
+  &--lg {
+    inline-size: 3rem;
+    block-size: 3rem;
+    font-size: var(--tamano-texto-grande);
+  }
+
+  &--xl {
+    inline-size: 4rem;
+    block-size: 4rem;
+    font-size: var(--tamano-texto-xl);
+  }
+
+  // ---------------------------------------------------------------------------
+  // VARIANTES
+  // ---------------------------------------------------------------------------
+  &--outline {
+    background-color: transparent;
+    border: 2px solid var(--color-morado-principal);
+    color: var(--color-morado-principal);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: .c-avatar__imagen
+// ---------------------------------------------------------------------------
+.c-avatar__imagen {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: .c-avatar__iniciales
+// ---------------------------------------------------------------------------
+.c-avatar__iniciales {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 100%;
+  block-size: 100%;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
