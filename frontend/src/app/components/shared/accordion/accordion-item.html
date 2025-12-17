@@ -1,0 +1,51 @@
+<!-- 
+  Template del AccordionItemComponent
+  Estructura semántica con accesibilidad completa
+-->
+
+<!-- Wrapper del item completo -->
+<div class="c-accordion-item">
+  
+  <!-- Header (botón) del accordion item -->
+  <button
+    type="button"
+    class="c-accordion-item__header"
+    [class.c-accordion-item__header--expanded]="isExpandedSignal()"
+    [class.c-accordion-item__header--disabled]="disabled()"
+    [attr.id]="headerId"
+    [attr.aria-expanded]="isExpandedSignal()"
+    [attr.aria-controls]="contentId"
+    [attr.aria-disabled]="disabled()"
+    [disabled]="disabled()"
+    (click)="toggle()"
+  >
+    <!-- Título del item -->
+    <span class="c-accordion-item__titulo">
+      {{ title() }}
+    </span>
+
+    <!-- Icono indicador (chevron) -->
+    <span 
+      class="c-accordion-item__icono"
+      [class.c-accordion-item__icono--expandido]="isExpandedSignal()"
+      aria-hidden="true"
+    >
+      <app-icon name="chevron-down" size="sm" />
+    </span>
+  </button>
+
+  <!-- Contenedor del contenido expandible -->
+  <div
+    #contentWrapper
+    class="c-accordion-item__contenido-wrapper"
+    [attr.id]="contentId"
+    [attr.aria-labelledby]="headerId"
+    role="region"
+  >
+    <!-- Contenido interno con padding -->
+    <div class="c-accordion-item__contenido">
+      <ng-content />
+    </div>
+  </div>
+
+</div>

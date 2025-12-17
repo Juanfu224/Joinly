@@ -19,3 +19,5 @@ export { BreadcrumbsComponent, type BreadcrumbItem } from './breadcrumbs/breadcr
 export { ThemeToggleComponent } from './theme-toggle/theme-toggle';
 export { TooltipDirective, type TooltipPosition } from './tooltip/tooltip.directive';
 export { ModalComponent } from './modal/modal';
+export { AccordionComponent } from './accordion/accordion';
+export { AccordionItemComponent } from './accordion/accordion-item';
