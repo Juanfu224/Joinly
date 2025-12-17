@@ -129,18 +129,24 @@
   // ==========================================================================
 
   &--action {
-    padding: var(--espaciado-3);
+    // Dimensiones según diseño Figma: 720px × 120px
+    min-block-size: 7.5rem; // 120px
+    padding: var(--espaciado-3); // 24px
 
     .c-card__contenido {
-      gap: var(--espaciado-1);
+      gap: 0.25rem; // 4px - espaciado entre título y descripción
     }
 
     .c-card__titulo {
-      font-size: var(--tamano-texto-regular);
+      // Título H4 según Figma: Inter Semi Bold, 20px, line-height 28px
+      font-size: var(--tamano-h4);
+      line-height: var(--altura-linea-h4);
     }
 
     .c-card__descripcion {
-      font-size: var(--tamano-texto-pequeno);
+      // Body Large según Figma: Inter Regular, 18px, line-height 28.8px
+      font-size: var(--tamano-texto-grande);
+      line-height: var(--altura-linea-body-large);
     }
 
     .c-card__valor,
@@ -156,13 +162,11 @@
   &--info {
     // Dimensiones según diseño Figma: 453px × 120px
     min-block-size: 7.5rem; // 120px
-    padding: 1.75rem var(--espaciado-4); // ~28px vertical, 32px horizontal
-    // Sombra doble combinada (Sombra 1 + Sombra 3) según Figma
+    padding: 1.75rem var(--espaciado-4); // 28px vertical, 32px horizontal
     box-shadow: var(--sombra-1), var(--sombra-3);
 
     .c-card__contenido {
-      // Espaciado mínimo entre título y valor según diseño Figma
-      gap: 0.125rem; // 2px
+      gap: 0.125rem; // 2px - espaciado entre título y valor
     }
 
     .c-card__titulo {
