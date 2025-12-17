@@ -21,3 +21,5 @@ export { TooltipDirective, type TooltipPosition } from './tooltip/tooltip.direct
 export { ModalComponent } from './modal/modal';
 export { AccordionComponent } from './accordion/accordion';
 export { AccordionItemComponent } from './accordion/accordion-item';
+export { TabsComponent } from './tabs/tabs';
+export { TabComponent } from './tabs/tab';

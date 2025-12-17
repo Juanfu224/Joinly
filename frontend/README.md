@@ -1,8 +1,8 @@
 # Joinly Frontend
 
-> **Frontend Angular 19 de la plataforma de gestión de suscripciones compartidas**
+> **Frontend Angular 21 de la plataforma de gestión de suscripciones compartidas**
 
-Frontend moderno desarrollado con Angular 19, utilizando standalone components, SCSS con arquitectura ITCSS y metodología BEM.
+Frontend moderno desarrollado con Angular 21, utilizando standalone components, SCSS con arquitectura ITCSS y metodología BEM.
 
 ---
 
@@ -39,7 +39,7 @@ Frontend moderno desarrollado con Angular 19, utilizando standalone components, 
 
 ## Tecnologías
 
-- **Angular 19.0** - Framework principal
+- **Angular 21.0** - Framework principal
 - **TypeScript 5.x** - Lenguaje
 - **SCSS** - Preprocesador CSS
 - **RxJS** - Programación reactiva
@@ -438,5 +438,5 @@ ng generate --help
 ---
 
 <div align="center">
-  <b>Desarrollado con Angular 19  </b>
+  <b>Desarrollado con Angular 21  </b>
 </div>

@@ -1,0 +1,148 @@
+// ==========================================================================
+// COMPONENTE: TABS (.c-tabs)
+// ==========================================================================
+// Sistema de pestañas para organizar contenido relacionado en diferentes
+// secciones navegables. Incluye indicador visual deslizante y transiciones.
+
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as *;
+
+// ---------------------------------------------------------------------------
+// BLOQUE: Tabs Container
+// ---------------------------------------------------------------------------
+.c-tabs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Lista de pestañas (tablist)
+// ---------------------------------------------------------------------------
+.c-tabs__list {
+  position: relative;
+  display: flex;
+  gap: var(--espaciado-1);
+  border-bottom: 2px solid var(--border-color);
+  overflow-x: auto;
+  overflow-y: hidden;
+  
+  // Scroll suave en móvil
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+
+  // Ocultar scrollbar pero mantener funcionalidad
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  // Transición suave del borde
+  transition: border-color var(--duracion-base) var(--transicion-estandar);
+
+  // Responsive: padding en móvil para evitar corte en bordes
+  @include responder-a('movil') {
+    padding: 0 var(--espaciado-2);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Botón de tab individual
+// ---------------------------------------------------------------------------
+.c-tabs__tab {
+  // Reset de estilos de botón
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  
+  // Layout y espaciado
+  padding: var(--espaciado-3) var(--espaciado-4);
+  white-space: nowrap;
+  flex-shrink: 0;
+  
+  // Tipografía
+  @include texto-regular;
+  font-weight: var(--peso-fuente-medio);
+  color: var(--text-secondary);
+  text-align: center;
+  
+  // Transiciones
+  @include transicion((color, background-color));
+
+  // Focus visible para accesibilidad
+  @include foco-visible;
+
+  // Hover
+  &:hover:not(&--active) {
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+  }
+
+  // Estado activo
+  &--active {
+    color: var(--color-principal);
+    font-weight: var(--peso-fuente-semi-negrita);
+  }
+
+  // Responsive: padding reducido en móvil
+  @include responder-a('movil') {
+    padding: var(--espaciado-2) var(--espaciado-3);
+    font-size: var(--tamano-texto-pequeno);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Indicador visual del tab activo
+// ---------------------------------------------------------------------------
+.c-tabs__indicator {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  height: 2px;
+  background-color: var(--color-principal);
+  border-radius: var(--radio-completo);
+  
+  // Transición suave para movimiento y cambio de ancho
+  transition: 
+    transform var(--duracion-base) var(--transicion-estandar),
+    width var(--duracion-base) var(--transicion-estandar);
+  
+  // Inicialmente invisible hasta que se calcule su posición
+  width: 0;
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Contenedor de paneles
+// ---------------------------------------------------------------------------
+.c-tabs__panels {
+  padding: var(--espaciado-4) 0;
+  
+  // Responsive: padding reducido en móvil
+  @include responder-a('movil') {
+    padding: var(--espaciado-3) 0;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Panel de contenido individual (definido en tab.html)
+// ---------------------------------------------------------------------------
+.c-tab-panel {
+  // Oculto por defecto usando visibilidad y posición
+  // No usar display:none para permitir transiciones
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  
+  // Transición suave al mostrar
+  @include transicion((opacity, visibility));
+
+  // Estado activo (visible)
+  &--active {
+    position: relative;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
