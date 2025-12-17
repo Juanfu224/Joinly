@@ -113,15 +113,9 @@
     flex-direction: row;
     align-items: center;
     gap: var(--espaciado-3);
-    padding: var(--espaciado-3);
 
     .c-card__contenido {
-      gap: var(--espaciado-1);
       flex: 1;
-    }
-
-    .c-card__titulo {
-      font-size: var(--tamano-texto-regular);
     }
 
     .c-card__badge,
@@ -130,7 +124,21 @@
     }
   }
 
+  // ==========================================================================
+  // VARIANTE: ACTION
+  // ==========================================================================
+
   &--action {
+    padding: var(--espaciado-3);
+
+    .c-card__contenido {
+      gap: var(--espaciado-1);
+    }
+
+    .c-card__titulo {
+      font-size: var(--tamano-texto-regular);
+    }
+
     .c-card__descripcion {
       font-size: var(--tamano-texto-pequeno);
     }
@@ -141,9 +149,34 @@
     }
   }
 
+  // ==========================================================================
+  // VARIANTE: INFO
+  // ==========================================================================
+
   &--info {
+    // Dimensiones según diseño Figma: 453px × 120px
+    min-block-size: 7.5rem; // 120px
+    padding: 1.75rem var(--espaciado-4); // ~28px vertical, 32px horizontal
+    // Sombra doble combinada (Sombra 1 + Sombra 3) según Figma
+    box-shadow: var(--sombra-1), var(--sombra-3);
+
+    .c-card__contenido {
+      // Espaciado mínimo entre título y valor según diseño Figma
+      gap: 0.125rem; // 2px
+    }
+
+    .c-card__titulo {
+      // Título H4 según Figma: Inter Semi Bold, 20px, line-height 28px
+      font-size: var(--tamano-h4);
+      line-height: var(--altura-linea-h4);
+      font-weight: var(--peso-fuente-semi-negrita);
+    }
+
     .c-card__valor {
-      font-size: var(--tamano-texto-pequeno);
+      // Body Large según Figma: Inter Regular, 18px, line-height 28.8px
+      font-size: var(--tamano-texto-grande);
+      line-height: var(--altura-linea-body-large);
+      font-weight: var(--peso-fuente-regular);
     }
 
     .c-card__descripcion,
