@@ -24,7 +24,20 @@
       </span>
     </a>
 
-    <!-- Área de utilidad (acciones del usuario) -->
+    <!-- Botón menú hamburguesa (solo móvil/tablet) -->
+    <button
+      #menuButton
+      type="button"
+      class="c-header__menu-toggle"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="menuOpen()"
+      aria-label="Menú de navegación"
+      aria-controls="mobile-navigation"
+    >
+      <app-icon [name]="menuOpen() ? 'close' : 'menu'" size="md" />
+    </button>
+
+    <!-- Área de utilidad (acciones del usuario - desktop) -->
     <nav class="c-header__utilidad" aria-label="Acceso de usuario">
       <app-theme-toggle />
       <a routerLink="/login" class="c-header__btn c-header__btn--secundario">
@@ -35,4 +48,49 @@
       </a>
     </nav>
   </div>
+
+  <!-- Overlay oscuro (solo visible cuando menú móvil está abierto) -->
+  <div
+    class="c-header__overlay"
+    [class.c-header__overlay--visible]="menuOpen()"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Menú de navegación móvil -->
+  <nav
+    #mobileMenu
+    id="mobile-navigation"
+    class="c-header__nav-mobile"
+    [class.c-header__nav-mobile--abierto]="menuOpen()"
+    aria-label="Navegación principal"
+  >
+    <ul class="c-header__nav-lista">
+      <li class="c-header__nav-item">
+        <a routerLink="/" class="c-header__nav-enlace" routerLinkActive="c-header__nav-enlace--activo" [routerLinkActiveOptions]="{exact: true}">
+          <app-icon name="home" size="sm" />
+          <span>Inicio</span>
+        </a>
+      </li>
+      <li class="c-header__nav-item">
+        <a routerLink="/style-guide" class="c-header__nav-enlace" routerLinkActive="c-header__nav-enlace--activo">
+          <app-icon name="pencil" size="sm" />
+          <span>Guía de Estilos</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Separador visual -->
+    <hr class="c-header__nav-separador" />
+
+    <!-- Acciones de usuario en el menú móvil -->
+    <div class="c-header__nav-acciones">
+      <app-theme-toggle />
+      <a routerLink="/login" class="c-header__btn c-header__btn--secundario c-header__btn--block">
+        Iniciar sesión
+      </a>
+      <a routerLink="/registro" class="c-header__btn c-header__btn--primario c-header__btn--block">
+        Empezar
+      </a>
+    </div>
+  </nav>
 </header>
