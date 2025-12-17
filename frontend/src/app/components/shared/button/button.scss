@@ -112,9 +112,7 @@
     background-color: var(--color-morado-principal);
     border-color: var(--color-morado-principal);
     color: var(--color-blanco);
-    box-shadow:
-      0 4px 6px -4px rgba(147, 51, 234, 0.3),
-      0 10px 15px -3px rgba(147, 51, 234, 0.3);
+    box-shadow: var(--sombra-2);
 
     &:hover:not(:disabled) {
       background-color: var(--color-morado-oscuro);

@@ -16,7 +16,7 @@
   background-color: var(--color-blanco);
   border-radius: var(--radio-grande);
   padding: var(--espaciado-4);
-  box-shadow: 0 2px 6px rgba(20, 20, 43, 0.06);
+  box-shadow: var(--sombra-1);
 
   @include transicion;
 
@@ -51,7 +51,7 @@
   // ==========================================================================
 
   &:not(&--no-hover):not(&--list):hover {
-    box-shadow: 0 8px 28px rgba(20, 20, 43, 0.1);
+    box-shadow: var(--sombra-3);
     transform: translateY(-2px);
     cursor: pointer;
   }

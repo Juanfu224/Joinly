@@ -1,0 +1,47 @@
+// ==========================================================================
+// UTILIDADES: SOMBRAS
+// ==========================================================================
+// Clases helper para aplicar sombras de elevación según el diseño de Figma.
+// Sistema de 6 niveles de sombra basado en tokens CSS custom properties.
+//
+// USO:
+//   <div class="u-sombra-1">Sombra muy sutil</div>
+//   <div class="u-sombra-2">Sombra para cards en reposo</div>
+//   <div class="u-sombra-3">Sombra para hover de cards</div>
+//
+// NIVELES:
+//   sombra-1: Muy sutil (elevation 1)
+//   sombra-2: Cards en reposo (elevation 2)
+//   sombra-3: Cards en hover (elevation 3)
+//   sombra-4: Dropdowns y modales (elevation 4)
+//   sombra-5: Elevación alta (elevation 5)
+//   sombra-6: Máxima elevación (elevation 6)
+
+.u-sombra-1 {
+  box-shadow: var(--sombra-1);
+}
+
+.u-sombra-2 {
+  box-shadow: var(--sombra-2);
+}
+
+.u-sombra-3 {
+  box-shadow: var(--sombra-3);
+}
+
+.u-sombra-4 {
+  box-shadow: var(--sombra-4);
+}
+
+.u-sombra-5 {
+  box-shadow: var(--sombra-5);
+}
+
+.u-sombra-6 {
+  box-shadow: var(--sombra-6);
+}
+
+// Utilidad para eliminar sombras
+.u-sin-sombra {
+  box-shadow: none;
+}

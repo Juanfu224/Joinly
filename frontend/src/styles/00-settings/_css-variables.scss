@@ -238,12 +238,24 @@
 // al color base de sombras definido en _variables.scss
 
 :root {
+  // Sombras principales (elevación neutra)
   --sombra-1: 0 2px 6px #{color.adjust($color-base-sombra, $alpha: -0.94)};
   --sombra-2: 0 2px 12px #{color.adjust($color-base-sombra, $alpha: -0.92)};
   --sombra-3: 0 8px 28px #{color.adjust($color-base-sombra, $alpha: -0.9)};
   --sombra-4: 0 14px 42px #{color.adjust($color-base-sombra, $alpha: -0.86)};
   --sombra-5: 0 24px 65px #{color.adjust($color-base-sombra, $alpha: -0.84)};
   --sombra-6: 0 32px 72px #{color.adjust($color-base-sombra, $alpha: -0.76)};
+
+  // Sombras de color para iconos (efecto glow)
+  // Se usan en componentes como c-card-icon para dar profundidad con color
+  --sombra-amarillo: 0 4px 6px -4px #{color.adjust($color-amarillo, $alpha: -0.7)},
+    0 10px 15px -3px #{color.adjust($color-amarillo, $alpha: -0.7)};
+  --sombra-naranja: 0 4px 6px -4px #{color.adjust($color-naranja-principal, $alpha: -0.7)},
+    0 10px 15px -3px #{color.adjust($color-naranja-principal, $alpha: -0.7)};
+  --sombra-azul: 0 4px 6px -4px #{color.adjust($color-azul, $alpha: -0.7)},
+    0 10px 15px -3px #{color.adjust($color-azul, $alpha: -0.7)};
+  --sombra-morado: 0 4px 6px -4px #{color.adjust($color-morado-principal, $alpha: -0.7)},
+    0 10px 15px -3px #{color.adjust($color-morado-principal, $alpha: -0.7)};
 }
 
 // ==========================================================================

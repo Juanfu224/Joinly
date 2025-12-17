@@ -23,7 +23,7 @@
   inset-block-start: 0;
   z-index: var(--z-fixed);
   background-color: var(--color-superficie-blanca);
-  box-shadow: 0 5px 14px rgba(20, 20, 43, 0.05);
+  box-shadow: var(--sombra-2);
 
   // Contenedor interno con layout flex
   &__contenedor {
@@ -207,14 +207,10 @@
   color: var(--color-superficie-blanca);
   background-color: var(--color-acento);
   border: var(--borde-delgado) solid transparent;
-  box-shadow:
-    0 4px 6px -4px rgba(249, 115, 22, 0.3),
-    0 10px 15px -3px rgba(249, 115, 22, 0.3);
+  box-shadow: var(--sombra-2);
 
   &:hover {
     background-color: var(--color-acento-oscuro);
-    box-shadow:
-      0 4px 6px -4px rgba(234, 88, 12, 0.4),
-      0 10px 15px -3px rgba(234, 88, 12, 0.4);
+    box-shadow: var(--sombra-3);
   }
 }
