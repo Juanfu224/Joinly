@@ -5,6 +5,12 @@
   width: 100%;
 }
 
+// ==========================================================================
+// COMPONENTE: FORM INPUT
+// ==========================================================================
+// Campo de entrada de texto con label, validación y mensajes de ayuda/error.
+// Sigue el patrón de diseño accesible y tokens semánticos para temas.
+
 .c-form-input {
   &__label {
     display: inline-flex;
@@ -22,14 +28,15 @@
   &__field {
     width: 100%;
     padding: var(--espaciado-1) var(--espaciado-2);
-    color: var(--color-texto-base);
+    color: var(--text-primary);
     font-size: var(--tamano-texto-regular);
-    background-color: transparent;
-    border: var(--borde-delgado) solid var(--color-borde-base);
+    background-color: var(--bg-primary);
+    border: var(--borde-medio) solid var(--border-color);
     border-radius: var(--radio-medio);
     transition:
       border-color var(--duracion-rapida) var(--transicion-estandar),
-      box-shadow var(--duracion-rapida) var(--transicion-estandar);
+      box-shadow var(--duracion-rapida) var(--transicion-estandar),
+      background-color var(--duracion-rapida) var(--transicion-estandar);
 
     &::placeholder {
       color: var(--color-borde-fuerte);
@@ -43,8 +50,8 @@
 
     &:disabled {
       cursor: not-allowed;
-      opacity: 0.5;
-      background-color: var(--color-superficie-blanca-alt);
+      opacity: 0.6;
+      background-color: var(--bg-secondary);
     }
 
     &[aria-invalid="true"] {
@@ -62,7 +69,7 @@
   }
 
   &__help {
-    color: var(--color-texto-base);
+    color: var(--text-secondary);
     font-size: var(--tamano-texto-pequeno);
   }
 }

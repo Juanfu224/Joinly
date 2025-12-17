@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ThemeToggleComponent } from '../../components/shared';
 
 /**
  * Componente de cabecera principal de la aplicación.
- * Contiene el logotipo y área de utilidad con botones de acceso.
+ * Contiene el logotipo, área de utilidad con botones de acceso y theme toggle.
  *
  * @remarks
  * El logotipo soporta variantes de color mediante modificadores BEM:
@@ -22,9 +23,10 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, ThemeToggleComponent],
   templateUrl: './header.html',
   styleUrl: './header.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {}
+

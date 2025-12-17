@@ -22,8 +22,14 @@
   position: sticky;
   inset-block-start: 0;
   z-index: var(--z-fixed);
-  background-color: var(--color-superficie-blanca);
+  background-color: var(--bg-secondary);
   box-shadow: var(--sombra-2);
+  border-bottom: 1px solid var(--border-color);
+
+  // Transición suave para cambio de tema
+  transition: background-color var(--duracion-base) var(--transicion-estandar),
+    box-shadow var(--duracion-base) var(--transicion-estandar),
+    border-color var(--duracion-base) var(--transicion-estandar);
 
   // Contenedor interno con layout flex
   &__contenedor {
@@ -93,7 +99,7 @@
   }
 
   .c-header__logo-nombre {
-    color: var(--color-gris-medio);
+    color: var(--text-secondary);
   }
 
   .c-header__logo-acento {
@@ -123,7 +129,7 @@
   }
 
   .c-header__logo-nombre {
-    color: var(--color-gris-medio);
+    color: var(--text-secondary);
   }
 
   .c-header__logo-acento {
@@ -206,7 +212,7 @@
 }
 
 .c-header__btn--primario {
-  color: var(--color-superficie-blanca);
+  color: var(--color-blanco);
   background-color: var(--color-acento);
   border: var(--borde-delgado) solid transparent;
   box-shadow: var(--sombra-naranja);

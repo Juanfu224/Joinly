@@ -3,6 +3,13 @@
   width: 100%;
 }
 
+// ==========================================================================
+// COMPONENTE: FORM RADIO GROUP
+// ==========================================================================
+// Grupo de botones de radio con fieldset y legend accesibles.
+// Soporta disposición vertical (por defecto) e inline (horizontal).
+// Usa appearance: none para estilo completamente personalizado.
+
 .c-form-radio-group {
   &__fieldset {
     margin: 0;
@@ -18,7 +25,7 @@
     align-items: center;
     gap: var(--radio-pequeno);
     padding: 0;
-    margin-bottom: var(--espaciado-1);
+    margin-block-end: var(--espaciado-1);
     color: var(--color-texto-fuerte);
     font-size: var(--tamano-texto-pequeno);
     font-weight: var(--peso-fuente-semi-negrita);
@@ -50,8 +57,8 @@
     appearance: none;
     width: 1.25rem;
     height: 1.25rem;
-    background-color: transparent;
-    border: var(--borde-medio) solid var(--color-borde-base);
+    background-color: var(--bg-primary);
+    border: var(--borde-medio) solid var(--border-color);
     border-radius: 50%;
     cursor: pointer;
     position: relative;
@@ -85,8 +92,8 @@
 
     &:disabled {
       cursor: not-allowed;
-      opacity: 0.5;
-      background-color: var(--color-superficie-blanca-alt);
+      opacity: 0.6;
+      background-color: var(--bg-secondary);
     }
   }
 
@@ -112,7 +119,7 @@
 
   &__help {
     display: block;
-    color: var(--color-texto-normal);
+    color: var(--text-secondary);
     font-size: var(--tamano-texto-pequeno);
   }
 }

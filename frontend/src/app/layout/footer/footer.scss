@@ -11,7 +11,7 @@
 
 .c-footer {
   background-color: var(--color-superficie-footer);
-  color: var(--color-gris-medio);
+  color: var(--text-secondary);
   padding-block: var(--espaciado-6) var(--espaciado-4);
 
   @include responder-a('tablet') {
@@ -80,7 +80,7 @@
 }
 
 .c-footer__logo-join {
-  color: var(--color-gris-medio);
+  color: var(--text-secondary);
 }
 
 .c-footer__logo-ly {
@@ -90,7 +90,7 @@
 .c-footer__descripcion {
   font-size: var(--tamano-texto-grande);
   line-height: var(--altura-linea-relajada);
-  color: var(--color-gris-medio);
+  color: var(--text-secondary);
   margin: 0;
 }
 
@@ -146,14 +146,14 @@
   padding-block: 0.25rem;
   font-size: var(--tamano-texto-grande);
   line-height: var(--altura-linea-relajada);
-  color: var(--color-gris-medio);
+  color: var(--text-secondary);
   text-decoration: none;
 
   @include transicion(color);
   @include foco-visible;
 
   &:hover {
-    color: var(--color-fondo-claro-normal);
+    color: var(--text-primary);
   }
 }
 
@@ -182,7 +182,7 @@
 .c-footer__copyright {
   font-size: var(--tamano-texto-base);
   line-height: var(--altura-linea-relajada);
-  color: var(--color-gris-medio);
+  color: var(--text-secondary);
   text-align: center;
   margin: 0;
 }

@@ -19,7 +19,7 @@
 :host {
   display: block;
   min-block-size: 100vh;
-  background: var(--color-fondo-claro);
+  background: var(--bg-primary);
 }
 
 // ---------------------------------------------------------------------------
@@ -107,7 +107,7 @@
   font-size: var(--tamano-texto-2xl);
   font-weight: var(--peso-fuente-negrita);
   line-height: 1.125;
-  color: var(--color-texto-oscuro);
+  color: var(--text-primary);
   margin: 0;
 
   @include responder-a('tablet') {
@@ -118,7 +118,7 @@
 .p-style-guide__nota {
   font-size: var(--tamano-texto-normal);
   line-height: var(--altura-linea-relajada);
-  color: var(--color-texto-normal);
+  color: var(--text-secondary);
   margin: 0;
 }
 
@@ -127,8 +127,8 @@
 // ---------------------------------------------------------------------------
 .p-style-guide__demo {
   padding: var(--espaciado-6);
-  background: var(--color-superficie-blanca);
-  border: 1px solid var(--color-gris-medio);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: var(--radio-esquina-grande);
 
   @include responder-a('tablet') {
@@ -150,15 +150,15 @@
   .p-style-guide__demo-titulo--interno {
     padding: var(--espaciado-4) var(--espaciado-6);
     margin: 0;
-    background: var(--color-fondo-claro);
-    border-block-end: 1px solid var(--color-gris-medio);
+    background: var(--bg-primary);
+    border-block-end: 1px solid var(--border-color);
   }
 }
 
 .p-style-guide__demo-titulo {
   font-size: var(--tamano-texto-grande);
   font-weight: var(--peso-fuente-semi-negrita);
-  color: var(--color-texto-oscuro);
+  color: var(--text-primary);
   margin-block-start: 0;
   margin-block-end: var(--espaciado-4);
 }
@@ -269,8 +269,8 @@
   block-size: 2.5rem;
   margin-inline-start: -0.5rem;
   border-radius: 50%;
-  background: var(--color-gris-medio);
-  color: var(--color-texto-oscuro);
+  background: var(--border-color);
+  color: var(--text-primary);
   font-size: var(--tamano-texto-pequeno);
   font-weight: var(--peso-fuente-semi-negrita);
 }
@@ -285,7 +285,7 @@
   font-size: var(--tamano-texto-regular);
   font-weight: var(--peso-fuente-medio);
   line-height: 1;
-  color: var(--color-texto-oscuro);
+  color: var(--text-primary);
 
   svg {
     inline-size: 1rem;

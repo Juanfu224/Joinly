@@ -52,7 +52,7 @@
   &__message {
     margin: 0;
     min-inline-size: 0;
-    color: var(--color-fondo-claro);
+    color: var(--color-blanco);
     overflow-wrap: break-word;
     hyphens: auto;
   }
@@ -70,7 +70,7 @@
     border: none;
     border-radius: var(--radio-pequeno);
     
-    color: var(--color-fondo-claro);
+    color: var(--color-blanco);
     cursor: pointer;
 
     @include transicion;
@@ -107,11 +107,11 @@
 
     .c-alert__message,
     .c-alert__close {
-      color: var(--color-texto-oscuro);
+      color: var(--bg-primary);
     }
 
     .c-alert__close:hover {
-      background: color-mix(in srgb, var(--color-texto-oscuro) 10%, transparent);
+      background: color-mix(in srgb, var(--bg-primary) 10%, transparent);
     }
   }
 

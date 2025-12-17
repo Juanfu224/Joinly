@@ -5,6 +5,13 @@
   width: 100%;
 }
 
+// ==========================================================================
+// COMPONENTE: FORM SELECT
+// ==========================================================================
+// Selector desplegable con label, icono y validación.
+// Usa appearance: none para personalización completa del estilo nativo.
+// Sigue el patrón de diseño accesible y tokens semánticos para temas.
+
 .c-form-select {
   &__label {
     display: inline-flex;
@@ -27,16 +34,17 @@
   &__field {
     width: 100%;
     padding: var(--espaciado-1) var(--espaciado-5) var(--espaciado-1) var(--espaciado-2);
-    color: var(--color-texto-base);
+    color: var(--text-primary);
     font-size: var(--tamano-texto-regular);
-    background-color: transparent;
-    border: var(--borde-medio) solid var(--color-borde-base);
+    background-color: var(--bg-primary);
+    border: var(--borde-medio) solid var(--border-color);
     border-radius: var(--radio-medio);
     appearance: none;
     cursor: pointer;
     transition:
       border-color var(--duracion-rapida) var(--transicion-estandar),
-      box-shadow var(--duracion-rapida) var(--transicion-estandar);
+      box-shadow var(--duracion-rapida) var(--transicion-estandar),
+      background-color var(--duracion-rapida) var(--transicion-estandar);
 
     &:focus {
       outline: none;
@@ -46,8 +54,8 @@
 
     &:disabled {
       cursor: not-allowed;
-      opacity: 0.5;
-      background-color: var(--color-superficie-blanca-alt);
+      opacity: 0.6;
+      background-color: var(--bg-secondary);
     }
 
     &[aria-invalid="true"] {
@@ -64,7 +72,7 @@
     top: 50%;
     right: var(--espaciado-2);
     transform: translateY(-50%);
-    color: var(--color-texto-normal);
+    color: var(--text-secondary);
     pointer-events: none;
     transition: transform var(--duracion-rapida) var(--transicion-estandar);
 
@@ -79,7 +87,7 @@
   }
 
   &__help {
-    color: var(--color-texto-normal);
+    color: var(--text-secondary);
     font-size: var(--tamano-texto-pequeno);
   }
 }

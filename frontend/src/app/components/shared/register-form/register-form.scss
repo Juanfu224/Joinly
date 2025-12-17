@@ -1,6 +1,12 @@
 @use '../../../../styles/01-tools/mixins' as *;
 @use '../../../../styles/00-settings/variables' as *;
 
+// ==========================================================================
+// COMPONENTE: REGISTER FORM
+// ==========================================================================
+// Formulario de registro con validación y diseño responsive.
+// Usa tokens semánticos para adaptarse automáticamente a temas.
+
 :host {
   display: block;
   width: 100%;
@@ -13,9 +19,12 @@
     flex-direction: column;
     gap: var(--espaciado-3);
     padding: var(--espaciado-3);
-    background-color: var(--color-fondo-claro-normal);
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
     border-radius: var(--radio-grande);
     box-shadow: var(--sombra-3);
+    transition: background-color var(--duracion-base) var(--transicion-estandar),
+      border-color var(--duracion-base) var(--transicion-estandar);
 
     @media (min-width: $bp-tablet) {
       padding: var(--espaciado-6);
@@ -65,7 +74,7 @@
     display: flex;
     flex-direction: column-reverse;
     gap: var(--espaciado-2);
-    margin-top: var(--espaciado-2);
+    margin-block-start: var(--espaciado-2);
 
     @media (min-width: $bp-tablet) {
       flex-direction: row;
@@ -97,7 +106,7 @@
 
     &--primary {
       background-color: var(--color-acento);
-      color: var(--color-fondo-claro-normal);
+      color: var(--color-blanco);
       border-color: var(--color-acento);
       box-shadow: var(--sombra-naranja);
 
@@ -114,18 +123,18 @@
 
     &--secondary {
       background-color: transparent;
-      color: var(--color-texto-base);
-      border-color: var(--color-borde-fuerte);
+      color: var(--text-primary);
+      border-color: var(--border-color);
 
       &:hover {
-        background-color: var(--color-gris-medio);
+        background-color: var(--bg-primary);
       }
     }
   }
 
   &__footer {
     text-align: center;
-    margin-top: var(--espaciado-1);
+    margin-block-start: var(--espaciado-1);
   }
 
   &__footer-text {

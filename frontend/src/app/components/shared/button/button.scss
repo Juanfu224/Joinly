@@ -165,8 +165,8 @@
   // Transparente con borde (Secondary)
   &--secondary {
     background-color: transparent;
-    border: 1px solid var(--color-gris-oscuro);
-    color: var(--color-texto-normal);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
     box-shadow: none;
 
     &:hover:not(:disabled) {
@@ -196,7 +196,7 @@
     }
 
     &:active:not(:disabled) {
-      background-color: var(--color-gris-medio);
+      background-color: var(--bg-primary);
       transform: scale(1);
     }
   }
