@@ -4,10 +4,10 @@
 // Este archivo "barrel" exporta todos los estilos de elementos HTML base.
 // El orden importa: de lo más general a lo más específico.
 
-@forward 'base';        // html, body
+@forward 'base'; // html, body
 @forward 'encabezados'; // h1-h6
-@forward 'tipografia';  // clases de texto (body-large, body-regular, etc.)
-@forward 'enlaces';     // a
-@forward 'listas';      // ul, ol, li
-@forward 'multimedia';  // img, video, figure
+@forward 'tipografia'; // clases de texto (body-large, body-regular, etc.)
+@forward 'enlaces'; // a
+@forward 'listas'; // ul, ol, li
+@forward 'multimedia'; // img, video, figure
 @forward 'formularios'; // input, button, textarea, select
