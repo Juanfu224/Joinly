@@ -1,0 +1,78 @@
+// ==========================================================================
+// TIPOGRAFÍA - CLASES DE TEXTO (Body Text)
+// ==========================================================================
+// Sistema de tipografía para cuerpo de texto basado en el diseño de Figma.
+// Estas clases permiten aplicar estilos de texto consistentes en toda la app.
+//
+// FILOSOFÍA:
+// - Clases base para aplicar estilos tipográficos
+// - No repetimos font-family (se hereda del body)
+// - Sin !important para mejor composición
+// - Max-width opcional vía clase utilitaria
+//
+// USO:
+// <p class="texto-grande">Párrafos destacados...</p>
+// <p class="texto-regular">Texto principal...</p>
+// <p class="texto-pequeno">Texto secundario...</p>
+// <span class="caption">Timestamps, labels...</span>
+
+// ---------------------------------------------------------------------------
+// BODY LARGE - Párrafos destacados
+// ---------------------------------------------------------------------------
+// Tamaño: 18px | Peso: Regular (400) | Line-height: 28.8px
+// Uso: Introducciones, lead paragraphs, textos importantes que necesitan
+//      más énfasis visual
+
+.texto-grande,
+.body-large {
+  font-size: var(--tamano-texto-grande);
+  font-weight: var(--peso-fuente-regular);
+  line-height: var(--altura-linea-body-large);
+  color: var(--color-texto-base);
+}
+
+// ---------------------------------------------------------------------------
+// BODY REGULAR - Texto principal
+// ---------------------------------------------------------------------------
+// Tamaño: 16px | Peso: Regular (400) | Line-height: 24px
+// Uso: Este es el tamaño que usarás para el 80% de tu contenido.
+//      Debe ser cómodo de leer en párrafos largos y mantener una buena 
+//      legibilidad en diferentes dispositivos.
+// Nota: Nunca usar menos de 16px para texto principal
+
+.texto-regular,
+.body-regular {
+  font-size: var(--tamano-texto-regular);
+  font-weight: var(--peso-fuente-regular);
+  line-height: var(--altura-linea-body-regular);
+  color: var(--color-texto-base);
+}
+
+// ---------------------------------------------------------------------------
+// BODY SMALL - Texto secundario
+// ---------------------------------------------------------------------------
+// Tamaño: 14px | Peso: Regular (400) | Line-height: 21px
+// Uso: Metadatos, descripciones cortas, labels de formularios y contenido
+//      de apoyo. Mantiene buena legibilidad pero ocupa menos espacio.
+
+.texto-pequeno,
+.body-small {
+  font-size: var(--tamano-texto-pequeno);
+  font-weight: var(--peso-fuente-regular);
+  line-height: var(--altura-linea-body-small);
+  color: var(--color-texto-base);
+}
+
+// ---------------------------------------------------------------------------
+// CAPTION - Textos mínimos
+// ---------------------------------------------------------------------------
+// Tamaño: 12px | Peso: Regular (400) | Line-height: 16px
+// Uso: Etiquetas, timestamps, texto legal, footnotes.
+//      Este es el tamaño mínimo absoluto permitido (12px).
+
+.caption {
+  font-size: var(--tamano-caption);
+  font-weight: var(--peso-fuente-regular);
+  line-height: var(--altura-linea-caption);
+  color: var(--color-texto-base);
+}

@@ -118,30 +118,48 @@
   --peso-fuente-negrita: 700;
   --peso-fuente-extra-negrita: 900;
 
-  // --- TAMAÑOS DE FUENTE FLUIDOS (Responsive con clamp) ---
-  // Títulos
-  --tamano-h1: clamp(2.5rem, 5vw + 1rem, 4rem);
-  --tamano-h2: clamp(2rem, 4vw + 1rem, 3rem);
-  --tamano-h3: clamp(1.5rem, 2.5vw + 0.5rem, 2rem);
-  --tamano-h4: clamp(1.125rem, 1.5vw + 0.5rem, 1.25rem);
+  // --- TAMAÑOS DE FUENTE ---
+  // Basados en el sistema de diseño de Figma
+  // Valores fijos para mantener consistencia con el diseño
+  
+  // Títulos (Headings)
+  --tamano-h1: 4rem; // 64px - Título H1 Display
+  --tamano-h2: 3rem; // 48px - Título H2 Sección
+  --tamano-h3: 2rem; // 32px - Título H3 Subsección
+  --tamano-h4: 1.25rem; // 20px - Título H4 Pequeño
 
-  // Escala de tamaños de texto
-  --tamano-texto-5xl: clamp(2.5rem, 5vw + 1rem, 4rem); // 40-64px
-  --tamano-texto-4xl: clamp(2rem, 4vw + 0.5rem, 3rem); // 32-48px
-  --tamano-texto-3xl: clamp(1.5rem, 2.5vw + 0.5rem, 2rem); // 24-32px
-  --tamano-texto-2xl: clamp(1.25rem, 1.5vw + 0.5rem, 1.5rem); // 20-24px
-  --tamano-texto-xl: clamp(1.125rem, 1vw + 0.5rem, 1.25rem); // 18-20px
+  // Escala de tamaños de texto (aliases para flexibilidad)
+  --tamano-texto-5xl: 4rem; // 64px
+  --tamano-texto-4xl: 3rem; // 48px
+  --tamano-texto-3xl: 2rem; // 32px
+  --tamano-texto-2xl: 1.5rem; // 24px
+  --tamano-texto-xl: 1.25rem; // 20px
 
-  // Cuerpo de texto
-  --tamano-texto-grande: clamp(1.0625rem, 0.5vw + 1rem, 1.125rem); // 17-18px
-  --tamano-texto-normal: clamp(0.9375rem, 0.5vw + 0.875rem, 1rem); // 15-16px
-  --tamano-texto-regular: clamp(0.9375rem, 0.5vw + 0.875rem, 1rem); // Alias
-  --tamano-texto-pequeno: clamp(0.8125rem, 0.5vw + 0.75rem, 0.875rem); // 13-14px
-  --tamano-caption: clamp(0.6875rem, 0.5vw + 0.625rem, 0.75rem); // 11-12px
+  // Cuerpo de texto (Body Text)
+  --tamano-texto-grande: 1.125rem; // 18px - Body Large
+  --tamano-texto-normal: 1rem; // 16px - Body Regular
+  --tamano-texto-regular: 1rem; // 16px - Alias de Body Regular
+  --tamano-texto-pequeno: 0.875rem; // 14px - Body Small
+  --tamano-caption: 0.75rem; // 12px - Caption
 
   // --- ALTURAS DE LÍNEA ---
+  // Basadas en el sistema de diseño de Figma
+  
+  // Para títulos
+  --altura-linea-h1: 4.5rem; // 72px (64px font-size)
+  --altura-linea-h2: 3.5rem; // 56px (48px font-size)
+  --altura-linea-h3: 2.5rem; // 40px (32px font-size)  
+  --altura-linea-h4: 1.75rem; // 28px (20px font-size)
+  
+  // Para cuerpo de texto
+  --altura-linea-body-large: 1.8rem; // 28.8px (18px font-size)
+  --altura-linea-body-regular: 1.5rem; // 24px (16px font-size)
+  --altura-linea-body-small: 1.3125rem; // 21px (14px font-size)
+  --altura-linea-caption: 1rem; // 16px (12px font-size)
+  
+  // Alturas genéricas (para casos especiales)
   --altura-linea-apretada: 1.1;
-  --altura-linea-ajustada: 1.1;
+  --altura-linea-ajustada: 1.125;
   --altura-linea-compacta: 1.25;
   --altura-linea-normal: 1.5;
   --altura-linea-relajada: 1.6;

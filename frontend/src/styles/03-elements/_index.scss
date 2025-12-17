@@ -6,6 +6,7 @@
 
 @forward 'base';        // html, body
 @forward 'encabezados'; // h1-h6
+@forward 'tipografia';  // clases de texto (body-large, body-regular, etc.)
 @forward 'enlaces';     // a
 @forward 'listas';      // ul, ol, li
 @forward 'multimedia';  // img, video, figure

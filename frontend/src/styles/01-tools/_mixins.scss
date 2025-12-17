@@ -131,3 +131,76 @@
 @mixin transicion($propiedades: all, $duracion: var(--duracion-base)) {
   transition: $propiedades $duracion ease-out;
 }
+
+// ==========================================================================
+// 8. TIPOGRAFÍA - MIXINS DE TEXTO
+// ==========================================================================
+// Mixins para aplicar rápidamente los estilos de tipografía del sistema de diseño.
+// Basados en las especificaciones de Figma.
+//
+// NOTA: No incluimos font-family ya que se hereda del body.
+// Si necesitas cambiarla, hazlo explícitamente en el componente.
+//
+// USO:
+// .mi-elemento { @include texto-grande; }
+// .otro-elemento { @include heading-1; }
+
+// --- ENCABEZADOS ---
+
+@mixin heading-1 {
+  font-size: var(--tamano-h1);
+  font-weight: var(--peso-fuente-negrita);
+  line-height: var(--altura-linea-h1);
+  color: var(--color-texto-fuerte);
+}
+
+@mixin heading-2 {
+  font-size: var(--tamano-h2);
+  font-weight: var(--peso-fuente-negrita);
+  line-height: var(--altura-linea-h2);
+  color: var(--color-texto-fuerte);
+}
+
+@mixin heading-3 {
+  font-size: var(--tamano-h3);
+  font-weight: var(--peso-fuente-semi-negrita);
+  line-height: var(--altura-linea-h3);
+  color: var(--color-texto-fuerte);
+}
+
+@mixin heading-4 {
+  font-size: var(--tamano-h4);
+  font-weight: var(--peso-fuente-semi-negrita);
+  line-height: var(--altura-linea-h4);
+  color: var(--color-texto-fuerte);
+}
+
+// --- CUERPO DE TEXTO ---
+
+@mixin texto-grande {
+  font-size: var(--tamano-texto-grande);
+  font-weight: var(--peso-fuente-regular);
+  line-height: var(--altura-linea-body-large);
+  color: var(--color-texto-base);
+}
+
+@mixin texto-regular {
+  font-size: var(--tamano-texto-regular);
+  font-weight: var(--peso-fuente-regular);
+  line-height: var(--altura-linea-body-regular);
+  color: var(--color-texto-base);
+}
+
+@mixin texto-pequeno {
+  font-size: var(--tamano-texto-pequeno);
+  font-weight: var(--peso-fuente-regular);
+  line-height: var(--altura-linea-body-small);
+  color: var(--color-texto-base);
+}
+
+@mixin caption {
+  font-size: var(--tamano-caption);
+  font-weight: var(--peso-fuente-regular);
+  line-height: var(--altura-linea-caption);
+  color: var(--color-texto-base);
+}

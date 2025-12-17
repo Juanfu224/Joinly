@@ -1,0 +1,115 @@
+// ==========================================================================
+// UTILITIES - TIPOGRAFÍA
+// ==========================================================================
+// Clases de utilidad para tipografía que modifican el comportamiento base.
+// Estas clases siguen el principio de composición, sin !important.
+//
+// NOMENCLATURA:
+// .u-[propiedad]-[valor] → Prefijo 'u-' indica utilidad
+// Ejemplo: .u-fw-bold, .u-text-center
+
+// ---------------------------------------------------------------------------
+// MODIFICADORES DE PESO (Font Weight)
+// ---------------------------------------------------------------------------
+
+.u-fw-light {
+  font-weight: var(--peso-fuente-ligero);
+}
+
+.u-fw-regular {
+  font-weight: var(--peso-fuente-regular);
+}
+
+.u-fw-medium {
+  font-weight: var(--peso-fuente-medio);
+}
+
+.u-fw-semibold {
+  font-weight: var(--peso-fuente-semi-negrita);
+}
+
+.u-fw-bold {
+  font-weight: var(--peso-fuente-negrita);
+}
+
+.u-fw-black {
+  font-weight: var(--peso-fuente-extra-negrita);
+}
+
+// ---------------------------------------------------------------------------
+// MODIFICADORES DE COLOR (Text Color)
+// ---------------------------------------------------------------------------
+
+.u-text-primary {
+  color: var(--color-texto-fuerte);
+}
+
+.u-text-secondary {
+  color: var(--color-texto-base);
+}
+
+.u-text-muted {
+  color: var(--color-gris-oscuro);
+}
+
+.u-text-accent {
+  color: var(--color-acento);
+}
+
+.u-text-white {
+  color: var(--color-blanco);
+}
+
+// ---------------------------------------------------------------------------
+// ALINEACIÓN DE TEXTO (Text Align)
+// ---------------------------------------------------------------------------
+
+.u-text-start {
+  text-align: start;
+}
+
+.u-text-center {
+  text-align: center;
+}
+
+.u-text-end {
+  text-align: end;
+}
+
+// ---------------------------------------------------------------------------
+// ANCHO DE LECTURA ÓPTIMO
+// ---------------------------------------------------------------------------
+// Limita el ancho de línea a 65 caracteres para óptima legibilidad.
+// Según estudios de usabilidad, 45-75 caracteres es el rango ideal.
+
+.u-max-width-lectura {
+  max-inline-size: 65ch;
+}
+
+// ---------------------------------------------------------------------------
+// TRANSFORMACIÓN DE TEXTO (Text Transform)
+// ---------------------------------------------------------------------------
+
+.u-text-uppercase {
+  text-transform: uppercase;
+}
+
+.u-text-lowercase {
+  text-transform: lowercase;
+}
+
+.u-text-capitalize {
+  text-transform: capitalize;
+}
+
+// ---------------------------------------------------------------------------
+// DECORACIÓN DE TEXTO (Text Decoration)
+// ---------------------------------------------------------------------------
+
+.u-text-underline {
+  text-decoration: underline;
+}
+
+.u-text-no-decoration {
+  text-decoration: none;
+}

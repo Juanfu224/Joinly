@@ -6,6 +6,8 @@
 //
 // REGLA DE ORO: Solo debe haber UN h1 por página (el título principal).
 // Los demás encabezados (h2-h6) estructuran las secciones.
+//
+// Sistema de tipografía basado en el diseño de Figma
 
 // ---------------------------------------------------------------------------
 // Estilos compartidos por todos los encabezados
@@ -18,8 +20,7 @@ h5,
 h6 {
   // Fuente y peso: títulos siempre en negrita para destacar
   font-family: var(--font-primaria);
-  font-weight: var(--peso-fuente-negrita);
-
+  
   // Color oscuro para máximo contraste y legibilidad
   color: var(--color-texto-fuerte);
 
@@ -29,36 +30,43 @@ h6 {
 }
 
 // ---------------------------------------------------------------------------
-// Tamaños individuales (escala tipográfica fluida)
+// Tamaños individuales según diseño de Figma
 // ---------------------------------------------------------------------------
 
-// H1: Título principal de página
-// Usado para: Landing hero, títulos de página, nombres de sección principal
+// H1: Título principal de página (Display)
+// Tamaño: 64px | Peso: Bold (700) | Line-height: 72px
+// Uso: Título principal de página, solo 1 por página
 h1 {
   font-size: var(--tamano-h1);
-  line-height: var(--altura-linea-ajustada);
-  font-weight: var(--peso-fuente-extra-negrita);
+  line-height: var(--altura-linea-h1);
+  font-weight: var(--peso-fuente-negrita);
 }
 
 // H2: Títulos de sección
-// Usado para: Encabezados de secciones principales ("Grupos", "Tus suscripciones")
+// Tamaño: 48px | Peso: Bold (700) | Line-height: 56px
+// Uso: Divide contenido en bloques principales
 h2 {
   font-size: var(--tamano-h2);
-  line-height: var(--altura-linea-compacta);
+  line-height: var(--altura-linea-h2);
+  font-weight: var(--peso-fuente-negrita);
 }
 
 // H3: Subtítulos o títulos de subsección
-// Usado para: Nombres de tarjetas, títulos de modales
+// Tamaño: 32px | Peso: Semibold (600) | Line-height: 40px
+// Uso: Dentro de secciones, jerarquía terciaria
 h3 {
   font-size: var(--tamano-h3);
-  line-height: var(--altura-linea-compacta);
+  line-height: var(--altura-linea-h3);
+  font-weight: var(--peso-fuente-semi-negrita);
 }
 
 // H4: Títulos menores
-// Usado para: Etiquetas de formularios en grupo, títulos de sidebars
+// Tamaño: 20px | Peso: Semibold (600) | Line-height: 28px
+// Uso: Cuando necesitas más niveles de jerarquía
 h4 {
   font-size: var(--tamano-h4);
-  line-height: var(--altura-linea-compacta);
+  line-height: var(--altura-linea-h4);
+  font-weight: var(--peso-fuente-semi-negrita);
 }
 
 // H5 y H6: Títulos pequeños (uso limitado)

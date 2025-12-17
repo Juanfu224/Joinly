@@ -60,9 +60,9 @@
 @use '05-components' as componentes;
 
 // ==========================================================================
-// 7️⃣ UTILITIES - Clases de utilidad (PRÓXIMAMENTE)
+// 7️⃣ UTILITIES - Clases de utilidad
 // ==========================================================================
 // Clases helper de una sola propiedad con prefijo .u-
-// Ejemplos: .u-oculto, .u-texto-centro, .u-mt-4
-//
-// @use '06-utilities' as utilidades;
+// Ejemplos: .u-fw-bold, .u-text-center, .u-max-width-lectura
+// Estas tienen la mayor prioridad en la cascada CSS.
+@use '06-utilities' as utilidades;

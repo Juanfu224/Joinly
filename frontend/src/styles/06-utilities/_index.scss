@@ -1,0 +1,10 @@
+// ==========================================================================
+// ÍNDICE DE UTILITIES
+// ==========================================================================
+// Este archivo "barrel" exporta todas las clases de utilidad del proyecto.
+// Las utilities son clases helper de una sola responsabilidad.
+//
+// IMPORTANTE: Las utilities se cargan al FINAL de la cascada CSS,
+// por lo que tienen más prioridad que los elementos y layouts.
+
+@forward 'tipografia';

@@ -55,7 +55,7 @@
 .p-style-guide__titulo {
   font-size: var(--tamano-texto-4xl);
   font-weight: var(--peso-fuente-negrita);
-  line-height: var(--altura-linea-apretada);
+  line-height: 1.125;
   color: var(--color-blanco);
   margin: 0;
 
@@ -104,7 +104,7 @@
 .p-style-guide__subtitulo {
   font-size: var(--tamano-texto-2xl);
   font-weight: var(--peso-fuente-negrita);
-  line-height: var(--altura-linea-apretada);
+  line-height: 1.125;
   color: var(--color-texto-oscuro);
   margin: 0;
 
