@@ -18,15 +18,33 @@
   padding: var(--espaciado-2);
   border-radius: var(--radio-medio);
   flex-shrink: 0;
-  inline-size: 3.5rem;
-  block-size: 3.5rem;
+  inline-size: 4rem; // 64px según diseño de Figma
+  block-size: 4rem; // 64px según diseño de Figma
   color: var(--color-blanco);
 
+  // Aseguramos que los iconos SVG internos se muestren en blanco
   svg {
     display: block;
-    inline-size: 1.5rem;
-    block-size: 1.5rem;
+    inline-size: 2rem; // 32px para el icono interno
+    block-size: 2rem; // 32px para el icono interno
     pointer-events: none;
+    color: var(--color-blanco);
+
+    // Aplicamos color blanco tanto a stroke como a fill
+    path,
+    circle,
+    rect,
+    line,
+    polyline,
+    polygon {
+      stroke: var(--color-blanco);
+      fill: none;
+    }
+
+    // Para elementos que necesiten relleno
+    [fill]:not([fill="none"]) {
+      fill: var(--color-blanco);
+    }
   }
 
   // ==========================================================================

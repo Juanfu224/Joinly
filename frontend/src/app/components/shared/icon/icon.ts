@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ICON_PATHS, type IconName } from './icon-paths';
 
 type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -51,7 +52,7 @@ const SIZE_MAP: Record<IconSize, number> = {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
-      [innerHTML]="iconPath()"
+      [innerHTML]="sanitizedIconPath()"
     ></svg>
   `,
   styles: `
@@ -71,6 +72,8 @@ const SIZE_MAP: Record<IconSize, number> = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IconComponent {
+  private readonly sanitizer = inject(DomSanitizer);
+
   /** Nombre del icono a mostrar */
   readonly name = input.required<IconName>();
 
@@ -81,7 +84,12 @@ export class IconComponent {
   readonly customClass = input<string>('');
 
   /** Path SVG del icono seleccionado */
-  protected readonly iconPath = computed(() => ICON_PATHS[this.name()] ?? '');
+  private readonly iconPath = computed(() => ICON_PATHS[this.name()] ?? '');
+
+  /** Path SVG sanitizado para inyección segura */
+  protected readonly sanitizedIconPath = computed<SafeHtml>(() => 
+    this.sanitizer.bypassSecurityTrustHtml(this.iconPath())
+  );
 
   /** Tamaño en píxeles basado en la variante */
   protected readonly sizeInPixels = computed(() => SIZE_MAP[this.size()]);

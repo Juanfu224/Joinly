@@ -79,17 +79,21 @@
   &--feature {
     flex-direction: column;
     gap: var(--espaciado-3);
+    // Combinación de Sombra 1 + Sombra 3 según diseño de Figma
+    box-shadow: var(--sombra-1), var(--sombra-3);
 
     .c-card__contenido {
       gap: var(--espaciado-2);
     }
 
     .c-card__titulo {
-      font-size: var(--tamano-texto-grande);
+      font-size: var(--tamano-h4);
+      line-height: var(--altura-linea-h4);
     }
 
     .c-card__descripcion {
-      font-size: var(--tamano-texto-regular);
+      font-size: var(--tamano-texto-grande);
+      line-height: var(--altura-linea-body-large);
     }
 
     .c-card__valor,
