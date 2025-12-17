@@ -11,6 +11,7 @@ import {
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { IconComponent } from '../icon/icon';
 
 export interface SelectOption {
   value: string | number;
@@ -21,7 +22,7 @@ export interface SelectOption {
 @Component({
   selector: 'app-form-select',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, IconComponent],
   templateUrl: './form-select.html',
   styleUrl: './form-select.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

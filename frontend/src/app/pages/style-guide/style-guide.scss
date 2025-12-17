@@ -1,24 +1,29 @@
-// ==========================================================================
-// PÁGINA: STYLE GUIDE (.p-style-guide)
-// ==========================================================================
-// Guía visual de componentes reutilizables.
-// Documenta el sistema de diseño completo de la aplicación.
-// Sigue metodología BEM y arquitectura ITCSS.
-
 @use '../../../styles/00-settings/variables' as *;
 @use '../../../styles/01-tools/mixins' as *;
 
+// ==========================================================================
+// PAGE: STYLE GUIDE
+// ==========================================================================
+// Página de documentación visual del sistema de diseño.
+// Muestra todos los componentes reutilizables con sus variantes.
+//
+// ESTRUCTURA:
+// - Host styles: Contenedor principal de la página
+// - Secciones: Agrupación de componentes por categoría
+// - Demos: Áreas de muestra con fondos claros
+// - Rejillas: Layouts responsive para organizar componentes
+
 // ---------------------------------------------------------------------------
-// HOST: Encapsulación del componente Angular
+// HOST STYLES
 // ---------------------------------------------------------------------------
 :host {
   display: block;
   min-block-size: 100vh;
-  background-color: var(--color-fondo-claro);
+  background: var(--color-fondo-claro);
 }
 
 // ---------------------------------------------------------------------------
-// BLOQUE: .p-style-guide
+// CONTENEDOR PRINCIPAL
 // ---------------------------------------------------------------------------
 .p-style-guide {
   display: flex;
@@ -36,14 +41,14 @@
 }
 
 // ---------------------------------------------------------------------------
-// ELEMENTO: .p-style-guide__encabezado
+// ENCABEZADO DE PÁGINA
 // ---------------------------------------------------------------------------
 .p-style-guide__encabezado {
   padding-block: var(--espaciado-8);
   background: linear-gradient(
     135deg,
-    var(--color-morado-principal) 0%,
-    var(--color-morado-oscuro) 100%
+    var(--color-morado-principal),
+    var(--color-morado-oscuro)
   );
   border-radius: var(--radio-esquina-grande);
 
@@ -64,7 +69,7 @@
   }
 
   @include responder-a('escritorio') {
-    font-size: var(--tamano-texto-6xl);
+    font-size: var(--tamano-h1);
   }
 }
 
@@ -78,7 +83,7 @@
 }
 
 // ---------------------------------------------------------------------------
-// ELEMENTO: .p-style-guide__contenido
+// CONTENIDO Y SECCIONES
 // ---------------------------------------------------------------------------
 .p-style-guide__contenido {
   display: flex;
@@ -86,9 +91,6 @@
   gap: var(--espaciado-10);
 }
 
-// ---------------------------------------------------------------------------
-// ELEMENTO: .p-style-guide__seccion
-// ---------------------------------------------------------------------------
 .p-style-guide__seccion {
   display: flex;
   flex-direction: column;
@@ -121,42 +123,48 @@
 }
 
 // ---------------------------------------------------------------------------
-// ELEMENTO: .p-style-guide__demo
+// ÁREAS DE DEMOSTRACIÓN
 // ---------------------------------------------------------------------------
 .p-style-guide__demo {
   padding: var(--espaciado-6);
-  background-color: var(--color-superficie-blanca);
-  border-radius: var(--radio-esquina-grande);
+  background: var(--color-superficie-blanca);
   border: 1px solid var(--color-gris-medio);
+  border-radius: var(--radio-esquina-grande);
 
   @include responder-a('tablet') {
     padding: var(--espaciado-8);
   }
 
-  // Resetear estilos de header y footer en el demo
+  // Componentes anidados que necesitan posicionamiento estático
   app-header,
   app-footer {
     position: static;
   }
+}
 
-  // ---------------------------------------------------------------------------
-  // MODIFICADOR: .p-style-guide__demo--full
-  // ---------------------------------------------------------------------------
-  &--full {
-    padding: 0;
-    overflow: hidden;
+// Variante: Demo sin padding (para componentes full-width)
+.p-style-guide__demo--full {
+  padding: 0;
+  overflow: hidden;
 
-    .p-style-guide__demo-titulo--interno {
-      padding: var(--espaciado-4) var(--espaciado-6);
-      margin: 0;
-      background-color: var(--color-fondo-claro);
-      border-block-end: 1px solid var(--color-gris-medio);
-    }
+  .p-style-guide__demo-titulo--interno {
+    padding: var(--espaciado-4) var(--espaciado-6);
+    margin: 0;
+    background: var(--color-fondo-claro);
+    border-block-end: 1px solid var(--color-gris-medio);
   }
 }
 
+.p-style-guide__demo-titulo {
+  font-size: var(--tamano-texto-grande);
+  font-weight: var(--peso-fuente-semi-negrita);
+  color: var(--color-texto-oscuro);
+  margin-block-start: 0;
+  margin-block-end: var(--espaciado-4);
+}
+
 // ---------------------------------------------------------------------------
-// ELEMENTO: .p-style-guide__rejilla
+// REJILLAS RESPONSIVAS
 // ---------------------------------------------------------------------------
 .p-style-guide__rejilla {
   display: grid;
@@ -165,90 +173,59 @@
   @include responder-a('tablet') {
     gap: var(--espaciado-5);
   }
+}
 
-  // ---------------------------------------------------------------------------
-  // MODIFICADOR: .p-style-guide__rejilla--3col
-  // ---------------------------------------------------------------------------
-  &--3col {
-    grid-template-columns: 1fr;
-
-    @include responder-a('tablet') {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    @include responder-a('escritorio') {
-      grid-template-columns: repeat(3, 1fr);
-    }
+// Variante: 3 columnas
+.p-style-guide__rejilla--3col {
+  @include responder-a('tablet') {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  // ---------------------------------------------------------------------------
-  // MODIFICADOR: .p-style-guide__rejilla--2col
-  // ---------------------------------------------------------------------------
-  &--2col {
-    grid-template-columns: 1fr;
+  @include responder-a('escritorio') {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 
-    @include responder-a('tablet') {
-      grid-template-columns: repeat(2, 1fr);
-    }
+// Variante: 2 columnas
+.p-style-guide__rejilla--2col {
+  @include responder-a('tablet') {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 // ---------------------------------------------------------------------------
-// COMPONENTE: .c-card-badge
+// GRUPOS DE ELEMENTOS
 // ---------------------------------------------------------------------------
-.c-card-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--espaciado-1);
-  color: var(--color-texto-oscuro);
-  font-size: var(--tamano-texto-regular);
-  font-weight: var(--peso-fuente-medio);
-  line-height: 1;
 
-  svg {
-    display: block;
-    inline-size: 1rem;
-    block-size: 1rem;
-    flex-shrink: 0;
-  }
-}
-
-// ---------------------------------------------------------------------------
-// ELEMENTO: .p-style-guide__demo-titulo
-// ---------------------------------------------------------------------------
-.p-style-guide__demo-titulo {
-  font-size: var(--tamano-texto-grande);
-  font-weight: var(--peso-fuente-semibold);
-  color: var(--color-texto-oscuro);
-  margin: 0 0 var(--espaciado-4) 0;
-}
-
-// ---------------------------------------------------------------------------
-// ELEMENTO: .p-style-guide__grupo-botones
-// ---------------------------------------------------------------------------
+// Grupo de botones con flex-wrap
 .p-style-guide__grupo-botones {
   display: flex;
   flex-wrap: wrap;
   gap: var(--espaciado-3);
-  align-items: flex-start;
-
-  &--alineado {
-    align-items: center;
-  }
 }
 
-// ---------------------------------------------------------------------------
-// ELEMENTO: .p-style-guide__grupo-alertas
-// ---------------------------------------------------------------------------
-.p-style-guide__grupo-alertas {
+.p-style-guide__grupo-botones--alineado {
+  align-items: center;
+}
+
+// Grupos con disposición vertical
+.p-style-guide__grupo-alertas,
+.p-style-guide__grupo-navegacion,
+.p-style-guide__grupo-estados {
   display: flex;
   flex-direction: column;
+}
+
+.p-style-guide__grupo-alertas {
   gap: var(--espaciado-3);
 }
 
-// ---------------------------------------------------------------------------
-// ELEMENTO: .p-style-guide__grupo-formulario
-// ---------------------------------------------------------------------------
+.p-style-guide__grupo-navegacion,
+.p-style-guide__grupo-estados {
+  gap: var(--espaciado-4);
+}
+
+// Grupo de formulario con grid responsive
 .p-style-guide__grupo-formulario {
   display: grid;
   gap: var(--espaciado-5);
@@ -258,41 +235,23 @@
     grid-template-columns: repeat(2, 1fr);
     max-inline-size: none;
   }
+}
 
-  &--compacto {
-    gap: var(--espaciado-3);
+// Variante: Formulario compacto (columna única)
+.p-style-guide__grupo-formulario--compacto {
+  gap: var(--espaciado-3);
 
-    @include responder-a('tablet') {
-      grid-template-columns: 1fr;
-      max-inline-size: 32rem;
-    }
+  @include responder-a('tablet') {
+    grid-template-columns: 1fr;
+    max-inline-size: 32rem;
   }
 }
 
 // ---------------------------------------------------------------------------
-// ELEMENTO: .p-style-guide__grupo-navegacion
-// ---------------------------------------------------------------------------
-.p-style-guide__grupo-navegacion {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaciado-4);
-}
-
-// ---------------------------------------------------------------------------
-// ELEMENTO: .p-style-guide__grupo-estados
-// ---------------------------------------------------------------------------
-.p-style-guide__grupo-estados {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaciado-4);
-}
-
-// ---------------------------------------------------------------------------
-// ELEMENTO: .p-style-guide__grupo-avatares
+// GRUPO DE AVATARES
 // ---------------------------------------------------------------------------
 .p-style-guide__grupo-avatares {
   display: flex;
-  align-items: center;
 
   app-avatar {
     margin-inline-start: -0.5rem;
@@ -303,19 +262,35 @@
   }
 }
 
-// ---------------------------------------------------------------------------
-// ELEMENTO: .p-style-guide__avatar-extra
-// ---------------------------------------------------------------------------
 .p-style-guide__avatar-extra {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  place-items: center;
   inline-size: 2.5rem;
   block-size: 2.5rem;
   margin-inline-start: -0.5rem;
   border-radius: 50%;
-  background-color: var(--color-gris-medio);
+  background: var(--color-gris-medio);
   color: var(--color-texto-oscuro);
   font-size: var(--tamano-texto-pequeno);
-  font-weight: var(--peso-fuente-semibold);
+  font-weight: var(--peso-fuente-semi-negrita);
 }
+
+// ---------------------------------------------------------------------------
+// BADGE DE TARJETA
+// ---------------------------------------------------------------------------
+.c-card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaciado-1);
+  font-size: var(--tamano-texto-regular);
+  font-weight: var(--peso-fuente-medio);
+  line-height: 1;
+  color: var(--color-texto-oscuro);
+
+  svg {
+    inline-size: 1rem;
+    block-size: 1rem;
+    flex-shrink: 0;
+  }
+}
+

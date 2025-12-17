@@ -78,7 +78,7 @@
     align-items: center;
     justify-content: center;
     gap: var(--espaciado-1);
-    padding: var(--espaciado-2) var(--espaciado-3);
+    padding: var(--espaciado-2);
     font-family: var(--font-primaria);
     font-size: var(--tamano-texto-grande);
     font-weight: var(--peso-fuente-semi-negrita);
@@ -99,7 +99,7 @@
       background-color: var(--color-acento);
       color: var(--color-fondo-claro-normal);
       border-color: var(--color-acento);
-      box-shadow: var(--sombra-2);
+      box-shadow: var(--sombra-naranja);
 
       &:hover:not(:disabled) {
         background-color: var(--color-acento-oscuro);

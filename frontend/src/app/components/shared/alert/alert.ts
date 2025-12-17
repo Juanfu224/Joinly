@@ -5,12 +5,14 @@ import {
   input,
   output,
 } from '@angular/core';
+import { IconComponent } from '../icon/icon';
 
 type AlertType = 'success' | 'error' | 'warning' | 'info';
 
 @Component({
   selector: 'app-alert',
   standalone: true,
+  imports: [IconComponent],
   templateUrl: './alert.html',
   styleUrls: ['./alert.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

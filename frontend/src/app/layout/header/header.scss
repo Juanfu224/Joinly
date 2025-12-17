@@ -68,8 +68,8 @@
 }
 
 .c-header__logo-texto {
-  font-family: 'DM Sans', var(--font-primaria);
-  font-size: 2rem;
+  font-family: var(--font-primaria);
+  font-size: var(--tamano-h3);
   font-weight: var(--peso-fuente-negrita);
   line-height: 1;
   letter-spacing: 0;
@@ -177,8 +177,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding-block: var(--espaciado-2);
-  padding-inline: var(--espaciado-3);
+  padding: var(--espaciado-2);
   font-size: var(--tamano-texto-regular);
   font-weight: var(--peso-fuente-semi-negrita);
   line-height: 1;
@@ -186,8 +185,11 @@
   border-radius: var(--radio-medio);
   cursor: pointer;
   white-space: nowrap;
+  transition:
+    background-color var(--duracion-base) ease-out,
+    border-color var(--duracion-base) ease-out,
+    color var(--duracion-base) ease-out;
 
-  @include transicion(all);
   @include foco-visible;
 }
 
@@ -207,10 +209,9 @@
   color: var(--color-superficie-blanca);
   background-color: var(--color-acento);
   border: var(--borde-delgado) solid transparent;
-  box-shadow: var(--sombra-2);
+  box-shadow: var(--sombra-naranja);
 
   &:hover {
     background-color: var(--color-acento-oscuro);
-    box-shadow: var(--sombra-3);
   }
 }

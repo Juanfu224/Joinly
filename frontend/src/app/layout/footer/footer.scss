@@ -73,8 +73,8 @@
 }
 
 .c-footer__logo-texto {
-  font-family: 'DM Sans', var(--font-primaria);
-  font-size: 2rem;
+  font-family: var(--font-primaria);
+  font-size: var(--tamano-h3);
   font-weight: var(--peso-fuente-negrita);
   line-height: 1;
 }

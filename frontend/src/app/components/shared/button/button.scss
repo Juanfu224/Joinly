@@ -20,8 +20,13 @@
   text-decoration: none;
   cursor: pointer;
   user-select: none;
+  transition:
+    background-color var(--duracion-base) ease-out,
+    border-color var(--duracion-base) ease-out,
+    color var(--duracion-base) ease-out,
+    box-shadow var(--duracion-base) ease-out,
+    opacity var(--duracion-base) ease-out;
 
-  @include transicion;
   @include foco-visible;
 
   // ==========================================================================
@@ -29,17 +34,17 @@
   // ==========================================================================
 
   &--sm {
-    padding: var(--espaciado-1) var(--espaciado-2);
+    padding: calc(var(--espaciado-1) * 0.75) var(--espaciado-2);
     font-size: var(--tamano-texto-pequeno);
   }
 
   &--md {
-    padding: calc(var(--espaciado-1) * 1.5) var(--espaciado-3);
+    padding: var(--espaciado-2);
     font-size: var(--tamano-texto-regular);
   }
 
   &--lg {
-    padding: var(--espaciado-2) var(--espaciado-4);
+    padding: calc(var(--espaciado-2) * 1.25) var(--espaciado-4);
     font-size: var(--tamano-texto-grande);
   }
 
@@ -51,6 +56,7 @@
     background-color: var(--color-acento);
     border-color: var(--color-acento);
     color: var(--color-blanco);
+    box-shadow: var(--sombra-naranja);
 
     &:hover:not(:disabled) {
       background-color: var(--color-acento-oscuro);
@@ -112,7 +118,7 @@
     background-color: var(--color-morado-principal);
     border-color: var(--color-morado-principal);
     color: var(--color-blanco);
-    box-shadow: var(--sombra-2);
+    box-shadow: var(--sombra-morado);
 
     &:hover:not(:disabled) {
       background-color: var(--color-morado-oscuro);
