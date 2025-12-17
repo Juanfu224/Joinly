@@ -3,130 +3,201 @@
 // ==========================================================================
 // COMPONENTE: BUTTON
 // ==========================================================================
-// Bloque BEM principal para botones.
-// Soporta variantes: primary, secondary, ghost, danger
-// Soporta tamaños: sm, md, lg
+// Bloque BEM principal para botones según diseño de Figma.
+// Soporta variantes: primary (naranja), purple (morado), blue (azul), 
+//                    yellow (amarillo), secondary (transparente con borde), ghost
+// Soporta tamaños: xs (muy pequeño), sm (pequeño), md (mediano), lg (grande), xl (muy grande)
 
 .c-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--espaciado-1);
-  border: var(--borde-medio) solid transparent;
-  border-radius: var(--radio-medio);
-  font-family: var(--font-primaria);
-  font-weight: var(--peso-fuente-semi-negrita);
-  line-height: var(--altura-linea-compacta);
+  gap: var(--espaciado-1); // 8px según Figma
+  border: none;
+  border-radius: var(--radio-medio); // 8px
+  font-family: var(--font-primaria); // Inter
+  font-weight: var(--peso-fuente-semi-negrita); // 600 Semi Bold
+  line-height: 1rem; // 16px
   text-decoration: none;
   cursor: pointer;
   user-select: none;
-  transition:
-    background-color var(--duracion-base) ease-out,
-    border-color var(--duracion-base) ease-out,
-    color var(--duracion-base) ease-out,
-    box-shadow var(--duracion-base) ease-out,
-    opacity var(--duracion-base) ease-out;
+  transition: background-color var(--duracion-base) ease-out,
+              border-color var(--duracion-base) ease-out,
+              color var(--duracion-base) ease-out,
+              box-shadow var(--duracion-base) ease-out,
+              transform var(--duracion-base) ease-out;
+  will-change: transform, box-shadow;
 
   @include foco-visible;
 
   // ==========================================================================
-  // TAMAÑOS
+  // TEXTO DEL BOTÓN
+  // ==========================================================================
+  
+  &__text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1rem; // 16px fijo según diseño
+  }
+
+  // ==========================================================================
+  // ICONOS
+  // ==========================================================================
+  
+  &__icon {
+    display: block;
+    flex-shrink: 0;
+    color: inherit;
+    pointer-events: none;
+  }
+
+  // ==========================================================================
+  // TAMAÑOS SEGÚN FIGMA
   // ==========================================================================
 
+  &--xs {
+    height: 1.5rem; // 24px
+    padding: 0 var(--espaciado-2); // 16px
+    font-size: 0.5rem; // 8px
+  }
+
   &--sm {
-    padding: calc(var(--espaciado-1) * 0.75) var(--espaciado-2);
-    font-size: var(--tamano-texto-pequeno);
+    height: 2rem; // 32px
+    padding: 0 var(--espaciado-2); // 16px
+    font-size: 0.75rem; // 12px
   }
 
   &--md {
-    padding: var(--espaciado-2);
-    font-size: var(--tamano-texto-regular);
+    height: 2.5rem; // 40px
+    padding: 0 1.125rem; // 18px
+    font-size: 0.875rem; // 14px
   }
 
   &--lg {
-    padding: calc(var(--espaciado-2) * 1.25) var(--espaciado-4);
-    font-size: var(--tamano-texto-grande);
+    height: 3rem; // 48px
+    padding: 0 var(--espaciado-3); // 24px
+    font-size: 1rem; // 16px
+  }
+
+  &--xl {
+    height: 4rem; // 64px
+    padding: 0 var(--espaciado-3); // 24px
+    font-size: 1.5rem; // 24px
   }
 
   // ==========================================================================
-  // VARIANTES
+  // VARIANTES SEGÚN FIGMA
   // ==========================================================================
 
+  // Naranja (Primary) - acción principal
   &--primary {
-    background-color: var(--color-acento);
-    border-color: var(--color-acento);
+    background-color: var(--color-naranja-principal);
     color: var(--color-blanco);
     box-shadow: var(--sombra-naranja);
 
     &:hover:not(:disabled) {
-      background-color: var(--color-acento-oscuro);
-      border-color: var(--color-acento-oscuro);
+      background-color: var(--color-naranja-oscuro);
+      @include hover-elevacion;
+      box-shadow: var(--sombra-naranja), var(--sombra-2);
     }
 
     &:active:not(:disabled) {
-      background-color: var(--color-acento-oscuro);
+      background-color: var(--color-naranja-oscuro);
+      @include active-presion;
     }
   }
 
-  &--secondary {
-    background-color: transparent;
-    border-color: var(--color-borde-fuerte);
-    color: var(--color-texto-fuerte);
-
-    &:hover:not(:disabled) {
-      background-color: var(--color-superficie-base);
-      border-color: var(--color-principal);
-      color: var(--color-principal);
-    }
-
-    &:active:not(:disabled) {
-      background-color: var(--color-superficie-base);
-    }
-  }
-
-  &--ghost {
-    background-color: transparent;
-    border-color: transparent;
-    color: var(--color-texto-base);
-
-    &:hover:not(:disabled) {
-      background-color: var(--color-superficie-base);
-      color: var(--color-principal);
-    }
-
-    &:active:not(:disabled) {
-      background-color: var(--color-gris-medio);
-    }
-  }
-
-  &--danger {
-    background-color: var(--color-error);
-    border-color: var(--color-error);
-    color: var(--color-blanco);
-
-    &:hover:not(:disabled) {
-      background-color: color-mix(in srgb, var(--color-error) 85%, black);
-      border-color: color-mix(in srgb, var(--color-error) 85%, black);
-    }
-
-    &:active:not(:disabled) {
-      background-color: color-mix(in srgb, var(--color-error) 75%, black);
-    }
-  }
-
+  // Morado (Purple) - acción destacada
   &--purple {
     background-color: var(--color-morado-principal);
-    border-color: var(--color-morado-principal);
     color: var(--color-blanco);
     box-shadow: var(--sombra-morado);
 
     &:hover:not(:disabled) {
       background-color: var(--color-morado-oscuro);
-      border-color: var(--color-morado-oscuro);
+      @include hover-elevacion;
+      box-shadow: var(--sombra-morado), var(--sombra-2);
     }
 
     &:active:not(:disabled) {
       background-color: var(--color-morado-oscuro);
+      @include active-presion;
+    }
+  }
+
+  // Azul (Blue) - acción informativa
+  &--blue {
+    background-color: var(--color-azul);
+    color: var(--color-blanco);
+    box-shadow: var(--sombra-azul);
+
+    &:hover:not(:disabled) {
+      background-color: color-mix(in srgb, var(--color-azul) 85%, black);
+      @include hover-elevacion;
+      box-shadow: var(--sombra-azul), var(--sombra-2);
+    }
+
+    &:active:not(:disabled) {
+      background-color: color-mix(in srgb, var(--color-azul) 75%, black);
+      @include active-presion;
+    }
+  }
+
+  // Amarillo (Yellow) - advertencia
+  &--yellow {
+    background-color: var(--color-amarillo);
+    color: var(--color-blanco);
+    box-shadow: var(--sombra-amarillo);
+
+    &:hover:not(:disabled) {
+      background-color: color-mix(in srgb, var(--color-amarillo) 85%, black);
+      @include hover-elevacion;
+      box-shadow: var(--sombra-amarillo), var(--sombra-2);
+    }
+
+    &:active:not(:disabled) {
+      background-color: color-mix(in srgb, var(--color-amarillo) 75%, black);
+      @include active-presion;
+    }
+  }
+
+  // Transparente con borde (Secondary)
+  &--secondary {
+    background-color: transparent;
+    border: 1px solid var(--color-gris-oscuro);
+    color: var(--color-texto-normal);
+    box-shadow: none;
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-superficie-base);
+      border-color: var(--color-principal);
+      color: var(--color-principal);
+      @include hover-elevacion;
+      box-shadow: var(--sombra-1);
+    }
+
+    &:active:not(:disabled) {
+      background-color: var(--color-superficie-base);
+      @include active-presion;
+    }
+  }
+
+  // Ghost - transparente sin borde
+  &--ghost {
+    background-color: transparent;
+    color: var(--color-texto-base);
+    box-shadow: none;
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-superficie-base);
+      color: var(--color-principal);
+      transform: scale(1.05);
+    }
+
+    &:active:not(:disabled) {
+      background-color: var(--color-gris-medio);
+      transform: scale(1);
     }
   }
 

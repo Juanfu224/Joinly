@@ -1,3 +1,31 @@
 <button [class]="buttonClasses()" [type]="type()" [disabled]="disabled()">
-  <ng-content />
+  @if (leftIconPath()) {
+    <svg
+      [attr.width]="iconSize()"
+      [attr.height]="iconSize()"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      class="c-button__icon"
+      [innerHTML]="leftIconPath()"
+    ></svg>
+  }
+  
+  <span class="c-button__text">
+    <ng-content />
+  </span>
+  
+  @if (rightIconPath()) {
+    <svg
+      [attr.width]="iconSize()"
+      [attr.height]="iconSize()"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      class="c-button__icon"
+      [innerHTML]="rightIconPath()"
+    ></svg>
+  }
 </button>

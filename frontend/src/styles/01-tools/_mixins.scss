@@ -204,3 +204,18 @@
   line-height: var(--altura-linea-caption);
   color: var(--color-texto-base);
 }
+
+// ==========================================================================
+// 9. EFECTOS DE INTERACCIÓN
+// ==========================================================================
+// Mixins reutilizables para efectos de hover/active en componentes interactivos
+
+// Efecto de elevación en hover (usado en botones y cards)
+@mixin hover-elevacion($escala: 1.02) {
+  transform: translateY(-2px) scale($escala);
+}
+
+// Efecto de presión en active
+@mixin active-presion {
+  transform: translateY(0) scale(1);
+}

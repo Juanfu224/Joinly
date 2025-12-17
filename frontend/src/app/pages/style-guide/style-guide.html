@@ -21,7 +21,8 @@
             </div>
             <h4 slot="title">Grupos familiares</h4>
             <p slot="description">
-              Crea unidades familiares y gestiona todas tus suscripciones compartidas en un solo lugar
+              Crea unidades familiares y gestiona todas tus suscripciones compartidas en un solo
+              lugar
             </p>
           </app-card>
 
@@ -166,101 +167,50 @@
       <div class="p-style-guide__seccion-encabezado">
         <h2 id="titulo-botones" class="p-style-guide__subtitulo">Botones</h2>
         <p class="p-style-guide__nota">
-          Sistema completo de botones con variantes, tamaños y estados.
+          Sistema de botones con 5 variantes de color, 5 tamaños y soporte para iconos. Uso:
+          acciones principales, secundarias y terciarias.
         </p>
       </div>
 
-      <!-- Variantes de botones -->
+      <!-- Todos los tamaños por variante -->
       <div class="p-style-guide__demo">
-        <h3 class="p-style-guide__demo-titulo">Variantes</h3>
-        <div class="p-style-guide__grupo-botones">
-          <app-button variant="primary">Primary</app-button>
-          <app-button variant="secondary">Secondary</app-button>
-          <app-button variant="ghost">Ghost</app-button>
-          <app-button variant="danger">Danger</app-button>
-          <app-button variant="purple">Purple</app-button>
-        </div>
-      </div>
-
-      <!-- Tamaños de botones -->
-      <div class="p-style-guide__demo">
-        <h3 class="p-style-guide__demo-titulo">Tamaños</h3>
-        <div class="p-style-guide__grupo-botones p-style-guide__grupo-botones--alineado">
-          <app-button variant="primary" size="sm">Small</app-button>
-          <app-button variant="primary" size="md">Medium</app-button>
-          <app-button variant="primary" size="lg">Large</app-button>
-        </div>
-        <div class="p-style-guide__grupo-botones p-style-guide__grupo-botones--alineado">
-          <app-button variant="secondary" size="sm">Small</app-button>
-          <app-button variant="secondary" size="md">Medium</app-button>
-          <app-button variant="secondary" size="lg">Large</app-button>
-        </div>
-        <div class="p-style-guide__grupo-botones p-style-guide__grupo-botones--alineado">
-          <app-button variant="purple" size="sm">Small</app-button>
-          <app-button variant="purple" size="md">Medium</app-button>
-          <app-button variant="purple" size="lg">Large</app-button>
-        </div>
-      </div>
-
-      <!-- Estados de botones -->
-      <div class="p-style-guide__demo">
-        <h3 class="p-style-guide__demo-titulo">Estados</h3>
-        <div class="p-style-guide__grupo-botones">
-          <app-button variant="primary">Normal</app-button>
-          <app-button variant="primary" [disabled]="true">Disabled</app-button>
-        </div>
-        <div class="p-style-guide__grupo-botones">
-          <app-button variant="secondary">Normal</app-button>
-          <app-button variant="secondary" [disabled]="true">Disabled</app-button>
-        </div>
-        <div class="p-style-guide__grupo-botones">
-          <app-button variant="ghost">Normal</app-button>
-          <app-button variant="ghost" [disabled]="true">Disabled</app-button>
-        </div>
-        <div class="p-style-guide__grupo-botones">
-          <app-button variant="danger">Normal</app-button>
-          <app-button variant="danger" [disabled]="true">Disabled</app-button>
-        </div>
-        <div class="p-style-guide__grupo-botones">
-          <app-button variant="purple">Normal</app-button>
-          <app-button variant="purple" [disabled]="true">Disabled</app-button>
-        </div>
-      </div>
-
-      <!-- Botón Full Width -->
-      <div class="p-style-guide__demo">
-        <h3 class="p-style-guide__demo-titulo">Full Width</h3>
-        <div class="p-style-guide__grupo-formulario">
-          <app-button variant="primary" [fullWidth]="true">Primary Full Width</app-button>
-          <app-button variant="secondary" [fullWidth]="true">Secondary Full Width</app-button>
-          <app-button variant="purple" [fullWidth]="true">Purple Full Width</app-button>
+        <div class="p-style-guide__grupo-estados">
+          @for (variantItem of buttonVariants; track variantItem.variant) {
+          <div class="p-style-guide__grupo-botones p-style-guide__grupo-botones--alineado">
+            @for (size of buttonSizes; track size) {
+            <app-button
+              [size]="size"
+              [variant]="variantItem.variant"
+              leftIcon="add"
+              rightIcon="arrow-right"
+              >Botón</app-button
+            >
+            }
+          </div>
+          }
         </div>
       </div>
 
       <!-- Botones con iconos -->
       <div class="p-style-guide__demo">
-        <h3 class="p-style-guide__demo-titulo">Con Iconos</h3>
+        <h3 class="p-style-guide__demo-titulo">Con iconos</h3>
         <div class="p-style-guide__grupo-botones">
-          <app-button variant="primary">
-            <app-icon name="add" size="sm" />
-            Añadir
-          </app-button>
-          <app-button variant="danger">
-            <app-icon name="bin" size="sm" />
-            Eliminar
-          </app-button>
-          <app-button variant="purple">
-            <app-icon name="users" size="xs" />
-            Invitar
-          </app-button>
-          <app-button variant="ghost">
-            <app-icon name="arrow-left" size="sm" />
-            Volver
-          </app-button>
-          <app-button variant="secondary">
-            Descargar
-            <app-icon name="download" size="sm" />
-          </app-button>
+          <app-button variant="primary" leftIcon="add">Crear</app-button>
+          <app-button variant="purple" rightIcon="arrow-right">Continuar</app-button>
+          <app-button variant="blue" leftIcon="users" rightIcon="arrow-right">Ver grupo</app-button>
+          <app-button variant="secondary" leftIcon="search">Buscar</app-button>
+          <app-button variant="ghost" leftIcon="settings">Configuración</app-button>
+        </div>
+      </div>
+
+      <!-- Estados -->
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Estados</h3>
+        <div class="p-style-guide__grupo-botones">
+          <app-button variant="primary">Normal</app-button>
+          <app-button variant="primary" [disabled]="true">Deshabilitado</app-button>
+          <app-button variant="secondary">Normal</app-button>
+          <app-button variant="secondary" [disabled]="true">Deshabilitado</app-button>
         </div>
       </div>
     </section>

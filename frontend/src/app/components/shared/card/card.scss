@@ -113,9 +113,15 @@
     flex-direction: row;
     align-items: center;
     gap: var(--espaciado-3);
+    padding: var(--espaciado-3);
 
     .c-card__contenido {
+      gap: var(--espaciado-1);
       flex: 1;
+    }
+
+    .c-card__titulo {
+      font-size: var(--tamano-texto-regular);
     }
 
     .c-card__badge,
@@ -124,29 +130,9 @@
     }
   }
 
-  // ==========================================================================
-  // VARIANTE: ACTION
-  // ==========================================================================
-
   &--action {
-    // Dimensiones según diseño Figma: 720px × 120px
-    min-block-size: 7.5rem; // 120px
-    padding: var(--espaciado-3); // 24px
-
-    .c-card__contenido {
-      gap: 0.25rem; // 4px - espaciado entre título y descripción
-    }
-
-    .c-card__titulo {
-      // Título H4 según Figma: Inter Semi Bold, 20px, line-height 28px
-      font-size: var(--tamano-h4);
-      line-height: var(--altura-linea-h4);
-    }
-
     .c-card__descripcion {
-      // Body Large según Figma: Inter Regular, 18px, line-height 28.8px
-      font-size: var(--tamano-texto-grande);
-      line-height: var(--altura-linea-body-large);
+      font-size: var(--tamano-texto-pequeno);
     }
 
     .c-card__valor,
@@ -155,32 +141,9 @@
     }
   }
 
-  // ==========================================================================
-  // VARIANTE: INFO
-  // ==========================================================================
-
   &--info {
-    // Dimensiones según diseño Figma: 453px × 120px
-    min-block-size: 7.5rem; // 120px
-    padding: 1.75rem var(--espaciado-4); // 28px vertical, 32px horizontal
-    box-shadow: var(--sombra-1), var(--sombra-3);
-
-    .c-card__contenido {
-      gap: 0.125rem; // 2px - espaciado entre título y valor
-    }
-
-    .c-card__titulo {
-      // Título H4 según Figma: Inter Semi Bold, 20px, line-height 28px
-      font-size: var(--tamano-h4);
-      line-height: var(--altura-linea-h4);
-      font-weight: var(--peso-fuente-semi-negrita);
-    }
-
     .c-card__valor {
-      // Body Large según Figma: Inter Regular, 18px, line-height 28.8px
-      font-size: var(--tamano-texto-grande);
-      line-height: var(--altura-linea-body-large);
-      font-weight: var(--peso-fuente-regular);
+      font-size: var(--tamano-texto-pequeno);
     }
 
     .c-card__descripcion,

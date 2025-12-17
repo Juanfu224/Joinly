@@ -97,6 +97,32 @@ export class StyleGuideComponent {
     { label: 'Familia López' },
   ];
 
+  /**
+   * Tamaños de botones disponibles en el sistema de diseño.
+   * Usado para generar ejemplos en la guía de estilos.
+   */
+  protected readonly buttonSizes: Array<'xs' | 'sm' | 'md' | 'lg' | 'xl'> = [
+    'xs',
+    'sm',
+    'md',
+    'lg',
+    'xl',
+  ] as const;
+
+  /**
+   * Variantes de color para botones en el sistema de diseño.
+   * Cada variante incluye su valor técnico y propósito de uso.
+   */
+  protected readonly buttonVariants: Array<{
+    variant: 'primary' | 'purple' | 'blue' | 'yellow' | 'secondary';
+  }> = [
+    { variant: 'primary' },
+    { variant: 'purple' },
+    { variant: 'blue' },
+    { variant: 'yellow' },
+    { variant: 'secondary' },
+  ] as const;
+
   // =========================================================================
   // ESTADO REACTIVO CON SIGNALS
   // =========================================================================
