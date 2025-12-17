@@ -1,6 +1,126 @@
 <main class="p-style-guide">
   <div class="p-style-guide__contenido l-contenedor">
     <!-- ===================================================================
+         SECCIÓN: SISTEMA DE EVENTOS AVANZADO - TOOLTIPS
+         =================================================================== -->
+    <section class="p-style-guide__seccion" aria-labelledby="titulo-tooltips">
+      <div class="p-style-guide__seccion-encabezado">
+        <h2 id="titulo-tooltips" class="p-style-guide__subtitulo">Tooltips</h2>
+        <p class="p-style-guide__nota">
+          Tooltips informativos con posicionamiento dinámico y delay. Uso: iconos, botones, ayuda contextual.
+        </p>
+      </div>
+
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Tooltips en botones</h3>
+        <div class="p-style-guide__grupo-botones">
+          <app-button 
+            variant="primary" 
+            appTooltip="Crea una nueva unidad familiar"
+            tooltipPosition="top"
+          >
+            Crear grupo
+          </app-button>
+
+          <app-button 
+            variant="purple" 
+            appTooltip="Envía una invitación por email"
+            tooltipPosition="right"
+          >
+            Invitar miembros
+          </app-button>
+
+          <app-button 
+            variant="blue" 
+            leftIcon="info"
+            appTooltip="Ver información detallada de la suscripción"
+            tooltipPosition="bottom"
+          >
+            Info
+          </app-button>
+        </div>
+
+        <h3 class="p-style-guide__demo-titulo">Tooltips en iconos</h3>
+        <div class="p-style-guide__grupo-botones">
+          <app-icon 
+            name="user" 
+            appTooltip="Usuario activo"
+            tooltipPosition="top"
+            style="cursor: help; color: var(--color-principal)"
+          />
+          
+          <app-icon 
+            name="dollar" 
+            appTooltip="Coste mensual de la suscripción"
+            tooltipPosition="right"
+            style="cursor: help; color: var(--color-acento)"
+          />
+          
+          <app-icon 
+            name="check" 
+            appTooltip="Verificación completada"
+            tooltipPosition="left"
+            style="cursor: help; color: var(--color-exito)"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SECCIÓN: SISTEMA DE EVENTOS AVANZADO - MODALES
+         =================================================================== -->
+    <section class="p-style-guide__seccion" aria-labelledby="titulo-modales">
+      <div class="p-style-guide__seccion-encabezado">
+        <h2 id="titulo-modales" class="p-style-guide__subtitulo">Modales</h2>
+        <p class="p-style-guide__nota">
+          Modales accesibles con focus trap, cierre con ESC y overlay. Uso: confirmaciones, alertas, formularios.
+        </p>
+      </div>
+
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Tipos de modales</h3>
+        <div class="p-style-guide__grupo-botones">
+          <app-button 
+            variant="primary" 
+            (click)="openConfirmModal()"
+            appTooltip="Requiere confirmación o cancelación"
+          >
+            Modal de confirmación
+          </app-button>
+
+          <app-button 
+            variant="blue" 
+            (click)="openInfoModal()"
+            appTooltip="Solo botón de aceptar"
+          >
+            Modal informativo
+          </app-button>
+
+          <app-button 
+            variant="yellow" 
+            (click)="openStrictModal()"
+            appTooltip="No se puede cerrar con ESC ni overlay"
+          >
+            Modal estricto
+          </app-button>
+        </div>
+
+        <div class="p-style-guide__nota" style="margin-top: var(--espaciado-3);">
+          <strong>Características implementadas:</strong>
+          <ul style="margin-top: var(--espaciado-1); padding-left: var(--espaciado-3);">
+            <li>✅ Focus trap (Tab solo dentro del modal)</li>
+            <li>✅ Cierre con ESC (configurable)</li>
+            <li>✅ Cierre con click en overlay (configurable)</li>
+            <li>✅ Prevención de scroll del body</li>
+            <li>✅ Restauración de foco al cerrar</li>
+            <li>✅ Animaciones de entrada y salida</li>
+            <li>✅ Totalmente accesible (ARIA)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
          SECCIÓN: TARJETAS DE CARACTERÍSTICAS
          =================================================================== -->
     <section class="p-style-guide__seccion" aria-labelledby="titulo-ventajas">

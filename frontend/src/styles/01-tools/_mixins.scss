@@ -219,3 +219,68 @@
 @mixin active-presion {
   transform: translateY(0) scale(1);
 }
+
+// ==========================================================================
+// 10. MODALES Y OVERLAYS
+// ==========================================================================
+
+// Overlay oscuro de fondo para modales
+@mixin overlay-modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: var(--z-modal-backdrop);
+  @include transicion(opacity, var(--duracion-base));
+}
+
+// Contenedor de modal centrado
+@mixin contenedor-modal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  @include centrar-flex;
+  padding: var(--espaciado-2);
+}
+
+// Animación de entrada de modal (fade + scale)
+@mixin modal-animacion-entrada {
+  animation: modal-fade-in var(--duracion-base) var(--transicion-estandar);
+}
+
+// Animación de salida de modal
+@mixin modal-animacion-salida {
+  animation: modal-fade-out var(--duracion-rapida) var(--transicion-estandar);
+}
+
+// ==========================================================================
+// 11. TOOLTIPS
+// ==========================================================================
+
+// Posicionamiento base de tooltip
+@mixin tooltip-base {
+  position: absolute;
+  z-index: var(--z-tooltip);
+  max-width: 20rem;
+  padding: var(--espaciado-1) var(--espaciado-2);
+  background-color: var(--color-texto-oscuro);
+  color: var(--color-blanco);
+  font-size: var(--tamano-texto-pequeno);
+  line-height: var(--altura-linea-body-small);
+  border-radius: var(--radio-medio);
+  box-shadow: var(--sombra-3);
+  pointer-events: none;
+  white-space: normal;
+  word-wrap: break-word;
+  @include transicion((opacity, transform), var(--duracion-rapida));
+}
+
+// Flecha del tooltip (usada con ::before o ::after)
+@mixin tooltip-flecha($size: 6px) {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: $size;
+}

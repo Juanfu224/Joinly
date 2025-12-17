@@ -17,3 +17,5 @@ export { FormCheckboxComponent } from './form-checkbox/form-checkbox';
 export { FormRadioGroupComponent, type RadioOption } from './form-radio-group/form-radio-group';
 export { BreadcrumbsComponent, type BreadcrumbItem } from './breadcrumbs/breadcrumbs';
 export { ThemeToggleComponent } from './theme-toggle/theme-toggle';
+export { TooltipDirective, type TooltipPosition } from './tooltip/tooltip.directive';
+export { ModalComponent } from './modal/modal';

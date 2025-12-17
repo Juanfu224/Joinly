@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent, MainComponent, FooterComponent } from './layout';
-import { AlertContainerComponent } from './components/shared';
+import { AlertContainerComponent, ModalComponent } from './components/shared';
 import { ThemeService } from './services/theme';
 
 /**
@@ -20,6 +20,7 @@ import { ThemeService } from './services/theme';
     MainComponent,
     FooterComponent,
     AlertContainerComponent,
+    ModalComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',

@@ -11,6 +11,7 @@
 
     <div class="c-register-form__row">
       <app-form-input
+        #nombreInput
         label="Nombre"
         name="nombre"
         autocomplete="given-name"
@@ -21,6 +22,7 @@
       />
 
       <app-form-input
+        #apellidoInput
         label="Apellido"
         name="apellido"
         autocomplete="family-name"
@@ -36,6 +38,7 @@
     <legend class="c-register-form__legend">Datos de la cuenta</legend>
 
     <app-form-input
+      #emailInput
       label="Email"
       type="email"
       name="email"
@@ -47,6 +50,7 @@
     />
 
     <app-form-input
+      #passwordInput
       label="Contraseña"
       type="password"
       name="password"
@@ -59,6 +63,7 @@
     />
 
     <app-form-input
+      #confirmPasswordInput
       label="Repetir contraseña"
       type="password"
       name="confirmPassword"
