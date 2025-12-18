@@ -46,75 +46,13 @@
     gap: var(--espaciado-2);
   }
 
-  // --- Logo ---
-  &__logo {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--espaciado-1);
-    
-    // Color del icono según variante
-    &[data-variant="naranja"] {
-      .c-form-card__logo-icon {
-        color: var(--color-naranja-principal);
-      }
-      .c-form-card__logo-ly {
-        color: var(--color-naranja-oscuro);
-      }
-    }
-    
-    &[data-variant="morado"] {
-      .c-form-card__logo-icon {
-        color: var(--color-morado-principal);
-      }
-      .c-form-card__logo-ly {
-        color: var(--color-morado-principal);
-      }
-    }
-    
-    &[data-variant="azul"] {
-      .c-form-card__logo-icon {
-        color: var(--color-azul);
-      }
-      .c-form-card__logo-ly {
-        color: var(--color-azul);
-      }
-    }
-  }
-
-  &__logo-icon {
-    width: 1.5rem;
-    height: 1.5rem;
-    flex-shrink: 0;
-  }
-
-  &__logo-text {
-    font-family: 'DM Sans', var(--font-primaria);
-    font-size: var(--tamano-h3); // 32px
-    font-weight: var(--peso-fuente-negrita);
-    line-height: 1;
-  }
-
-  &__logo-join {
-    color: var(--color-footer); // #1e293b
-  }
-
-  &__logo-ly {
-    // Color definido por la variante del logo (ver &__logo[data-variant])
-    color: inherit;
-  }
-
   // --- Título ---
   &__title {
-    font-size: var(--tamano-h3); // 40px según Figma → 32px ajustado
+    font-size: 2.5rem; // 40px según Figma (Título H3)
     font-weight: var(--peso-fuente-semi-negrita);
-    line-height: var(--altura-linea-compacta);
+    line-height: 2rem; // 32px según Figma
     color: var(--color-texto-fuerte);
     margin: 0;
-
-    @include responder-a('tablet') {
-      font-size: 2.5rem; // 40px en desktop
-      line-height: var(--altura-linea-h3);
-    }
   }
 
   &__subtitle {
@@ -123,9 +61,10 @@
 
   // --- Descripción ---
   &__description {
-    font-size: var(--tamano-texto-grande); // 18px
-    line-height: var(--altura-linea-body-large);
-    color: var(--color-texto-base);
+    font-size: var(--tamano-texto-grande); // 18px (Body Large)
+    font-weight: var(--peso-fuente-regular);
+    line-height: var(--altura-linea-body-large); // 28.8px
+    color: var(--color-texto-base); // #4b5563
     margin: 0;
   }
 

@@ -107,9 +107,10 @@
 .c-modal__acciones {
   display: flex;
   gap: var(--espaciado-2);
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
   
-  // En móvil, botones apilados verticalmente
+  // En móvil, botones apilados verticalmente pero centrados
   @media (max-width: $bp-movil) {
     flex-direction: column-reverse;
     

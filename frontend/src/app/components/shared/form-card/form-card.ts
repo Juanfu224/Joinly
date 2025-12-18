@@ -3,8 +3,7 @@ import {
   Component,
   input,
 } from '@angular/core';
-
-type LogoVariant = 'naranja' | 'morado' | 'azul';
+import { LogoComponent, type LogoVariant } from '../logo/logo';
 
 /**
  * Componente contenedor base para formularios.
@@ -24,6 +23,7 @@ type LogoVariant = 'naranja' | 'morado' | 'azul';
 @Component({
   selector: 'app-form-card',
   standalone: true,
+  imports: [LogoComponent],
   templateUrl: './form-card.html',
   styleUrl: './form-card.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

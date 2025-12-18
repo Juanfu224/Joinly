@@ -208,6 +208,55 @@
   align-items: center;
 }
 
+// Grupo de logos con disposición flexible
+.p-style-guide__grupo-logos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaciado-5);
+  align-items: center;
+}
+
+.p-style-guide__grupo-logos--tamaños {
+  gap: var(--espaciado-6);
+}
+
+.p-style-guide__grupo-logos--casos-uso {
+  gap: var(--espaciado-8);
+}
+
+.p-style-guide__logo-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--espaciado-2);
+}
+
+.p-style-guide__logo-label {
+  font-size: var(--tamano-texto-pequeno);
+  color: var(--color-gris-oscuro);
+  text-align: center;
+  margin: 0;
+  align-self: center;
+}
+
+.p-style-guide__logo-caso {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--espaciado-3);
+  padding: var(--espaciado-4);
+  background: var(--bg-secondary);
+  border-radius: var(--radio-esquina-medio);
+}
+
+.p-style-guide__logo-caso-titulo {
+  font-size: var(--tamano-texto-pequeno);
+  font-weight: var(--peso-fuente-semi-negrita);
+  color: var(--color-texto-primario);
+  margin: 0;
+  text-align: center;
+}
+
 // Grupos con disposición vertical
 .p-style-guide__grupo-alertas,
 .p-style-guide__grupo-navegacion,
@@ -291,6 +340,31 @@
     inline-size: 1rem;
     block-size: 1rem;
     flex-shrink: 0;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// REJILLA DE FORMULARIOS COMPLETOS
+// ---------------------------------------------------------------------------
+.p-style-guide__rejilla-formularios {
+  display: grid;
+  gap: var(--espaciado-6);
+  justify-items: center;
+
+  @include responder-a('tablet') {
+    gap: var(--espaciado-8);
+  }
+
+  @include responder-a('escritorio-grande') {
+    grid-template-columns: repeat(2, minmax(0, max-content));
+    justify-content: center;
+  }
+
+  // Variante centrada para formulario único
+  &--centrado {
+    @include responder-a('escritorio-grande') {
+      grid-template-columns: minmax(0, max-content);
+    }
   }
 }
 

@@ -12,27 +12,21 @@ import {
 import { Router, RouterLink, RouterLinkActive, NavigationStart } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { ThemeToggleComponent, IconComponent } from '../../components/shared';
+import { ThemeToggleComponent, IconComponent, LogoComponent } from '../../components/shared';
 
 /**
  * Componente de cabecera principal de la aplicación.
- * Contiene el logotipo, navegación móvil con menú hamburguesa, y área de utilidad con botones de acceso.
+ * Contiene el logotipo (LogoComponent), navegación móvil con menú hamburguesa, y área de utilidad.
  *
- * @remarks
- * El logotipo soporta variantes de color mediante modificadores BEM:
- * - `.c-header__logo` (predeterminado): Texto oscuro + acento naranja oscuro (#ea580c)
- * - `.c-header__logo--claro-naranja`: Texto claro + acento naranja (#f97316)
- * - `.c-header__logo--morado`: Texto oscuro + acento morado oscuro (#7c3aed)
- * - `.c-header__logo--claro-morado`: Texto claro + acento morado (#9333ea)
- * - `.c-header__logo--azul`: Texto oscuro + acento azul (#60a5fa)
- * - `.c-header__logo--amarillo`: Texto oscuro + acento amarillo (#facc15)
- *
- * ### Menú hamburguesa móvil
- * - Se muestra solo en tablet hacia abajo (< 1024px)
- * - Incluye navegación: Inicio, Guía de Estilos, Login, Registro
- * - Se cierra al hacer click fuera, presionar ESC, o al navegar a otra ruta
- * - Bloquea el scroll del body cuando está abierto
- * - Overlay oscuro semi-transparente en el fondo
+ * ### Características
+ * - Logotipo con variantes de color (naranja por defecto)
+ * - Menú hamburguesa móvil responsive (< 1024px)
+ * - Navegación con iconos semánticos
+ * - Toggle de tema claro/oscuro
+ * - Botones de acceso (Login, Registro)
+ * - Overlay oscuro cuando el menú está abierto
+ * - Cierre automático al navegar o presionar ESC
+ * - Bloqueo de scroll del body cuando menú abierto
  *
  * @usageNotes
  * ```html
@@ -42,7 +36,7 @@ import { ThemeToggleComponent, IconComponent } from '../../components/shared';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, ThemeToggleComponent, IconComponent],
+  imports: [RouterLink, RouterLinkActive, ThemeToggleComponent, IconComponent, LogoComponent],
   templateUrl: './header.html',
   styleUrl: './header.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

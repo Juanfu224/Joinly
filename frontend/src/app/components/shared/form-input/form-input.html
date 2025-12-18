@@ -1,26 +1,28 @@
-<label class="c-form-input__label" [attr.for]="computedId()">
-  {{ label() }}
-  @if (required()) {
-    <span class="c-form-input__required" aria-hidden="true">*</span>
-  }
-</label>
+<div class="c-form-input__wrapper">
+  <label class="c-form-input__label" [attr.for]="computedId()">
+    {{ label() }}
+    @if (required()) {
+      <span class="c-form-input__required" aria-hidden="true">*</span>
+    }
+  </label>
 
-<input
-  #inputEl
-  class="c-form-input__field"
-  [id]="computedId()"
-  [type]="type()"
-  [name]="name()"
-  [placeholder]="placeholder()"
-  [autocomplete]="autocomplete()"
-  [value]="value()"
-  [disabled]="disabled()"
-  [attr.aria-required]="required()"
-  [attr.aria-invalid]="errorMessage() ? true : null"
-  [attr.aria-describedby]="ariaDescribedBy()"
-  (input)="onInput($event)"
-  (blur)="onBlur()"
-/>
+  <input
+    #inputEl
+    class="c-form-input__field"
+    [id]="computedId()"
+    [type]="type()"
+    [name]="name()"
+    [placeholder]="placeholder()"
+    [autocomplete]="autocomplete()"
+    [value]="value()"
+    [disabled]="disabled()"
+    [attr.aria-required]="required()"
+    [attr.aria-invalid]="errorMessage() ? true : null"
+    [attr.aria-describedby]="ariaDescribedBy()"
+    (input)="onInput($event)"
+    (blur)="onBlur()"
+  />
+</div>
 
 @if (errorMessage()) {
   <span

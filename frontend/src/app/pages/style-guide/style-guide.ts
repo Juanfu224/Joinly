@@ -5,6 +5,7 @@ import {
   AlertComponent,
   AvatarComponent,
   IconComponent,
+  LogoComponent,
   FormInputComponent,
   FormTextareaComponent,
   FormSelectComponent,
@@ -14,6 +15,11 @@ import {
   TooltipDirective,
   NotificationSenderComponent,
   NotificationReceiverComponent,
+  LoginFormComponent,
+  RegisterFormComponent,
+  CreateGroupFormComponent,
+  JoinGroupFormComponent,
+  NewSubscriptionFormComponent,
   type SelectOption,
   type RadioOption,
   type BreadcrumbItem,
@@ -46,6 +52,7 @@ import { ModalService } from '../../services/modal';
     AlertComponent,
     AvatarComponent,
     IconComponent,
+    LogoComponent,
     FormInputComponent,
     FormTextareaComponent,
     FormSelectComponent,
@@ -55,6 +62,11 @@ import { ModalService } from '../../services/modal';
     TooltipDirective,
     NotificationSenderComponent,
     NotificationReceiverComponent,
+    LoginFormComponent,
+    RegisterFormComponent,
+    CreateGroupFormComponent,
+    JoinGroupFormComponent,
+    NewSubscriptionFormComponent,
   ],
   templateUrl: './style-guide.html',
   styleUrl: './style-guide.scss',
@@ -131,6 +143,31 @@ export class StyleGuideComponent {
     { variant: 'blue' },
     { variant: 'yellow' },
     { variant: 'secondary' },
+  ] as const;
+
+  /**
+   * Variantes de color para el logo en el sistema de diseño.
+   * Incluye colores principales y claros para fondos oscuros.
+   */
+  protected readonly logoVariants: Array<{
+    variant: 'naranja' | 'morado' | 'claro-naranja' | 'claro-morado' | 'azul' | 'amarillo';
+    label: string;
+  }> = [
+    { variant: 'naranja', label: 'Naranja (Principal)' },
+    { variant: 'morado', label: 'Morado (Secundario)' },
+    { variant: 'claro-naranja', label: 'Claro Naranja' },
+    { variant: 'claro-morado', label: 'Claro Morado' },
+    { variant: 'azul', label: 'Azul' },
+    { variant: 'amarillo', label: 'Amarillo' },
+  ] as const;
+
+  /**
+   * Tamaños disponibles para el logo en el sistema de diseño.
+   */
+  protected readonly logoSizes: Array<{ size: 'sm' | 'md' | 'lg'; label: string }> = [
+    { size: 'sm', label: 'Pequeño (32px)' },
+    { size: 'md', label: 'Mediano (48px)' },
+    { size: 'lg', label: 'Grande (64px)' },
   ] as const;
 
   // =========================================================================
@@ -246,5 +283,72 @@ export class StyleGuideComponent {
         console.log('Confirmado');
       },
     });
+  }
+
+  // =========================================================================
+  // MÉTODOS DE DEMOSTRACIÓN - FORMULARIOS
+  // =========================================================================
+
+  /**
+   * Maneja el evento de submit del formulario de login.
+   * En producción, conectaría con AuthService.
+   */
+  protected onLoginSubmit(data: { email: string; password: string }): void {
+    console.log('[StyleGuide] Login submit:', data);
+  }
+
+  /**
+   * Maneja el evento de submit del formulario de registro.
+   */
+  protected onRegisterSubmit(data: {
+    nombre: string;
+    apellido: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+  }): void {
+    console.log('[StyleGuide] Register submit:', data);
+  }
+
+  /**
+   * Maneja el evento de submit del formulario de crear grupo.
+   */
+  protected onCreateGroupSubmit(data: { nombre: string }): void {
+    console.log('[StyleGuide] Create group submit:', data);
+  }
+
+  /**
+   * Maneja el evento de submit del formulario de unirse a grupo.
+   */
+  protected onJoinGroupSubmit(data: { codigo: string }): void {
+    console.log('[StyleGuide] Join group submit:', data);
+  }
+
+  /**
+   * Maneja el evento de submit del formulario de nueva suscripción.
+   */
+  protected onNewSubscriptionSubmit(data: {
+    nombre: string;
+    precioTotal: number;
+    frecuencia: 'mensual' | 'anual';
+    plazas: number;
+    password?: string;
+    usuario?: string;
+  }): void {
+    console.log('[StyleGuide] New subscription submit:', data);
+  }
+
+  /**
+   * Maneja eventos de cancelación en formularios de demo.
+   */
+  protected onFormCancel(): void {
+    console.log('[StyleGuide] Form cancelled');
+  }
+
+  /**
+   * Maneja solicitudes de cambio de formulario (login -> register, etc.).
+   */
+  protected onFormSwitch(target: string): void {
+    console.log('[StyleGuide] Form switch requested:', target);
   }
 }

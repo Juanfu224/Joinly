@@ -10,11 +10,18 @@ export { ButtonComponent } from './button/button';
 export { CardComponent } from './card/card';
 export { IconComponent } from './icon/icon';
 export { type IconName } from './icon/icon-paths';
+export { LogoComponent, type LogoVariant, type LogoSize } from './logo/logo';
 export { FormInputComponent } from './form-input/form-input';
 export { FormTextareaComponent } from './form-textarea/form-textarea';
 export { FormSelectComponent, type SelectOption } from './form-select/form-select';
 export { FormCheckboxComponent } from './form-checkbox/form-checkbox';
 export { FormRadioGroupComponent, type RadioOption } from './form-radio-group/form-radio-group';
+export { FormCardComponent } from './form-card/form-card';
+export { RegisterFormComponent } from './register-form/register-form';
+export { LoginFormComponent } from './login-form/login-form';
+export { CreateGroupFormComponent } from './create-group-form/create-group-form';
+export { JoinGroupFormComponent } from './join-group-form/join-group-form';
+export { NewSubscriptionFormComponent } from './new-subscription-form/new-subscription-form';
 export { BreadcrumbsComponent, type BreadcrumbItem } from './breadcrumbs/breadcrumbs';
 export { ThemeToggleComponent } from './theme-toggle/theme-toggle';
 export { TooltipDirective, type TooltipPosition } from './tooltip/tooltip.directive';
@@ -28,13 +35,3 @@ export { NotificationReceiverComponent } from './notification-receiver/notificat
 export { ToastComponent } from './toast/toast';
 export { ToastContainerComponent } from './toast-container/toast-container';
 export { SpinnerOverlayComponent } from './spinner-overlay/spinner-overlay';
-
-// ==========================================================================
-// FORMULARIOS
-// ==========================================================================
-export { FormCardComponent } from './form-card/form-card';
-export { RegisterFormComponent } from './register-form/register-form';
-export { LoginFormComponent } from './login-form/login-form';
-export { CreateGroupFormComponent } from './create-group-form/create-group-form';
-export { JoinGroupFormComponent } from './join-group-form/join-group-form';
-export { NewSubscriptionFormComponent } from './new-subscription-form/new-subscription-form';

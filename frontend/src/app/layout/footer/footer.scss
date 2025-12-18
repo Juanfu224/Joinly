@@ -48,7 +48,6 @@
 .c-footer__logo {
   display: inline-flex;
   align-items: center;
-  gap: var(--espaciado-1);
   text-decoration: none;
   inline-size: fit-content;
 
@@ -58,27 +57,6 @@
   &:hover {
     opacity: 0.85;
   }
-}
-
-.c-footer__logo-icono {
-  inline-size: 2.125rem;
-  block-size: 2.1875rem;
-  color: var(--color-acento);
-}
-
-.c-footer__logo-texto {
-  font-family: var(--font-primaria);
-  font-size: var(--tamano-h3);
-  font-weight: var(--peso-fuente-negrita);
-  line-height: 1;
-}
-
-.c-footer__logo-join {
-  color: var(--color-gris-medio);
-}
-
-.c-footer__logo-ly {
-  color: var(--color-acento);
 }
 
 .c-footer__descripcion {

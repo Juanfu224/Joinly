@@ -7,14 +7,8 @@
   &__contenedor{display:flex;align-items:center;justify-content:space-between;min-block-size:var(--header-height);gap:var(--espaciado-2);padding-block:var(--espaciado-2)}
 }
 
-.c-header__logo{display:inline-flex;align-items:baseline;gap:var(--espaciado-1);text-decoration:none;flex-shrink:0;@include foco-visible;@include transicion(opacity);
+.c-header__logo{display:inline-flex;align-items:center;text-decoration:none;flex-shrink:0;@include foco-visible;@include transicion(opacity);
   &:hover{opacity:0.85}
-  &-icono{display:inline-block;color:var(--color-acento-oscuro);inline-size:2.0625rem;block-size:2.1875rem;
-    svg{display:block;inline-size:100%;block-size:100%}
-  }
-  &-texto{font-family:var(--font-primaria);font-size:var(--tamano-h3);font-weight:var(--peso-fuente-negrita);line-height:1;letter-spacing:0}
-  &-nombre{color:var(--color-texto-fuerte)}
-  &-acento{color:var(--color-acento-oscuro)}
 }
 
 .c-header__utilidad{display:flex;align-items:center;gap:var(--espaciado-2)}
