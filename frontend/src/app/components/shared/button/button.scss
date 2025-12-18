@@ -53,6 +53,27 @@
   }
 
   // ==========================================================================
+  // SPINNER (loading state)
+  // ==========================================================================
+  
+  &__spinner {
+    display: block;
+    flex-shrink: 0;
+    width: 1em;
+    height: 1em;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: button-spinner-rotate 0.8s linear infinite;
+  }
+
+  @keyframes button-spinner-rotate {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  // ==========================================================================
   // TAMAÑOS SEGÚN FIGMA
   // ==========================================================================
 
@@ -217,6 +238,12 @@
   &[disabled] {
     opacity: 0.5;
     cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  // Estado de carga (mantiene color pero muestra spinner)
+  &--loading {
+    cursor: wait;
     pointer-events: none;
   }
 }

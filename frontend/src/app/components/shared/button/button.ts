@@ -67,6 +67,9 @@ export class ButtonComponent {
   /** Estado deshabilitado */
   disabled = input<boolean>(false);
   
+  /** Estado de carga (muestra spinner y deshabilita) */
+  loading = input<boolean>(false);
+  
   /** Ocupa todo el ancho disponible */
   fullWidth = input<boolean>(false);
   
@@ -88,8 +91,15 @@ export class ButtonComponent {
       classes.push('c-button--full-width');
     }
 
+    if (this.loading()) {
+      classes.push('c-button--loading');
+    }
+
     return classes.join(' ');
   });
+
+  /** Computed que combina disabled y loading */
+  isDisabled = computed(() => this.disabled() || this.loading());
 
   /** Mapeo de tamaños de botón a tamaños de icono */
   private readonly iconSizeMap: Record<ButtonSize, number> = {

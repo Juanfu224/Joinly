@@ -27,3 +27,4 @@ export { NotificationSenderComponent } from './notification-sender/notification-
 export { NotificationReceiverComponent } from './notification-receiver/notification-receiver';
 export { ToastComponent } from './toast/toast';
 export { ToastContainerComponent } from './toast-container/toast-container';
+export { SpinnerOverlayComponent } from './spinner-overlay/spinner-overlay';

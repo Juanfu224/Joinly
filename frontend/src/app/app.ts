@@ -1,8 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent, MainComponent, FooterComponent } from './layout';
-import { AlertContainerComponent, ModalComponent, ToastContainerComponent } from './components/shared';
+import {
+  AlertContainerComponent,
+  ModalComponent,
+  ToastContainerComponent,
+  SpinnerOverlayComponent,
+} from './components/shared';
 import { ThemeService } from './services/theme';
+import { LoadingService } from './services/loading';
 
 /**
  * Componente raíz de la aplicación Joinly.
@@ -22,6 +28,7 @@ import { ThemeService } from './services/theme';
     AlertContainerComponent,
     ModalComponent,
     ToastContainerComponent,
+    SpinnerOverlayComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
@@ -29,6 +36,7 @@ import { ThemeService } from './services/theme';
 })
 export class App {
   private readonly themeService = inject(ThemeService);
+  protected readonly loadingService = inject(LoadingService);
 
   constructor() {
     // Inicializar servicio de temas al cargar la aplicación

@@ -13,3 +13,4 @@ export {
   type AppEvent,
 } from './communication';
 export { ToastService, type ToastType, type ToastMessage } from './toast';
+export { LoadingService } from './loading';
