@@ -183,11 +183,11 @@
     }
   }
 
-  // Transparente con borde (Secondary)
+  // Transparente con borde (Secondary) - según diseño Figma
   &--secondary {
     background-color: transparent;
-    border: 1px solid var(--border-color);
-    color: var(--text-primary);
+    border: 1px solid var(--color-gris-oscuro);
+    color: var(--color-texto-normal);
     box-shadow: none;
 
     &:hover:not(:disabled) {
