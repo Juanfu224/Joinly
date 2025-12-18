@@ -130,9 +130,16 @@ export class RegisterFormComponent {
       required: 'Este campo es obligatorio',
       minlength: 'Mínimo 2 caracteres',
       noNumber: 'La contraseña debe contener al menos un número',
+      emailTaken: 'Este email ya está registrado',
     };
 
     return getErrorMessage(control, customMessages);
+  }
+
+  /** Indica si mostrar feedback de success para el email */
+  get showEmailSuccess(): boolean {
+    const control = this.form.get('email');
+    return !!(control?.valid && control.dirty && !control.pending && control.value);
   }
 
   private focusFirstInvalidField(): void {

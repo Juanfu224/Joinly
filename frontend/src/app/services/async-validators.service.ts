@@ -1,8 +1,17 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Observable, of, timer } from 'rxjs';
 import { map, catchError, switchMap, take, tap, timeout } from 'rxjs/operators';
+
+/**
+ * Respuesta de verificación de código de grupo.
+ */
+interface GroupCodeResponse {
+  readonly id: number;
+  readonly nombre: string;
+  readonly codigoInvitacion: string;
+}
 
 /**
  * Configuración para caché de validaciones asíncronas.
@@ -51,7 +60,12 @@ export class AsyncValidatorsService {
    * URL base de la API de autenticación.
    * Usa ruta relativa para aprovechar el proxy de Angular.
    */
-  private readonly API_BASE = '/api/v1/auth';
+  private readonly API_AUTH = '/api/v1/auth';
+
+  /**
+   * URL base de la API de unidades/grupos.
+   */
+  private readonly API_UNIDADES = '/api/v1/unidades';
 
   /**
    * Tiempo de debounce antes de realizar la validación (ms).
@@ -143,7 +157,7 @@ export class AsyncValidatorsService {
 
     // Realizar petición al backend
     return this.http
-      .get<{ available: boolean }>(`${this.API_BASE}/check-email`, { params })
+      .get<{ available: boolean }>(`${this.API_AUTH}/check-email`, { params })
       .pipe(
         timeout(this.TIMEOUT_MS),
         map((response) => response.available),
@@ -193,11 +207,128 @@ export class AsyncValidatorsService {
     });
   }
 
+  // ==========================================================================
+  // VALIDADOR: CÓDIGO DE GRUPO
+  // ==========================================================================
+
+  /**
+   * Caché de códigos de grupo verificados.
+   * Key: código normalizado, Value: existencia y timestamp
+   */
+  private groupCodeCache = new Map<string, CacheEntry<boolean>>();
+
+  /**
+   * Validador asíncrono para verificar existencia de código de grupo.
+   *
+   * Consulta al backend para verificar si un código de invitación
+   * corresponde a un grupo existente.
+   *
+   * @returns AsyncValidatorFn que retorna null si el código existe, o {groupCodeNotFound: true} si no
+   *
+   * @example
+   * ```typescript
+   * // En el formulario de unirse a grupo
+   * codigo: ['', {
+   *   validators: [Validators.required, codePatternValidator(12)],
+   *   asyncValidators: [this.asyncValidators.groupCodeExists()],
+   *   updateOn: 'blur'
+   * }]
+   * ```
+   */
+  groupCodeExists(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      const codigo = control.value;
+
+      // No validar si el campo está vacío
+      if (!codigo) {
+        return of(null);
+      }
+
+      // Normalizar código: eliminar guiones y convertir a mayúsculas
+      const normalizedCode = codigo.replace(/-/g, '').toUpperCase();
+
+      // Validar formato básico antes de llamar al backend (12 caracteres alfanuméricos)
+      if (!/^[A-Z0-9]{12}$/.test(normalizedCode)) {
+        return of(null); // El validador síncrono de patrón manejará esto
+      }
+
+      return timer(this.DEBOUNCE_TIME).pipe(
+        switchMap(() => this.checkGroupCodeExists(normalizedCode)),
+        map((exists) => (exists ? null : { groupCodeNotFound: true })),
+        take(1)
+      );
+    };
+  }
+
+  /**
+   * Verifica la existencia de un código de grupo consultando el backend.
+   *
+   * @param codigo Código de invitación normalizado (12 caracteres)
+   * @returns Observable que emite true si el código existe, false si no
+   */
+  private checkGroupCodeExists(codigo: string): Observable<boolean> {
+    // Verificar caché primero
+    const cached = this.getCachedGroupCode(codigo);
+    if (cached !== null) {
+      return of(cached);
+    }
+
+    // Realizar petición al backend
+    return this.http
+      .get<GroupCodeResponse>(`${this.API_UNIDADES}/codigo/${codigo}`)
+      .pipe(
+        timeout(this.TIMEOUT_MS),
+        map(() => true), // Si responde 200, el código existe
+        tap((exists) => this.cacheGroupCode(codigo, exists)),
+        catchError((error: HttpErrorResponse) => {
+          // 404 significa que el código no existe - es un caso válido
+          if (error.status === 404) {
+            this.cacheGroupCode(codigo, false);
+            return of(false);
+          }
+          // Otros errores: no bloquear el formulario
+          console.warn('[AsyncValidators] Error verificando código de grupo:', error);
+          return of(true); // Asumir válido para no bloquear
+        })
+      );
+  }
+
+  /**
+   * Obtiene un código de grupo del caché si está disponible y no ha expirado.
+   */
+  private getCachedGroupCode(codigo: string): boolean | null {
+    const cached = this.groupCodeCache.get(codigo);
+    if (!cached) {
+      return null;
+    }
+
+    const now = Date.now();
+    const isExpired = now - cached.timestamp > this.CACHE_TTL;
+
+    if (isExpired) {
+      this.groupCodeCache.delete(codigo);
+      return null;
+    }
+
+    return cached.value;
+  }
+
+  /**
+   * Almacena un resultado de verificación de código de grupo en caché.
+   */
+  private cacheGroupCode(codigo: string, exists: boolean): void {
+    this.groupCodeCache.set(codigo, {
+      value: exists,
+      timestamp: Date.now(),
+    });
+  }
+
   /**
    * Limpia el caché de emails.
    * Útil para resetear el estado durante tests o después de operaciones críticas.
    */
   clearCache(): void {
     this.emailCache.clear();
+    this.groupCodeCache.clear();
   }
 }

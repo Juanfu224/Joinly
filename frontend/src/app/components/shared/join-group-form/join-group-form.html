@@ -16,6 +16,10 @@
         placeholder="XXXX - XXXX - XXXX"
         [required]="true"
         formControlName="codigo"
+        [pending]="isCodePending"
+        pendingMessage="Verificando código..."
+        [showSuccess]="showCodeSuccess"
+        successMessage="¡Código válido!"
         [errorMessage]="getErrorMessage('codigo')"
       />
     </fieldset>

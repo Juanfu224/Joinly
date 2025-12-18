@@ -22,6 +22,10 @@ Plataforma de gestión de suscripciones compartidas desarrollada con Angular 21,
   - [2.2 Jerarquía de headings](#22-jerarquía-de-headings)
   - [2.3 Estructura de formularios](#23-estructura-de-formularios)
   - [2.4 Resumen](#24-resumen)
+  - [2.5 Formularios Reactivos Implementados](#25-formularios-reactivos-implementados)
+  - [2.6 Sistema de Validadores](#26-sistema-de-validadores)
+  - [2.7 Guia de Uso de FormArray](#27-guia-de-uso-de-formarray)
+  - [2.8 Ejemplos de Validacion Asincrona](#28-ejemplos-de-validacion-asincrona)
 - [3. Componentes](#3-componentes)
   - [3.1 Componentes Compartidos](#31-componentes-compartidos)
   - [3.2 Catálogo de Componentes](#32-catálogo-de-componentes)
@@ -2850,6 +2854,2261 @@ export class FormInputComponent implements ControlValueAccessor {
 | **Estados de error** | `aria-invalid`, `aria-describedby`, `role="alert"` |
 
 Cada decisión de estructura HTML en Joinly tiene una razón técnica fundamentada en las pautas WCAG 2.1 y las mejores prácticas de desarrollo web accesible. El HTML semántico no es un "extra" opcional: es la base sobre la que construimos una aplicación que funciona para todos los usuarios, independientemente de cómo accedan a ella.
+
+---
+
+## 2.5 Formularios Reactivos Implementados
+
+Joinly implementa un sistema completo de formularios reactivos utilizando `ReactiveFormsModule` de Angular. Esta seccion documenta los formularios principales de la aplicacion, detallando su estructura, validaciones y comportamiento.
+
+### 2.5.1 Catalogo de Formularios
+
+La aplicacion cuenta con los siguientes formularios reactivos completos:
+
+| Formulario | Componente | Proposito | Validadores |
+|------------|------------|-----------|-------------|
+| **Registro de usuario** | `RegisterFormComponent` | Alta de nuevos usuarios | Sincronos + Asincronos + Cross-field |
+| **Inicio de sesion** | `LoginFormComponent` | Autenticacion de usuarios | Sincronos |
+| **Perfil de usuario** | `ProfileFormComponent` | Edicion de datos personales | Sincronos + Asincronos |
+| **Crear suscripcion** | `SubscriptionFormComponent` | Alta de nuevas suscripciones | Sincronos + Cross-field |
+| **Factura/Pedido** | `InvoiceFormComponent` | Gestion de items con FormArray | Sincronos + FormArray |
+
+### 2.5.2 Formulario de Registro
+
+El formulario de registro es el mas completo de la aplicacion, combinando validadores sincronos, asincronos y cross-field.
+
+**Estructura del FormGroup:**
+
+```typescript
+import { Component, inject, OnInit } from '@angular/core';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { 
+  passwordStrength, 
+  passwordMatch, 
+  uniqueEmail, 
+  usernameAvailable 
+} from '@shared/validators';
+import { ValidationService } from '@shared/services/validation.service';
+
+@Component({
+  selector: 'app-register-form',
+  standalone: true,
+  imports: [ReactiveFormsModule],
+  templateUrl: './register-form.html',
+  styleUrl: './register-form.scss'
+})
+export class RegisterFormComponent implements OnInit {
+  private readonly fb = inject(FormBuilder);
+  private readonly validationService = inject(ValidationService);
+  
+  form = this.fb.group({
+    // Datos personales
+    nombre: ['', [Validators.required, Validators.minLength(2)]],
+    apellido: ['', [Validators.required, Validators.minLength(2)]],
+    
+    // Datos de cuenta con validacion asincrona
+    email: ['', {
+      validators: [Validators.required, Validators.email],
+      asyncValidators: [uniqueEmail(this.validationService)],
+      updateOn: 'blur'
+    }],
+    username: ['', {
+      validators: [Validators.required, Validators.minLength(3), Validators.maxLength(20)],
+      asyncValidators: [usernameAvailable(this.validationService)],
+      updateOn: 'blur'
+    }],
+    
+    // Password con validacion de fortaleza
+    password: ['', [Validators.required, passwordStrength()]],
+    confirmPassword: ['', Validators.required],
+    
+    // Terminos y condiciones
+    acceptTerms: [false, Validators.requiredTrue]
+  }, {
+    // Validador cross-field para coincidencia de passwords
+    validators: [passwordMatch('password', 'confirmPassword')]
+  });
+  
+  // Getters para acceso en template
+  get nombre() { return this.form.get('nombre'); }
+  get apellido() { return this.form.get('apellido'); }
+  get email() { return this.form.get('email'); }
+  get username() { return this.form.get('username'); }
+  get password() { return this.form.get('password'); }
+  get confirmPassword() { return this.form.get('confirmPassword'); }
+  
+  onSubmit(): void {
+    if (this.form.valid) {
+      const formData = this.form.value;
+      // Enviar al servicio de autenticacion...
+    }
+  }
+}
+```
+
+**Validaciones aplicadas:**
+
+| Campo | Validadores Sincronos | Validadores Asincronos |
+|-------|----------------------|------------------------|
+| nombre | `required`, `minLength(2)` | - |
+| apellido | `required`, `minLength(2)` | - |
+| email | `required`, `email` | `uniqueEmail` |
+| username | `required`, `minLength(3)`, `maxLength(20)` | `usernameAvailable` |
+| password | `required`, `passwordStrength` | - |
+| confirmPassword | `required` | - |
+| acceptTerms | `requiredTrue` | - |
+| **FormGroup** | `passwordMatch` (cross-field) | - |
+
+### 2.5.3 Formulario de Inicio de Sesion
+
+Formulario sencillo con validaciones sincronas para autenticacion.
+
+**Estructura del FormGroup:**
+
+```typescript
+@Component({
+  selector: 'app-login-form',
+  standalone: true,
+  imports: [ReactiveFormsModule],
+  templateUrl: './login-form.html'
+})
+export class LoginFormComponent {
+  private readonly fb = inject(FormBuilder);
+  private readonly authService = inject(AuthService);
+  
+  form = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(8)]],
+    rememberMe: [false]
+  });
+  
+  // Estado de carga para feedback visual
+  isLoading = signal(false);
+  loginError = signal<string | null>(null);
+  
+  get email() { return this.form.get('email'); }
+  get password() { return this.form.get('password'); }
+  
+  async onSubmit(): Promise<void> {
+    if (this.form.invalid) return;
+    
+    this.isLoading.set(true);
+    this.loginError.set(null);
+    
+    try {
+      const { email, password, rememberMe } = this.form.value;
+      await this.authService.login(email!, password!, rememberMe!);
+      // Redirigir al dashboard...
+    } catch (error) {
+      this.loginError.set('Credenciales incorrectas');
+    } finally {
+      this.isLoading.set(false);
+    }
+  }
+}
+```
+
+**Template con feedback visual:**
+
+```html
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="c-login-form">
+  <h2 class="c-login-form__title">Iniciar sesion</h2>
+  
+  <!-- Error general de login -->
+  @if (loginError()) {
+    <div class="c-login-form__error-banner" role="alert">
+      {{ loginError() }}
+    </div>
+  }
+  
+  <!-- Campo Email -->
+  <div class="c-form-field">
+    <label for="email">Correo electronico</label>
+    <input 
+      id="email" 
+      type="email" 
+      formControlName="email"
+      [class.c-form-input__field--error]="email?.invalid && email?.touched"
+    />
+    @if (email?.errors?.['required'] && email?.touched) {
+      <span class="c-form-field__error">El email es obligatorio</span>
+    }
+    @if (email?.errors?.['email'] && email?.touched) {
+      <span class="c-form-field__error">Introduce un email valido</span>
+    }
+  </div>
+  
+  <!-- Campo Password -->
+  <div class="c-form-field">
+    <label for="password">Contrasena</label>
+    <input 
+      id="password" 
+      type="password" 
+      formControlName="password"
+      [class.c-form-input__field--error]="password?.invalid && password?.touched"
+    />
+    @if (password?.errors?.['required'] && password?.touched) {
+      <span class="c-form-field__error">La contrasena es obligatoria</span>
+    }
+    @if (password?.errors?.['minlength'] && password?.touched) {
+      <span class="c-form-field__error">Minimo 8 caracteres</span>
+    }
+  </div>
+  
+  <!-- Remember me -->
+  <div class="c-form-field c-form-field--checkbox">
+    <label>
+      <input type="checkbox" formControlName="rememberMe" />
+      Recordar sesion
+    </label>
+  </div>
+  
+  <!-- Boton submit con estado de carga -->
+  <button 
+    type="submit" 
+    class="c-btn c-btn--primary c-btn--full"
+    [disabled]="form.invalid || isLoading()"
+  >
+    @if (isLoading()) {
+      <span class="c-btn__spinner"></span>
+      Iniciando sesion...
+    } @else {
+      Iniciar sesion
+    }
+  </button>
+  
+  <!-- Enlaces secundarios -->
+  <div class="c-login-form__links">
+    <a routerLink="/forgot-password">Olvidaste tu contrasena?</a>
+    <a routerLink="/register">Crear cuenta</a>
+  </div>
+</form>
+```
+
+### 2.5.4 Formulario de Perfil de Usuario
+
+Formulario para edicion de datos personales con validacion asincrona de email unico (excluyendo el email actual del usuario).
+
+**Estructura del FormGroup:**
+
+```typescript
+@Component({
+  selector: 'app-profile-form',
+  standalone: true,
+  imports: [ReactiveFormsModule],
+  templateUrl: './profile-form.html'
+})
+export class ProfileFormComponent implements OnInit {
+  private readonly fb = inject(FormBuilder);
+  private readonly userService = inject(UserService);
+  private readonly validationService = inject(ValidationService);
+  
+  currentUser = input.required<User>();
+  
+  form!: FormGroup;
+  
+  ngOnInit(): void {
+    const user = this.currentUser();
+    
+    this.form = this.fb.group({
+      nombre: [user.nombre, [Validators.required, Validators.minLength(2)]],
+      apellido: [user.apellido, [Validators.required, Validators.minLength(2)]],
+      email: [user.email, {
+        validators: [Validators.required, Validators.email],
+        // Validador asincrono que excluye el email actual
+        asyncValidators: [uniqueEmailExcluding(this.validationService, user.email)],
+        updateOn: 'blur'
+      }],
+      telefono: [user.telefono || '', telefono()],
+      bio: [user.bio || '', Validators.maxLength(500)]
+    });
+  }
+  
+  get email() { return this.form.get('email'); }
+  get telefono() { return this.form.get('telefono'); }
+  
+  onSubmit(): void {
+    if (this.form.valid) {
+      this.userService.updateProfile(this.form.value);
+    }
+  }
+}
+```
+
+**Validador asincrono con exclusion:**
+
+```typescript
+export function uniqueEmailExcluding(
+  validationService: ValidationService,
+  currentEmail: string
+): AsyncValidatorFn {
+  return (control: AbstractControl): Observable<ValidationErrors | null> => {
+    const email = control.value?.trim();
+    
+    // Si es el email actual, no validar
+    if (email === currentEmail) {
+      return of(null);
+    }
+    
+    // Validar como email nuevo
+    return timer(500).pipe(
+      switchMap(() => validationService.checkEmailUnique(email)),
+      map(isAvailable => isAvailable ? null : { emailTaken: true }),
+      catchError(() => of(null)),
+      first()
+    );
+  };
+}
+```
+
+### 2.5.5 Resumen de Formularios
+
+| Formulario | Campos | Val. Sincronos | Val. Asincronos | Val. Cross-field | FormArray |
+|------------|--------|----------------|-----------------|------------------|-----------|
+| **Registro** | 7 | `required`, `email`, `minLength`, `maxLength`, `passwordStrength`, `requiredTrue` | `uniqueEmail`, `usernameAvailable` | `passwordMatch` | No |
+| **Login** | 3 | `required`, `email`, `minLength` | No | No | No |
+| **Perfil** | 5 | `required`, `email`, `minLength`, `maxLength`, `telefono` | `uniqueEmailExcluding` | No | No |
+| **Suscripcion** | 6+ | `required`, `min`, `codigoPostal` | No | `totalMinimo` | No |
+| **Factura** | 4+ por item | `required`, `min`, `max` | No | No | Si (items) |
+
+Esta arquitectura de formularios garantiza una experiencia de usuario coherente, con feedback visual inmediato, validaciones robustas y accesibilidad completa en toda la aplicacion.
+
+---
+
+## 2.6 Sistema de Validadores
+
+La validacion de formularios es una pieza fundamental en cualquier aplicacion web que recopile datos del usuario. En Joinly, implementamos un sistema de validacion robusto que combina validadores nativos de Angular, validadores personalizados sincronos y validadores asincronos para cubrir todos los escenarios de validacion necesarios.
+
+Esta seccion documenta el catalogo completo de validadores utilizados en el proyecto, explicando su funcionamiento, casos de uso y como integrarlos en formularios reactivos.
+
+### 2.6.1 Tipos de Validadores
+
+Antes de presentar el catalogo, es importante entender las tres categorias de validadores que Angular ofrece:
+
+| Tipo | Ejecucion | Uso tipico |
+|------|-----------|------------|
+| **Sincronos** | Inmediata, en cada cambio del valor | Validaciones que no requieren llamadas externas (formato, longitud, patrones) |
+| **Personalizados** | Inmediata, logica custom | Validaciones con reglas de negocio especificas (NIF, telefono espanol) |
+| **Asincronos** | Diferida, con llamada a API | Validaciones que requieren consultar un servidor (email unico, username disponible) |
+
+Los validadores sincronos se ejecutan primero. Solo si todos pasan, Angular ejecuta los validadores asincronos. Esta arquitectura optimiza el rendimiento evitando llamadas innecesarias al servidor cuando hay errores basicos.
+
+### 2.6.2 Catalogo de Validadores
+
+La siguiente tabla resume todos los validadores implementados o utilizados en Joinly:
+
+| Nombre | Tipo | Nivel | Descripcion | Uso tipico |
+|--------|------|-------|-------------|------------|
+| `Validators.required` | Sincrono | Campo | Obliga a que el control tenga un valor no vacio | Campos obligatorios |
+| `Validators.email` | Sincrono | Campo | Valida que el valor tenga formato de email valido | Campo de email |
+| `Validators.minLength(n)` | Sincrono | Campo | Valida que la cadena tenga al menos `n` caracteres | Password, username |
+| `Validators.pattern(...)` | Sincrono | Campo | Valida que el valor coincida con una expresion regular | NIF, telefono, codigo postal |
+| `passwordStrength()` | Personalizado | Campo | Comprueba mayusculas, minusculas, numero, simbolo y longitud minima | Campo de password |
+| `nif()` | Personalizado | Campo | Valida formato y letra de control de NIF espanol | Campo de NIF/DNI |
+| `telefono()` | Personalizado | Campo | Valida telefono movil espanol (formato 6XX o 7XX + 8 digitos) | Lista de telefonos |
+| `codigoPostal()` | Personalizado | Campo | Valida codigo postal de 5 digitos (01000-52999) | Campo de direccion |
+| `passwordMatch(...)` | Cross-field | FormGroup | Valida que los campos password y confirmPassword coincidan | Formulario de registro |
+| `totalMinimo(...)` | Cross-field | FormGroup | Valida que el producto de price * quantity supere un minimo | Formularios de pedido/factura |
+| `atLeastOneRequired(...)` | Cross-field | FormGroup | Obliga a rellenar al menos uno de varios campos especificados | Telefono o email obligatorio |
+| `uniqueEmail(...)` | Asincrono | Campo | Comprueba que el email no este registrado en el sistema | Registro de usuario |
+| `usernameAvailable(...)` | Asincrono | Campo | Comprueba que el nombre de usuario este disponible | Registro de usuario |
+
+### 2.6.3 Validadores Sincronos Nativos
+
+Angular proporciona un conjunto de validadores predefinidos en la clase `Validators` que cubren las necesidades mas comunes. Estos validadores son funciones puras que reciben un `AbstractControl` y devuelven un objeto de errores o `null` si el valor es valido.
+
+#### Validators.required
+
+El validador mas basico. Marca un campo como obligatorio, rechazando valores vacios (`''`), `null` o `undefined`.
+
+**Implementacion interna simplificada:**
+
+```typescript
+function required(control: AbstractControl): ValidationErrors | null {
+  return isEmptyValue(control.value) ? { required: true } : null;
+}
+```
+
+**Uso en FormGroup:**
+
+```typescript
+this.form = this.fb.group({
+  nombre: ['', Validators.required],
+  email: ['', [Validators.required, Validators.email]]
+});
+```
+
+**Mensaje de error asociado:**
+
+```html
+@if (form.get('nombre')?.hasError('required')) {
+  <span class="c-form-input__error">El nombre es obligatorio</span>
+}
+```
+
+#### Validators.email
+
+Valida que el valor tenga un formato de email valido segun el estandar RFC 5322 simplificado. Es importante notar que este validador **no verifica que el email exista**, solo que su formato sea correcto.
+
+**Patron interno:**
+
+El validador utiliza una expresion regular que verifica:
+- Caracteres permitidos antes del `@`
+- Presencia del simbolo `@`
+- Dominio con al menos un punto
+- Extension de dominio valida
+
+**Uso en FormGroup:**
+
+```typescript
+this.form = this.fb.group({
+  email: ['', [Validators.required, Validators.email]]
+});
+```
+
+**Consideracion importante:**
+
+`Validators.email` es permisivo con ciertos formatos. Para validaciones mas estrictas, se recomienda combinarlo con `Validators.pattern()` y una expresion regular personalizada.
+
+#### Validators.minLength(n) y Validators.maxLength(n)
+
+Validan la longitud minima y maxima de una cadena de texto. Son fundamentales para campos como passwords, usernames y descripciones.
+
+**Uso en FormGroup:**
+
+```typescript
+this.form = this.fb.group({
+  username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+  password: ['', [Validators.required, Validators.minLength(8)]]
+});
+```
+
+**Acceso al error con informacion adicional:**
+
+```typescript
+// El error contiene informacion util para mensajes dinamicos
+const error = form.get('username')?.errors?.['minlength'];
+// error = { requiredLength: 3, actualLength: 2 }
+```
+
+```html
+@if (form.get('username')?.hasError('minlength'); as error) {
+  <span class="c-form-input__error">
+    Minimo {{ error.requiredLength }} caracteres (actual: {{ error.actualLength }})
+  </span>
+}
+```
+
+#### Validators.pattern(regex)
+
+Valida que el valor coincida con una expresion regular. Es el validador mas versatil para formatos especificos.
+
+**Ejemplos de patrones comunes:**
+
+```typescript
+this.form = this.fb.group({
+  // Telefono espanol: 6 o 7 seguido de 8 digitos
+  telefono: ['', Validators.pattern(/^[67]\d{8}$/)],
+  
+  // Codigo postal espanol: 5 digitos, 01-52
+  codigoPostal: ['', Validators.pattern(/^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/)],
+  
+  // NIF: 8 digitos + letra
+  nif: ['', Validators.pattern(/^\d{8}[A-Z]$/i)],
+  
+  // Solo letras y espacios
+  nombre: ['', Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]
+});
+```
+
+**Nota sobre expresiones regulares:**
+
+Es recomendable anclar los patrones con `^` (inicio) y `$` (fin) para evitar coincidencias parciales. Sin estos anclas, el patron `/\d{5}/` coincidiria con `"abc12345xyz"`, lo cual probablemente no es el comportamiento deseado.
+
+### 2.6.4 Validadores Personalizados Sincronos
+
+Cuando los validadores nativos no cubren las reglas de negocio especificas, creamos validadores personalizados. Estos son funciones que implementan la interfaz `ValidatorFn` de Angular.
+
+**Estructura basica de un validador personalizado:**
+
+```typescript
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+
+export function miValidador(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const valor = control.value;
+    
+    // Si el campo esta vacio, dejamos que 'required' lo maneje
+    if (!valor) return null;
+    
+    // Logica de validacion
+    const esValido = /* ... */;
+    
+    return esValido ? null : { miError: true };
+  };
+}
+```
+
+#### passwordStrength() - Validador de Fortaleza de Password
+
+Este validador verifica que una contrasena cumpla con criterios minimos de seguridad: longitud, mayusculas, minusculas, numeros y simbolos.
+
+**Implementacion:**
+
+```typescript
+export function passwordStrength(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const password = control.value;
+    
+    if (!password) return null;
+    
+    const errors: ValidationErrors = {};
+    
+    // Longitud minima de 8 caracteres
+    if (password.length < 8) {
+      errors['minLength'] = { required: 8, actual: password.length };
+    }
+    
+    // Al menos una letra mayuscula
+    if (!/[A-Z]/.test(password)) {
+      errors['uppercase'] = true;
+    }
+    
+    // Al menos una letra minuscula
+    if (!/[a-z]/.test(password)) {
+      errors['lowercase'] = true;
+    }
+    
+    // Al menos un numero
+    if (!/\d/.test(password)) {
+      errors['number'] = true;
+    }
+    
+    // Al menos un simbolo especial
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      errors['symbol'] = true;
+    }
+    
+    return Object.keys(errors).length > 0 ? { passwordStrength: errors } : null;
+  };
+}
+```
+
+**Uso en FormGroup:**
+
+```typescript
+this.form = this.fb.group({
+  password: ['', [Validators.required, passwordStrength()]]
+});
+```
+
+**Ejemplo de UI con feedback detallado:**
+
+```html
+<div class="c-password-strength">
+  <div class="c-password-strength__item"
+       [class.c-password-strength__item--valid]="!form.get('password')?.errors?.['passwordStrength']?.minLength">
+    Minimo 8 caracteres
+  </div>
+  <div class="c-password-strength__item"
+       [class.c-password-strength__item--valid]="!form.get('password')?.errors?.['passwordStrength']?.uppercase">
+    Una mayuscula
+  </div>
+  <div class="c-password-strength__item"
+       [class.c-password-strength__item--valid]="!form.get('password')?.errors?.['passwordStrength']?.lowercase">
+    Una minuscula
+  </div>
+  <div class="c-password-strength__item"
+       [class.c-password-strength__item--valid]="!form.get('password')?.errors?.['passwordStrength']?.number">
+    Un numero
+  </div>
+  <div class="c-password-strength__item"
+       [class.c-password-strength__item--valid]="!form.get('password')?.errors?.['passwordStrength']?.symbol">
+    Un simbolo especial
+  </div>
+</div>
+```
+
+#### nif() - Validador de NIF Espanol
+
+El NIF (Numero de Identificacion Fiscal) espanol tiene un formato especifico: 8 digitos seguidos de una letra de control calculada mediante un algoritmo.
+
+**Implementacion:**
+
+```typescript
+export function nif(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const valor = control.value?.toUpperCase().trim();
+    
+    if (!valor) return null;
+    
+    // Verificar formato basico: 8 digitos + 1 letra
+    const regex = /^(\d{8})([A-Z])$/;
+    const match = valor.match(regex);
+    
+    if (!match) {
+      return { nif: { reason: 'formato' } };
+    }
+    
+    const numero = parseInt(match[1], 10);
+    const letraProporcionada = match[2];
+    
+    // Tabla de letras de control del NIF
+    const letras = 'TRWAGMYFPDXBNJZSQVHLCKE';
+    const letraCalculada = letras[numero % 23];
+    
+    if (letraProporcionada !== letraCalculada) {
+      return { nif: { reason: 'letra', expected: letraCalculada } };
+    }
+    
+    return null;
+  };
+}
+```
+
+**Uso y mensajes de error:**
+
+```typescript
+this.form = this.fb.group({
+  nif: ['', [Validators.required, nif()]]
+});
+```
+
+```html
+@if (form.get('nif')?.hasError('nif'); as error) {
+  @if (error.reason === 'formato') {
+    <span class="c-form-input__error">Formato de NIF invalido (ej: 12345678Z)</span>
+  } @else if (error.reason === 'letra') {
+    <span class="c-form-input__error">La letra del NIF no es correcta</span>
+  }
+}
+```
+
+#### telefono() - Validador de Telefono Movil Espanol
+
+Valida que el numero de telefono sea un movil espanol valido, comenzando por 6 o 7.
+
+**Implementacion:**
+
+```typescript
+export function telefono(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const valor = control.value?.replace(/\s/g, ''); // Eliminar espacios
+    
+    if (!valor) return null;
+    
+    // Telefono movil espanol: 6 o 7 seguido de 8 digitos
+    const regex = /^[67]\d{8}$/;
+    
+    if (!regex.test(valor)) {
+      return { telefono: true };
+    }
+    
+    return null;
+  };
+}
+```
+
+#### codigoPostal() - Validador de Codigo Postal Espanol
+
+Los codigos postales espanoles van desde 01001 (Alava) hasta 52080 (Melilla).
+
+**Implementacion:**
+
+```typescript
+export function codigoPostal(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const valor = control.value?.trim();
+    
+    if (!valor) return null;
+    
+    // 5 digitos, provincias 01-52
+    const regex = /^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/;
+    
+    if (!regex.test(valor)) {
+      return { codigoPostal: true };
+    }
+    
+    return null;
+  };
+}
+```
+
+### 2.6.5 Validadores Cross-Field
+
+Los validadores cross-field operan a nivel de `FormGroup` en lugar de campos individuales. Son utiles cuando la validez de un campo depende del valor de otro campo.
+
+**Diferencia clave con validadores de campo:**
+
+- **Validador de campo:** Se aplica a un `FormControl` individual.
+- **Validador cross-field:** Se aplica al `FormGroup` y tiene acceso a todos sus controles.
+
+#### passwordMatch() - Validador de Coincidencia de Passwords
+
+Verifica que el campo de confirmacion de password coincida con el password original.
+
+**Implementacion:**
+
+```typescript
+export function passwordMatch(
+  passwordField: string,
+  confirmField: string
+): ValidatorFn {
+  return (group: AbstractControl): ValidationErrors | null => {
+    const password = group.get(passwordField)?.value;
+    const confirm = group.get(confirmField)?.value;
+    
+    // Si alguno esta vacio, dejamos que 'required' lo maneje
+    if (!password || !confirm) return null;
+    
+    if (password !== confirm) {
+      // Opcionalmente, marcar el campo de confirmacion con el error
+      group.get(confirmField)?.setErrors({ passwordMatch: true });
+      return { passwordMatch: true };
+    }
+    
+    return null;
+  };
+}
+```
+
+**Uso en FormGroup:**
+
+```typescript
+this.form = this.fb.group({
+  password: ['', [Validators.required, passwordStrength()]],
+  confirmPassword: ['', Validators.required]
+}, {
+  validators: [passwordMatch('password', 'confirmPassword')]
+});
+```
+
+**Consideracion importante:**
+
+Cuando se usa `setErrors()` dentro de un validador cross-field, hay que tener cuidado de no sobrescribir errores existentes del campo. Una alternativa es mostrar el error a nivel de grupo:
+
+```html
+@if (form.hasError('passwordMatch')) {
+  <span class="c-form-input__error">Las contrasenas no coinciden</span>
+}
+```
+
+#### totalMinimo() - Validador de Total Minimo
+
+Valida que el producto de dos campos (por ejemplo, precio por cantidad) supere un valor minimo.
+
+**Implementacion:**
+
+```typescript
+export function totalMinimo(
+  priceField: string,
+  quantityField: string,
+  minTotal: number
+): ValidatorFn {
+  return (group: AbstractControl): ValidationErrors | null => {
+    const price = group.get(priceField)?.value;
+    const quantity = group.get(quantityField)?.value;
+    
+    if (price == null || quantity == null) return null;
+    
+    const total = price * quantity;
+    
+    if (total < minTotal) {
+      return { 
+        totalMinimo: { 
+          required: minTotal, 
+          actual: total 
+        } 
+      };
+    }
+    
+    return null;
+  };
+}
+```
+
+**Uso:**
+
+```typescript
+this.form = this.fb.group({
+  precio: [0, [Validators.required, Validators.min(0)]],
+  cantidad: [1, [Validators.required, Validators.min(1)]]
+}, {
+  validators: [totalMinimo('precio', 'cantidad', 10)]
+});
+```
+
+#### atLeastOneRequired() - Al Menos Un Campo Obligatorio
+
+Util cuando se requiere que el usuario complete al menos uno de varios campos opcionales (por ejemplo, telefono o email).
+
+**Implementacion:**
+
+```typescript
+export function atLeastOneRequired(...fieldNames: string[]): ValidatorFn {
+  return (group: AbstractControl): ValidationErrors | null => {
+    const hasAtLeastOne = fieldNames.some(fieldName => {
+      const control = group.get(fieldName);
+      return control && control.value && control.value.trim() !== '';
+    });
+    
+    if (!hasAtLeastOne) {
+      return { 
+        atLeastOneRequired: { 
+          fields: fieldNames 
+        } 
+      };
+    }
+    
+    return null;
+  };
+}
+```
+
+**Uso:**
+
+```typescript
+this.form = this.fb.group({
+  email: [''],
+  telefono: [''],
+  movil: ['']
+}, {
+  validators: [atLeastOneRequired('email', 'telefono', 'movil')]
+});
+```
+
+```html
+@if (form.hasError('atLeastOneRequired')) {
+  <span class="c-form-input__error">
+    Debe proporcionar al menos un metodo de contacto
+  </span>
+}
+```
+
+### 2.6.6 Validadores Asincronos
+
+Los validadores asincronos son necesarios cuando la validacion requiere consultar un recurso externo, como una API o base de datos. Se ejecutan solo despues de que todos los validadores sincronos pasan, optimizando el rendimiento.
+
+**Caracteristicas clave:**
+
+- Devuelven un `Observable<ValidationErrors | null>` o `Promise<ValidationErrors | null>`
+- Angular muestra el estado `pending` mientras se ejecutan
+- Deben manejar errores de red gracefully
+
+#### uniqueEmail() - Email Unico
+
+Verifica que el email no este ya registrado en el sistema.
+
+**Implementacion:**
+
+```typescript
+import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
+import { Observable, of } from 'rxjs';
+import { map, catchError, debounceTime, switchMap, first } from 'rxjs/operators';
+
+export function uniqueEmail(userService: UserService): AsyncValidatorFn {
+  return (control: AbstractControl): Observable<ValidationErrors | null> => {
+    const email = control.value;
+    
+    if (!email) {
+      return of(null);
+    }
+    
+    return of(email).pipe(
+      debounceTime(300), // Esperar 300ms despues del ultimo cambio
+      switchMap(value => userService.checkEmailExists(value)),
+      map(exists => exists ? { uniqueEmail: true } : null),
+      catchError(() => of(null)), // En caso de error de red, no bloquear
+      first() // Completar el observable
+    );
+  };
+}
+```
+
+**Servicio auxiliar:**
+
+```typescript
+@Injectable({ providedIn: 'root' })
+export class UserService {
+  constructor(private http: HttpClient) {}
+  
+  checkEmailExists(email: string): Observable<boolean> {
+    return this.http.get<{ exists: boolean }>(`/api/users/check-email?email=${email}`)
+      .pipe(map(response => response.exists));
+  }
+}
+```
+
+**Uso en FormGroup:**
+
+```typescript
+constructor(private userService: UserService) {}
+
+ngOnInit(): void {
+  this.form = this.fb.group({
+    email: ['', 
+      [Validators.required, Validators.email],
+      [uniqueEmail(this.userService)]  // Tercer parametro: validadores asincronos
+    ]
+  });
+}
+```
+
+**Indicador de estado pendiente:**
+
+```html
+<div class="c-form-input">
+  <input type="email" formControlName="email" />
+  
+  @if (form.get('email')?.pending) {
+    <span class="c-form-input__status c-form-input__status--pending">
+      Verificando disponibilidad...
+    </span>
+  }
+  
+  @if (form.get('email')?.hasError('uniqueEmail')) {
+    <span class="c-form-input__error">
+      Este email ya esta registrado
+    </span>
+  }
+</div>
+```
+
+#### usernameAvailable() - Username Disponible
+
+Similar al validador de email unico, pero para nombres de usuario.
+
+**Implementacion:**
+
+```typescript
+export function usernameAvailable(userService: UserService): AsyncValidatorFn {
+  return (control: AbstractControl): Observable<ValidationErrors | null> => {
+    const username = control.value;
+    
+    if (!username || username.length < 3) {
+      return of(null);
+    }
+    
+    return of(username).pipe(
+      debounceTime(400),
+      switchMap(value => userService.checkUsernameExists(value)),
+      map(exists => exists ? { usernameAvailable: false } : null),
+      catchError(() => of(null)),
+      first()
+    );
+  };
+}
+```
+
+### 2.6.7 Buenas Practicas de Validacion
+
+#### Organizacion de Validadores
+
+Se recomienda centralizar todos los validadores personalizados en una carpeta dedicada:
+
+```
+src/app/
+├── shared/
+│   └── validators/
+│       ├── index.ts                 # Barrel export
+│       ├── password.validators.ts   # passwordStrength, passwordMatch
+│       ├── spain.validators.ts      # nif, telefono, codigoPostal
+│       ├── async.validators.ts      # uniqueEmail, usernameAvailable
+│       └── form-group.validators.ts # totalMinimo, atLeastOneRequired
+```
+
+**Barrel export (index.ts):**
+
+```typescript
+export * from './password.validators';
+export * from './spain.validators';
+export * from './async.validators';
+export * from './form-group.validators';
+```
+
+**Uso simplificado:**
+
+```typescript
+import { 
+  passwordStrength, 
+  passwordMatch, 
+  nif, 
+  uniqueEmail 
+} from '@shared/validators';
+```
+
+#### Mensajes de Error Centralizados
+
+Para evitar duplicacion y facilitar la internacionalizacion, centralizar los mensajes de error:
+
+```typescript
+// error-messages.ts
+export const ERROR_MESSAGES: Record<string, string | ((params: any) => string)> = {
+  required: 'Este campo es obligatorio',
+  email: 'Introduce un email valido',
+  minlength: (params) => `Minimo ${params.requiredLength} caracteres`,
+  maxlength: (params) => `Maximo ${params.requiredLength} caracteres`,
+  pattern: 'Formato no valido',
+  passwordStrength: 'La contrasena no cumple los requisitos de seguridad',
+  passwordMatch: 'Las contrasenas no coinciden',
+  nif: 'NIF no valido',
+  telefono: 'Telefono no valido',
+  codigoPostal: 'Codigo postal no valido',
+  uniqueEmail: 'Este email ya esta registrado',
+  usernameAvailable: 'Este nombre de usuario no esta disponible'
+};
+```
+
+**Funcion helper para obtener mensajes:**
+
+```typescript
+export function getErrorMessage(control: AbstractControl): string {
+  if (!control.errors) return '';
+  
+  const errorKey = Object.keys(control.errors)[0];
+  const errorValue = control.errors[errorKey];
+  const message = ERROR_MESSAGES[errorKey];
+  
+  if (typeof message === 'function') {
+    return message(errorValue);
+  }
+  
+  return message || 'Error de validacion';
+}
+```
+
+#### Validacion en Tiempo Real vs Submit
+
+Joinly implementa una estrategia hibrida:
+
+1. **Validacion en tiempo real:** Para campos con validadores sincronos y feedback inmediato (como indicador de fortaleza de password).
+2. **Validacion al perder foco:** Para validadores asincronos (evita llamadas excesivas a la API).
+3. **Validacion al submit:** Como ultima linea de defensa antes de enviar datos al servidor.
+
+**Configuracion de updateOn:**
+
+```typescript
+this.form = this.fb.group({
+  // Validacion en cada cambio (por defecto)
+  nombre: ['', Validators.required],
+  
+  // Validacion al perder foco
+  email: ['', {
+    validators: [Validators.required, Validators.email],
+    asyncValidators: [uniqueEmail(this.userService)],
+    updateOn: 'blur'
+  }],
+  
+  // Validacion solo al submit
+  terminos: [false, {
+    validators: [Validators.requiredTrue],
+    updateOn: 'submit'
+  }]
+});
+```
+
+### 2.6.8 Resumen
+
+| Categoria | Validadores | Caracteristicas |
+|-----------|-------------|-----------------|
+| **Sincronos nativos** | `required`, `email`, `minLength`, `maxLength`, `pattern` | Ejecucion inmediata, proporcionados por Angular |
+| **Personalizados sincronos** | `passwordStrength`, `nif`, `telefono`, `codigoPostal` | Logica de negocio especifica, reglas locales |
+| **Cross-field** | `passwordMatch`, `totalMinimo`, `atLeastOneRequired` | Operan a nivel de FormGroup, validan relaciones entre campos |
+| **Asincronos** | `uniqueEmail`, `usernameAvailable` | Requieren consulta a API, se ejecutan tras validadores sincronos |
+
+El sistema de validacion de Joinly combina la potencia de los validadores nativos de Angular con validadores personalizados que cubren las necesidades especificas de la aplicacion. La organizacion en una carpeta centralizada, junto con mensajes de error unificados, garantiza mantenibilidad y consistencia en toda la aplicacion.
+
+---
+
+## 2.7 Guia de Uso de FormArray
+
+Los formularios reactivos de Angular proporcionan `FormArray` como estructura fundamental para modelar **listas dinamicas** de controles. A diferencia de `FormGroup`, donde cada control tiene un nombre fijo, `FormArray` gestiona una coleccion indexada de controles que puede crecer o decrecer en tiempo de ejecucion.
+
+En Joinly, utilizamos `FormArray` para escenarios donde el usuario necesita agregar multiples entradas del mismo tipo: telefonos de contacto, direcciones de envio, items de una factura, miembros de una suscripcion, entre otros.
+
+### 2.7.1 Conceptos Fundamentales
+
+**FormArray vs FormGroup:**
+
+| Caracteristica | FormGroup | FormArray |
+|----------------|-----------|-----------|
+| **Estructura** | Clave-valor (nombre fijo) | Indice numerico (0, 1, 2...) |
+| **Acceso** | `form.get('campo')` | `array.at(index)` |
+| **Caso de uso** | Formulario con campos conocidos | Lista dinamica de elementos |
+| **Iteracion** | Manual por cada campo | `*ngFor` sobre `.controls` |
+
+**Anatomia de un FormArray:**
+
+Un `FormArray` contiene una coleccion de `AbstractControl`, que pueden ser:
+- `FormControl`: Para listas simples (array de strings)
+- `FormGroup`: Para listas de objetos con multiples propiedades
+- Otro `FormArray`: Para estructuras anidadas complejas
+
+```typescript
+// Array de controles simples
+phones: this.fb.array(['666111222', '677333444'])
+
+// Array de grupos (mas comun)
+phones: this.fb.array([
+  this.fb.group({ type: 'mobile', number: '666111222' }),
+  this.fb.group({ type: 'home', number: '912345678' })
+])
+```
+
+### 2.7.2 Definicion en el Formulario Principal
+
+La definicion de un formulario con `FormArray` sigue un patron estandar. Es recomendable inicializar los arrays vacios y proporcionar metodos para crear nuevos elementos.
+
+**Ejemplo completo de formulario con multiples arrays:**
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
+import { telefono } from '@shared/validators';
+
+@Component({
+  selector: 'app-customer-form',
+  standalone: true,
+  imports: [ReactiveFormsModule],
+  templateUrl: './customer-form.html'
+})
+export class CustomerFormComponent {
+  private readonly fb = inject(FormBuilder);
+  
+  form = this.fb.group({
+    // Campos simples
+    customer: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    
+    // Arrays dinamicos
+    phones: this.fb.array([]),
+    addresses: this.fb.array([]),
+    items: this.fb.array([])
+  });
+}
+```
+
+**Consideraciones de inicializacion:**
+
+1. **Arrays vacios vs con elemento inicial:** Dependiendo del UX deseado, puedes inicializar el array vacio o con un elemento por defecto.
+
+```typescript
+// Opcion A: Array vacio (usuario añade cuando necesita)
+phones: this.fb.array([])
+
+// Opcion B: Con un elemento inicial (siempre visible)
+phones: this.fb.array([this.createPhoneGroup()])
+
+// En ngOnInit, si necesitas al menos un elemento
+ngOnInit(): void {
+  if (this.phones.length === 0) {
+    this.addPhone();
+  }
+}
+```
+
+### 2.7.3 Acceso al FormArray mediante Getters
+
+Para trabajar con `FormArray` en el template y en la logica del componente, es necesario crear **getters tipados** que faciliten el acceso y proporcionen autocompletado en el IDE.
+
+**Patron recomendado:**
+
+```typescript
+export class CustomerFormComponent {
+  // ... definicion del form ...
+  
+  // Getter para el array de telefonos
+  get phones(): FormArray {
+    return this.form.get('phones') as FormArray;
+  }
+  
+  // Getter para el array de direcciones
+  get addresses(): FormArray {
+    return this.form.get('addresses') as FormArray;
+  }
+  
+  // Getter para el array de items
+  get items(): FormArray {
+    return this.form.get('items') as FormArray;
+  }
+}
+```
+
+**Ventajas de usar getters:**
+
+1. **Tipado seguro:** El cast a `FormArray` permite acceder a metodos especificos como `push()`, `removeAt()`, `at()`.
+2. **Reutilizacion:** El getter puede usarse tanto en el template como en metodos del componente.
+3. **Encapsulacion:** Si la estructura del formulario cambia, solo hay que modificar el getter.
+
+### 2.7.4 Creacion de Elementos del Array
+
+Cada tipo de elemento del array requiere una **funcion fabrica** que devuelva un `FormGroup` (o `FormControl`) correctamente configurado con sus validadores.
+
+**Ejemplo: Grupo de telefono**
+
+```typescript
+/**
+ * Crea un nuevo FormGroup para un telefono
+ * @param initialValue Valor inicial opcional (para edicion)
+ */
+private createPhoneGroup(initialValue = ''): FormGroup {
+  return this.fb.group({
+    phone: [initialValue, [Validators.required, telefono()]]
+  });
+}
+
+/**
+ * Añade un nuevo telefono al array
+ */
+addPhone(): void {
+  this.phones.push(this.createPhoneGroup());
+}
+```
+
+**Ejemplo: Grupo de direccion (mas complejo)**
+
+```typescript
+interface Address {
+  type: 'shipping' | 'billing';
+  street: string;
+  city: string;
+  postalCode: string;
+  isDefault: boolean;
+}
+
+private createAddressGroup(initial?: Partial<Address>): FormGroup {
+  return this.fb.group({
+    type: [initial?.type || 'shipping', Validators.required],
+    street: [initial?.street || '', Validators.required],
+    city: [initial?.city || '', Validators.required],
+    postalCode: [initial?.postalCode || '', [Validators.required, codigoPostal()]],
+    isDefault: [initial?.isDefault || false]
+  });
+}
+
+addAddress(type: 'shipping' | 'billing' = 'shipping'): void {
+  this.addresses.push(this.createAddressGroup({ type }));
+}
+```
+
+**Ejemplo: Item de factura con calculo dinamico**
+
+```typescript
+interface InvoiceItem {
+  description: string;
+  quantity: number;
+  unitPrice: number;
+}
+
+private createItemGroup(initial?: Partial<InvoiceItem>): FormGroup {
+  return this.fb.group({
+    description: [initial?.description || '', Validators.required],
+    quantity: [initial?.quantity || 1, [Validators.required, Validators.min(1)]],
+    unitPrice: [initial?.unitPrice || 0, [Validators.required, Validators.min(0)]]
+  });
+}
+
+addItem(): void {
+  this.items.push(this.createItemGroup());
+}
+
+// Calculo del total de un item
+getItemTotal(index: number): number {
+  const item = this.items.at(index);
+  const quantity = item.get('quantity')?.value || 0;
+  const unitPrice = item.get('unitPrice')?.value || 0;
+  return quantity * unitPrice;
+}
+
+// Calculo del total general
+get invoiceTotal(): number {
+  return this.items.controls.reduce((total, item, index) => {
+    return total + this.getItemTotal(index);
+  }, 0);
+}
+```
+
+### 2.7.5 Eliminacion de Elementos
+
+La eliminacion de elementos se realiza mediante el metodo `removeAt(index)`. Es importante considerar validaciones adicionales como minimo de elementos o confirmacion del usuario.
+
+**Implementacion basica:**
+
+```typescript
+removePhone(index: number): void {
+  this.phones.removeAt(index);
+}
+```
+
+**Con validacion de minimo:**
+
+```typescript
+removePhone(index: number): void {
+  // Siempre mantener al menos un telefono
+  if (this.phones.length > 1) {
+    this.phones.removeAt(index);
+  }
+}
+
+// En el template, deshabilitar el boton si solo queda uno
+// [disabled]="phones.length <= 1"
+```
+
+**Con confirmacion:**
+
+```typescript
+async removeAddress(index: number): Promise<void> {
+  const address = this.addresses.at(index);
+  const street = address.get('street')?.value;
+  
+  const confirmed = await this.modalService.confirm({
+    title: 'Eliminar direccion',
+    message: `¿Seguro que deseas eliminar la direccion "${street}"?`,
+    confirmText: 'Eliminar',
+    cancelText: 'Cancelar'
+  });
+  
+  if (confirmed) {
+    this.addresses.removeAt(index);
+  }
+}
+```
+
+### 2.7.6 Uso en Plantilla (Template)
+
+La integracion de `FormArray` en el template requiere el uso de `formArrayName` y la iteracion sobre `.controls` con `*ngFor` o `@for`.
+
+**Estructura basica con sintaxis clasica (*ngFor):**
+
+```html
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <!-- Campos simples -->
+  <div class="c-form-field">
+    <label for="customer">Cliente</label>
+    <input id="customer" formControlName="customer" />
+  </div>
+  
+  <!-- Array de telefonos -->
+  <fieldset class="c-form-fieldset">
+    <legend>Telefonos de contacto</legend>
+    
+    <div formArrayName="phones">
+      <div 
+        *ngFor="let phoneGroup of phones.controls; let i = index" 
+        [formGroupName]="i"
+        class="c-form-array-item"
+      >
+        <div class="c-form-array-item__content">
+          <input 
+            formControlName="phone" 
+            placeholder="Ej: 666123456"
+            class="c-form-input__field"
+          />
+          
+          <button 
+            type="button" 
+            (click)="removePhone(i)"
+            [disabled]="phones.length <= 1"
+            class="c-btn c-btn--icon c-btn--danger"
+            aria-label="Eliminar telefono"
+          >
+            <app-icon name="trash" />
+          </button>
+        </div>
+        
+        <!-- Mensaje de error -->
+        <small 
+          *ngIf="phoneGroup.get('phone')?.invalid && phoneGroup.get('phone')?.touched"
+          class="c-form-input__error"
+        >
+          Telefono invalido. Debe ser un movil espanol (6XX o 7XX XXX XXX)
+        </small>
+      </div>
+    </div>
+    
+    <button 
+      type="button" 
+      (click)="addPhone()"
+      class="c-btn c-btn--secondary c-btn--sm"
+    >
+      <app-icon name="plus" />
+      Añadir telefono
+    </button>
+  </fieldset>
+  
+  <button type="submit" [disabled]="form.invalid" class="c-btn c-btn--primary">
+    Guardar
+  </button>
+</form>
+```
+
+**Estructura con sintaxis moderna (@for - Angular 17+):**
+
+```html
+<fieldset class="c-form-fieldset">
+  <legend>Telefonos de contacto</legend>
+  
+  <div formArrayName="phones">
+    @for (phoneGroup of phones.controls; track phoneGroup; let i = $index) {
+      <div [formGroupName]="i" class="c-form-array-item">
+        <div class="c-form-array-item__content">
+          <input 
+            formControlName="phone" 
+            placeholder="Ej: 666123456"
+            class="c-form-input__field"
+          />
+          
+          <button 
+            type="button" 
+            (click)="removePhone(i)"
+            [disabled]="phones.length <= 1"
+            class="c-btn c-btn--icon c-btn--danger"
+          >
+            <app-icon name="trash" />
+          </button>
+        </div>
+        
+        @if (phoneGroup.get('phone')?.invalid && phoneGroup.get('phone')?.touched) {
+          <small class="c-form-input__error">
+            Telefono invalido
+          </small>
+        }
+      </div>
+    } @empty {
+      <p class="c-form-array__empty">No hay telefonos registrados</p>
+    }
+  </div>
+  
+  <button type="button" (click)="addPhone()" class="c-btn c-btn--secondary">
+    Añadir telefono
+  </button>
+</fieldset>
+```
+
+### 2.7.7 Validacion del FormArray
+
+La validacion en `FormArray` opera a dos niveles: validacion de cada elemento individual y validacion del array completo.
+
+**Validacion a nivel de elemento:**
+
+Cada `FormGroup` dentro del array tiene sus propios validadores, definidos en la funcion fabrica:
+
+```typescript
+private createPhoneGroup(): FormGroup {
+  return this.fb.group({
+    phone: ['', [Validators.required, telefono()]]  // Validadores del campo
+  });
+}
+```
+
+**Validacion a nivel de array:**
+
+Puedes aplicar validadores al `FormArray` completo para reglas como "minimo 1 elemento" o "maximo 5 elementos":
+
+```typescript
+// Validador personalizado para minimo de elementos
+function minArrayLength(min: number): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const array = control as FormArray;
+    return array.length >= min ? null : { minArrayLength: { required: min, actual: array.length } };
+  };
+}
+
+// Validador para maximo de elementos
+function maxArrayLength(max: number): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const array = control as FormArray;
+    return array.length <= max ? null : { maxArrayLength: { required: max, actual: array.length } };
+  };
+}
+
+// Uso en el formulario
+this.form = this.fb.group({
+  phones: this.fb.array([], [minArrayLength(1), maxArrayLength(5)])
+});
+```
+
+**Mostrar errores del array:**
+
+```html
+<fieldset formArrayName="phones">
+  <!-- ... items ... -->
+  
+  @if (phones.hasError('minArrayLength')) {
+    <p class="c-form-input__error">
+      Debes añadir al menos {{ phones.getError('minArrayLength').required }} telefono(s)
+    </p>
+  }
+  
+  @if (phones.hasError('maxArrayLength')) {
+    <p class="c-form-input__error">
+      Maximo {{ phones.getError('maxArrayLength').required }} telefonos permitidos
+    </p>
+  }
+</fieldset>
+```
+
+### 2.7.8 Casos de Uso en Joinly
+
+A continuacion se documentan los principales casos de uso de `FormArray` implementados en Joinly:
+
+#### Lista de Telefonos del Cliente
+
+**Escenario:** El usuario puede registrar multiples numeros de telefono de contacto.
+
+**Estructura del FormGroup:**
+
+```typescript
+interface PhoneEntry {
+  phone: string;
+}
+```
+
+**Validaciones aplicadas:**
+- Campo obligatorio
+- Formato de telefono movil espanol
+
+#### Multiples Direcciones (Envio/Facturacion)
+
+**Escenario:** El usuario puede tener varias direcciones guardadas, marcando una como predeterminada.
+
+**Estructura del FormGroup:**
+
+```typescript
+interface AddressEntry {
+  type: 'shipping' | 'billing';
+  street: string;
+  number: string;
+  floor?: string;
+  city: string;
+  province: string;
+  postalCode: string;
+  isDefault: boolean;
+}
+```
+
+**Validaciones aplicadas:**
+- Campos obligatorios: street, city, postalCode
+- Codigo postal con formato espanol
+- Maximo una direccion como predeterminada por tipo
+
+#### Items de Factura
+
+**Escenario:** Creacion de facturas con lineas de detalle que incluyen descripcion, cantidad y precio.
+
+**Estructura del FormGroup:**
+
+```typescript
+interface InvoiceItemEntry {
+  description: string;
+  quantity: number;
+  unitPrice: number;
+  discount?: number;
+}
+```
+
+**Validaciones aplicadas:**
+- Descripcion obligatoria
+- Cantidad minima: 1
+- Precio unitario minimo: 0
+- Validador cross-field: total minimo por factura
+
+**Ejemplo completo de items de factura:**
+
+```typescript
+@Component({
+  selector: 'app-invoice-form',
+  templateUrl: './invoice-form.html'
+})
+export class InvoiceFormComponent {
+  private readonly fb = inject(FormBuilder);
+  
+  form = this.fb.group({
+    invoiceNumber: ['', Validators.required],
+    customer: ['', Validators.required],
+    items: this.fb.array([], [minArrayLength(1)])
+  });
+  
+  get items(): FormArray {
+    return this.form.get('items') as FormArray;
+  }
+  
+  private createItemGroup(): FormGroup {
+    return this.fb.group({
+      description: ['', Validators.required],
+      quantity: [1, [Validators.required, Validators.min(1)]],
+      unitPrice: [0, [Validators.required, Validators.min(0)]],
+      discount: [0, [Validators.min(0), Validators.max(100)]]
+    });
+  }
+  
+  addItem(): void {
+    this.items.push(this.createItemGroup());
+  }
+  
+  removeItem(index: number): void {
+    if (this.items.length > 1) {
+      this.items.removeAt(index);
+    }
+  }
+  
+  getLineTotal(index: number): number {
+    const item = this.items.at(index);
+    const quantity = item.get('quantity')?.value || 0;
+    const unitPrice = item.get('unitPrice')?.value || 0;
+    const discount = item.get('discount')?.value || 0;
+    const subtotal = quantity * unitPrice;
+    return subtotal - (subtotal * discount / 100);
+  }
+  
+  get invoiceSubtotal(): number {
+    return this.items.controls.reduce((sum, _, index) => sum + this.getLineTotal(index), 0);
+  }
+  
+  get invoiceTax(): number {
+    return this.invoiceSubtotal * 0.21; // IVA 21%
+  }
+  
+  get invoiceTotal(): number {
+    return this.invoiceSubtotal + this.invoiceTax;
+  }
+}
+```
+
+```html
+<table class="c-invoice-table">
+  <thead>
+    <tr>
+      <th>Descripcion</th>
+      <th>Cantidad</th>
+      <th>Precio Unit.</th>
+      <th>Descuento %</th>
+      <th>Total</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody formArrayName="items">
+    @for (item of items.controls; track item; let i = $index) {
+      <tr [formGroupName]="i">
+        <td>
+          <input formControlName="description" placeholder="Descripcion del producto" />
+        </td>
+        <td>
+          <input type="number" formControlName="quantity" min="1" />
+        </td>
+        <td>
+          <input type="number" formControlName="unitPrice" min="0" step="0.01" />
+        </td>
+        <td>
+          <input type="number" formControlName="discount" min="0" max="100" />
+        </td>
+        <td class="c-invoice-table__total">
+          {{ getLineTotal(i) | currency:'EUR' }}
+        </td>
+        <td>
+          <button type="button" (click)="removeItem(i)" [disabled]="items.length <= 1">
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    }
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="4" class="text-right">Subtotal:</td>
+      <td>{{ invoiceSubtotal | currency:'EUR' }}</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td colspan="4" class="text-right">IVA (21%):</td>
+      <td>{{ invoiceTax | currency:'EUR' }}</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td colspan="4" class="text-right"><strong>Total:</strong></td>
+      <td><strong>{{ invoiceTotal | currency:'EUR' }}</strong></td>
+      <td></td>
+    </tr>
+  </tfoot>
+</table>
+
+<button type="button" (click)="addItem()" class="c-btn c-btn--secondary">
+  Añadir linea
+</button>
+```
+
+### 2.7.9 Resumen de FormArray
+
+| Operacion | Metodo | Ejemplo |
+|-----------|--------|---------|
+| **Obtener array** | Getter tipado | `get phones(): FormArray { return this.form.get('phones') as FormArray; }` |
+| **Crear elemento** | Funcion fabrica | `createPhoneGroup(): FormGroup { return this.fb.group({...}); }` |
+| **Añadir elemento** | `push()` | `this.phones.push(this.createPhoneGroup());` |
+| **Eliminar elemento** | `removeAt(index)` | `this.phones.removeAt(i);` |
+| **Acceder por indice** | `at(index)` | `this.phones.at(0).get('phone')?.value` |
+| **Iterar en template** | `*ngFor` o `@for` | `@for (phone of phones.controls; track phone; let i = $index)` |
+| **Vincular en template** | `formArrayName` + `[formGroupName]="index"` | Ver ejemplos anteriores |
+
+---
+
+## 2.8 Ejemplos de Validacion Asincrona
+
+Los validadores asincronos son fundamentales cuando la validacion requiere consultar un recurso externo, como verificar la disponibilidad de un email o username en el servidor. Esta seccion presenta un flujo completo con servicio, validador y template que muestra todos los estados posibles.
+
+### 2.8.1 Arquitectura de Validacion Asincrona
+
+El flujo de una validacion asincrona sigue estos pasos:
+
+```
+Usuario escribe    →    Debounce (espera)    →    Llamada API    →    Respuesta
+     ↓                       ↓                        ↓                  ↓
+  touched: true         pending: true           pending: true      pending: false
+  dirty: true                                                      errors: {...} | null
+```
+
+**Estados del control durante la validacion:**
+
+| Estado | Propiedad | Significado |
+|--------|-----------|-------------|
+| Pendiente | `control.pending` | El validador asincrono esta ejecutandose |
+| Valido | `control.valid` | Todos los validadores (sync + async) pasaron |
+| Invalido | `control.invalid` | Al menos un validador fallo |
+| Tocado | `control.touched` | El usuario ha interactuado y perdido el foco |
+| Sucio | `control.dirty` | El valor ha sido modificado por el usuario |
+
+### 2.8.2 Servicio de Validacion (Simulacion API)
+
+El servicio encapsula la logica de comunicacion con el backend. En desarrollo, puede simular respuestas con datos en memoria y latencia artificial.
+
+**Implementacion del servicio:**
+
+```typescript
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { delay, map, catchError } from 'rxjs/operators';
+
+@Injectable({ providedIn: 'root' })
+export class ValidationService {
+  private readonly API_URL = '/api/validation';
+  
+  // Datos de simulacion para desarrollo
+  private readonly usedEmails = [
+    'admin@ejemplo.com',
+    'user@test.com',
+    'info@joinly.com'
+  ];
+  
+  private readonly usedUsernames = [
+    'admin',
+    'root',
+    'superuser',
+    'moderator'
+  ];
+  
+  constructor(private readonly http: HttpClient) {}
+  
+  /**
+   * Verifica si un email esta disponible para registro
+   * @param email Email a verificar
+   * @returns Observable<boolean> - true si esta disponible, false si ya existe
+   */
+  checkEmailUnique(email: string): Observable<boolean> {
+    // En produccion, usar la llamada HTTP real:
+    // return this.http.get<{ available: boolean }>(`${this.API_URL}/email?value=${email}`)
+    //   .pipe(map(response => response.available));
+    
+    // Simulacion para desarrollo
+    const isAvailable = !this.usedEmails.includes(email.toLowerCase().trim());
+    return of(isAvailable).pipe(
+      delay(800) // Simula latencia de red (800ms)
+    );
+  }
+  
+  /**
+   * Verifica si un username esta disponible
+   * @param username Username a verificar
+   * @returns Observable<boolean> - true si esta disponible
+   */
+  checkUsernameUnique(username: string): Observable<boolean> {
+    // Simulacion para desarrollo
+    const isAvailable = !this.usedUsernames.includes(username.toLowerCase().trim());
+    return of(isAvailable).pipe(
+      delay(600)
+    );
+  }
+  
+  /**
+   * Version con llamada HTTP real (produccion)
+   */
+  checkEmailUniqueHttp(email: string): Observable<boolean> {
+    return this.http.get<{ available: boolean }>(
+      `${this.API_URL}/check-email`,
+      { params: { email } }
+    ).pipe(
+      map(response => response.available),
+      catchError(() => of(true)) // En caso de error, permitir (validar en backend)
+    );
+  }
+}
+```
+
+**Consideraciones del servicio:**
+
+1. **Simulacion vs Produccion:** Mantener ambas implementaciones facilita el desarrollo sin backend.
+2. **Latencia artificial:** El `delay()` simula condiciones reales de red.
+3. **Manejo de errores:** `catchError` evita que errores de red bloqueen el formulario.
+
+### 2.8.3 Validador Asincrono
+
+El validador asincrono es una funcion que devuelve `AsyncValidatorFn`. Internamente usa operadores RxJS para gestionar el debounce y la llamada al servicio.
+
+**Implementacion completa:**
+
+```typescript
+import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
+import { Observable, of, timer } from 'rxjs';
+import { switchMap, map, catchError, first } from 'rxjs/operators';
+import { ValidationService } from '@shared/services/validation.service';
+
+/**
+ * Validador asincrono que verifica si un email ya esta registrado
+ * @param validationService Servicio de validacion inyectado
+ * @param debounceMs Tiempo de espera antes de validar (por defecto 500ms)
+ */
+export function uniqueEmail(
+  validationService: ValidationService,
+  debounceMs = 500
+): AsyncValidatorFn {
+  return (control: AbstractControl): Observable<ValidationErrors | null> => {
+    const email = control.value?.trim();
+    
+    // Si esta vacio, dejar que Validators.required lo maneje
+    if (!email) {
+      return of(null);
+    }
+    
+    // Si el formato es invalido, no hacer la llamada
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return of(null);
+    }
+    
+    return timer(debounceMs).pipe(
+      // Despues del debounce, llamar al servicio
+      switchMap(() => validationService.checkEmailUnique(email)),
+      // Transformar respuesta en error o null
+      map(isAvailable => isAvailable ? null : { emailTaken: true }),
+      // En caso de error de red, no bloquear el formulario
+      catchError(() => of(null)),
+      // Completar el observable (importante para que Angular sepa que termino)
+      first()
+    );
+  };
+}
+
+/**
+ * Validador asincrono para username disponible
+ */
+export function usernameAvailable(
+  validationService: ValidationService,
+  debounceMs = 400
+): AsyncValidatorFn {
+  return (control: AbstractControl): Observable<ValidationErrors | null> => {
+    const username = control.value?.trim();
+    
+    if (!username || username.length < 3) {
+      return of(null);
+    }
+    
+    return timer(debounceMs).pipe(
+      switchMap(() => validationService.checkUsernameUnique(username)),
+      map(isAvailable => isAvailable ? null : { usernameTaken: true }),
+      catchError(() => of(null)),
+      first()
+    );
+  };
+}
+```
+
+**Explicacion de los operadores RxJS:**
+
+| Operador | Proposito |
+|----------|-----------|
+| `timer(ms)` | Crea un debounce: espera X ms antes de continuar |
+| `switchMap()` | Cancela llamadas anteriores si el usuario sigue escribiendo |
+| `map()` | Transforma la respuesta del servicio en formato de error |
+| `catchError()` | Maneja errores de red sin romper el flujo |
+| `first()` | Completa el observable tras el primer valor (requerido por Angular) |
+
+**Por que `switchMap` y no `mergeMap`:**
+
+`switchMap` cancela automaticamente las peticiones anteriores cuando llega un nuevo valor. Esto es crucial para evitar race conditions donde una respuesta lenta podria llegar despues de una rapida, mostrando un resultado incorrecto.
+
+### 2.8.4 Uso en el Formulario
+
+La integracion del validador asincrono en el formulario requiere pasarlo como tercer argumento (o en la configuracion extendida).
+
+**Configuracion del FormGroup:**
+
+```typescript
+import { Component, inject, OnInit } from '@angular/core';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ValidationService } from '@shared/services/validation.service';
+import { uniqueEmail, usernameAvailable } from '@shared/validators';
+
+@Component({
+  selector: 'app-register',
+  standalone: true,
+  imports: [ReactiveFormsModule],
+  templateUrl: './register.html'
+})
+export class RegisterComponent implements OnInit {
+  private readonly fb = inject(FormBuilder);
+  private readonly validationService = inject(ValidationService);
+  
+  form = this.fb.group({
+    // Campo con validadores sincronos y asincronos
+    email: ['', {
+      validators: [Validators.required, Validators.email],
+      asyncValidators: [uniqueEmail(this.validationService)],
+      updateOn: 'blur'  // Validar solo al perder foco
+    }],
+    
+    username: ['', {
+      validators: [Validators.required, Validators.minLength(3)],
+      asyncValidators: [usernameAvailable(this.validationService)],
+      updateOn: 'blur'
+    }],
+    
+    // Campos sin validacion asincrona
+    password: ['', [Validators.required, Validators.minLength(8)]],
+    confirmPassword: ['', Validators.required]
+  });
+  
+  // Getters para acceso facil en el template
+  get email() { return this.form.get('email'); }
+  get username() { return this.form.get('username'); }
+  
+  ngOnInit(): void {
+    // Opcional: escuchar cambios de estado para debugging
+    this.email?.statusChanges.subscribe(status => {
+      console.log('Email status:', status); // VALID, INVALID, PENDING
+    });
+  }
+  
+  onSubmit(): void {
+    if (this.form.valid) {
+      console.log('Formulario valido:', this.form.value);
+      // Enviar al servidor...
+    }
+  }
+}
+```
+
+**Opciones de `updateOn`:**
+
+| Valor | Comportamiento | Uso recomendado |
+|-------|----------------|-----------------|
+| `'change'` (default) | Valida en cada keystroke | Validadores sincronos rapidos |
+| `'blur'` | Valida al perder foco | Validadores asincronos (reduce llamadas) |
+| `'submit'` | Valida solo al enviar | Campos que no necesitan feedback inmediato |
+
+### 2.8.5 Template con Estados de Loading y Error
+
+El template debe mostrar feedback visual para todos los estados posibles: cargando, error y exito.
+
+**Implementacion completa del template:**
+
+```html
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="c-register-form">
+  
+  <!-- Campo Email con validacion asincrona -->
+  <div class="c-form-field">
+    <label for="email" class="c-form-field__label">
+      Correo electronico
+      <span class="c-form-field__required">*</span>
+    </label>
+    
+    <div class="c-form-field__input-wrapper">
+      <input 
+        id="email"
+        type="email"
+        formControlName="email"
+        placeholder="email@ejemplo.com"
+        class="c-form-input__field"
+        [class.c-form-input__field--error]="email?.invalid && email?.touched && !email?.pending"
+        [class.c-form-input__field--valid]="email?.valid && email?.touched"
+        [class.c-form-input__field--pending]="email?.pending"
+        [attr.aria-invalid]="email?.invalid && email?.touched"
+        [attr.aria-describedby]="'email-feedback'"
+      />
+      
+      <!-- Indicador de estado -->
+      <div class="c-form-field__status">
+        @if (email?.pending) {
+          <span class="c-form-field__spinner" aria-hidden="true"></span>
+        } @else if (email?.valid && email?.touched) {
+          <app-icon name="check" class="c-form-field__icon--valid" />
+        } @else if (email?.invalid && email?.touched) {
+          <app-icon name="x" class="c-form-field__icon--error" />
+        }
+      </div>
+    </div>
+    
+    <!-- Mensajes de feedback -->
+    <div id="email-feedback" class="c-form-field__feedback" aria-live="polite">
+      @if (email?.pending) {
+        <span class="c-form-field__hint c-form-field__hint--loading">
+          Comprobando disponibilidad...
+        </span>
+      }
+      
+      @if (email?.errors?.['required'] && email?.touched) {
+        <span class="c-form-field__error">
+          El email es obligatorio
+        </span>
+      }
+      
+      @if (email?.errors?.['email'] && email?.touched) {
+        <span class="c-form-field__error">
+          Introduce un email valido
+        </span>
+      }
+      
+      @if (email?.errors?.['emailTaken'] && !email?.pending && email?.touched) {
+        <span class="c-form-field__error">
+          Este email ya esta registrado. 
+          <a routerLink="/login">Iniciar sesion</a>
+        </span>
+      }
+    </div>
+  </div>
+  
+  <!-- Campo Username con validacion asincrona -->
+  <div class="c-form-field">
+    <label for="username" class="c-form-field__label">
+      Nombre de usuario
+      <span class="c-form-field__required">*</span>
+    </label>
+    
+    <div class="c-form-field__input-wrapper">
+      <input 
+        id="username"
+        type="text"
+        formControlName="username"
+        placeholder="mi_usuario"
+        class="c-form-input__field"
+        [class.c-form-input__field--error]="username?.invalid && username?.touched && !username?.pending"
+        [class.c-form-input__field--valid]="username?.valid && username?.touched"
+      />
+      
+      <div class="c-form-field__status">
+        @if (username?.pending) {
+          <span class="c-form-field__spinner"></span>
+        }
+      </div>
+    </div>
+    
+    <div class="c-form-field__feedback">
+      @if (username?.pending) {
+        <span class="c-form-field__hint c-form-field__hint--loading">
+          Verificando disponibilidad...
+        </span>
+      }
+      
+      @if (username?.errors?.['required'] && username?.touched) {
+        <span class="c-form-field__error">
+          El nombre de usuario es obligatorio
+        </span>
+      }
+      
+      @if (username?.errors?.['minlength'] && username?.touched) {
+        <span class="c-form-field__error">
+          Minimo 3 caracteres
+        </span>
+      }
+      
+      @if (username?.errors?.['usernameTaken'] && !username?.pending && username?.touched) {
+        <span class="c-form-field__error">
+          Este nombre de usuario no esta disponible
+        </span>
+      }
+    </div>
+  </div>
+  
+  <!-- Boton de submit con estados -->
+  <div class="c-form-field">
+    <button 
+      type="submit" 
+      class="c-btn c-btn--primary c-btn--full"
+      [disabled]="form.invalid || form.pending"
+      [class.c-btn--loading]="form.pending"
+    >
+      @if (form.pending) {
+        <span class="c-btn__spinner"></span>
+        Validando...
+      } @else {
+        Crear cuenta
+      }
+    </button>
+  </div>
+  
+  <!-- Mensaje informativo sobre validacion en curso -->
+  @if (form.pending) {
+    <p class="c-form__pending-notice">
+      Por favor, espera mientras verificamos tus datos...
+    </p>
+  }
+</form>
+```
+
+### 2.8.6 Estilos para Estados de Validacion
+
+Los estilos CSS deben reflejar visualmente los estados de validacion:
+
+```scss
+// Estados del campo de entrada
+.c-form-input__field {
+  border: 1px solid var(--color-gris-medio);
+  transition: border-color var(--duracion-rapida) ease;
+  
+  &--pending {
+    border-color: var(--color-informacion);
+    background-color: rgba(var(--color-informacion-rgb), 0.05);
+  }
+  
+  &--valid {
+    border-color: var(--color-exito);
+  }
+  
+  &--error {
+    border-color: var(--color-error);
+  }
+}
+
+// Spinner de carga
+.c-form-field__spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--color-gris-medio);
+  border-top-color: var(--color-principal);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// Mensajes de feedback
+.c-form-field__hint--loading {
+  color: var(--color-informacion);
+  font-size: var(--tamano-texto-pequeno);
+  display: flex;
+  align-items: center;
+  gap: var(--espaciado-1);
+}
+
+.c-form-field__error {
+  color: var(--color-error);
+  font-size: var(--tamano-texto-pequeno);
+}
+
+// Boton en estado de carga
+.c-btn--loading {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.c-btn__spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: var(--espaciado-1);
+}
+```
+
+### 2.8.7 Buenas Practicas de Validacion Asincrona
+
+#### Debounce y Rate Limiting
+
+El debounce es esencial para evitar multiples llamadas al servidor mientras el usuario escribe:
+
+```typescript
+// Dentro del validador
+return timer(500).pipe(  // Espera 500ms
+  switchMap(() => service.checkEmail(email)),
+  // ...
+);
+```
+
+**Valores de debounce recomendados:**
+- Campos de texto corto (email, username): 400-600ms
+- Campos de busqueda: 300-400ms
+- Campos largos (descripcion): 800-1000ms
+
+#### Combinacion con updateOn: 'blur'
+
+Para validadores asincronos, combinar debounce con `updateOn: 'blur'` reduce drasticamente las llamadas:
+
+```typescript
+email: ['', {
+  validators: [Validators.required, Validators.email],
+  asyncValidators: [uniqueEmail(this.validationService)],
+  updateOn: 'blur'  // Solo valida al salir del campo
+}]
+```
+
+**Flujo resultante:**
+1. Usuario escribe "admin@ejemplo.com"
+2. Sale del campo (blur)
+3. Validadores sincronos ejecutan (required, email)
+4. Si pasan, validador asincrono ejecuta con debounce
+5. UI muestra "Comprobando..."
+6. Respuesta llega: muestra error o exito
+
+#### Cancelacion de Peticiones
+
+`switchMap` cancela automaticamente peticiones anteriores:
+
+```typescript
+// Si el usuario cambia el valor mientras hay una peticion en curso,
+// switchMap cancela la peticion anterior antes de iniciar la nueva
+switchMap(() => service.checkEmail(email))
+```
+
+Esto previene race conditions donde una respuesta lenta podria sobrescribir una rapida.
+
+#### Manejo de Errores de Red
+
+Siempre incluir `catchError` para evitar que errores de red bloqueen el formulario:
+
+```typescript
+catchError((error) => {
+  console.error('Error validando email:', error);
+  // Devolver null permite continuar (validacion final en backend)
+  return of(null);
+})
+```
+
+### 2.8.8 Resumen de Validacion Asincrona
+
+| Concepto | Implementacion |
+|----------|----------------|
+| **Estado pendiente** | `control.pending` - true mientras el validador async ejecuta |
+| **Debounce** | `timer(ms).pipe(switchMap(...))` - evita llamadas excesivas |
+| **updateOn: 'blur'** | Reduce llamadas validando solo al perder foco |
+| **switchMap** | Cancela peticiones anteriores, previene race conditions |
+| **catchError** | Maneja errores de red sin bloquear el formulario |
+| **first()** | Completa el observable (requerido por Angular) |
+| **Deshabilitar submit** | `[disabled]="form.invalid \|\| form.pending"` |
+| **Feedback visual** | Spinner, colores de borde, mensajes contextuales |
+
+Los validadores asincronos son una herramienta poderosa para mejorar la experiencia del usuario, proporcionando feedback inmediato sobre la validez de datos que requieren verificacion en el servidor. La combinacion de debounce, `updateOn: 'blur'` y un buen manejo de estados visuales crea una experiencia fluida y profesional.
 
 ---
 

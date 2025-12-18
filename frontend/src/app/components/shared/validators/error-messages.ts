@@ -48,6 +48,7 @@ export const VALIDATION_MESSAGES: Record<string, string | ((error?: any) => stri
   emailTaken: 'Este email ya está registrado',
   emailUnavailable: 'Email no disponible',
   usernameTaken: 'Nombre de usuario no disponible',
+  groupCodeNotFound: 'No existe ningún grupo con este código',
 };
 
 /**

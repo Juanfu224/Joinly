@@ -44,6 +44,9 @@ export class FormInputComponent implements ControlValueAccessor {
   readonly errorMessage = input<string>('');
   readonly pending = input<boolean>(false);
   readonly pendingMessage = input<string>('Verificando...');
+  /** Muestra mensaje de éxito cuando el campo es válido */
+  readonly showSuccess = input<boolean>(false);
+  readonly successMessage = input<string>('¡Campo válido!');
 
   private readonly generatedId = `form-input-${crypto.randomUUID().slice(0, 8)}`;
 

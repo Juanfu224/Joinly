@@ -15,6 +15,7 @@ import { FormCardComponent } from '../form-card/form-card';
 import { FormInputComponent } from '../form-input/form-input';
 import { canSubmit, focusInput, shouldTriggerSubmit } from '../form-utils';
 import { codePatternValidator, getFieldErrorMessage, type FieldErrorMessages } from '../form-validators';
+import { AsyncValidatorsService } from '../../../services';
 
 interface JoinGroupFormValue {
   codigo: string;
@@ -31,6 +32,7 @@ interface JoinGroupFormValue {
 })
 export class JoinGroupFormComponent {
   private readonly fb = inject(FormBuilder).nonNullable;
+  private readonly asyncValidators = inject(AsyncValidatorsService);
 
   readonly isLoading = signal(false);
   readonly formError = signal<string | null>(null);
@@ -44,7 +46,11 @@ export class JoinGroupFormComponent {
   private lastSubmitTime = 0;
 
   readonly form = this.fb.group({
-    codigo: ['', [Validators.required, codePatternValidator(12)]],
+    codigo: ['', {
+      validators: [Validators.required, codePatternValidator(12)],
+      asyncValidators: [this.asyncValidators.groupCodeExists()],
+      updateOn: 'blur' as const
+    }],
   });
 
   readonly isFormInvalid = computed(() => this.form.invalid);
@@ -99,7 +105,19 @@ export class JoinGroupFormComponent {
     const customMessages: FieldErrorMessages = {
       required: 'El código del grupo es obligatorio',
       codePattern: 'Formato válido: XXXX-XXXX-XXXX (12 caracteres alfanuméricos)',
+      groupCodeNotFound: 'No existe ningún grupo con este código',
     };
     return getFieldErrorMessage(control, customMessages);
+  }
+
+  /** Indica si el campo de código está pendiente de validación asíncrona */
+  get isCodePending(): boolean {
+    return this.form.get('codigo')?.pending ?? false;
+  }
+
+  /** Indica si mostrar feedback de success para el campo de código */
+  get showCodeSuccess(): boolean {
+    const control = this.form.get('codigo');
+    return !!(control?.valid && control.dirty && !control.pending && control.value);
   }
 }

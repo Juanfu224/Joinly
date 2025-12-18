@@ -45,6 +45,8 @@
         [required]="true"
         formControlName="email"
         [pending]="form.get('email')?.pending || false"
+        [showSuccess]="showEmailSuccess"
+        successMessage="Email disponible"
         [errorMessage]="getErrorMessage('email')"
       />
 
