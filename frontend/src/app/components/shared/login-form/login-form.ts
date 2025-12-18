@@ -14,6 +14,7 @@ import { ButtonComponent } from '../button/button';
 import { FormCardComponent } from '../form-card/form-card';
 import { FormInputComponent } from '../form-input/form-input';
 import { canSubmit, focusInput, shouldTriggerSubmit } from '../form-utils';
+import { getFieldErrorMessage, type FieldErrorMessages } from '../form-validators';
 
 interface LoginFormValue {
   email: string;
@@ -114,22 +115,11 @@ export class LoginFormComponent {
 
   getErrorMessage(field: 'email' | 'password'): string {
     const control = this.form.get(field);
-    if (!control?.touched || !control.errors) return '';
-
-    const errors: Record<string, Record<string, string>> = {
-      email: {
-        required: 'El email es obligatorio',
-        email: 'Introduce un email válido',
-      },
-      password: {
-        required: 'La contraseña es obligatoria',
-        minlength: 'Mínimo 8 caracteres',
-      },
+    const customMessages: FieldErrorMessages = {
+      required: field === 'email' ? 'El email es obligatorio' : 'La contraseña es obligatoria',
+      minlength: 'Mínimo 8 caracteres',
     };
-
-    const fieldErrors = errors[field];
-    const errorKey = Object.keys(control.errors)[0];
-    return fieldErrors[errorKey] || 'Campo inválido';
+    return getFieldErrorMessage(control, customMessages);
   }
 
   private focusFirstInvalidField(): void {

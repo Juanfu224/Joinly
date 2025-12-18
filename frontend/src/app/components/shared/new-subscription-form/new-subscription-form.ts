@@ -14,6 +14,7 @@ import { ButtonComponent } from '../button/button';
 import { FormCardComponent } from '../form-card/form-card';
 import { FormInputComponent } from '../form-input/form-input';
 import { canSubmit, focusInput, shouldTriggerSubmit } from '../form-utils';
+import { getFieldErrorMessage, type FieldErrorMessages } from '../form-validators';
 
 interface NewSubscriptionFormValue {
   nombre: string;
@@ -111,34 +112,23 @@ export class NewSubscriptionFormComponent {
 
   getErrorMessage(field: keyof typeof this.form.controls): string {
     const control = this.form.get(field);
-    if (!control?.touched || !control.errors) return '';
 
-    const errors: Record<string, Record<string, string>> = {
-      nombre: {
-        required: 'El nombre es obligatorio',
-        minlength: 'Mínimo 2 caracteres',
-        maxlength: 'Máximo 100 caracteres',
-      },
-      precioTotal: {
-        required: 'El precio es obligatorio',
-        min: 'El precio debe ser mayor a 0',
-        max: 'El precio máximo es 9999€',
-      },
-      frecuencia: {
-        required: 'La frecuencia es obligatoria',
-      },
-      plazas: {
-        required: 'El número de plazas es obligatorio',
-        min: 'Mínimo 1 plaza',
-        max: 'Máximo 20 plazas',
-      },
-      usuario: {},
-      password: {},
+    const fieldLabels: Record<string, string> = {
+      nombre: 'El nombre',
+      precioTotal: 'El precio',
+      frecuencia: 'La frecuencia',
+      plazas: 'El número de plazas',
     };
 
-    const fieldErrors = errors[field];
-    const errorKey = Object.keys(control.errors)[0];
-    return fieldErrors[errorKey] || 'Campo inválido';
+    const customMessages: FieldErrorMessages = {
+      required: `${fieldLabels[field] || 'Este campo'} es obligatorio`,
+      minlength: 'Mínimo 2 caracteres',
+      maxlength: 'Máximo 100 caracteres',
+      min: field === 'precioTotal' ? 'El precio debe ser mayor a 0' : 'El valor mínimo es 1',
+      max: field === 'precioTotal' ? 'El precio máximo es 9999€' : 'El valor máximo es 20',
+    };
+
+    return getFieldErrorMessage(control, customMessages);
   }
 
   private focusFirstInvalidField(): void {

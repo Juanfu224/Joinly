@@ -14,6 +14,7 @@ import { ButtonComponent } from '../button/button';
 import { FormCardComponent } from '../form-card/form-card';
 import { FormInputComponent } from '../form-input/form-input';
 import { canSubmit, focusInput, shouldTriggerSubmit } from '../form-utils';
+import { codePatternValidator, getFieldErrorMessage, type FieldErrorMessages } from '../form-validators';
 
 interface JoinGroupFormValue {
   codigo: string;
@@ -41,10 +42,9 @@ export class JoinGroupFormComponent {
   protected readonly codigoInput = viewChild<FormInputComponent>('codigoInput');
 
   private lastSubmitTime = 0;
-  private readonly codigoPattern = /^[A-Za-z0-9]{4}-?[A-Za-z0-9]{4}-?[A-Za-z0-9]{4}$/;
 
   readonly form = this.fb.group({
-    codigo: ['', [Validators.required, Validators.pattern(this.codigoPattern)]],
+    codigo: ['', [Validators.required, codePatternValidator(12)]],
   });
 
   readonly isFormInvalid = computed(() => this.form.invalid);
@@ -96,14 +96,10 @@ export class JoinGroupFormComponent {
 
   getErrorMessage(field: 'codigo'): string {
     const control = this.form.get(field);
-    if (!control?.touched || !control.errors) return '';
-
-    const errors: Record<string, string> = {
-      required: 'El código es obligatorio',
-      pattern: 'Formato: XXXX-XXXX-XXXX',
+    const customMessages: FieldErrorMessages = {
+      required: 'El código del grupo es obligatorio',
+      codePattern: 'Formato válido: XXXX-XXXX-XXXX (12 caracteres alfanuméricos)',
     };
-
-    const errorKey = Object.keys(control.errors)[0];
-    return errors[errorKey] || 'Campo inválido';
+    return getFieldErrorMessage(control, customMessages);
   }
 }
