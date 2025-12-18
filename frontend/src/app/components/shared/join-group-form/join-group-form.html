@@ -1,0 +1,63 @@
+<app-form-card
+  title="Unirse a un grupo familiar"
+  description="Introduce el código de 12 dígitos que te han compartido"
+  logoVariant="azul"
+>
+  <form class="c-join-group-form__form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <fieldset class="c-join-group-form__fieldset">
+      <legend class="c-join-group-form__legend">Código de invitación</legend>
+
+      <app-form-input
+        #codigoInput
+        label="Código"
+        type="text"
+        name="codigo"
+        autocomplete="off"
+        placeholder="XXXX - XXXX - XXXX"
+        [required]="true"
+        formControlName="codigo"
+        [errorMessage]="getErrorMessage('codigo')"
+      />
+    </fieldset>
+
+    @if (formError()) {
+      <div class="c-join-group-form__error" role="alert">
+        {{ formError() }}
+      </div>
+    }
+
+    <div class="c-join-group-form__actions">
+      <app-button
+        type="button"
+        variant="secondary"
+        size="xl"
+        (click)="onCancel()"
+      >
+        Cancelar
+      </app-button>
+
+      <app-button
+        type="submit"
+        variant="blue"
+        size="xl"
+        [disabled]="isFormInvalid() || isLoading()"
+        [loading]="isLoading()"
+      >
+        @if (isLoading()) { Uniéndose... } @else { Unirse }
+      </app-button>
+    </div>
+  </form>
+
+  <footer slot="footer" class="c-join-group-form__footer">
+    <p class="c-join-group-form__footer-text">
+      ¿Quiere crear un grupo nuevo?
+      <a 
+        href="/create-group" 
+        class="c-join-group-form__link c-join-group-form__link--naranja"
+        (click)="$event.preventDefault(); onCreateRequest()"
+      >
+        Crear
+      </a>
+    </p>
+  </footer>
+</app-form-card>

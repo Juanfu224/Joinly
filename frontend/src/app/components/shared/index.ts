@@ -28,3 +28,13 @@ export { NotificationReceiverComponent } from './notification-receiver/notificat
 export { ToastComponent } from './toast/toast';
 export { ToastContainerComponent } from './toast-container/toast-container';
 export { SpinnerOverlayComponent } from './spinner-overlay/spinner-overlay';
+
+// ==========================================================================
+// FORMULARIOS
+// ==========================================================================
+export { FormCardComponent } from './form-card/form-card';
+export { RegisterFormComponent } from './register-form/register-form';
+export { LoginFormComponent } from './login-form/login-form';
+export { CreateGroupFormComponent } from './create-group-form/create-group-form';
+export { JoinGroupFormComponent } from './join-group-form/join-group-form';
+export { NewSubscriptionFormComponent } from './new-subscription-form/new-subscription-form';

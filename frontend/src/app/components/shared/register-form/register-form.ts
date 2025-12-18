@@ -2,19 +2,18 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  ElementRef,
   HostListener,
   inject,
   output,
   signal,
   viewChild,
 } from '@angular/core';
-import {
-  FormBuilder,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+
+import { ButtonComponent } from '../button/button';
+import { FormCardComponent } from '../form-card/form-card';
 import { FormInputComponent } from '../form-input/form-input';
+import { canSubmit, focusInput, shouldTriggerSubmit } from '../form-utils';
 
 type RegisterFormFields = 'nombre' | 'apellido' | 'email' | 'password' | 'confirmPassword';
 
@@ -26,27 +25,10 @@ interface RegisterFormValue {
   confirmPassword: string;
 }
 
-/**
- * Componente de formulario de registro con validación y eventos avanzados.
- * 
- * **Características de eventos:**
- * - Submit con Enter desde cualquier campo (excepto textarea)
- * - Prevención de submit múltiple con throttle
- * - Enfoque automático en primer campo con error usando viewChild
- * - Gestión de eventos de teclado con @HostListener
- * 
- * @usageNotes
- * ```html
- * <app-register-form 
- *   (submitted)="handleSubmit($event)"
- *   (cancelled)="handleCancel()"
- * />
- * ```
- */
 @Component({
   selector: 'app-register-form',
   standalone: true,
-  imports: [ReactiveFormsModule, FormInputComponent],
+  imports: [ReactiveFormsModule, FormInputComponent, FormCardComponent, ButtonComponent],
   templateUrl: './register-form.html',
   styleUrl: './register-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -59,25 +41,15 @@ export class RegisterFormComponent {
   readonly formError = signal<string | null>(null);
   readonly submitted = output<RegisterFormValue>();
   readonly cancelled = output<void>();
+  readonly loginRequested = output<void>();
 
-  /**
-   * Referencias a los campos del formulario para gestión de foco
-   */
-  protected readonly nombreInput = viewChild<ElementRef>('nombreInput');
-  protected readonly apellidoInput = viewChild<ElementRef>('apellidoInput');
-  protected readonly emailInput = viewChild<ElementRef>('emailInput');
-  protected readonly passwordInput = viewChild<ElementRef>('passwordInput');
-  protected readonly confirmPasswordInput = viewChild<ElementRef>('confirmPasswordInput');
+  protected readonly nombreInput = viewChild<FormInputComponent>('nombreInput');
+  protected readonly apellidoInput = viewChild<FormInputComponent>('apellidoInput');
+  protected readonly emailInput = viewChild<FormInputComponent>('emailInput');
+  protected readonly passwordInput = viewChild<FormInputComponent>('passwordInput');
+  protected readonly confirmPasswordInput = viewChild<FormInputComponent>('confirmPasswordInput');
 
-  /**
-   * Timestamp del último submit para implementar throttle
-   */
   private lastSubmitTime = 0;
-
-  /**
-   * Delay mínimo entre submits (en milisegundos)
-   */
-  private readonly SUBMIT_THROTTLE_MS = 1000;
 
   readonly form = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(2)]],
@@ -92,84 +64,29 @@ export class RegisterFormComponent {
     return password === confirmPassword;
   });
 
-  readonly isFormInvalid = computed(() => {
-    return this.form.invalid || !this.passwordsMatch();
-  });
+  readonly isFormInvalid = computed(() => this.form.invalid || !this.passwordsMatch());
 
-  /**
-   * Maneja el evento Enter para submit del formulario.
-   * 
-   * @remarks
-   * Solo actúa si:
-   * - El elemento activo NO es un textarea (permite Enter en textareas)
-   * - El formulario es válido
-   * - No está en proceso de carga
-   * - Ha pasado el tiempo de throttle
-   * 
-   * Esto mejora la UX permitiendo submit rápido con teclado.
-   * 
-   * @param event - Evento de teclado
-   */
   @HostListener('keydown', ['$event'])
   protected handleEnterKey(event: KeyboardEvent): void {
-    // Solo procesar si es Enter
-    if (event.key !== 'Enter') {
-      return;
+    if (shouldTriggerSubmit(event)) {
+      event.preventDefault();
+      this.onSubmit();
     }
-    const target = event.target as HTMLElement;
-
-    // No hacer submit si estamos en un textarea
-    if (target.tagName === 'TEXTAREA') {
-      return;
-    }
-
-    // Prevenir comportamiento por defecto del Enter
-    event.preventDefault();
-
-    // Intentar submit
-    this.onSubmit();
   }
 
-  /**
-   * Ejecuta el submit del formulario con validación y throttle.
-   * 
-   * @remarks
-   * Implementa throttle para prevenir múltiples submits accidentales:
-   * - Verifica que haya pasado al menos SUBMIT_THROTTLE_MS desde el último submit
-   * - Si el formulario es inválido, enfoca el primer campo con error
-   * - Si es válido, emite el evento submitted con los valores
-   */
   onSubmit(): void {
-    // Verificar throttle: prevenir múltiples submits rápidos
-    const now = Date.now();
-    if (now - this.lastSubmitTime < this.SUBMIT_THROTTLE_MS) {
-      return;
-    }
+    if (!canSubmit(this.lastSubmitTime) || this.isLoading()) return;
 
-    // Validar que no esté cargando
-    if (this.isLoading()) {
-      return;
-    }
-
-    // Marcar todos los campos como touched para mostrar errores
     this.form.markAllAsTouched();
 
-    // Si el formulario es inválido, enfocar primer campo con error
     if (this.isFormInvalid()) {
       this.focusFirstInvalidField();
       return;
     }
 
-    // Actualizar timestamp del último submit
-    this.lastSubmitTime = now;
-
-    // Limpiar error previo
+    this.lastSubmitTime = Date.now();
     this.formError.set(null);
-
-    // Activar estado de carga
     this.isLoading.set(true);
-
-    // Emitir evento de submit
     this.submitted.emit(this.form.getRawValue());
   }
 
@@ -177,6 +94,19 @@ export class RegisterFormComponent {
     this.form.reset();
     this.formError.set(null);
     this.cancelled.emit();
+  }
+
+  onLoginRequest(): void {
+    this.loginRequested.emit();
+  }
+
+  completeLoading(): void {
+    this.isLoading.set(false);
+  }
+
+  setError(message: string): void {
+    this.formError.set(message);
+    this.isLoading.set(false);
   }
 
   getErrorMessage(field: RegisterFormFields): string {
@@ -198,44 +128,22 @@ export class RegisterFormComponent {
     return '';
   }
 
-  /**
-   * Enfoca el primer campo con error en el formulario.
-   * 
-   * @remarks
-   * Este método demuestra el uso práctico de viewChild y ElementRef:
-   * - Accede a referencias de elementos del DOM
-   * - Llama al método focus() programáticamente
-   * - Mejora la accesibilidad guiando al usuario al error
-   * 
-   * Orden de verificación: nombre → apellido → email → password → confirmPassword
-   */
   private focusFirstInvalidField(): void {
-    const fields: Array<{
-      name: RegisterFormFields;
-      ref: () => ElementRef | undefined;
-    }> = [
-      { name: 'nombre', ref: this.nombreInput },
-      { name: 'apellido', ref: this.apellidoInput },
-      { name: 'email', ref: this.emailInput },
-      { name: 'password', ref: this.passwordInput },
-      { name: 'confirmPassword', ref: this.confirmPasswordInput },
-    ];
+    const inputMap = {
+      nombre: this.nombreInput,
+      apellido: this.apellidoInput,
+      email: this.emailInput,
+      password: this.passwordInput,
+      confirmPassword: this.confirmPasswordInput,
+    } as const;
 
-    for (const field of fields) {
-      const control = this.form.get(field.name);
+    for (const [fieldName, inputFn] of Object.entries(inputMap)) {
+      const control = this.form.get(fieldName);
       const isInvalid = control?.invalid || 
-        (field.name === 'confirmPassword' && !this.passwordsMatch());
+        (fieldName === 'confirmPassword' && !this.passwordsMatch());
 
       if (isInvalid) {
-        const inputRef = field.ref();
-        if (inputRef) {
-          // Acceder al elemento nativo del input dentro del componente FormInput
-          // FormInputComponent usa host: { class: 'c-form-input' }, así que buscamos el input dentro
-          const inputElement = inputRef.nativeElement.querySelector('input') as HTMLInputElement;
-          if (inputElement) {
-            inputElement.focus();
-          }
-        }
+        focusInput(inputFn());
         break;
       }
     }

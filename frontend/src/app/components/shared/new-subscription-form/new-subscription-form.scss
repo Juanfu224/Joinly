@@ -7,9 +7,10 @@
   max-width: 40.625rem;
 }
 
-.c-register-form {
+.c-new-subscription-form {
   &__form {
     @include formulario-base;
+    gap: var(--espaciado-3);
   }
 
   &__fieldset {
@@ -18,6 +19,13 @@
 
   &__legend {
     @include oculto-accesible;
+  }
+
+  &__legend-visible {
+    font-size: var(--tamano-texto-regular);
+    font-weight: var(--peso-fuente-regular);
+    color: var(--color-texto-fuerte);
+    margin-bottom: var(--espaciado-1);
   }
 
   &__row {
@@ -36,25 +44,6 @@
 
   &__actions {
     @include formulario-acciones;
-  }
-
-  &__footer {
-    @include formulario-footer;
-  }
-
-  &__footer-text {
-    @include formulario-footer-text;
-  }
-
-  &__link {
-    @include formulario-link;
-
-    &--morado {
-      color: var(--color-morado-principal);
-    }
-
-    &--naranja {
-      color: var(--color-naranja-principal);
-    }
+    margin-block-start: var(--espaciado-1);
   }
 }

@@ -1,0 +1,44 @@
+<article class="c-form-card__container">
+  <header class="c-form-card__header">
+    <!-- Logo Joinly -->
+    <div class="c-form-card__logo" [attr.data-variant]="logoVariant()">
+      <svg 
+        class="c-form-card__logo-icon" 
+        viewBox="0 0 32 32" 
+        fill="none" 
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <rect x="2" y="2" width="12" height="12" rx="3" fill="currentColor"/>
+        <rect x="18" y="2" width="12" height="12" rx="3" fill="currentColor" opacity="0.6"/>
+        <rect x="2" y="18" width="12" height="12" rx="3" fill="currentColor" opacity="0.6"/>
+        <rect x="18" y="18" width="12" height="12" rx="3" fill="currentColor"/>
+      </svg>
+      <span class="c-form-card__logo-text">
+        <span class="c-form-card__logo-join">Join</span><span class="c-form-card__logo-ly">ly</span>
+      </span>
+    </div>
+    
+    <!-- Título y subtítulo -->
+    <h2 class="c-form-card__title">
+      {{ title() }}
+      @if (subtitle()) {
+        <span class="c-form-card__subtitle">{{ subtitle() }}</span>
+      }
+    </h2>
+    
+    @if (description()) {
+      <p class="c-form-card__description">{{ description() }}</p>
+    }
+  </header>
+  
+  <!-- Contenido del formulario (proyectado) -->
+  <div class="c-form-card__content">
+    <ng-content />
+  </div>
+  
+  <!-- Footer del formulario (proyectado) -->
+  <footer class="c-form-card__footer">
+    <ng-content select="[slot='footer']" />
+  </footer>
+</article>

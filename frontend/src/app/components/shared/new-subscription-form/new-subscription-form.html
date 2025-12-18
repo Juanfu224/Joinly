@@ -1,0 +1,111 @@
+<app-form-card
+  title="Nueva suscripción"
+  description="Comparte un servicio en tu grupo"
+  logoVariant="morado"
+>
+  <form class="c-new-subscription-form__form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <!-- Sección: Datos del servicio -->
+    <fieldset class="c-new-subscription-form__fieldset">
+      <legend class="c-new-subscription-form__legend">Datos del servicio</legend>
+
+      <app-form-input
+        #nombreInput
+        label="Nombre del servicio"
+        type="text"
+        name="nombre"
+        autocomplete="off"
+        placeholder="Ej: Netflix Premium, Spotify Family..."
+        [required]="true"
+        formControlName="nombre"
+        [errorMessage]="getErrorMessage('nombre')"
+      />
+
+      <div class="c-new-subscription-form__row">
+        <app-form-input
+          #precioInput
+          label="Precio total (€)"
+          type="number"
+          name="precioTotal"
+          autocomplete="off"
+          placeholder="Mensual o Anual"
+          [required]="true"
+          formControlName="precioTotal"
+          [errorMessage]="getErrorMessage('precioTotal')"
+        />
+
+        <app-form-input
+          #plazasInput
+          label="Numero de plazas"
+          type="number"
+          name="plazas"
+          autocomplete="off"
+          placeholder="Incluida la tuya"
+          [required]="true"
+          formControlName="plazas"
+          [errorMessage]="getErrorMessage('plazas')"
+        />
+      </div>
+
+      <app-form-input
+        label="Contraseña"
+        type="password"
+        name="password"
+        autocomplete="off"
+        placeholder="Contraseña"
+        formControlName="password"
+        [errorMessage]="getErrorMessage('password')"
+      />
+    </fieldset>
+
+    <!-- Sección: Credenciales (opcional) -->
+    <fieldset class="c-new-subscription-form__fieldset">
+      <legend class="c-new-subscription-form__legend-visible">Credenciales (opcional)</legend>
+
+      <app-form-input
+        label="Usuario"
+        type="email"
+        name="usuario"
+        autocomplete="off"
+        placeholder="Usuario: ejemplo@gmail.com"
+        formControlName="usuario"
+        helpText="Opcional: credenciales de acceso al servicio"
+      />
+
+      <app-form-input
+        label="Contraseña del servicio"
+        type="password"
+        name="passwordServicio"
+        autocomplete="off"
+        placeholder="Contraseña: ********"
+        formControlName="password"
+      />
+    </fieldset>
+
+    @if (formError()) {
+      <div class="c-new-subscription-form__error" role="alert">
+        {{ formError() }}
+      </div>
+    }
+
+    <div class="c-new-subscription-form__actions">
+      <app-button
+        type="button"
+        variant="secondary"
+        size="xl"
+        (click)="onCancel()"
+      >
+        Cancelar
+      </app-button>
+
+      <app-button
+        type="submit"
+        variant="purple"
+        size="xl"
+        [disabled]="isFormInvalid() || isLoading()"
+        [loading]="isLoading()"
+      >
+        @if (isLoading()) { Creando... } @else { Crear }
+      </app-button>
+    </div>
+  </form>
+</app-form-card>

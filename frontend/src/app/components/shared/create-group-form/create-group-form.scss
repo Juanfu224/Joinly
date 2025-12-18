@@ -7,7 +7,7 @@
   max-width: 40.625rem;
 }
 
-.c-register-form {
+.c-create-group-form {
   &__form {
     @include formulario-base;
   }
@@ -18,16 +18,6 @@
 
   &__legend {
     @include oculto-accesible;
-  }
-
-  &__row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--espaciado-2);
-
-    @include responder-a('tablet') {
-      grid-template-columns: repeat(2, 1fr);
-    }
   }
 
   &__error {
@@ -49,8 +39,8 @@
   &__link {
     @include formulario-link;
 
-    &--morado {
-      color: var(--color-morado-principal);
+    &--azul {
+      color: var(--color-azul);
     }
 
     &--naranja {

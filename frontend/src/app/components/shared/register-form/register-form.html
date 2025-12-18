@@ -1,103 +1,116 @@
-<form class="c-register-form__form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
-  <header class="c-register-form__header">
-    <h2 class="c-register-form__title">
-      Regístrate para empezar a organizar
-      <span class="c-register-form__title-highlight">tus suscripciones</span>
-    </h2>
-  </header>
+<app-form-card
+  title="Regístrate para empezar a organizar"
+  subtitle="tus suscripciones"
+  logoVariant="naranja"
+>
+  <form class="c-register-form__form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <fieldset class="c-register-form__fieldset">
+      <legend class="c-register-form__legend">Datos personales</legend>
 
-  <fieldset class="c-register-form__fieldset">
-    <legend class="c-register-form__legend">Datos personales</legend>
+      <div class="c-register-form__row">
+        <app-form-input
+          #nombreInput
+          label="Nombre"
+          name="nombre"
+          autocomplete="given-name"
+          placeholder="Nombre"
+          [required]="true"
+          formControlName="nombre"
+          [errorMessage]="getErrorMessage('nombre')"
+        />
 
-    <div class="c-register-form__row">
+        <app-form-input
+          #apellidoInput
+          label="Apellido"
+          name="apellido"
+          autocomplete="family-name"
+          placeholder="Apellido"
+          [required]="true"
+          formControlName="apellido"
+          [errorMessage]="getErrorMessage('apellido')"
+        />
+      </div>
+    </fieldset>
+
+    <fieldset class="c-register-form__fieldset">
+      <legend class="c-register-form__legend">Datos de la cuenta</legend>
+
       <app-form-input
-        #nombreInput
-        label="Nombre"
-        name="nombre"
-        autocomplete="given-name"
-        placeholder="Nombre"
+        #emailInput
+        label="Email"
+        type="email"
+        name="email"
+        autocomplete="email"
+        placeholder="Email"
         [required]="true"
-        formControlName="nombre"
-        [errorMessage]="getErrorMessage('nombre')"
+        formControlName="email"
+        [errorMessage]="getErrorMessage('email')"
       />
 
       <app-form-input
-        #apellidoInput
-        label="Apellido"
-        name="apellido"
-        autocomplete="family-name"
-        placeholder="Apellido"
+        #passwordInput
+        label="Contraseña"
+        type="password"
+        name="password"
+        autocomplete="new-password"
+        placeholder="Contraseña"
         [required]="true"
-        formControlName="apellido"
-        [errorMessage]="getErrorMessage('apellido')"
+        formControlName="password"
+        helpText="Mínimo 8 caracteres"
+        [errorMessage]="getErrorMessage('password')"
       />
+
+      <app-form-input
+        #confirmPasswordInput
+        label="Repetir contraseña"
+        type="password"
+        name="confirmPassword"
+        autocomplete="new-password"
+        placeholder="Contraseña"
+        [required]="true"
+        formControlName="confirmPassword"
+        [errorMessage]="getErrorMessage('confirmPassword')"
+      />
+    </fieldset>
+
+    @if (formError()) {
+      <div class="c-register-form__error" role="alert">
+        {{ formError() }}
+      </div>
+    }
+
+    <div class="c-register-form__actions">
+      <app-button
+        type="button"
+        variant="secondary"
+        size="xl"
+        (click)="onCancel()"
+      >
+        Cancelar
+      </app-button>
+
+      <app-button
+        type="submit"
+        variant="primary"
+        size="xl"
+        [disabled]="isFormInvalid() || isLoading()"
+        [loading]="isLoading()"
+      >
+        @if (isLoading()) { Registrando... } @else { Registrar }
+      </app-button>
     </div>
-  </fieldset>
+  </form>
 
-  <fieldset class="c-register-form__fieldset">
-    <legend class="c-register-form__legend">Datos de la cuenta</legend>
-
-    <app-form-input
-      #emailInput
-      label="Email"
-      type="email"
-      name="email"
-      autocomplete="email"
-      placeholder="Email"
-      [required]="true"
-      formControlName="email"
-      [errorMessage]="getErrorMessage('email')"
-    />
-
-    <app-form-input
-      #passwordInput
-      label="Contraseña"
-      type="password"
-      name="password"
-      autocomplete="new-password"
-      placeholder="Contraseña"
-      [required]="true"
-      formControlName="password"
-      helpText="Mínimo 8 caracteres"
-      [errorMessage]="getErrorMessage('password')"
-    />
-
-    <app-form-input
-      #confirmPasswordInput
-      label="Repetir contraseña"
-      type="password"
-      name="confirmPassword"
-      autocomplete="new-password"
-      placeholder="Contraseña"
-      [required]="true"
-      formControlName="confirmPassword"
-      [errorMessage]="getErrorMessage('confirmPassword')"
-    />
-  </fieldset>
-
-  <div class="c-register-form__actions">
-    <button
-      type="button"
-      class="c-register-form__btn c-register-form__btn--secondary"
-      (click)="onCancel()"
-    >
-      Cancelar
-    </button>
-
-    <button
-      type="submit"
-      class="c-register-form__btn c-register-form__btn--primary"
-      [disabled]="isFormInvalid() || isLoading()"
-      [attr.aria-busy]="isLoading()"
-    >
-      @if (isLoading()) { Registrando... } @else { Registrar }
-    </button>
-  </div>
-
-  <footer class="c-register-form__footer">
+  <footer slot="footer" class="c-register-form__footer">
     <p class="c-register-form__footer-text">
       ¿Ya tienes cuenta?
-      <a href="/login" class="c-register-form__link">Inicia sesión</a>
+      <a 
+        href="/login" 
+        class="c-register-form__link c-register-form__link--morado"
+        (click)="$event.preventDefault(); onLoginRequest()"
+      >
+        Inicia sesión
+      </a>
     </p>
   </footer>
-</form>
+</app-form-card>
