@@ -368,3 +368,78 @@
   }
 }
 
+// ---------------------------------------------------------------------------
+// TEMA Y ESTILOS ADICIONALES
+// ---------------------------------------------------------------------------
+
+// Label para mostrar el tema actual
+.p-style-guide__tema-label {
+  font-size: var(--tamano-texto-normal);
+  color: var(--text-secondary);
+
+  strong {
+    color: var(--text-primary);
+    font-weight: var(--peso-fuente-semi-negrita);
+  }
+}
+
+// Estilos para bloques de código en la documentación
+.p-style-guide__demo pre {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: var(--tamano-texto-pequeno);
+  line-height: var(--altura-linea-relajada);
+  color: var(--text-primary);
+
+  code {
+    font-family: inherit;
+  }
+}
+
+// Destacar botón activo en demo de tema
+.p-style-guide__demo .c-button--active {
+  outline: 2px solid var(--color-principal);
+  outline-offset: 2px;
+}
+
+// ---------------------------------------------------------------------------
+// CLASES DE UTILIDAD PARA DEMOS
+// ---------------------------------------------------------------------------
+
+// Contenido de tab/panel con padding estándar
+.p-style-guide__tab-contenido {
+  padding: var(--espaciado-4);
+
+  h4 {
+    margin-block-end: var(--espaciado-2);
+  }
+}
+
+// Lista de características con estilo de documentación
+.p-style-guide__lista-caracteristicas {
+  margin-block-start: var(--espaciado-2);
+  padding-inline-start: var(--espaciado-4);
+  list-style: disc;
+}
+
+// Nota con margen superior
+.p-style-guide__nota--mt {
+  margin-block-start: var(--espaciado-4);
+}
+
+// Grid de comunicación entre componentes
+.p-style-guide__grid-comunicacion {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: var(--espaciado-6);
+  margin-block-start: var(--espaciado-4);
+}
+
+// Bloque de código estilizado
+.p-style-guide__codigo {
+  background: var(--bg-secondary);
+  padding: var(--espaciado-3);
+  border-radius: var(--radio-md);
+  margin-block-start: var(--espaciado-2);
+  overflow-x: auto;
+}
+

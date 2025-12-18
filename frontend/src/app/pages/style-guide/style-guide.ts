@@ -20,11 +20,17 @@ import {
   CreateGroupFormComponent,
   JoinGroupFormComponent,
   NewSubscriptionFormComponent,
+  ThemeToggleComponent,
+  AccordionComponent,
+  AccordionItemComponent,
+  TabsComponent,
+  TabComponent,
   type SelectOption,
   type RadioOption,
   type BreadcrumbItem,
 } from '../../components/shared';
 import { ModalService } from '../../services/modal';
+import { ThemeService, type Theme } from '../../services/theme';
 
 /**
  * Componente Style Guide - Guía visual del sistema de diseño.
@@ -67,6 +73,11 @@ import { ModalService } from '../../services/modal';
     CreateGroupFormComponent,
     JoinGroupFormComponent,
     NewSubscriptionFormComponent,
+    ThemeToggleComponent,
+    AccordionComponent,
+    AccordionItemComponent,
+    TabsComponent,
+    TabComponent,
   ],
   templateUrl: './style-guide.html',
   styleUrl: './style-guide.scss',
@@ -74,6 +85,7 @@ import { ModalService } from '../../services/modal';
 })
 export class StyleGuideComponent {
   protected readonly modalService = inject(ModalService);
+  protected readonly themeService = inject(ThemeService);
 
   // =========================================================================
   // DATOS DE EJEMPLO PARA COMPONENTES
@@ -194,6 +206,14 @@ export class StyleGuideComponent {
    * Controla la visibilidad de la alerta informativa.
    */
   protected readonly showAlertInfo = signal(true);
+
+  /**
+   * Signal computed para el tema actual.
+   * Expone el tema del servicio para uso en el template.
+   */
+  protected get currentTheme(): Theme {
+    return this.themeService.currentTheme();
+  }
 
   // =========================================================================
   // MÉTODOS PÚBLICOS
@@ -350,5 +370,36 @@ export class StyleGuideComponent {
    */
   protected onFormSwitch(target: string): void {
     console.log('[StyleGuide] Form switch requested:', target);
+  }
+
+  // =========================================================================
+  // MÉTODOS DE DEMOSTRACIÓN - THEME TOGGLE
+  // =========================================================================
+
+  /**
+   * Alterna entre tema claro y oscuro.
+   * Demuestra el uso del ThemeService.
+   */
+  protected toggleTheme(): void {
+    this.themeService.toggleTheme();
+  }
+
+  /**
+   * Establece un tema específico.
+   * @param theme - El tema a aplicar ('light' o 'dark')
+   */
+  protected setTheme(theme: Theme): void {
+    this.themeService.setTheme(theme);
+  }
+
+  // =========================================================================
+  // MÉTODOS DE DEMOSTRACIÓN - TABS
+  // =========================================================================
+
+  /**
+   * Maneja el evento de cambio de tab (para demostración).
+   */
+  protected onTabChange(event: { index: number; previousIndex: number }): void {
+    console.log('[StyleGuide] Tab changed:', event);
   }
 }

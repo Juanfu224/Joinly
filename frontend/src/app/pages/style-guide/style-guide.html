@@ -19,14 +19,14 @@
           El componente receptor escucha y muestra los cambios de estado y eventos automáticamente.
         </p>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: var(--espaciado-6); margin-top: var(--espaciado-4);">
+        <div class="p-style-guide__grid-comunicacion">
           <app-notification-sender />
           <app-notification-receiver />
         </div>
 
-        <div class="p-style-guide__nota" style="margin-top: var(--espaciado-6);">
+        <div class="p-style-guide__nota p-style-guide__nota--mt">
           <strong>Patrones implementados:</strong>
-          <ul style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc;">
+          <ul class="p-style-guide__lista-caracteristicas">
             <li>✅ <strong>BehaviorSubject</strong>: Estado persistente (usuario, filtros)</li>
             <li>✅ <strong>Subject</strong>: Eventos one-time sin persistencia</li>
             <li>✅ <strong>Signals (Angular 21)</strong>: Reactividad nativa sin suscripciones manuales</li>
@@ -164,6 +164,217 @@
             <li>✅ Totalmente accesible (ARIA)</li>
           </ul>
         </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SECCIÓN: THEME SWITCHER - CAMBIO DE TEMA
+         =================================================================== -->
+    <section class="p-style-guide__seccion" aria-labelledby="titulo-theme-toggle">
+      <div class="p-style-guide__seccion-encabezado">
+        <h2 id="titulo-theme-toggle" class="p-style-guide__subtitulo">Theme Switcher</h2>
+        <p class="p-style-guide__nota">
+          Sistema de cambio de tema claro/oscuro con persistencia en localStorage y detección automática de preferencias del sistema.
+        </p>
+      </div>
+
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Componente Theme Toggle</h3>
+        <div class="p-style-guide__grupo-botones" style="align-items: center;">
+          <app-theme-toggle />
+          <span class="p-style-guide__tema-label">
+            Tema actual: <strong>{{ currentTheme === 'light' ? 'Claro ☀️' : 'Oscuro 🌙' }}</strong>
+          </span>
+        </div>
+
+        <h3 class="p-style-guide__demo-titulo" style="margin-top: var(--espaciado-4);">Control programático</h3>
+        <div class="p-style-guide__grupo-botones">
+          <app-button 
+            variant="secondary" 
+            leftIcon="sun"
+            (click)="setTheme('light')"
+            [class.c-button--active]="currentTheme === 'light'"
+          >
+            Tema claro
+          </app-button>
+
+          <app-button 
+            variant="secondary" 
+            leftIcon="moon"
+            (click)="setTheme('dark')"
+            [class.c-button--active]="currentTheme === 'dark'"
+          >
+            Tema oscuro
+          </app-button>
+        </div>
+
+        <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4);">
+          <strong>Características del sistema de temas:</strong>
+          <ul style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc;">
+            <li>✅ <strong>Persistencia</strong>: Guarda preferencia en localStorage</li>
+            <li>✅ <strong>Detección automática</strong>: Lee preferencia del sistema operativo</li>
+            <li>✅ <strong>Reactividad</strong>: Usa Signals de Angular para cambios instantáneos</li>
+            <li>✅ <strong>Accesibilidad</strong>: Botón con aria-label dinámico</li>
+            <li>✅ <strong>CSS Variables</strong>: Cambio de tema mediante data-theme en :root</li>
+            <li>✅ <strong>Transiciones suaves</strong>: Animación de cambio de colores</li>
+            <li>✅ <strong>Sincronización del sistema</strong>: Escucha cambios de prefers-color-scheme</li>
+          </ul>
+
+          <p style="margin-top: var(--espaciado-3);"><strong>Uso en componentes:</strong></p>
+          <pre style="background: var(--bg-secondary); padding: var(--espaciado-3); border-radius: var(--radio-md); margin-top: var(--espaciado-2); overflow-x: auto;"><code>// Inyectar servicio
+private readonly themeService = inject(ThemeService);
+
+// Alternar tema
+this.themeService.toggleTheme();
+
+// Leer tema actual (Signal)
+const currentTheme = this.themeService.currentTheme();</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SECCIÓN: ACCORDION - CONTENIDO EXPANDIBLE
+         =================================================================== -->
+    <section class="p-style-guide__seccion" aria-labelledby="titulo-accordion">
+      <div class="p-style-guide__seccion-encabezado">
+        <h2 id="titulo-accordion" class="p-style-guide__subtitulo">Accordion</h2>
+        <p class="p-style-guide__nota">
+          Componente de contenido expandible/colapsable. Ideal para FAQs, secciones de configuración y contenido organizado.
+        </p>
+      </div>
+
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Accordion múltiple (varios abiertos)</h3>
+        <app-accordion [allowMultiple]="true">
+          <app-accordion-item title="¿Qué es Joinly?">
+            <p>Joinly es una plataforma que te permite gestionar suscripciones compartidas con familiares y amigos de forma segura y organizada. Facilita el reparto de costes y la administración de accesos.</p>
+          </app-accordion-item>
+          <app-accordion-item title="¿Cómo funcionan los pagos?" [expanded]="true">
+            <p>Los pagos se gestionan de forma automática. Cada miembro de la unidad familiar recibe una notificación antes del vencimiento y puede pagar su parte directamente desde la plataforma.</p>
+          </app-accordion-item>
+          <app-accordion-item title="¿Es seguro compartir suscripciones?">
+            <p>Sí, Joinly implementa medidas de seguridad avanzadas. Las credenciales se almacenan encriptadas y solo el titular puede ver y gestionar los accesos de cada suscripción.</p>
+          </app-accordion-item>
+        </app-accordion>
+      </div>
+
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Accordion individual (solo uno abierto)</h3>
+        <app-accordion [allowMultiple]="false">
+          <app-accordion-item title="Plan Básico - 4,99€/mes">
+            <p>Ideal para empezar. Incluye hasta 3 suscripciones compartidas y 4 miembros por unidad familiar.</p>
+          </app-accordion-item>
+          <app-accordion-item title="Plan Premium - 9,99€/mes">
+            <p>Para familias grandes. Suscripciones ilimitadas y hasta 10 miembros por unidad familiar. Incluye soporte prioritario.</p>
+          </app-accordion-item>
+          <app-accordion-item title="Plan Empresarial - Personalizado">
+            <p>Solución a medida para empresas. Contacta con nuestro equipo comercial para una propuesta adaptada a tus necesidades.</p>
+          </app-accordion-item>
+        </app-accordion>
+      </div>
+
+      <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4);">
+        <strong>Características del Accordion:</strong>
+        <ul style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc;">
+          <li>✅ <strong>Modo múltiple/individual</strong>: Permite varios items abiertos o solo uno</li>
+          <li>✅ <strong>Navegación con teclado</strong>: Enter y Space para expandir/colapsar</li>
+          <li>✅ <strong>Animaciones suaves</strong>: Altura dinámica con transiciones CSS</li>
+          <li>✅ <strong>Accesibilidad completa</strong>: ARIA expanded, controls, labelledby</li>
+          <li>✅ <strong>ContentChildren</strong>: Detección automática de items hijos</li>
+          <li>✅ <strong>OnPush</strong>: Optimizado para rendimiento</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SECCIÓN: TABS - NAVEGACIÓN POR PESTAÑAS
+         =================================================================== -->
+    <section class="p-style-guide__seccion" aria-labelledby="titulo-tabs">
+      <div class="p-style-guide__seccion-encabezado">
+        <h2 id="titulo-tabs" class="p-style-guide__subtitulo">Tabs</h2>
+        <p class="p-style-guide__nota">
+          Sistema de pestañas para organizar contenido relacionado. Navegación intuitiva con teclado y mouse.
+        </p>
+      </div>
+
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Tabs básico</h3>
+        <app-tabs (tabChange)="onTabChange($event)">
+          <app-tab title="General">
+            <div style="padding: var(--espaciado-4);">
+              <h4 style="margin-bottom: var(--espaciado-2);">Información General</h4>
+              <p>Este es el contenido del tab General. Aquí puedes mostrar información principal sobre el usuario, suscripción o cualquier otro contenido relevante.</p>
+            </div>
+          </app-tab>
+          <app-tab title="Configuración">
+            <div style="padding: var(--espaciado-4);">
+              <h4 style="margin-bottom: var(--espaciado-2);">Ajustes de Configuración</h4>
+              <p>Panel de configuración donde el usuario puede ajustar sus preferencias, notificaciones y opciones de privacidad.</p>
+              <div style="margin-top: var(--espaciado-3);">
+                <app-form-checkbox label="Recibir notificaciones por email" />
+                <app-form-checkbox label="Permitir acceso a miembros" />
+              </div>
+            </div>
+          </app-tab>
+          <app-tab title="Seguridad">
+            <div style="padding: var(--espaciado-4);">
+              <h4 style="margin-bottom: var(--espaciado-2);">Centro de Seguridad</h4>
+              <p>Gestiona la seguridad de tu cuenta, cambia contraseñas y revisa el historial de accesos.</p>
+              <app-alert type="info" message="Tu última sesión fue hace 2 horas desde Madrid, España." style="margin-top: var(--espaciado-3);" />
+            </div>
+          </app-tab>
+        </app-tabs>
+      </div>
+
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Tabs con índice inicial</h3>
+        <app-tabs [activeIndex]="1">
+          <app-tab title="Perfil">
+            <div style="padding: var(--espaciado-4);">
+              <p>Contenido del perfil de usuario.</p>
+            </div>
+          </app-tab>
+          <app-tab title="Suscripciones">
+            <div style="padding: var(--espaciado-4);">
+              <p>Este tab comienza activo gracias a <code>[activeIndex]="1"</code>.</p>
+              <div style="display: flex; gap: var(--espaciado-3); margin-top: var(--espaciado-3); flex-wrap: wrap;">
+                <app-card variant="info">
+                  <div slot="icon" class="c-card-icon c-card-icon--naranja">
+                    <app-icon name="check" />
+                  </div>
+                  <h4 slot="title">Netflix</h4>
+                  <p slot="value">Activa</p>
+                </app-card>
+                <app-card variant="info">
+                  <div slot="icon" class="c-card-icon c-card-icon--morado">
+                    <app-icon name="check" />
+                  </div>
+                  <h4 slot="title">Spotify</h4>
+                  <p slot="value">Activa</p>
+                </app-card>
+              </div>
+            </div>
+          </app-tab>
+          <app-tab title="Historial">
+            <div style="padding: var(--espaciado-4);">
+              <p>Historial de pagos y actividad.</p>
+            </div>
+          </app-tab>
+        </app-tabs>
+      </div>
+
+      <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4);">
+        <strong>Características del sistema de Tabs:</strong>
+        <ul style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc;">
+          <li>✅ <strong>Navegación con teclado</strong>: Arrow Left/Right, Home/End, Enter/Space</li>
+          <li>✅ <strong>Indicador visual</strong>: Línea animada bajo el tab activo</li>
+          <li>✅ <strong>Roving tabindex</strong>: Solo el tab activo recibe foco con Tab</li>
+          <li>✅ <strong>Evento tabChange</strong>: Emite índice actual y anterior al cambiar</li>
+          <li>✅ <strong>Transiciones suaves</strong>: Fade in/out entre contenidos</li>
+          <li>✅ <strong>Accesibilidad ARIA</strong>: role="tablist", aria-selected, aria-controls</li>
+          <li>✅ <strong>ContentChildren</strong>: Detección automática de tabs hijos</li>
+        </ul>
       </div>
     </section>
 
