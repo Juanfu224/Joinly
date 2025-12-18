@@ -14,6 +14,7 @@ import { ButtonComponent } from '../button/button';
 import { FormCardComponent } from '../form-card/form-card';
 import { FormInputComponent } from '../form-input/form-input';
 import { canSubmit, focusInput, shouldTriggerSubmit } from '../form-utils';
+import { getFieldErrorMessage, type FieldErrorMessages } from '../form-validators';
 
 interface CreateGroupFormValue {
   nombre: string;
@@ -93,15 +94,11 @@ export class CreateGroupFormComponent {
 
   getErrorMessage(field: 'nombre'): string {
     const control = this.form.get(field);
-    if (!control?.touched || !control.errors) return '';
-
-    const errors: Record<string, string> = {
-      required: 'El nombre es obligatorio',
+    const customMessages: FieldErrorMessages = {
+      required: 'El nombre del grupo es obligatorio',
       minlength: 'Mínimo 3 caracteres',
       maxlength: 'Máximo 50 caracteres',
     };
-
-    const errorKey = Object.keys(control.errors)[0];
-    return errors[errorKey] || 'Campo inválido';
+    return getFieldErrorMessage(control, customMessages);
   }
 }

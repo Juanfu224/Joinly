@@ -44,6 +44,7 @@
         placeholder="Email"
         [required]="true"
         formControlName="email"
+        [pending]="form.get('email')?.pending || false"
         [errorMessage]="getErrorMessage('email')"
       />
 

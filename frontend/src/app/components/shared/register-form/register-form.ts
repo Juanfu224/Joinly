@@ -14,6 +14,12 @@ import { ButtonComponent } from '../button/button';
 import { FormCardComponent } from '../form-card/form-card';
 import { FormInputComponent } from '../form-input/form-input';
 import { canSubmit, focusInput, shouldTriggerSubmit } from '../form-utils';
+import {
+  getErrorMessage,
+  matchFields,
+  passwordStrength,
+} from '../validators';
+import { AsyncValidatorsService } from '../../../services';
 
 type RegisterFormFields = 'nombre' | 'apellido' | 'email' | 'password' | 'confirmPassword';
 
@@ -36,6 +42,7 @@ interface RegisterFormValue {
 })
 export class RegisterFormComponent {
   private readonly fb = inject(FormBuilder).nonNullable;
+  private readonly asyncValidators = inject(AsyncValidatorsService);
 
   readonly isLoading = signal(false);
   readonly formError = signal<string | null>(null);
@@ -51,20 +58,22 @@ export class RegisterFormComponent {
 
   private lastSubmitTime = 0;
 
-  readonly form = this.fb.group({
-    nombre: ['', [Validators.required, Validators.minLength(2)]],
-    apellido: ['', [Validators.required, Validators.minLength(2)]],
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(8)]],
-    confirmPassword: ['', [Validators.required]],
-  });
+  readonly form = this.fb.group(
+    {
+      nombre: ['', [Validators.required, Validators.minLength(2)]],
+      apellido: ['', [Validators.required, Validators.minLength(2)]],
+      email: ['', {
+        validators: [Validators.required, Validators.email],
+        asyncValidators: [this.asyncValidators.emailAvailable()],
+        updateOn: 'blur'
+      }],
+      password: ['', [Validators.required, passwordStrength({ minLength: 8, requireNumber: true })]],
+      confirmPassword: ['', [Validators.required]],
+    },
+    { validators: matchFields('password', 'confirmPassword') }
+  );
 
-  readonly passwordsMatch = computed(() => {
-    const { password, confirmPassword } = this.form.value;
-    return password === confirmPassword;
-  });
-
-  readonly isFormInvalid = computed(() => this.form.invalid || !this.passwordsMatch());
+  readonly isFormInvalid = computed(() => this.form.invalid);
 
   @HostListener('keydown', ['$event'])
   protected handleEnterKey(event: KeyboardEvent): void {
@@ -111,21 +120,19 @@ export class RegisterFormComponent {
 
   getErrorMessage(field: RegisterFormFields): string {
     const control = this.form.get(field);
-    if (!control?.touched || !control?.errors) {
-      if (field === 'confirmPassword' && control?.touched && !this.passwordsMatch()) {
-        return 'Las contraseñas no coinciden';
-      }
-      return '';
+
+    // Error especial para confirmPassword si los campos no coinciden
+    if (field === 'confirmPassword' && this.form.errors?.['fieldsMismatch']) {
+      return 'Las contraseñas no coinciden';
     }
 
-    if (control.errors['required']) return 'Este campo es obligatorio';
-    if (control.errors['email']) return 'Introduce un email válido';
-    if (control.errors['minlength']) {
-      const min = control.errors['minlength'].requiredLength as number;
-      return `Mínimo ${min} caracteres`;
-    }
+    const customMessages: Record<string, string> = {
+      required: 'Este campo es obligatorio',
+      minlength: 'Mínimo 2 caracteres',
+      noNumber: 'La contraseña debe contener al menos un número',
+    };
 
-    return '';
+    return getErrorMessage(control, customMessages);
   }
 
   private focusFirstInvalidField(): void {
@@ -139,8 +146,9 @@ export class RegisterFormComponent {
 
     for (const [fieldName, inputFn] of Object.entries(inputMap)) {
       const control = this.form.get(fieldName);
-      const isInvalid = control?.invalid || 
-        (fieldName === 'confirmPassword' && !this.passwordsMatch());
+      const isInvalid =
+        control?.invalid ||
+        (fieldName === 'confirmPassword' && this.form.errors?.['fieldsMismatch']);
 
       if (isInvalid) {
         focusInput(inputFn());

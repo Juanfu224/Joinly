@@ -87,6 +87,12 @@
       </div>
     }
 
+    @for (error of getFormErrorMessages(); track error) {
+      <div class="c-new-subscription-form__error" role="alert">
+        {{ error }}
+      </div>
+    }
+
     <div class="c-new-subscription-form__actions">
       <app-button
         type="button"

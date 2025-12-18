@@ -24,7 +24,16 @@
   />
 </div>
 
-@if (errorMessage()) {
+@if (pending()) {
+  <span class="c-form-input__pending" role="status">
+    <svg class="c-form-input__spinner" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" opacity="0.25"/>
+      <path d="M12 2 A10 10 0 0 1 22 12" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </svg>
+    {{ pendingMessage() }}
+  </span>
+}
+@else if (errorMessage()) {
   <span
     [id]="errorId()"
     class="c-form-input__error"
@@ -33,8 +42,7 @@
     {{ errorMessage() }}
   </span>
 }
-
-@if (helpText() && !errorMessage()) {
+@else if (helpText()) {
   <span [id]="helpTextId()" class="c-form-input__help">
     {{ helpText() }}
   </span>

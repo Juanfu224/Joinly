@@ -22,6 +22,44 @@ export { LoginFormComponent } from './login-form/login-form';
 export { CreateGroupFormComponent } from './create-group-form/create-group-form';
 export { JoinGroupFormComponent } from './join-group-form/join-group-form';
 export { NewSubscriptionFormComponent } from './new-subscription-form/new-subscription-form';
+export {
+  passwordStrengthValidator,
+  matchFieldsValidator,
+  getControlErrorMessage,
+  getFieldErrorMessage,
+  codePatternValidator,
+  type FieldErrorMessages,
+} from './form-validators';
+
+// Nuevos validadores avanzados
+export {
+  passwordStrength,
+  passwordStrengthStrict,
+  type PasswordStrengthConfig,
+  telefono,
+  nif,
+  nie,
+  nifNie,
+  codigoPostal,
+  matchFields,
+  precioMinimoPlaza,
+  requireBothOrNeither,
+  atLeastOne,
+  dateRange,
+  minAge,
+  getErrorMessage,
+  getAllErrorMessages,
+  hasError,
+  getFormErrors,
+  VALIDATION_MESSAGES,
+} from './validators';
+export {
+  canSubmit,
+  focusInput,
+  shouldTriggerSubmit,
+  createFormState,
+  SUBMIT_THROTTLE_MS,
+} from './form-utils';
 export { BreadcrumbsComponent, type BreadcrumbItem } from './breadcrumbs/breadcrumbs';
 export { ThemeToggleComponent } from './theme-toggle/theme-toggle';
 export { TooltipDirective, type TooltipPosition } from './tooltip/tooltip.directive';
