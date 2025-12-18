@@ -1,12 +1,15 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { CommunicationService, type NotificationMessage } from '@services/communication';
+import { CommunicationService } from '@services/communication';
+import { AlertService } from '@services/alert';
 import { ButtonComponent } from '../button/button';
 
 /**
  * Componente emisor de ejemplo para demostrar comunicación entre hermanos.
  *
- * Envía notificaciones a través del CommunicationService cuando el usuario
- * realiza acciones específicas (clicks en botones, actualización de filtros, etc.).
+ * Muestra cómo:
+ * - Usar AlertService para notificaciones visuales (toasts)
+ * - Usar CommunicationService para estado compartido (usuario, filtros)
+ * - Emitir eventos one-time entre componentes
  *
  * @remarks
  * Este componente actúa como emisor en el patrón Observer.
@@ -26,65 +29,62 @@ import { ButtonComponent } from '../button/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotificationSenderComponent {
+  private readonly alertService = inject(AlertService);
   private readonly commService = inject(CommunicationService);
 
+  // ========================================================================
+  // ALERTAS VISUALES (usando AlertService)
+  // ========================================================================
+
   /**
-   * Envía una notificación de éxito.
-   * Ejemplo de comunicación one-way hacia componentes hermanos o distantes.
+   * Envía una alerta de éxito (toast visual).
    */
-  protected sendSuccessNotification(): void {
-    const notification: NotificationMessage = {
-      id: crypto.randomUUID(),
-      type: 'success',
-      message: '¡Operación completada exitosamente desde Hermano 1!',
-      timestamp: Date.now(),
-    };
-    this.commService.sendNotification(notification);
+  protected sendSuccessAlert(): void {
+    this.alertService.success('¡Operación completada exitosamente!');
   }
 
   /**
-   * Envía una notificación de error.
+   * Envía una alerta de error (toast visual).
    */
-  protected sendErrorNotification(): void {
-    const notification: NotificationMessage = {
-      id: crypto.randomUUID(),
-      type: 'error',
-      message: 'Ha ocurrido un error en el proceso.',
-      timestamp: Date.now(),
-    };
-    this.commService.sendNotification(notification);
+  protected sendErrorAlert(): void {
+    this.alertService.error('Ha ocurrido un error en el proceso.');
   }
 
   /**
-   * Envía una notificación de información.
+   * Envía una alerta informativa (toast visual).
    */
-  protected sendInfoNotification(): void {
-    const notification: NotificationMessage = {
-      id: crypto.randomUUID(),
-      type: 'info',
-      message: 'Nueva información disponible.',
-      timestamp: Date.now(),
-    };
-    this.commService.sendNotification(notification);
+  protected sendInfoAlert(): void {
+    this.alertService.info('Nueva información disponible.');
   }
 
   /**
-   * Actualiza filtros compartidos.
+   * Envía una alerta de advertencia (toast visual).
+   */
+  protected sendWarningAlert(): void {
+    this.alertService.warning('Advertencia: revisa los datos ingresados.');
+  }
+
+  // ========================================================================
+  // FILTROS COMPARTIDOS (usando CommunicationService)
+  // ========================================================================
+
+  /**
+   * Actualiza filtros compartidos y notifica con evento.
    * Ejemplo de cómo sincronizar filtros entre componentes hermanos.
    */
   protected updateSharedFilters(): void {
     this.commService.updateFilters({
-      searchTerm: 'Angular 21',
-      category: 'desarrollo',
+      searchTerm: 'Netflix',
+      category: 'streaming',
     });
 
-    // Enviar notificación de confirmación
-    this.commService.sendNotification({
-      id: crypto.randomUUID(),
-      type: 'info',
-      message: 'Filtros actualizados: Angular 21 en categoría desarrollo',
-      timestamp: Date.now(),
+    // Emitir evento para que otros componentes reaccionen
+    this.commService.emitEvent('filters-updated', {
+      searchTerm: 'Netflix',
+      category: 'streaming',
     });
+
+    this.alertService.info('Filtros actualizados: Netflix en categoría streaming');
   }
 
   /**
@@ -92,31 +92,35 @@ export class NotificationSenderComponent {
    */
   protected clearSharedFilters(): void {
     this.commService.clearFilters();
-
-    this.commService.sendNotification({
-      id: crypto.randomUUID(),
-      type: 'warning',
-      message: 'Filtros limpiados',
-      timestamp: Date.now(),
-    });
+    this.commService.emitEvent('filters-cleared', null);
+    this.alertService.warning('Filtros limpiados');
   }
 
+  // ========================================================================
+  // ESTADO DE USUARIO (usando CommunicationService)
+  // ========================================================================
+
   /**
-   * Simula actualización de estado de usuario.
+   * Simula login de usuario.
    */
-  protected updateUserState(): void {
+  protected simulateLogin(): void {
     this.commService.updateUserState({
-      id: '12345',
+      id: crypto.randomUUID(),
       name: 'Juan Pérez',
       email: 'juan.perez@example.com',
       isAuthenticated: true,
     });
 
-    this.commService.sendNotification({
-      id: crypto.randomUUID(),
-      type: 'success',
-      message: 'Estado de usuario actualizado',
-      timestamp: Date.now(),
-    });
+    this.commService.emitEvent('user-logged-in', { name: 'Juan Pérez' });
+    this.alertService.success('¡Bienvenido, Juan Pérez!');
+  }
+
+  /**
+   * Simula logout de usuario.
+   */
+  protected simulateLogout(): void {
+    this.commService.clearUserState();
+    this.commService.emitEvent('user-logged-out', null);
+    this.alertService.info('Sesión cerrada correctamente');
   }
 }

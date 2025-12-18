@@ -10,10 +10,5 @@ import { AlertService } from '../../../services/alert';
   styleUrls: ['./alert-container.scss'],
 })
 export class AlertContainerComponent {
-  protected readonly alertService = inject(AlertService);
-  protected readonly alerts = this.alertService.currentAlerts;
-
-  protected onClose(id: number): void {
-    this.alertService.close(id);
-  }
+  protected readonly alerts = inject(AlertService).currentAlerts;
 }

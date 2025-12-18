@@ -2,48 +2,56 @@
   <header class="notification-sender__header">
     <h2 class="notification-sender__title">Componente Emisor</h2>
     <p class="notification-sender__description">
-      Envía notificaciones y actualiza estado compartido
+      Envía alertas visuales y actualiza estado compartido
     </p>
   </header>
 
   <div class="notification-sender__content">
-    <!-- Sección de Notificaciones -->
+    <!-- Sección de Alertas Visuales -->
     <article class="notification-sender__section">
-      <h3 class="notification-sender__section-title">Notificaciones</h3>
+      <h3 class="notification-sender__section-title">Alertas (AlertService)</h3>
       <p class="notification-sender__section-description">
-        Enviar diferentes tipos de notificaciones a componentes hermanos
+        Enviar toasts visuales al usuario usando AlertService
       </p>
 
       <div class="notification-sender__actions">
         <app-button
           variant="primary"
           leftIcon="circle-check"
-          (click)="sendSuccessNotification()"
+          (click)="sendSuccessAlert()"
         >
-          Enviar Éxito
+          Éxito
         </app-button>
 
         <app-button
           variant="purple"
-          leftIcon="bell"
-          (click)="sendErrorNotification()"
+          leftIcon="close"
+          (click)="sendErrorAlert()"
         >
-          Enviar Error
+          Error
         </app-button>
 
         <app-button
           variant="blue"
           leftIcon="info"
-          (click)="sendInfoNotification()"
+          (click)="sendInfoAlert()"
         >
-          Enviar Info
+          Info
+        </app-button>
+
+        <app-button
+          variant="yellow"
+          leftIcon="bell"
+          (click)="sendWarningAlert()"
+        >
+          Warning
         </app-button>
       </div>
     </article>
 
     <!-- Sección de Filtros -->
     <article class="notification-sender__section">
-      <h3 class="notification-sender__section-title">Filtros Compartidos</h3>
+      <h3 class="notification-sender__section-title">Filtros (CommunicationService)</h3>
       <p class="notification-sender__section-description">
         Actualizar filtros que otros componentes pueden consumir
       </p>
@@ -69,18 +77,26 @@
 
     <!-- Sección de Usuario -->
     <article class="notification-sender__section">
-      <h3 class="notification-sender__section-title">Estado de Usuario</h3>
+      <h3 class="notification-sender__section-title">Usuario (CommunicationService)</h3>
       <p class="notification-sender__section-description">
-        Actualizar información del usuario autenticado
+        Simular login/logout para actualizar estado compartido
       </p>
 
       <div class="notification-sender__actions">
         <app-button
           variant="primary"
           leftIcon="user"
-          (click)="updateUserState()"
+          (click)="simulateLogin()"
         >
-          Actualizar Usuario
+          Simular Login
+        </app-button>
+
+        <app-button
+          variant="secondary"
+          leftIcon="arrow-external-left"
+          (click)="simulateLogout()"
+        >
+          Simular Logout
         </app-button>
       </div>
     </article>

@@ -1,19 +1,18 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CommunicationService, type NotificationMessage, type SharedFilters } from '@services/communication';
+import { CommunicationService, type AppEvent } from '@services/communication';
 
 /**
  * Componente receptor de ejemplo para demostrar comunicación entre hermanos.
  *
- * Escucha notificaciones y cambios de estado del CommunicationService,
- * reaccionando automáticamente a las actualizaciones emitidas por otros
- * componentes hermanos o distantes.
+ * Muestra cómo:
+ * - Consumir estado compartido mediante Signals (usuario, filtros)
+ * - Escuchar eventos one-time mediante Observables
+ * - Usar computed signals para lógica derivada
  *
  * @remarks
  * Este componente actúa como receptor/observador en el patrón Observer.
- * Demuestra dos enfoques de suscripción:
- * 1. Signals reactivos (Angular 21+, recomendado)
- * 2. Observables tradicionales con takeUntilDestroyed()
+ * Demuestra el enfoque recomendado: Signals para estado, Observable para eventos.
  *
  * @usageNotes
  * ```html
@@ -32,14 +31,8 @@ export class NotificationReceiverComponent {
   private readonly commService = inject(CommunicationService);
 
   // ========================================================================
-  // ENFOQUE 1: SIGNALS REACTIVOS (RECOMENDADO PARA ANGULAR 21+)
+  // SIGNALS REACTIVOS (consumo directo del servicio)
   // ========================================================================
-
-  /**
-   * Signal reactivo con la última notificación.
-   * Actualización automática sin necesidad de suscripciones manuales.
-   */
-  protected readonly lastNotification = this.commService.lastNotification;
 
   /**
    * Signal reactivo con el estado actual del usuario.
@@ -52,19 +45,7 @@ export class NotificationReceiverComponent {
   protected readonly currentFilters = this.commService.currentFilters;
 
   /**
-   * Signal reactivo con datos genéricos.
-   */
-  protected readonly genericData = this.commService.genericData;
-
-  /**
-   * Signal local para historial de notificaciones recibidas.
-   * Demuestra cómo acumular eventos en el tiempo.
-   */
-  protected readonly notificationHistory = signal<NotificationMessage[]>([]);
-
-  /**
    * Signal computed para mostrar si hay usuario autenticado.
-   * Derivado automáticamente del servicio.
    */
   protected readonly isAuthenticated = this.commService.isAuthenticated;
 
@@ -73,76 +54,66 @@ export class NotificationReceiverComponent {
    */
   protected readonly hasActiveFilters = this.commService.hasActiveFilters;
 
+  // ========================================================================
+  // HISTORIAL DE EVENTOS (para demostración)
+  // ========================================================================
+
+  /**
+   * Signal local para historial de eventos recibidos.
+   * Demuestra cómo acumular eventos one-time en el tiempo.
+   */
+  protected readonly eventHistory = signal<AppEvent[]>([]);
+
   constructor() {
-    // Suscripción automática con limpieza al destruir el componente
-    // takeUntilDestroyed() solo funciona en constructor o injection context
-    this.setupNotificationListener();
-    this.setupFiltersListener();
+    this.setupEventListener();
   }
 
   /**
-   * Configura listener para notificaciones.
+   * Configura listener para eventos one-time.
    * Demuestra cómo procesar eventos del stream y actualizar estado local.
    */
-  private setupNotificationListener(): void {
-    this.commService.notifications$.pipe(takeUntilDestroyed()).subscribe((notification: NotificationMessage | null) => {
-      if (notification) {
-        console.log('📨 Notificación recibida:', notification);
+  private setupEventListener(): void {
+    this.commService.events$.pipe(takeUntilDestroyed()).subscribe((event: AppEvent) => {
+      console.log('📨 Evento recibido:', event);
 
-        // Agregar al historial (mantener últimas 10)
-        this.notificationHistory.update((history) => {
-          const newHistory = [notification, ...history];
-          return newHistory.slice(0, 10);
-        });
-      }
+      // Agregar al historial (mantener últimos 10)
+      this.eventHistory.update((history) => {
+        const newHistory = [event, ...history];
+        return newHistory.slice(0, 10);
+      });
     });
   }
 
   /**
-   * Configura listener para cambios de filtros.
-   * Demuestra cómo reaccionar a cambios sin modificar el estado local.
-   */
-  private setupFiltersListener(): void {
-    this.commService.filters$.pipe(takeUntilDestroyed()).subscribe((filters: SharedFilters) => {
-      console.log('🔍 Filtros actualizados:', filters);
-    });
-  }
-
-  /**
-   * Limpia el historial de notificaciones.
+   * Limpia el historial de eventos.
    */
   protected clearHistory(): void {
-    this.notificationHistory.set([]);
+    this.eventHistory.set([]);
   }
 
   /**
-   * Formatea la fecha de una notificación de manera legible.
+   * Formatea el payload de un evento para mostrar.
    */
-  protected formatTimestamp(timestamp: number): string {
-    return new Date(timestamp).toLocaleTimeString('es-ES', {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    });
+  protected formatPayload(payload: unknown): string {
+    if (payload === null || payload === undefined) {
+      return 'null';
+    }
+    if (typeof payload === 'object') {
+      return JSON.stringify(payload, null, 2);
+    }
+    return String(payload);
   }
 
   /**
-   * Obtiene el icono según el tipo de notificación.
+   * Obtiene un emoji según el tipo de evento.
    */
-  protected getNotificationIcon(type: NotificationMessage['type']): string {
-    const icons: Record<NotificationMessage['type'], string> = {
-      success: '✅',
-      error: '❌',
-      warning: '⚠️',
-      info: 'ℹ️',
-    };
-    return icons[type];
-  }
-
-  /**
-   * Obtiene la clase CSS según el tipo de notificación.
-   */
-  protected getNotificationClass(type: NotificationMessage['type']): string {
-    return `notification-receiver__notification--${type}`;
+  protected getEventIcon(type: string): string {
+    if (type.includes('login') || type.includes('user')) return '👤';
+    if (type.includes('logout')) return '🚪';
+    if (type.includes('filter')) return '🔍';
+    if (type.includes('created')) return '✨';
+    if (type.includes('updated')) return '📝';
+    if (type.includes('deleted') || type.includes('cleared')) return '��️';
+    return '📌';
   }
 }

@@ -15,8 +15,8 @@
       <div class="p-style-guide__demo">
         <h3 class="p-style-guide__demo-titulo">Demostración en tiempo real</h3>
         <p class="p-style-guide__descripcion">
-          El componente emisor (izquierda) envía notificaciones y actualiza estado compartido.
-          El componente receptor (derecha) escucha y muestra los cambios automáticamente.
+          El componente emisor envía alertas (AlertService) y actualiza estado compartido (CommunicationService).
+          El componente receptor escucha y muestra los cambios de estado y eventos automáticamente.
         </p>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: var(--spacing-6); margin-top: var(--spacing-4);">
@@ -27,22 +27,21 @@
         <div class="p-style-guide__nota" style="margin-top: var(--spacing-6);">
           <strong>Patrones implementados:</strong>
           <ul style="margin-top: var(--spacing-2); padding-left: var(--spacing-4); list-style: disc;">
-            <li>✅ <strong>BehaviorSubject</strong>: Retiene último valor para suscripciones tardías</li>
+            <li>✅ <strong>BehaviorSubject</strong>: Estado persistente (usuario, filtros)</li>
+            <li>✅ <strong>Subject</strong>: Eventos one-time sin persistencia</li>
             <li>✅ <strong>Signals (Angular 21)</strong>: Reactividad nativa sin suscripciones manuales</li>
+            <li>✅ <strong>Computed Signals</strong>: Estado derivado (isAuthenticated, hasActiveFilters)</li>
             <li>✅ <strong>takeUntilDestroyed()</strong>: Limpieza automática de suscripciones</li>
-            <li>✅ <strong>Unidirectional data flow</strong>: Flujo de datos predecible</li>
+            <li>✅ <strong>Separación de responsabilidades</strong>: AlertService (UI) vs CommunicationService (estado)</li>
             <li>✅ <strong>OnPush compatible</strong>: Optimizado para detección de cambios</li>
-            <li>✅ <strong>TypeScript estricto</strong>: Interfaces tipadas para seguridad</li>
-            <li>✅ <strong>Observable + Signal híbrido</strong>: Lo mejor de ambos mundos</li>
           </ul>
 
           <p style="margin-top: var(--spacing-3);"><strong>Casos de uso:</strong></p>
           <ul style="margin-top: var(--spacing-1); padding-left: var(--spacing-4); list-style: disc;">
-            <li>Notificaciones del sistema entre módulos</li>
             <li>Estado de usuario compartido (header, sidebar, profile)</li>
             <li>Filtros sincronizados entre componentes de búsqueda</li>
-            <li>Datos de carrito/checkout entre páginas</li>
-            <li>Estado de tema (dark/light mode) global</li>
+            <li>Eventos del sistema (login, logout, CRUD operations)</li>
+            <li>Alertas visuales temporales (toasts via AlertService)</li>
           </ul>
         </div>
       </div>

@@ -8,8 +8,7 @@ export { ModalService, type ModalConfig } from './modal';
 export { ThemeService, type Theme } from './theme';
 export {
   CommunicationService,
-  type NotificationMessage,
-  type NotificationType,
   type UserState,
   type SharedFilters,
+  type AppEvent,
 } from './communication';

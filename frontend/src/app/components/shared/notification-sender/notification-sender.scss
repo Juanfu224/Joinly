@@ -1,8 +1,18 @@
+/**
+ * Estilos del componente NotificationSender
+ * Envía alertas visuales y actualiza estado compartido
+ * 
+ * Sigue metodología BEM y usa variables CSS del sistema de diseño
+ */
 .notification-sender {
   padding: var(--espaciado-6);
   border-radius: var(--radio-grande);
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
+
+  // ========================================================================
+  // HEADER
+  // ========================================================================
 
   &__header {
     margin-block-end: var(--espaciado-6);
@@ -19,6 +29,10 @@
     font-size: var(--tamano-texto-normal);
     color: var(--text-secondary);
   }
+
+  // ========================================================================
+  // CONTENT
+  // ========================================================================
 
   &__content {
     display: flex;
@@ -52,8 +66,11 @@
     gap: var(--espaciado-3);
   }
 
-  // Responsive
-  @media (max-width: 768px) {
+  // ========================================================================
+  // RESPONSIVE (CSS moderno con range syntax)
+  // ========================================================================
+
+  @media (width < 768px) {
     padding: var(--espaciado-4);
 
     &__title {
