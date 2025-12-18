@@ -2,14 +2,14 @@
 
 > Lista de tareas pendientes para completar los requisitos de manipulación DOM y componentes interactivos
 
-**Última actualización:** 17 de diciembre de 2025  
-**Estado del proyecto:** 90% completado
+**Última actualización:** 18 de diciembre de 2025  
+**Estado del proyecto:** 95% completado
 
 ---
 
 ## Resumen
 
-- **Completado:** Manipulación DOM, Sistema de Eventos, Modal, Menú Hamburguesa, Tooltips, Theme Switcher, Accordion, Documentación de Eventos
+- **Completado:** Manipulación DOM, Sistema de Eventos, Modal, Menú Hamburguesa, Tooltips, Theme Switcher, Accordion, Documentación de Eventos, Diagramas de Flujo de Eventos
 - **En progreso:** -
 - **Pendiente:** Tabs
 
@@ -163,37 +163,44 @@
 ### 4. Diagrama de Flujo de Eventos
 
 **Prioridad:** Media  
-**Archivo:** `docs/design/event-architecture.md`
+**Archivo:** `docs/design/event-architecture.md`  
+**Estado:** Completado
 
 **Tareas:**
-- [ ] Crear documento con diagramas de flujo
+- [x] Crear documento con diagramas de flujo
   
-- [ ] Diagrama: Flujo de apertura de Modal
-  - [ ] Usuario hace click en botón → ModalService.open()
-  - [ ] Service actualiza signals → Modal se renderiza
-  - [ ] onModalOpened() → Focus primer elemento
-  - [ ] Setup event listeners (ESC, Tab trap, click outside)
+- [x] Diagrama: Flujo de apertura de Modal
+  - [x] Usuario hace click en botón → ModalService.open()
+  - [x] Service actualiza signals → Modal se renderiza
+  - [x] onModalOpened() → Focus primer elemento
+  - [x] Setup event listeners (ESC, Tab trap, click outside)
   
-- [ ] Diagrama: Flujo de Menú Hamburguesa
-  - [ ] Usuario click en botón hamburguesa → toggleMenu()
-  - [ ] Signal menuOpen cambia → Renderizado condicional
-  - [ ] Setup listeners (ESC, click outside, navigation)
-  - [ ] Bloqueo de scroll del body
+- [x] Diagrama: Flujo de Menú Hamburguesa
+  - [x] Usuario click en botón hamburguesa → toggleMenu()
+  - [x] Signal menuOpen cambia → Renderizado condicional
+  - [x] Setup listeners (ESC, click outside, navigation)
+  - [x] Bloqueo de scroll del body
   
-- [ ] Diagrama: Flujo de Tooltip
-  - [ ] mouseenter → Start timeout
-  - [ ] Timeout completo → show()
-  - [ ] Crear elemento → Calcular posición
-  - [ ] Aplicar estilos → Animación fade-in
-  - [ ] mouseleave → hide() → Destruir elemento
+- [x] Diagrama: Flujo de Tooltip
+  - [x] mouseenter → Start timeout
+  - [x] Timeout completo → show()
+  - [x] Crear elemento → Calcular posición
+  - [x] Aplicar estilos → Animación fade-in
+  - [x] mouseleave → hide() → Destruir elemento
   
-- [ ] Diagrama: Focus Trap en Modal
-  - [ ] Detectar elementos focusables
-  - [ ] Tab en último elemento → Foco a primero
-  - [ ] Shift+Tab en primero → Foco a último
-  - [ ] preventDefault para evitar salida
+- [x] Diagrama: Focus Trap en Modal
+  - [x] Detectar elementos focusables
+  - [x] Tab en último elemento → Foco a primero
+  - [x] Shift+Tab en primero → Foco a último
+  - [x] preventDefault para evitar salida
 
-**Formato:** Usar Mermaid.js o herramienta similar para diagramas
+- [x] Diagrama Bonus: Accordion (añadido)
+  - [x] Toggle con click y teclado (Enter/Space)
+  - [x] Animación de altura con scrollHeight
+  - [x] Modo individual vs múltiple
+  - [x] Parent-child communication
+
+**Formato:** Mermaid.js integrado en Markdown
 
 ---
 
