@@ -25,3 +25,5 @@ export { TabsComponent } from './tabs/tabs';
 export { TabComponent } from './tabs/tab';
 export { NotificationSenderComponent } from './notification-sender/notification-sender';
 export { NotificationReceiverComponent } from './notification-receiver/notification-receiver';
+export { ToastComponent } from './toast/toast';
+export { ToastContainerComponent } from './toast-container/toast-container';

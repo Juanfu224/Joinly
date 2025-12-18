@@ -12,3 +12,4 @@ export {
   type SharedFilters,
   type AppEvent,
 } from './communication';
+export { ToastService, type ToastType, type ToastMessage } from './toast';

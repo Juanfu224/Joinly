@@ -1,0 +1,173 @@
+@use '../../../../styles/01-tools/mixins' as *;
+
+// ==========================================================================
+// COMPONENTE: TOAST
+// ==========================================================================
+// Bloque BEM principal para notificaciones toast individuales.
+// Soporta tipos: success, error, warning, info
+// Se posiciona dentro del contenedor toast-container
+
+.c-toast {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaciado-2);
+
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  padding-block: var(--espaciado-2);
+  padding-inline: var(--espaciado-3);
+
+  border-radius: var(--radio-medio);
+  box-shadow: var(--sombra-4);
+
+  font-family: var(--font-primaria);
+  font-size: var(--tamano-texto-regular);
+  font-weight: var(--peso-fuente-medio);
+  line-height: var(--altura-linea-normal);
+
+  cursor: pointer;
+  user-select: none;
+
+  @include transicion;
+
+  // Animación de entrada (fade + slide)
+  animation: toastIn var(--duracion-base) var(--transicion-estandar);
+
+  @keyframes toastIn {
+    from {
+      transform: translateX(100%) scale(0.95);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes toastOut {
+    from {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(100%) scale(0.95);
+      opacity: 0;
+    }
+  }
+
+  // Modificador para animación de salida
+  &--closing {
+    animation: toastOut var(--duracion-base) var(--transicion-estandar) forwards;
+  }
+
+  // Optimización de rendimiento
+  will-change: transform, opacity;
+
+  // ==========================================================================
+  // ELEMENTOS BEM
+  // ==========================================================================
+
+  &__icon {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    color: inherit;
+  }
+
+  &__message {
+    flex: 1;
+    margin: 0;
+    min-inline-size: 0;
+    color: inherit;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  &__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    padding: var(--espaciado-1);
+    margin-inline-start: var(--espaciado-1);
+    margin-block: calc(var(--espaciado-1) * -0.5);
+    margin-inline-end: calc(var(--espaciado-1) * -0.5);
+
+    background: transparent;
+    border: none;
+    border-radius: var(--radio-pequeno);
+
+    color: inherit;
+    opacity: 0.7;
+    cursor: pointer;
+
+    @include transicion;
+    @include foco-visible;
+
+    &:hover {
+      opacity: 1;
+      background: color-mix(in srgb, currentColor 10%, transparent);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  &__close-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  // ==========================================================================
+  // MODIFICADORES (TIPOS DE TOAST)
+  // ==========================================================================
+
+  &--success {
+    background-color: var(--color-exito);
+    color: var(--color-blanco);
+  }
+
+  &--error {
+    background-color: var(--color-error);
+    color: var(--color-blanco);
+  }
+
+  &--warning {
+    background-color: var(--color-advertencia);
+    color: var(--text-primary);
+  }
+
+  &--info {
+    background-color: var(--color-informacion);
+    color: var(--color-blanco);
+  }
+
+  // ==========================================================================
+  // INTERACCIÓN: HOVER PAUSE
+  // ==========================================================================
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: var(--sombra-5);
+  }
+
+  // ==========================================================================
+  // RESPONSIVE
+  // ==========================================================================
+
+  // En móviles, ocupar todo el ancho
+  @media (max-width: 47.9375rem) {
+    max-inline-size: none;
+    border-radius: var(--radio-medio);
+  }
+
+  // Reducir el padding en pantallas muy pequeñas
+  @media (max-width: 23.4375rem) {
+    padding-block: var(--espaciado-1);
+    padding-inline: var(--espaciado-2);
+    font-size: var(--tamano-texto-pequeno);
+    gap: var(--espaciado-1);
+  }
+}
