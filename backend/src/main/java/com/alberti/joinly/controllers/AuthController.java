@@ -1,12 +1,14 @@
 package com.alberti.joinly.controllers;
 
 import com.alberti.joinly.dto.auth.AuthResponse;
+import com.alberti.joinly.dto.auth.EmailAvailabilityResponse;
 import com.alberti.joinly.dto.auth.LoginRequest;
 import com.alberti.joinly.dto.auth.RefreshTokenRequest;
 import com.alberti.joinly.dto.auth.RegisterRequest;
 import com.alberti.joinly.services.AuthService;
 import com.alberti.joinly.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -187,6 +189,54 @@ public class AuthController {
         log.info("Solicitud de verificación de email para usuario ID: {}", idUsuario);
         usuarioService.verificarEmail(idUsuario);
         return ResponseEntity.ok().build();
+    }
+
+    /**
+     * Verifica la disponibilidad de un email.
+     * <p>
+     * Endpoint público para validación asíncrona de formularios.
+     * Permite verificar si un email está disponible antes del registro,
+     * o si puede ser utilizado durante la edición de perfil.
+     *
+     * @param email Email a verificar
+     * @param excludeUserId ID de usuario a excluir (opcional, para edición)
+     * @return Respuesta indicando si el email está disponible
+     */
+    @GetMapping("/check-email")
+    @Operation(
+            summary = "Verificar disponibilidad de email",
+            description = "Comprueba si un email está disponible para registro o edición de perfil"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Verificación exitosa",
+                    content = @Content(schema = @Schema(implementation = EmailAvailabilityResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Email no proporcionado o inválido"
+            )
+    })
+    public ResponseEntity<EmailAvailabilityResponse> checkEmailAvailability(
+            @Parameter(description = "Email a verificar", required = true)
+            @RequestParam String email,
+            @Parameter(description = "ID de usuario a excluir de la verificación")
+            @RequestParam(required = false) Long excludeUserId) {
+        
+        log.debug("Verificando disponibilidad de email: {}", email);
+        
+        boolean exists = usuarioService.existeEmail(email);
+        boolean available = !exists;
+        
+        // Si se proporciona un ID de usuario, verificar si el email pertenece a ese usuario
+        if (exists && excludeUserId != null) {
+            available = usuarioService.buscarPorEmail(email)
+                    .map(usuario -> usuario.getId().equals(excludeUserId))
+                    .orElse(false);
+        }
+        
+        return ResponseEntity.ok(new EmailAvailabilityResponse(available));
     }
 
     /**

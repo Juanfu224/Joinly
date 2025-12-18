@@ -43,6 +43,11 @@ export const VALIDATION_MESSAGES: Record<string, string | ((error?: any) => stri
 
   // Validador de código
   codePattern: 'Código inválido',
+
+  // Validadores asíncronos
+  emailTaken: 'Este email ya está registrado',
+  emailUnavailable: 'Email no disponible',
+  usernameTaken: 'Nombre de usuario no disponible',
 };
 
 /**

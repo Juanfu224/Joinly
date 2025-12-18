@@ -42,6 +42,8 @@ export class FormInputComponent implements ControlValueAccessor {
   readonly required = input<boolean>(false);
   readonly helpText = input<string>('');
   readonly errorMessage = input<string>('');
+  readonly pending = input<boolean>(false);
+  readonly pendingMessage = input<string>('Verificando...');
 
   private readonly generatedId = `form-input-${crypto.randomUUID().slice(0, 8)}`;
 

@@ -19,6 +19,7 @@ import {
   matchFields,
   passwordStrength,
 } from '../validators';
+import { AsyncValidatorsService } from '../../../services';
 
 type RegisterFormFields = 'nombre' | 'apellido' | 'email' | 'password' | 'confirmPassword';
 
@@ -41,6 +42,7 @@ interface RegisterFormValue {
 })
 export class RegisterFormComponent {
   private readonly fb = inject(FormBuilder).nonNullable;
+  private readonly asyncValidators = inject(AsyncValidatorsService);
 
   readonly isLoading = signal(false);
   readonly formError = signal<string | null>(null);
@@ -60,7 +62,11 @@ export class RegisterFormComponent {
     {
       nombre: ['', [Validators.required, Validators.minLength(2)]],
       apellido: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', {
+        validators: [Validators.required, Validators.email],
+        asyncValidators: [this.asyncValidators.emailAvailable()],
+        updateOn: 'blur'
+      }],
       password: ['', [Validators.required, passwordStrength({ minLength: 8, requireNumber: true })]],
       confirmPassword: ['', [Validators.required]],
     },
