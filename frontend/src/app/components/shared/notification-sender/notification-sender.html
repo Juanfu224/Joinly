@@ -1,0 +1,88 @@
+<section class="notification-sender">
+  <header class="notification-sender__header">
+    <h2 class="notification-sender__title">Componente Emisor</h2>
+    <p class="notification-sender__description">
+      Envía notificaciones y actualiza estado compartido
+    </p>
+  </header>
+
+  <div class="notification-sender__content">
+    <!-- Sección de Notificaciones -->
+    <article class="notification-sender__section">
+      <h3 class="notification-sender__section-title">Notificaciones</h3>
+      <p class="notification-sender__section-description">
+        Enviar diferentes tipos de notificaciones a componentes hermanos
+      </p>
+
+      <div class="notification-sender__actions">
+        <app-button
+          variant="primary"
+          leftIcon="circle-check"
+          (click)="sendSuccessNotification()"
+        >
+          Enviar Éxito
+        </app-button>
+
+        <app-button
+          variant="purple"
+          leftIcon="bell"
+          (click)="sendErrorNotification()"
+        >
+          Enviar Error
+        </app-button>
+
+        <app-button
+          variant="blue"
+          leftIcon="info"
+          (click)="sendInfoNotification()"
+        >
+          Enviar Info
+        </app-button>
+      </div>
+    </article>
+
+    <!-- Sección de Filtros -->
+    <article class="notification-sender__section">
+      <h3 class="notification-sender__section-title">Filtros Compartidos</h3>
+      <p class="notification-sender__section-description">
+        Actualizar filtros que otros componentes pueden consumir
+      </p>
+
+      <div class="notification-sender__actions">
+        <app-button
+          variant="blue"
+          leftIcon="filter"
+          (click)="updateSharedFilters()"
+        >
+          Actualizar Filtros
+        </app-button>
+
+        <app-button
+          variant="secondary"
+          leftIcon="close"
+          (click)="clearSharedFilters()"
+        >
+          Limpiar Filtros
+        </app-button>
+      </div>
+    </article>
+
+    <!-- Sección de Usuario -->
+    <article class="notification-sender__section">
+      <h3 class="notification-sender__section-title">Estado de Usuario</h3>
+      <p class="notification-sender__section-description">
+        Actualizar información del usuario autenticado
+      </p>
+
+      <div class="notification-sender__actions">
+        <app-button
+          variant="primary"
+          leftIcon="user"
+          (click)="updateUserState()"
+        >
+          Actualizar Usuario
+        </app-button>
+      </div>
+    </article>
+  </div>
+</section>

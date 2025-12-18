@@ -23,3 +23,5 @@ export { AccordionComponent } from './accordion/accordion';
 export { AccordionItemComponent } from './accordion/accordion-item';
 export { TabsComponent } from './tabs/tabs';
 export { TabComponent } from './tabs/tab';
+export { NotificationSenderComponent } from './notification-sender/notification-sender';
+export { NotificationReceiverComponent } from './notification-receiver/notification-receiver';

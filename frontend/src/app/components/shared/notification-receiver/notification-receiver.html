@@ -1,0 +1,133 @@
+<section class="notification-receiver">
+  <header class="notification-receiver__header">
+    <h2 class="notification-receiver__title">Componente Receptor</h2>
+    <p class="notification-receiver__description">
+      Recibe y muestra notificaciones y estado compartido en tiempo real
+    </p>
+  </header>
+
+  <div class="notification-receiver__content">
+    <!-- Última Notificación (usando Signal) -->
+    <article class="notification-receiver__card">
+      <h3 class="notification-receiver__section-title">
+        🔔 Última Notificación (Signal)
+      </h3>
+
+      @if (lastNotification(); as notification) {
+        <div class="notification-receiver__notification" [class]="getNotificationClass(notification.type)">
+          <span class="notification-receiver__notification-icon">
+            {{ getNotificationIcon(notification.type) }}
+          </span>
+          <div class="notification-receiver__notification-content">
+            <p class="notification-receiver__notification-message">
+              {{ notification.message }}
+            </p>
+            <time class="notification-receiver__notification-time">
+              {{ formatTimestamp(notification.timestamp) }}
+            </time>
+          </div>
+        </div>
+      } @else {
+        <p class="notification-receiver__empty">
+          No hay notificaciones recientes
+        </p>
+      }
+    </article>
+
+    <!-- Estado de Usuario (usando Signal) -->
+    <article class="notification-receiver__card">
+      <h3 class="notification-receiver__section-title">
+        👤 Estado de Usuario (Signal)
+      </h3>
+
+      @if (currentUser().isAuthenticated) {
+        <div class="notification-receiver__user">
+          <div class="notification-receiver__user-info">
+            <p class="notification-receiver__user-name">
+              <strong>Nombre:</strong> {{ currentUser().name }}
+            </p>
+            <p class="notification-receiver__user-email">
+              <strong>Email:</strong> {{ currentUser().email }}
+            </p>
+            <p class="notification-receiver__user-id">
+              <strong>ID:</strong> {{ currentUser().id }}
+            </p>
+          </div>
+          <span class="notification-receiver__user-badge notification-receiver__user-badge--authenticated">
+            ✓ Autenticado
+          </span>
+        </div>
+      } @else {
+        <div class="notification-receiver__user">
+          <span class="notification-receiver__user-badge notification-receiver__user-badge--guest">
+            Usuario no autenticado
+          </span>
+        </div>
+      }
+    </article>
+
+    <!-- Filtros Compartidos (usando Signal) -->
+    <article class="notification-receiver__card">
+      <h3 class="notification-receiver__section-title">
+        🔍 Filtros Compartidos (Signal)
+      </h3>
+
+      <div class="notification-receiver__filters">
+        <div class="notification-receiver__filter-item">
+          <strong>Término de búsqueda:</strong>
+          <span>{{ currentFilters().searchTerm || 'N/A' }}</span>
+        </div>
+        <div class="notification-receiver__filter-item">
+          <strong>Categoría:</strong>
+          <span>{{ currentFilters().category || 'N/A' }}</span>
+        </div>
+        <div class="notification-receiver__filter-item">
+          <strong>Rango de fechas:</strong>
+          <span>{{ currentFilters().dateRange ? 'Configurado' : 'N/A' }}</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Historial de Notificaciones (usando Observable) -->
+    <article class="notification-receiver__card">
+      <div class="notification-receiver__section-header">
+        <h3 class="notification-receiver__section-title">
+          📋 Historial (Observable)
+        </h3>
+        @if (notificationHistory().length > 0) {
+          <button
+            class="notification-receiver__clear-button"
+            (click)="clearHistory()"
+            type="button"
+          >
+            Limpiar
+          </button>
+        }
+      </div>
+
+      @if (notificationHistory().length > 0) {
+        <ul class="notification-receiver__history-list">
+          @for (notification of notificationHistory(); track notification.id) {
+            <li class="notification-receiver__history-item" [class]="getNotificationClass(notification.type)">
+              <span class="notification-receiver__history-icon">
+                {{ getNotificationIcon(notification.type) }}
+              </span>
+              <div class="notification-receiver__history-content">
+                <p class="notification-receiver__history-message">
+                  {{ notification.message }}
+                </p>
+                <time class="notification-receiver__history-time">
+                  {{ formatTimestamp(notification.timestamp) }}
+                </time>
+              </div>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="notification-receiver__empty">
+          No hay notificaciones en el historial
+        </p>
+      }
+    </article>
+  </div>
+</section>
