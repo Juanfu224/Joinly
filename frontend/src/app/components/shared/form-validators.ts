@@ -1,15 +1,16 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 /**
- * Validador personalizado para verificar la fortaleza de contraseñas.
- * Requiere al menos una letra y un número, con mínimo 8 caracteres.
+ * @deprecated Use `passwordStrength()` from './validators' instead.
  * 
- * @returns ValidatorFn que valida la fortaleza de la contraseña
+ * Este validador se mantiene por compatibilidad con código existente.
+ * Para nuevas implementaciones, usa el validador configurable:
  * 
- * @example
  * ```typescript
+ * import { passwordStrength } from './validators';
+ * 
  * this.fb.group({
- *   password: ['', [Validators.required, passwordStrengthValidator()]]
+ *   password: ['', [Validators.required, passwordStrength()]]
  * });
  * ```
  */
@@ -25,18 +26,17 @@ export function passwordStrengthValidator(): ValidatorFn {
 }
 
 /**
- * Validador a nivel de FormGroup para verificar que dos campos coincidan.
- * Útil para confirmación de contraseña o email.
+ * @deprecated Use `matchFields()` from './validators' instead.
  * 
- * @param field1 Nombre del primer campo
- * @param field2 Nombre del segundo campo que debe coincidir
- * @returns ValidatorFn que retorna error si los campos no coinciden
+ * Este validador se mantiene por compatibilidad con código existente.
+ * Para nuevas implementaciones, usa el validador del módulo validators:
  * 
- * @example
  * ```typescript
+ * import { matchFields } from './validators';
+ * 
  * this.fb.group(
  *   { password: [''], confirmPassword: [''] },
- *   { validators: matchFieldsValidator('password', 'confirmPassword') }
+ *   { validators: matchFields('password', 'confirmPassword') }
  * );
  * ```
  */
@@ -52,12 +52,16 @@ export function matchFieldsValidator(field1: string, field2: string): ValidatorF
 }
 
 /**
- * Obtiene el mensaje de error apropiado para un control de formulario.
- * Prioriza los errores según su importancia (required > email > minlength...).
+ * @deprecated Use `getErrorMessage()` from './validators' instead.
  * 
- * @param control Control del formulario a validar
- * @param fieldLabel Etiqueta del campo para mensajes personalizados
- * @returns Mensaje de error o cadena vacía si no hay errores
+ * Este helper se mantiene por compatibilidad con código existente.
+ * Para nuevas implementaciones, usa el sistema centralizado de mensajes:
+ * 
+ * ```typescript
+ * import { getErrorMessage } from './validators';
+ * 
+ * getErrorMessage(this.form.get('email'));
+ * ```
  */
 export function getControlErrorMessage(
   control: AbstractControl | null,
@@ -98,6 +102,8 @@ export function getControlErrorMessage(
 /**
  * Mapeo de mensajes de error específicos por campo y tipo de error.
  * Permite mensajes más descriptivos y contextuales.
+ * 
+ * @deprecated Use el sistema de mensajes de './validators/error-messages' instead.
  */
 export interface FieldErrorMessages {
   [errorType: string]: string;
@@ -107,6 +113,8 @@ export interface FieldErrorMessages {
  * Obtiene un mensaje de error personalizado para un campo específico.
  * Permite definir mensajes contextuales por tipo de error.
  * 
+ * @deprecated Use `getErrorMessage()` from './validators' instead.
+ * 
  * @param control Control del formulario a validar
  * @param customMessages Mensajes personalizados por tipo de error
  * @param defaultLabel Etiqueta por defecto si no hay mensaje custom
@@ -114,7 +122,9 @@ export interface FieldErrorMessages {
  * 
  * @example
  * ```typescript
- * getFieldErrorMessage(control, {
+ * import { getErrorMessage } from './validators';
+ * 
+ * getErrorMessage(control, {
  *   required: 'El email es obligatorio',
  *   email: 'Formato de email inválido'
  * });

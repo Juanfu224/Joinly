@@ -30,6 +30,29 @@ export {
   codePatternValidator,
   type FieldErrorMessages,
 } from './form-validators';
+
+// Nuevos validadores avanzados
+export {
+  passwordStrength,
+  passwordStrengthStrict,
+  type PasswordStrengthConfig,
+  telefono,
+  nif,
+  nie,
+  nifNie,
+  codigoPostal,
+  matchFields,
+  precioMinimoPlaza,
+  requireBothOrNeither,
+  atLeastOne,
+  dateRange,
+  minAge,
+  getErrorMessage,
+  getAllErrorMessages,
+  hasError,
+  getFormErrors,
+  VALIDATION_MESSAGES,
+} from './validators';
 export {
   canSubmit,
   focusInput,

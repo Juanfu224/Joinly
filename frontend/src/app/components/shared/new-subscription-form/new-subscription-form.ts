@@ -14,7 +14,11 @@ import { ButtonComponent } from '../button/button';
 import { FormCardComponent } from '../form-card/form-card';
 import { FormInputComponent } from '../form-input/form-input';
 import { canSubmit, focusInput, shouldTriggerSubmit } from '../form-utils';
-import { getFieldErrorMessage, type FieldErrorMessages } from '../form-validators';
+import {
+  getErrorMessage,
+  precioMinimoPlaza,
+  requireBothOrNeither,
+} from '../validators';
 
 interface NewSubscriptionFormValue {
   nombre: string;
@@ -49,14 +53,22 @@ export class NewSubscriptionFormComponent {
 
   private lastSubmitTime = 0;
 
-  readonly form = this.fb.group({
-    nombre: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-    precioTotal: [null as number | null, [Validators.required, Validators.min(0.01), Validators.max(9999)]],
-    frecuencia: ['mensual' as 'mensual' | 'anual', [Validators.required]],
-    plazas: [null as number | null, [Validators.required, Validators.min(1), Validators.max(20)]],
-    usuario: [''],
-    password: [''],
-  });
+  readonly form = this.fb.group(
+    {
+      nombre: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
+      precioTotal: [null as number | null, [Validators.required, Validators.min(0.01), Validators.max(9999)]],
+      frecuencia: ['mensual' as 'mensual' | 'anual', [Validators.required]],
+      plazas: [null as number | null, [Validators.required, Validators.min(1), Validators.max(20)]],
+      usuario: [''],
+      password: [''],
+    },
+    {
+      validators: [
+        precioMinimoPlaza(1),
+        requireBothOrNeither('usuario', 'password'),
+      ],
+    }
+  );
 
   readonly isFormInvalid = computed(() => this.form.invalid);
 
@@ -120,7 +132,7 @@ export class NewSubscriptionFormComponent {
       plazas: 'El número de plazas',
     };
 
-    const customMessages: FieldErrorMessages = {
+    const customMessages: Record<string, string> = {
       required: `${fieldLabels[field] || 'Este campo'} es obligatorio`,
       minlength: 'Mínimo 2 caracteres',
       maxlength: 'Máximo 100 caracteres',
@@ -128,7 +140,24 @@ export class NewSubscriptionFormComponent {
       max: field === 'precioTotal' ? 'El precio máximo es 9999€' : 'El valor máximo es 20',
     };
 
-    return getFieldErrorMessage(control, customMessages);
+    return getErrorMessage(control, customMessages);
+  }
+
+  getFormErrorMessages(): string[] {
+    if (!this.form.errors) return [];
+
+    const errors: string[] = [];
+
+    if (this.form.errors['precioMinimoPlaza']) {
+      const error = this.form.errors['precioMinimoPlaza'];
+      errors.push(`Precio mínimo por persona: ${error.min}€ (actual: ${error.actual.toFixed(2)}€)`);
+    }
+
+    if (this.form.errors['requireBothOrNeither']) {
+      errors.push('Completa ambos campos de credenciales o deja ambos vacíos');
+    }
+
+    return errors;
   }
 
   private focusFirstInvalidField(): void {

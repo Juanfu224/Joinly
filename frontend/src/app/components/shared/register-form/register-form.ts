@@ -15,11 +15,10 @@ import { FormCardComponent } from '../form-card/form-card';
 import { FormInputComponent } from '../form-input/form-input';
 import { canSubmit, focusInput, shouldTriggerSubmit } from '../form-utils';
 import {
-  getFieldErrorMessage,
-  matchFieldsValidator,
-  passwordStrengthValidator,
-  type FieldErrorMessages,
-} from '../form-validators';
+  getErrorMessage,
+  matchFields,
+  passwordStrength,
+} from '../validators';
 
 type RegisterFormFields = 'nombre' | 'apellido' | 'email' | 'password' | 'confirmPassword';
 
@@ -62,10 +61,10 @@ export class RegisterFormComponent {
       nombre: ['', [Validators.required, Validators.minLength(2)]],
       apellido: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8), passwordStrengthValidator()]],
+      password: ['', [Validators.required, passwordStrength({ minLength: 8, requireNumber: true })]],
       confirmPassword: ['', [Validators.required]],
     },
-    { validators: matchFieldsValidator('password', 'confirmPassword') }
+    { validators: matchFields('password', 'confirmPassword') }
   );
 
   readonly isFormInvalid = computed(() => this.form.invalid);
@@ -121,13 +120,13 @@ export class RegisterFormComponent {
       return 'Las contraseñas no coinciden';
     }
 
-    const customMessages: FieldErrorMessages = {
+    const customMessages: Record<string, string> = {
       required: 'Este campo es obligatorio',
       minlength: 'Mínimo 2 caracteres',
-      passwordStrength: 'La contraseña debe tener al menos una letra y un número',
+      noNumber: 'La contraseña debe contener al menos un número',
     };
 
-    return getFieldErrorMessage(control, customMessages);
+    return getErrorMessage(control, customMessages);
   }
 
   private focusFirstInvalidField(): void {
