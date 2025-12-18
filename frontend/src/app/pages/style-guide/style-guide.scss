@@ -61,7 +61,7 @@
   font-size: var(--tamano-texto-4xl);
   font-weight: var(--peso-fuente-negrita);
   line-height: 1.125;
-  color: var(--color-blanco);
+  color: #ffffff;
   margin: 0;
 
   @include responder-a('tablet') {
@@ -76,7 +76,7 @@
 .p-style-guide__descripcion {
   font-size: var(--tamano-texto-grande);
   line-height: var(--altura-linea-relajada);
-  color: color-mix(in srgb, var(--color-blanco) 90%, transparent);
+  color: rgba(255, 255, 255, 0.9);
   margin-block-start: var(--espaciado-3);
   margin-block-end: 0;
   max-inline-size: 65ch;
@@ -233,7 +233,7 @@
 
 .p-style-guide__logo-label {
   font-size: var(--tamano-texto-pequeno);
-  color: var(--color-gris-oscuro);
+  color: var(--text-secondary);
   text-align: center;
   margin: 0;
   align-self: center;
@@ -252,7 +252,7 @@
 .p-style-guide__logo-caso-titulo {
   font-size: var(--tamano-texto-pequeno);
   font-weight: var(--peso-fuente-semi-negrita);
-  color: var(--color-texto-primario);
+  color: var(--text-primary);
   margin: 0;
   text-align: center;
 }
