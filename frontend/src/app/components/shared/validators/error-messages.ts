@@ -55,6 +55,7 @@ export const VALIDATION_MESSAGES: Record<string, string | ((error?: any) => stri
  * 
  * Prioriza errores según su importancia y utiliza el diccionario
  * centralizado de mensajes. Permite mensajes personalizados por control.
+ * Muestra errores solo cuando el control ha sido tocado O modificado.
  * 
  * @param control Control del formulario a validar
  * @param customMessages Mensajes personalizados que sobreescriben los del diccionario
@@ -72,7 +73,8 @@ export function getErrorMessage(
   control: AbstractControl | null,
   customMessages?: Record<string, string>
 ): string {
-  if (!control?.touched || !control.errors) return '';
+  // Mostrar errores solo cuando el control ha sido tocado O modificado
+  if (!control || !control.errors || (!control.touched && !control.dirty)) return '';
 
   // Obtener el primer error (priorizando el orden de validación)
   const errorType = Object.keys(control.errors)[0];
@@ -98,6 +100,7 @@ export function getErrorMessage(
  * 
  * Útil para mostrar múltiples errores simultáneamente o para
  * validadores que retornan múltiples errores en un solo objeto.
+ * Muestra errores solo cuando el control ha sido tocado O modificado.
  * 
  * @param control Control del formulario a validar
  * @param customMessages Mensajes personalizados opcionales
@@ -113,7 +116,8 @@ export function getAllErrorMessages(
   control: AbstractControl | null,
   customMessages?: Record<string, string>
 ): string[] {
-  if (!control?.touched || !control.errors) return [];
+  // Mostrar errores solo cuando el control ha sido tocado O modificado
+  if (!control || !control.errors || (!control.touched && !control.dirty)) return [];
 
   return Object.entries(control.errors).map(([errorType, errorValue]) => {
     // Priorizar mensaje personalizado
@@ -133,13 +137,13 @@ export function getAllErrorMessages(
 }
 
 /**
- * Verifica si un control tiene un error específico y está touched.
+ * Verifica si un control tiene un error específico y está touched O dirty.
  * 
  * Útil para mostrar/ocultar mensajes de error específicos en templates.
  * 
  * @param control Control del formulario a validar
  * @param errorType Tipo de error a verificar
- * @returns true si el control tiene ese error y está touched
+ * @returns true si el control tiene ese error y está touched o dirty
  * 
  * @example
  * ```html
@@ -149,7 +153,30 @@ export function getAllErrorMessages(
  * ```
  */
 export function hasError(control: AbstractControl | null, errorType: string): boolean {
-  return !!(control?.touched && control?.errors?.[errorType]);
+  return !!(control && (control.touched || control.dirty) && control.errors?.[errorType]);
+}
+
+/**
+ * Verifica si se deben mostrar los errores de un control.
+ * 
+ * Un control debe mostrar errores cuando:
+ * - Tiene errores de validación
+ * - Ha sido tocado O modificado
+ * - NO está en estado pending (validación asíncrona en curso)
+ * 
+ * @param control Control del formulario a validar
+ * @returns true si se deben mostrar los errores
+ * 
+ * @example
+ * ```typescript
+ * if (shouldShowError(this.form.get('email'))) {
+ *   // Mostrar mensaje de error
+ * }
+ * ```
+ */
+export function shouldShowError(control: AbstractControl | null): boolean {
+  if (!control) return false;
+  return !!(control.errors && (control.touched || control.dirty) && !control.pending);
 }
 
 /**

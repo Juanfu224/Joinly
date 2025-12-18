@@ -69,6 +69,24 @@
         box-shadow: 0 0 0 var(--borde-medio) color-mix(in srgb, var(--color-error) 25%, transparent);
       }
     }
+
+    // Estados de Angular Forms - Feedback visual automático
+    // Solo aplicar estilos cuando el campo ha sido tocado O modificado
+    &.ng-touched.ng-invalid,
+    &.ng-dirty.ng-invalid {
+      border-color: var(--color-error);
+    }
+
+    &.ng-touched.ng-valid,
+    &.ng-dirty.ng-valid {
+      border-color: var(--color-exito);
+    }
+
+    // Estado pending (validación asíncrona en curso)
+    &.ng-pending {
+      border-style: dashed;
+      border-color: var(--color-principal);
+    }
   }
 
   &__error {

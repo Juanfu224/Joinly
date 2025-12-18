@@ -59,8 +59,10 @@ export class CredentialInputGroupComponent {
   /** Obtiene mensaje de error para un campo específico */
   protected getErrorMessage(fieldName: string): string {
     const control = this.formGroup().get(fieldName);
-    if (!control || !control.touched || !control.errors) {
-      // Verificar errores a nivel de grupo
+    
+    // Mostrar errores solo cuando el control ha sido tocado O modificado
+    if (!control || !control.errors || (!control.touched && !control.dirty)) {
+      // Verificar errores a nivel de grupo (cross-field)
       if (fieldName === 'password' && this.formGroup().errors?.['passwordRequired']) {
         return 'Contraseña requerida para este tipo de credencial';
       }

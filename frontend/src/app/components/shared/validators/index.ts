@@ -38,6 +38,7 @@ export {
   getErrorMessage,
   getAllErrorMessages,
   hasError,
+  shouldShowError,
   getFormErrors,
   VALIDATION_MESSAGES,
 } from './error-messages';

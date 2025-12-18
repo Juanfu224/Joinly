@@ -94,10 +94,12 @@
         type="submit"
         variant="primary"
         size="xl"
-        [disabled]="isFormInvalid() || isLoading()"
+        [disabled]="isFormInvalid() || form.pending || isLoading()"
         [loading]="isLoading()"
       >
-        @if (isLoading()) { Registrando... } @else { Registrar }
+        @if (isLoading()) { Registrando... } 
+        @else if (form.pending) { Validando... }
+        @else { Registrar }
       </app-button>
     </div>
   </form>

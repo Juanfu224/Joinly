@@ -40,10 +40,12 @@
         type="submit"
         variant="blue"
         size="xl"
-        [disabled]="isFormInvalid() || isLoading()"
+        [disabled]="isFormInvalid() || form.pending || isLoading()"
         [loading]="isLoading()"
       >
-        @if (isLoading()) { Uniéndose... } @else { Unirse }
+        @if (isLoading()) { Uniéndose... }
+        @else if (form.pending) { Validando... }
+        @else { Unirse }
       </app-button>
     </div>
   </form>

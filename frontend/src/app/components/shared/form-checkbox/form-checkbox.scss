@@ -65,6 +65,19 @@
     &[aria-invalid="true"] {
       border-color: var(--color-error);
     }
+
+    // Estados de Angular Forms - Feedback visual automático
+    // Solo aplicar estilos cuando el campo ha sido tocado O modificado
+    &.ng-touched.ng-invalid,
+    &.ng-dirty.ng-invalid {
+      border-color: var(--color-error);
+    }
+
+    &.ng-touched.ng-valid:checked,
+    &.ng-dirty.ng-valid:checked {
+      border-color: var(--color-exito);
+      background-color: var(--color-exito);
+    }
   }
 
   &__label {

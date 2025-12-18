@@ -51,10 +51,12 @@
         type="submit"
         variant="purple"
         size="xl"
-        [disabled]="isFormInvalid() || isLoading()"
+        [disabled]="isFormInvalid() || form.pending || isLoading()"
         [loading]="isLoading()"
       >
-        @if (isLoading()) { Iniciando sesión... } @else { Iniciar sesión }
+        @if (isLoading()) { Iniciando sesión... } 
+        @else if (form.pending) { Validando... }
+        @else { Iniciar sesión }
       </app-button>
     </div>
   </form>

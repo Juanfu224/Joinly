@@ -40,10 +40,12 @@
         type="submit"
         variant="primary"
         size="xl"
-        [disabled]="isFormInvalid() || isLoading()"
+        [disabled]="isFormInvalid() || form.pending || isLoading()"
         [loading]="isLoading()"
       >
-        @if (isLoading()) { Creando... } @else { Crear }
+        @if (isLoading()) { Creando... }
+        @else if (form.pending) { Validando... }
+        @else { Crear }
       </app-button>
     </div>
   </form>

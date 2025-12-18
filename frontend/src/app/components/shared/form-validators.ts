@@ -67,7 +67,8 @@ export function getControlErrorMessage(
   control: AbstractControl | null,
   fieldLabel: string = 'Este campo'
 ): string {
-  if (!control?.touched || !control.errors) return '';
+  // Mostrar errores solo cuando el control ha sido tocado O modificado
+  if (!control || !control.errors || (!control.touched && !control.dirty)) return '';
 
   const errors = control.errors;
 
@@ -112,6 +113,7 @@ export interface FieldErrorMessages {
 /**
  * Obtiene un mensaje de error personalizado para un campo específico.
  * Permite definir mensajes contextuales por tipo de error.
+ * Muestra errores solo cuando el control ha sido tocado O modificado.
  * 
  * @deprecated Use `getErrorMessage()` from './validators' instead.
  * 
@@ -135,7 +137,8 @@ export function getFieldErrorMessage(
   customMessages: FieldErrorMessages = {},
   defaultLabel: string = 'Este campo'
 ): string {
-  if (!control?.touched || !control.errors) return '';
+  // Mostrar errores solo cuando el control ha sido tocado O modificado
+  if (!control || !control.errors || (!control.touched && !control.dirty)) return '';
 
   const errors = control.errors;
   const errorType = Object.keys(errors)[0];
