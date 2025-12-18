@@ -1,71 +1,295 @@
-# Documentación de Diseño - Joinly
+# Documentación Técnica - Joinly Frontend
+
+Plataforma de gestión de suscripciones compartidas desarrollada con Angular 21, utilizando standalone components, signals, SCSS con arquitectura ITCSS y metodología BEM.
 
 ## Índice
 
-- [1.1 Principios de comunicación visual](#11-principios-de-comunicación-visual)
-  - [1.1.1 Jerarquía](#111-jerarquía)
-  - [1.1.2 Contraste](#112-contraste)
-  - [1.1.3 Alineación](#113-alineación)
-  - [1.1.4 Proximidad](#114-proximidad)
-  - [1.1.5 Repetición](#115-repetición)
-  - [1.1.6 Resumen](#116-resumen)
-- [1.2 Metodología CSS](#12-metodología-css)
-  - [1.2.1 Introducción a BEM](#121-introducción-a-bem)
-  - [1.2.2 Ejemplo Práctico: Tarjeta de Estadísticas](#122-ejemplo-práctico-tarjeta-de-estadísticas)
-  - [1.2.3 Ejemplo Práctico: Sistema de Botones](#123-ejemplo-práctico-sistema-de-botones)
-  - [1.2.4 Beneficios de BEM en Angular](#124-beneficios-de-bem-en-angular)
-  - [1.2.5 Resumen](#125-resumen)
-- [1.3 Organización de archivos](#13-organización-de-archivos)
-  - [1.3.1 Arquitectura ITCSS](#131-arquitectura-itcss)
-  - [1.3.2 Estructura de directorios](#132-estructura-de-directorios)
-  - [1.3.3 Explicación capa por capa](#133-explicación-capa-por-capa)
-  - [1.3.4 El archivo main.scss](#134-el-archivo-mainscss)
-  - [1.3.5 Flujo de especificidad](#135-flujo-de-especificidad)
-  - [1.3.6 Beneficios de ITCSS](#136-beneficios-de-itcss)
-- [1.4 Sistema de Design Tokens](#14-sistema-de-design-tokens)
-  - [1.4.1 Paleta de Colores](#141-paleta-de-colores)
-  - [1.4.2 Escala Tipográfica](#142-escala-tipográfica)
-  - [1.4.3 Sistema de Espaciado](#143-sistema-de-espaciado)
-  - [1.4.4 Breakpoints (Responsive Design)](#144-breakpoints-responsive-design)
-  - [1.4.5 Tokens Adicionales](#145-tokens-adicionales)
-  - [1.4.6 Resumen](#146-resumen)
-- [1.5 Mixins y Funciones](#15-mixins-y-funciones)
-  - [1.5.1 Media Queries Responsive](#151-media-queries-responsive-responder-a)
-  - [1.5.2 Centrado Flexbox](#152-centrado-flexbox-centrar-flex)
-  - [1.5.3 Truncado de Texto](#153-truncado-de-texto-truncar-texto)
-  - [1.5.4 Foco Visible Accesible](#154-foco-visible-accesible-foco-visible)
-  - [1.5.5 Oculto Accesible](#155-oculto-accesible-oculto-accesible)
-  - [1.5.6 Ratio de Aspecto](#156-ratio-de-aspecto-ratio-aspecto)
-  - [1.5.7 Transición Suave](#157-transición-suave-transicion)
-  - [1.5.8 Resumen de Mixins](#158-resumen-de-mixins)
-  - [1.5.9 Por qué los mixins viven en 01-tools](#159-por-qué-los-mixins-viven-en-01-tools)
-- [1.6 ViewEncapsulation en Angular](#16-viewencapsulation-en-angular)
-  - [1.6.1 ¿Qué es ViewEncapsulation?](#161-qué-es-viewencapsulation)
-  - [1.6.2 Análisis de cada estrategia](#162-análisis-de-cada-estrategia)
-  - [1.6.3 Decisión para Joinly](#163-decisión-para-joinly-viewencapsulationnone)
-  - [1.6.4 Implementación práctica](#164-implementación-práctica)
-  - [1.6.5 Cuándo considerar otras estrategias](#165-cuándo-considerar-otras-estrategias)
-  - [1.6.6 Resumen](#166-resumen)
+- [Características del Proyecto](#características-del-proyecto)
+- [Stack Tecnológico](#stack-tecnológico)
+- [Requisitos Previos](#requisitos-previos)
+- [Instalación y Configuración](#instalación-y-configuración)
+- [Comandos de Desarrollo](#comandos-de-desarrollo)
+- [Arquitectura del Proyecto](#arquitectura-del-proyecto)
+- [1. Principios de Diseño](#1-principios-de-diseño)
+  - [1.1 Principios de comunicación visual](#11-principios-de-comunicación-visual)
+  - [1.2 Metodología CSS](#12-metodología-css)
+  - [1.3 Organización de archivos](#13-organización-de-archivos)
+  - [1.4 Sistema de Design Tokens](#14-sistema-de-design-tokens)
+  - [1.5 Mixins y Funciones](#15-mixins-y-funciones)
+  - [1.6 ViewEncapsulation en Angular](#16-viewencapsulation-en-angular)
 - [2. HTML Semántico y Estructura](#2-html-semántico-y-estructura)
   - [2.1 Elementos semánticos utilizados](#21-elementos-semánticos-utilizados)
-    - [2.1.1 `<header>` - Cabecera del sitio](#211-header---cabecera-del-sitio)
-    - [2.1.2 `<nav>` - Navegación](#212-nav---navegación)
-    - [2.1.3 `<main>` - Contenido principal](#213-main---contenido-principal)
-    - [2.1.4 `<footer>` - Pie de página](#214-footer---pie-de-página)
-    - [2.1.5 `<aside>` - Contenido complementario](#215-aside---contenido-complementario)
   - [2.2 Jerarquía de headings](#22-jerarquía-de-headings)
-    - [2.2.1 Reglas de jerarquía en Joinly](#221-reglas-de-jerarquía-en-joinly)
-    - [2.2.2 Estilos de encabezados](#222-estilos-de-encabezados)
-    - [2.2.3 Diagrama de jerarquía - Página de Registro](#223-diagrama-de-jerarquía---página-de-registro)
   - [2.3 Estructura de formularios](#23-estructura-de-formularios)
-    - [2.3.1 Agrupación con `<fieldset>` y `<legend>`](#231-agrupación-con-fieldset-y-legend)
-    - [2.3.2 Asociación Label-Input](#232-asociación-label-input)
-    - [2.3.3 Componente `FormInputComponent` - IDs dinámicos](#233-componente-forminputcomponent---ids-dinámicos)
   - [2.4 Resumen](#24-resumen)
+- [3. Componentes](#3-componentes)
+  - [3.1 Componentes Compartidos](#31-componentes-compartidos)
+  - [3.2 Catálogo de Componentes](#32-catálogo-de-componentes)
+  - [3.3 Ejemplos de Uso](#33-ejemplos-de-uso)
+- [4. Servicios](#4-servicios)
+  - [4.1 ThemeService](#41-themeservice)
+  - [4.2 ModalService](#42-modalservice)
+  - [4.3 AlertService](#43-alertservice)
+- [5. Arquitectura de Eventos](#5-arquitectura-de-eventos)
+  - [5.1 Estrategias de Event Binding](#51-estrategias-de-event-binding)
+  - [5.2 Manipulación del DOM](#52-manipulación-del-dom)
+  - [5.3 Gestión de Eventos del Usuario](#53-gestión-de-eventos-del-usuario)
+  - [5.4 Patrones de Eventos en el Proyecto](#54-patrones-de-eventos-en-el-proyecto)
+- [Recursos Adicionales](#recursos-adicionales)
 
 ---
 
-## 1.1 Principios de comunicación visual
+## Características del Proyecto
+
+- **Standalone Components** - Arquitectura Angular sin módulos
+- **Angular Signals** - Reactividad moderna con signal, computed y effect
+- **Diseño Responsivo** - Enfoque Mobile-first adaptable a todos los dispositivos
+- **ViewEncapsulation None** - Control total sobre estilos globales
+- **Arquitectura ITCSS** - Estilos organizados por especificidad creciente
+- **Metodología BEM** - Nomenclatura CSS clara y mantenible
+- **Design Tokens** - Sistema de variables CSS para consistencia visual
+- **Tema Claro/Oscuro** - Detección automática con persistencia en localStorage
+- **Accesibilidad WCAG 2.1** - Nivel AA con navegación por teclado y ARIA
+- **Componentes Interactivos** - Modal, Accordion, Tabs, Tooltips, Alertas
+- **TypeScript Strict** - Tipado estricto para mayor seguridad
+
+---
+
+## Stack Tecnológico
+
+| Tecnología | Versión | Propósito |
+|------------|---------|-----------|
+| **Angular** | 21.0 | Framework principal |
+| **TypeScript** | 5.x | Lenguaje de programación |
+| **SCSS** | - | Preprocesador CSS |
+| **RxJS** | - | Programación reactiva |
+| **Angular Router** | - | Enrutamiento SPA |
+| **Angular Forms** | - | Formularios reactivos |
+| **Vitest** | - | Testing framework |
+| **ESLint** | - | Linter de código |
+
+---
+
+## Requisitos Previos
+
+- **Node.js** 18 o superior
+- **npm** 9 o superior (o yarn como alternativa)
+- **Angular CLI** (se instala automáticamente con las dependencias)
+
+Verificación de versiones:
+
+```bash
+node -v    # Debe mostrar v18.x o superior
+npm -v     # Debe mostrar v9.x o superior
+```
+
+---
+
+## Instalación y Configuración
+
+### 1. Clonar el Repositorio y Navegar al Directorio
+
+```bash
+cd frontend
+```
+
+### 2. Instalar Dependencias
+
+Con npm:
+
+```bash
+npm install
+```
+
+O con yarn:
+
+```bash
+yarn install
+```
+
+---
+
+## Comandos de Desarrollo
+
+### Servidor de Desarrollo
+
+Iniciar el servidor de desarrollo:
+
+```bash
+npm start
+```
+
+O directamente con Angular CLI:
+
+```bash
+ng serve
+```
+
+La aplicación estará disponible en `http://localhost:4200/`. El servidor se recarga automáticamente al detectar cambios en los archivos fuente.
+
+**Opciones adicionales:**
+
+```bash
+# Abrir automáticamente en el navegador
+ng serve --open
+
+# Usar otro puerto
+ng serve --port 4300
+
+# Modo producción (optimizado)
+ng serve --configuration production
+```
+
+### Build de Producción
+
+```bash
+ng build --configuration production
+```
+
+O con el script npm:
+
+```bash
+npm run build
+```
+
+Los archivos compilados se almacenan en el directorio `dist/`.
+
+**Optimizaciones aplicadas:**
+- Minificación de JavaScript y CSS
+- Tree shaking
+- Lazy loading de módulos
+- AOT compilation
+- Optimización de imágenes
+- Code splitting
+
+### Testing
+
+Ejecutar tests unitarios con Vitest:
+
+```bash
+npm test
+```
+
+O directamente:
+
+```bash
+ng test
+```
+
+---
+
+## Arquitectura del Proyecto
+
+### Estructura de Directorios
+
+```
+frontend/
+  src/
+    app/
+      components/
+        shared/              # Componentes reutilizables
+          accordion/         # Accordion expandible
+          alert/             # Componente de alerta
+          alert-container/   # Contenedor de alertas
+          avatar/            # Avatar de usuario
+          breadcrumbs/       # Migas de pan
+          button/            # Botón con variantes
+          card/              # Tarjeta contenedora
+          form-checkbox/     # Checkbox de formulario
+          form-input/        # Input de formulario
+          form-radio-group/  # Grupo de radios
+          form-select/       # Select de formulario
+          form-textarea/     # Textarea de formulario
+          icon/              # Sistema de iconos SVG
+          modal/             # Modal con focus trap
+          tabs/              # Sistema de pestañas
+          theme-toggle/      # Interruptor de tema
+          tooltip/           # Directiva de tooltips
+          index.ts           # Barrel exports
+      pages/                 # Páginas/Vistas
+        style-guide/         # Guía de estilos interactiva
+      layout/                # Componentes de layout
+        header/              # Cabecera con menú hamburguesa
+        footer/              # Pie de página
+        main/                # Contenedor principal
+        index.ts             # Barrel exports
+      services/              # Servicios de estado
+        alert.ts             # Gestión de alertas
+        modal.ts             # Gestión de modales
+        theme.ts             # Gestión de tema claro/oscuro
+      app.config.ts          # Configuración de la app
+      app.routes.ts          # Definición de rutas
+      app.ts                 # Componente principal
+    styles/                  # Estilos globales (ITCSS)
+      main.scss              # Archivo principal
+      00-settings/           # Variables, tokens
+        _variables.scss
+        _css-variables.scss
+      01-tools/              # Mixins, funciones
+        _mixins.scss
+      02-generic/            # Reset, normalize
+        _reset.scss
+      03-elements/           # Estilos base HTML
+        _base.scss
+        _encabezados.scss
+      04-layout/             # Grid, flex, containers
+        _rejilla.scss
+        _flex.scss
+        _contenedor.scss
+      05-components/         # Estilos de componentes globales
+        _card-icon.scss
+      06-utilities/          # Clases de utilidad
+        _tipografia.scss
+        _sombras.scss
+    index.html               # HTML principal
+    main.ts                  # Punto de entrada
+    styles.scss              # Importa main.scss
+  public/                    # Archivos públicos
+  angular.json               # Configuración Angular
+  tsconfig.json              # Configuración TypeScript
+  package.json               # Dependencias
+```
+
+### Standalone Components
+
+Este proyecto utiliza la nueva arquitectura de Angular sin módulos (NgModules). Cada componente es independiente y declara sus propias dependencias.
+
+**Ejemplo:**
+
+```typescript
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+
+@Component({
+  selector: 'app-header',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
+  templateUrl: './header.html',
+  styleUrls: ['./header.scss']
+})
+export class HeaderComponent { }
+```
+
+### Rutas
+
+Las rutas se definen en `app.routes.ts`:
+
+```typescript
+import { Routes } from '@angular/router';
+
+export const routes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'style-guide', component: StyleGuideComponent },
+  { path: '**', redirectTo: '' }
+];
+```
+
+---
+
+## 1. Principios de Diseño
+
+### 1.1 Principios de comunicación visual
 
 Los principios de comunicación visual son las reglas fundamentales que guían cada decisión de diseño en Joinly. No son arbitrarios: cada uno tiene un propósito claro orientado a mejorar la experiencia del usuario, facilitar la comprensión de la interfaz y reforzar la identidad de marca. A continuación, explicamos cómo aplicamos estos cinco principios en nuestra aplicación.
 
@@ -2625,3 +2849,413 @@ export class FormInputComponent implements ControlValueAccessor {
 | **Estados de error** | `aria-invalid`, `aria-describedby`, `role="alert"` |
 
 Cada decisión de estructura HTML en Joinly tiene una razón técnica fundamentada en las pautas WCAG 2.1 y las mejores prácticas de desarrollo web accesible. El HTML semántico no es un "extra" opcional: es la base sobre la que construimos una aplicación que funciona para todos los usuarios, independientemente de cómo accedan a ella.
+
+---
+
+## 3. Componentes
+
+### 3.1 Componentes Compartidos
+
+Todos los componentes compartidos se exportan desde `components/shared/index.ts` para facilitar las importaciones:
+
+```typescript
+import { ButtonComponent, ModalComponent, TabsComponent } from './components/shared';
+```
+
+### 3.2 Catálogo de Componentes
+
+| Componente | Selector | Descripción |
+|------------|----------|-------------|
+| **Accordion** | `<app-accordion>` | Contenedor de items expandibles |
+| **AccordionItem** | `<app-accordion-item>` | Item individual del accordion |
+| **Alert** | `<app-alert>` | Mensaje de alerta individual |
+| **AlertContainer** | `<app-alert-container>` | Contenedor de alertas apiladas |
+| **Avatar** | `<app-avatar>` | Avatar de usuario con iniciales o imagen |
+| **Breadcrumbs** | `<app-breadcrumbs>` | Navegación jerárquica |
+| **Button** | `<app-button>` | Botón con variantes (primary, secondary, danger) |
+| **Card** | `<app-card>` | Tarjeta contenedora de contenido |
+| **FormCheckbox** | `<app-form-checkbox>` | Checkbox accesible |
+| **FormInput** | `<app-form-input>` | Input con label y validación |
+| **FormRadioGroup** | `<app-form-radio-group>` | Grupo de radio buttons |
+| **FormSelect** | `<app-form-select>` | Select con opciones |
+| **FormTextarea** | `<app-form-textarea>` | Textarea multilínea |
+| **Icon** | `<app-icon>` | Sistema de iconos SVG inline |
+| **Modal** | `<app-modal>` | Ventana modal con focus trap |
+| **Tabs** | `<app-tabs>` | Sistema de pestañas navegables |
+| **Tab** | `<app-tab>` | Pestaña individual |
+| **ThemeToggle** | `<app-theme-toggle>` | Interruptor de tema claro/oscuro |
+| **Tooltip** | `[appTooltip]` | Directiva para tooltips informativos |
+
+### 3.3 Ejemplos de Uso
+
+#### Modal con confirmación
+
+```typescript
+this.modalService.open({
+  title: '¿Confirmar eliminación?',
+  content: 'Esta acción no se puede deshacer.',
+  confirmText: 'Eliminar',
+  cancelText: 'Cancelar',
+  onConfirm: () => this.deleteItem(),
+});
+```
+
+#### Accordion
+
+```html
+<app-accordion [allowMultiple]="false">
+  <app-accordion-item title="Sección 1" [expanded]="true">
+    Contenido de la sección 1
+  </app-accordion-item>
+  <app-accordion-item title="Sección 2">
+    Contenido de la sección 2
+  </app-accordion-item>
+</app-accordion>
+```
+
+#### Tabs
+
+```html
+<app-tabs [activeIndex]="0" (tabChange)="onTabChange($event)">
+  <app-tab title="General">Contenido general</app-tab>
+  <app-tab title="Avanzado">Contenido avanzado</app-tab>
+</app-tabs>
+```
+
+#### Alertas
+
+```typescript
+this.alertService.success('Operación completada');
+this.alertService.error('Ha ocurrido un error');
+this.alertService.warning('Advertencia importante');
+this.alertService.info('Información adicional');
+```
+
+#### Tooltip
+
+```html
+<button appTooltip="Guardar cambios" tooltipPosition="right">
+  <app-icon name="save" />
+</button>
+```
+
+---
+
+## 4. Servicios
+
+### 4.1 ThemeService
+
+Gestiona el tema claro/oscuro de la aplicación:
+
+```typescript
+// Inicializar (en app.ts)
+this.themeService.initialize();
+
+// Alternar tema
+this.themeService.toggleTheme();
+
+// Leer tema actual
+const theme = this.themeService.currentTheme(); // 'light' | 'dark'
+```
+
+**Características:**
+- Detecta preferencia del sistema operativo
+- Persiste la preferencia en localStorage
+- Reacciona a cambios del sistema en tiempo real
+
+### 4.2 ModalService
+
+Gestión centralizada de modales:
+
+```typescript
+// Abrir modal
+this.modalService.open({
+  title: 'Título',
+  content: 'Contenido del modal',
+  confirmText: 'Aceptar',
+  cancelText: 'Cancelar',
+  closeOnEscape: true,
+  closeOnOverlayClick: true,
+  onConfirm: () => { /* ... */ },
+  onCancel: () => { /* ... */ },
+});
+
+// Cerrar modal
+this.modalService.close();
+```
+
+### 4.3 AlertService
+
+Sistema de notificaciones toast:
+
+```typescript
+// Métodos de conveniencia
+this.alertService.success('Mensaje de éxito');
+this.alertService.error('Mensaje de error');
+this.alertService.warning('Advertencia');
+this.alertService.info('Información');
+
+// Con duración personalizada (ms)
+this.alertService.success('Guardado', 3000);
+
+// Cerrar alerta específica
+this.alertService.close(alertId);
+```
+
+---
+
+## 5. Arquitectura de Eventos
+
+### 5.1 Estrategias de Event Binding
+
+Angular ofrece dos estrategias principales para escuchar eventos:
+
+| Estrategia | Sintaxis | Uso recomendado |
+|------------|----------|-----------------|
+| Template Event Binding | `(click)="handler()"` | Eventos específicos del elemento |
+| `@HostListener` | `@HostListener('event')` | Eventos globales (document, window) |
+
+#### Template Event Binding
+
+Vincula eventos directamente en el HTML del componente:
+
+```html
+<button (click)="handleClick($event)">Click me</button>
+<input (keydown.enter)="submitForm()" />
+```
+
+#### @HostListener
+
+Escucha eventos a nivel de documento o ventana:
+
+```typescript
+@HostListener('document:keydown.escape')
+handleEscapeKey(): void {
+  this.close();
+}
+
+@HostListener('document:click', ['$event'])
+handleClickOutside(event: MouseEvent): void {
+  if (!this.elementRef.nativeElement.contains(event.target)) {
+    this.close();
+  }
+}
+```
+
+### 5.2 Manipulación del DOM
+
+#### ViewChild y ElementRef
+
+`viewChild` permite acceder a elementos del template desde el componente:
+
+```typescript
+// Signal-based viewChild (Angular 17+)
+protected readonly modalContent = viewChild<ElementRef>('modalContent');
+
+// Acceso al elemento nativo
+const element = this.modalContent()?.nativeElement;
+const height = element.scrollHeight;
+```
+
+#### Renderer2 vs Acceso Directo
+
+| Método | Uso | Seguridad |
+|--------|-----|-----------|
+| `Renderer2` | Modificar estilos, atributos, clases | Seguro para SSR |
+| Acceso directo | Leer propiedades (scrollHeight, offsetWidth) | Solo lectura |
+
+```typescript
+// Renderer2 para modificaciones (recomendado)
+this.renderer.setStyle(element, 'height', `${height}px`);
+this.renderer.addClass(element, 'c-modal--visible');
+this.renderer.setAttribute(element, 'aria-expanded', 'true');
+
+// Acceso directo solo para lectura
+const height = element.scrollHeight;
+const rect = element.getBoundingClientRect();
+```
+
+### 5.3 Gestión de Eventos del Usuario
+
+#### Eventos de Mouse
+
+```typescript
+// En template
+<div (click)="onClick()"
+     (mouseenter)="onMouseEnter()"
+     (mouseleave)="onMouseLeave()">
+</div>
+
+// Con HostListener para eventos globales
+@HostListener('document:click', ['$event'])
+handleDocumentClick(event: MouseEvent): void {
+  const clickedInside = this.element.nativeElement.contains(event.target);
+  if (!clickedInside) {
+    this.close();
+  }
+}
+```
+
+#### Eventos de Teclado
+
+```typescript
+// Atajos específicos en template
+<input (keydown.enter)="submit()"
+       (keydown.escape)="cancel()"
+       (keydown.tab)="handleTab($event)" />
+
+// HostListener para teclas globales
+@HostListener('document:keydown.escape')
+handleEscape(): void {
+  this.close();
+}
+
+@HostListener('keydown', ['$event'])
+handleKeydown(event: KeyboardEvent): void {
+  if (event.key === 'Tab') {
+    this.handleFocusTrap(event);
+  }
+}
+```
+
+#### Eventos de Foco
+
+```typescript
+// En template
+<input (focus)="onFocus()" (blur)="onBlur()" />
+
+// Para tooltips accesibles
+@HostListener('focus')
+onFocus(): void {
+  this.show();
+}
+
+@HostListener('blur')
+onBlur(): void {
+  this.hide();
+}
+```
+
+#### preventDefault() y stopPropagation()
+
+```typescript
+// preventDefault - Evita comportamiento por defecto
+handleTab(event: KeyboardEvent): void {
+  if (this.isLastElement()) {
+    event.preventDefault(); // Evita que Tab salga del modal
+    this.focusFirstElement();
+  }
+}
+
+// stopPropagation - Evita propagación del evento
+handleContentClick(event: Event): void {
+  event.stopPropagation(); // Click en contenido no cierra el modal
+}
+```
+
+### 5.4 Patrones de Eventos en el Proyecto
+
+#### Focus Trap (Modal)
+
+Implementado en `modal.ts` para mantener el foco dentro del modal:
+
+```typescript
+@HostListener('keydown', ['$event'])
+handleTabKey(event: KeyboardEvent): void {
+  if (event.key !== 'Tab') return;
+
+  const focusables = this.getFocusableElements();
+  const first = focusables[0];
+  const last = focusables[focusables.length - 1];
+
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
+```
+
+#### Click Outside (Menú Hamburguesa)
+
+Implementado en `header.ts` para cerrar al hacer click fuera:
+
+```typescript
+@HostListener('document:click', ['$event'])
+handleClickOutside(event: MouseEvent): void {
+  if (!this.menuOpen()) return;
+
+  const menu = this.mobileMenu()?.nativeElement;
+  const button = this.menuButton()?.nativeElement;
+
+  const clickedOutside = menu && !menu.contains(event.target) &&
+                         button && !button.contains(event.target);
+
+  if (clickedOutside) {
+    this.closeMenu();
+  }
+}
+```
+
+#### Delay Pattern (Tooltips)
+
+Implementado en `tooltip.directive.ts` para evitar parpadeo:
+
+```typescript
+private showTimeout?: number;
+private readonly SHOW_DELAY = 250;
+
+@HostListener('mouseenter')
+onMouseEnter(): void {
+  this.showTimeout = window.setTimeout(() => {
+    this.show();
+  }, this.SHOW_DELAY);
+}
+
+@HostListener('mouseleave')
+onMouseLeave(): void {
+  if (this.showTimeout) {
+    window.clearTimeout(this.showTimeout);
+  }
+  this.hide();
+}
+```
+
+#### Navegación con Teclado (Accordion)
+
+Implementado en `accordion-item.ts`:
+
+```typescript
+@HostListener('keydown.enter')
+@HostListener('keydown.space', ['$event'])
+handleKeydown(event?: Event): void {
+  event?.preventDefault();
+  this.toggle();
+}
+```
+
+---
+
+## Recursos Adicionales
+
+### Documentación Oficial
+
+- [Angular Documentation](https://angular.dev/) - Documentación oficial
+- [Angular Signals](https://angular.dev/guide/signals) - Guía de Signals
+- [RxJS Documentation](https://rxjs.dev/) - Programación reactiva
+
+### Metodologías y Arquitectura
+
+- [BEM Methodology](http://getbem.com/) - Guía BEM
+- [ITCSS Architecture](https://www.xfive.co/blog/itcss-scalable-maintainable-css-architecture/) - Arquitectura ITCSS
+
+### Accesibilidad
+
+- [WCAG 2.1](https://www.w3.org/WAI/WCAG21/quickref/) - Pautas de accesibilidad
+
+### Repositorio
+
+**Proyecto:** Joinly - Frontend  
+**Repositorio:** https://github.com/Juanfu224/Joinly
