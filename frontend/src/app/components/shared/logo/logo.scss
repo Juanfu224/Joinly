@@ -1,0 +1,161 @@
+// ==========================================================================
+// COMPONENTE: Logo (Logotipo de marca Joinly)
+// ==========================================================================
+// Logotipo reutilizable con variantes de color y tamaños.
+// Implementa diseño de Figma con SVG optimizado y tipografía de marca.
+
+@use '../../../../styles/01-tools/mixins' as *;
+
+// ---------------------------------------------------------------------------
+// HOST: Encapsulación del componente Angular
+// ---------------------------------------------------------------------------
+:host {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--espaciado-1);
+  flex-shrink: 0;
+}
+
+// ---------------------------------------------------------------------------
+// ICONO SVG: Estructura y puntos
+// ---------------------------------------------------------------------------
+
+.c-logo__icono {
+  display: block;
+  flex-shrink: 0;
+}
+
+// Colores de los puntos del icono (modificados por variantes)
+.c-logo__punto {
+  @include transicion(fill);
+
+  &--fijo {
+    fill: var(--logo-color-fijo, #1e293b);
+  }
+
+  &--medio {
+    fill: var(--logo-color-medio, #4b5563);
+  }
+
+  &--acento {
+    fill: var(--logo-color-acento, var(--color-acento-oscuro));
+  }
+}
+
+// ---------------------------------------------------------------------------
+// TEXTO: Tipografía de marca
+// ---------------------------------------------------------------------------
+
+.c-logo__texto {
+  font-family: var(--font-primaria);
+  font-weight: var(--peso-fuente-negrita);
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: nowrap;
+  display: block;
+}
+
+.c-logo__nombre {
+  color: var(--logo-text-color, var(--color-texto-fuerte));
+  @include transicion(color);
+}
+
+.c-logo__acento {
+  color: var(--logo-accent-color, var(--color-acento-oscuro));
+  @include transicion(color);
+}
+
+// ---------------------------------------------------------------------------
+// TAMAÑOS: Escalas de iconos y texto
+// ---------------------------------------------------------------------------
+
+:host(.c-logo--sm) {
+  .c-logo__icono {
+    inline-size: 1.5rem; // 24px
+    block-size: 1.5625rem; // 25px
+  }
+
+  .c-logo__texto {
+    font-size: var(--tamano-texto-xl); // 20px
+  }
+}
+
+:host(.c-logo--md) {
+  .c-logo__icono {
+    inline-size: 2.0625rem; // 33px
+    block-size: 2.1875rem; // 35px
+  }
+
+  .c-logo__texto {
+    font-size: var(--tamano-h3); // 32px
+  }
+}
+
+:host(.c-logo--lg) {
+  .c-logo__icono {
+    inline-size: 2.625rem; // 42px
+    block-size: 2.75rem; // 44px
+  }
+
+  .c-logo__texto {
+    font-size: var(--tamano-h2); // 40px
+  }
+}
+
+// ---------------------------------------------------------------------------
+// VARIANTES DE COLOR: Paleta de Figma
+// ---------------------------------------------------------------------------
+
+// --- Naranja (default para fondos claros) ---
+:host(.c-logo--naranja) {
+  --logo-color-fijo: #1e293b;
+  --logo-color-medio: #4b5563;
+  --logo-color-acento: var(--color-acento-oscuro);
+  --logo-text-color: var(--color-texto-fuerte);
+  --logo-accent-color: var(--color-acento-oscuro);
+}
+
+// --- Morado (para fondos claros) ---
+:host(.c-logo--morado) {
+  --logo-color-fijo: #1e293b;
+  --logo-color-medio: #4b5563;
+  --logo-color-acento: var(--color-principal);
+  --logo-text-color: var(--color-texto-fuerte);
+  --logo-accent-color: var(--color-principal);
+}
+
+// --- Claro Naranja (para fondos oscuros) ---
+:host(.c-logo--claro-naranja) {
+  --logo-color-fijo: #e5e7eb;
+  --logo-color-medio: #9ca3af;
+  --logo-color-acento: var(--color-acento);
+  --logo-text-color: #e5e7eb;
+  --logo-accent-color: var(--color-acento);
+}
+
+// --- Claro Morado (para fondos oscuros) ---
+:host(.c-logo--claro-morado) {
+  --logo-color-fijo: #e5e7eb;
+  --logo-color-medio: #9ca3af;
+  --logo-color-acento: var(--color-principal);
+  --logo-text-color: #e5e7eb;
+  --logo-accent-color: var(--color-principal);
+}
+
+// --- Azul (para fondos claros) ---
+:host(.c-logo--azul) {
+  --logo-color-fijo: #1e293b;
+  --logo-color-medio: #4b5563;
+  --logo-color-acento: var(--color-azul);
+  --logo-text-color: var(--color-texto-fuerte);
+  --logo-accent-color: var(--color-azul);
+}
+
+// --- Amarillo (para fondos claros) ---
+:host(.c-logo--amarillo) {
+  --logo-color-fijo: #1e293b;
+  --logo-color-medio: #4b5563;
+  --logo-color-acento: var(--color-amarillo);
+  --logo-text-color: var(--color-texto-fuerte);
+  --logo-accent-color: var(--color-amarillo);
+}

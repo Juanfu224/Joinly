@@ -1,12 +1,12 @@
 // ==========================================================================
 // COMPONENTE: ALERT CONTAINER
 // ==========================================================================
-// Contenedor para las alertas que se apilan en la esquina superior derecha
+// Contenedor para las alertas que se apilan justo debajo del header
 
 .c-alert-container {
   position: fixed;
-  inset-block-start: var(--espaciado-3);
-  inset-inline-end: var(--espaciado-3);
+  inset-block-start: var(--header-height);
+  inset-inline-end: 0;
   z-index: var(--z-toast);
 
   display: flex;
@@ -30,7 +30,7 @@
   // ==========================================================================
 
   @media (max-width: 47.9375rem) {
-    inset-inline: var(--espaciado-2);
+    inset-inline: 0;
     align-items: stretch;
     max-inline-size: none;
     min-inline-size: 0;

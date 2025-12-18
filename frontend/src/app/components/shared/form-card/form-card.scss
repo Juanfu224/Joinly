@@ -1,0 +1,94 @@
+@use '../../../../styles/01-tools/mixins' as *;
+@use '../../../../styles/00-settings/variables' as *;
+
+// ==========================================================================
+// COMPONENTE: FORM CARD
+// ==========================================================================
+// Contenedor base para formularios con estructura visual consistente.
+// Incluye logo, título, subtítulo y slots para contenido y footer.
+
+:host {
+  display: block;
+  width: 100%;
+  max-width: 40.625rem; // 650px según Figma
+}
+
+.c-form-card {
+  // ==========================================================================
+  // CONTENEDOR PRINCIPAL
+  // ==========================================================================
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaciado-3);
+    padding: var(--espaciado-3);
+    background-color: var(--bg-secondary);
+    border-radius: var(--radio-grande); // 18px según Figma
+    // Sombras según Figma: Sombra 1 + Sombra 3
+    box-shadow: 
+      0 2px 6px 0 rgba(20, 20, 43, 0.06),
+      0 8px 28px 0 rgba(20, 20, 43, 0.1);
+    transition: 
+      background-color var(--duracion-base) var(--transicion-estandar),
+      box-shadow var(--duracion-base) var(--transicion-estandar);
+
+    @include responder-a('tablet') {
+      padding: var(--espaciado-6); // 48px en tablet+
+    }
+  }
+
+  // ==========================================================================
+  // HEADER: LOGO + TÍTULO
+  // ==========================================================================
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaciado-2);
+  }
+
+  // --- Título ---
+  &__title {
+    font-size: 2.5rem; // 40px según Figma (Título H3)
+    font-weight: var(--peso-fuente-semi-negrita);
+    line-height: 2rem; // 32px según Figma
+    color: var(--color-texto-fuerte);
+    margin: 0;
+  }
+
+  &__subtitle {
+    display: block;
+  }
+
+  // --- Descripción ---
+  &__description {
+    font-size: var(--tamano-texto-grande); // 18px (Body Large)
+    font-weight: var(--peso-fuente-regular);
+    line-height: var(--altura-linea-body-large); // 28.8px
+    color: var(--color-texto-base); // #4b5563
+    margin: 0;
+  }
+
+  // ==========================================================================
+  // CONTENIDO
+  // ==========================================================================
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaciado-2);
+  }
+
+  // ==========================================================================
+  // FOOTER
+  // ==========================================================================
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaciado-2);
+    margin-block-start: var(--espaciado-1);
+
+    // Ocultar si está vacío
+    &:empty {
+      display: none;
+    }
+  }
+}

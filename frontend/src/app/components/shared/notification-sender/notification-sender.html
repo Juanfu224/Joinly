@@ -1,0 +1,104 @@
+<section class="notification-sender">
+  <header class="notification-sender__header">
+    <h2 class="notification-sender__title">Componente Emisor</h2>
+    <p class="notification-sender__description">
+      Envía alertas visuales y actualiza estado compartido
+    </p>
+  </header>
+
+  <div class="notification-sender__content">
+    <!-- Sección de Alertas Visuales -->
+    <article class="notification-sender__section">
+      <h3 class="notification-sender__section-title">Alertas (AlertService)</h3>
+      <p class="notification-sender__section-description">
+        Enviar toasts visuales al usuario usando AlertService
+      </p>
+
+      <div class="notification-sender__actions">
+        <app-button
+          variant="primary"
+          leftIcon="circle-check"
+          (click)="sendSuccessAlert()"
+        >
+          Éxito
+        </app-button>
+
+        <app-button
+          variant="purple"
+          leftIcon="close"
+          (click)="sendErrorAlert()"
+        >
+          Error
+        </app-button>
+
+        <app-button
+          variant="blue"
+          leftIcon="info"
+          (click)="sendInfoAlert()"
+        >
+          Info
+        </app-button>
+
+        <app-button
+          variant="yellow"
+          leftIcon="bell"
+          (click)="sendWarningAlert()"
+        >
+          Warning
+        </app-button>
+      </div>
+    </article>
+
+    <!-- Sección de Filtros -->
+    <article class="notification-sender__section">
+      <h3 class="notification-sender__section-title">Filtros (CommunicationService)</h3>
+      <p class="notification-sender__section-description">
+        Actualizar filtros que otros componentes pueden consumir
+      </p>
+
+      <div class="notification-sender__actions">
+        <app-button
+          variant="blue"
+          leftIcon="filter"
+          (click)="updateSharedFilters()"
+        >
+          Actualizar Filtros
+        </app-button>
+
+        <app-button
+          variant="secondary"
+          leftIcon="close"
+          (click)="clearSharedFilters()"
+        >
+          Limpiar Filtros
+        </app-button>
+      </div>
+    </article>
+
+    <!-- Sección de Usuario -->
+    <article class="notification-sender__section">
+      <h3 class="notification-sender__section-title">Usuario (CommunicationService)</h3>
+      <p class="notification-sender__section-description">
+        Simular login/logout para actualizar estado compartido
+      </p>
+
+      <div class="notification-sender__actions">
+        <app-button
+          variant="primary"
+          leftIcon="user"
+          (click)="simulateLogin()"
+        >
+          Simular Login
+        </app-button>
+
+        <app-button
+          variant="secondary"
+          leftIcon="arrow-external-left"
+          (click)="simulateLogout()"
+        >
+          Simular Logout
+        </app-button>
+      </div>
+    </article>
+  </div>
+</section>

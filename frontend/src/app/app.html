@@ -24,3 +24,14 @@
 
 <!-- Contenedor de alertas (esquina superior derecha) -->
 <app-alert-container />
+
+<!-- Contenedor de toasts (esquina superior derecha, debajo del header) -->
+<app-toast-container />
+
+<!-- Modal global (gestionado por ModalService) -->
+<app-modal />
+
+<!-- Spinner overlay global (gestionado por LoadingService) -->
+@if (loadingService.isLoading()) {
+  <app-spinner-overlay />
+}

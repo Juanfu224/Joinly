@@ -1,0 +1,100 @@
+@use '../../../../styles/01-tools/mixins' as *;
+
+// ==========================================================================
+// COMPONENTE: SPINNER OVERLAY
+// ==========================================================================
+// Overlay de carga global con spinner animado.
+// Bloquea interacción durante operaciones async.
+
+// Animación del spinner (rotación continua)
+@keyframes spinner-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Animación del trazo (dash offset)
+@keyframes spinner-dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+
+// Animación de entrada del overlay
+@keyframes overlay-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// Host del componente
+:host {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal-backdrop);
+
+  @include centrar-flex;
+
+  animation: overlay-fade-in var(--duracion-base) var(--transicion-salida);
+}
+
+.c-spinner-overlay {
+  // ==========================================================================
+  // BACKDROP (fondo semi-transparente)
+  // ==========================================================================
+  
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgb(0 0 0 / 40%);
+    backdrop-filter: blur(2px);
+  }
+
+  // ==========================================================================
+  // CONTENIDO (spinner centrado)
+  // ==========================================================================
+  
+  &__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--espaciado-2);
+  }
+
+  // ==========================================================================
+  // SPINNER
+  // ==========================================================================
+  
+  &__spinner {
+    @include centrar-flex;
+
+    color: var(--color-principal);
+  }
+
+  &__svg {
+    width: 3.5rem;
+    height: 3.5rem;
+    animation: spinner-rotate 1.4s linear infinite;
+  }
+
+  &__circle {
+    animation: spinner-dash 1.4s ease-in-out infinite;
+    stroke: currentColor;
+  }
+}

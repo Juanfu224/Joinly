@@ -1,6 +1,173 @@
 <main class="p-style-guide">
   <div class="p-style-guide__contenido l-contenedor">
     <!-- ===================================================================
+         SECCIÓN: COMUNICACIÓN ENTRE COMPONENTES (TAREA 1)
+         =================================================================== -->
+    <section class="p-style-guide__seccion" aria-labelledby="titulo-comunicacion">
+      <div class="p-style-guide__seccion-encabezado">
+        <h2 id="titulo-comunicacion" class="p-style-guide__subtitulo">Comunicación entre Componentes</h2>
+        <p class="p-style-guide__nota">
+          Sistema reactivo de comunicación entre componentes hermanos mediante CommunicationService.
+          Implementa BehaviorSubject + Signals para estado compartido unidireccional.
+        </p>
+      </div>
+
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Demostración en tiempo real</h3>
+        <p class="p-style-guide__descripcion">
+          El componente emisor envía alertas (AlertService) y actualiza estado compartido (CommunicationService).
+          El componente receptor escucha y muestra los cambios de estado y eventos automáticamente.
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: var(--spacing-6); margin-top: var(--spacing-4);">
+          <app-notification-sender />
+          <app-notification-receiver />
+        </div>
+
+        <div class="p-style-guide__nota" style="margin-top: var(--spacing-6);">
+          <strong>Patrones implementados:</strong>
+          <ul style="margin-top: var(--spacing-2); padding-left: var(--spacing-4); list-style: disc;">
+            <li>✅ <strong>BehaviorSubject</strong>: Estado persistente (usuario, filtros)</li>
+            <li>✅ <strong>Subject</strong>: Eventos one-time sin persistencia</li>
+            <li>✅ <strong>Signals (Angular 21)</strong>: Reactividad nativa sin suscripciones manuales</li>
+            <li>✅ <strong>Computed Signals</strong>: Estado derivado (isAuthenticated, hasActiveFilters)</li>
+            <li>✅ <strong>takeUntilDestroyed()</strong>: Limpieza automática de suscripciones</li>
+            <li>✅ <strong>Separación de responsabilidades</strong>: AlertService (UI) vs CommunicationService (estado)</li>
+            <li>✅ <strong>OnPush compatible</strong>: Optimizado para detección de cambios</li>
+          </ul>
+
+          <p style="margin-top: var(--spacing-3);"><strong>Casos de uso:</strong></p>
+          <ul style="margin-top: var(--spacing-1); padding-left: var(--spacing-4); list-style: disc;">
+            <li>Estado de usuario compartido (header, sidebar, profile)</li>
+            <li>Filtros sincronizados entre componentes de búsqueda</li>
+            <li>Eventos del sistema (login, logout, CRUD operations)</li>
+            <li>Alertas visuales temporales (toasts via AlertService)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SECCIÓN: SISTEMA DE EVENTOS AVANZADO - TOOLTIPS
+         =================================================================== -->
+    <section class="p-style-guide__seccion" aria-labelledby="titulo-tooltips">
+      <div class="p-style-guide__seccion-encabezado">
+        <h2 id="titulo-tooltips" class="p-style-guide__subtitulo">Tooltips</h2>
+        <p class="p-style-guide__nota">
+          Tooltips informativos con posicionamiento dinámico y delay. Uso: iconos, botones, ayuda contextual.
+        </p>
+      </div>
+
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Tooltips en botones</h3>
+        <div class="p-style-guide__grupo-botones">
+          <app-button 
+            variant="primary" 
+            appTooltip="Crea una nueva unidad familiar"
+            tooltipPosition="top"
+          >
+            Crear grupo
+          </app-button>
+
+          <app-button 
+            variant="purple" 
+            appTooltip="Envía una invitación por email"
+            tooltipPosition="right"
+          >
+            Invitar miembros
+          </app-button>
+
+          <app-button 
+            variant="blue" 
+            leftIcon="info"
+            appTooltip="Ver información detallada de la suscripción"
+            tooltipPosition="bottom"
+          >
+            Info
+          </app-button>
+        </div>
+
+        <h3 class="p-style-guide__demo-titulo">Tooltips en iconos</h3>
+        <div class="p-style-guide__grupo-botones">
+          <app-icon 
+            name="user" 
+            appTooltip="Usuario activo"
+            tooltipPosition="top"
+            style="cursor: help; color: var(--color-principal)"
+          />
+          
+          <app-icon 
+            name="dollar" 
+            appTooltip="Coste mensual de la suscripción"
+            tooltipPosition="right"
+            style="cursor: help; color: var(--color-acento)"
+          />
+          
+          <app-icon 
+            name="check" 
+            appTooltip="Verificación completada"
+            tooltipPosition="left"
+            style="cursor: help; color: var(--color-exito)"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SECCIÓN: SISTEMA DE EVENTOS AVANZADO - MODALES
+         =================================================================== -->
+    <section class="p-style-guide__seccion" aria-labelledby="titulo-modales">
+      <div class="p-style-guide__seccion-encabezado">
+        <h2 id="titulo-modales" class="p-style-guide__subtitulo">Modales</h2>
+        <p class="p-style-guide__nota">
+          Modales accesibles con focus trap, cierre con ESC y overlay. Uso: confirmaciones, alertas, formularios.
+        </p>
+      </div>
+
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Tipos de modales</h3>
+        <div class="p-style-guide__grupo-botones">
+          <app-button 
+            variant="primary" 
+            (click)="openConfirmModal()"
+            appTooltip="Requiere confirmación o cancelación"
+          >
+            Modal de confirmación
+          </app-button>
+
+          <app-button 
+            variant="blue" 
+            (click)="openInfoModal()"
+            appTooltip="Solo botón de aceptar"
+          >
+            Modal informativo
+          </app-button>
+
+          <app-button 
+            variant="yellow" 
+            (click)="openStrictModal()"
+            appTooltip="No se puede cerrar con ESC ni overlay"
+          >
+            Modal estricto
+          </app-button>
+        </div>
+
+        <div class="p-style-guide__nota" style="margin-top: var(--espaciado-3);">
+          <strong>Características implementadas:</strong>
+          <ul style="margin-top: var(--espaciado-1); padding-left: var(--espaciado-3);">
+            <li>✅ Focus trap (Tab solo dentro del modal)</li>
+            <li>✅ Cierre con ESC (configurable)</li>
+            <li>✅ Cierre con click en overlay (configurable)</li>
+            <li>✅ Prevención de scroll del body</li>
+            <li>✅ Restauración de foco al cerrar</li>
+            <li>✅ Animaciones de entrada y salida</li>
+            <li>✅ Totalmente accesible (ARIA)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
          SECCIÓN: TARJETAS DE CARACTERÍSTICAS
          =================================================================== -->
     <section class="p-style-guide__seccion" aria-labelledby="titulo-ventajas">
@@ -156,6 +323,77 @@
               Invitar
             </app-button>
           </app-card>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SECCIÓN: LOGOTIPOS
+         =================================================================== -->
+    <section class="p-style-guide__seccion" aria-labelledby="titulo-logos">
+      <div class="p-style-guide__seccion-encabezado">
+        <h2 id="titulo-logos" class="p-style-guide__subtitulo">Logotipos</h2>
+        <p class="p-style-guide__nota">
+          Sistema de logotipos de Joinly con 6 variantes de color, 3 tamaños y opción de mostrar
+          texto. Uso: headers, footers, formularios, tarjetas y páginas de autenticación.
+        </p>
+      </div>
+
+      <!-- Todas las variantes con texto en tamaño mediano -->
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Variantes con texto (tamaño mediano)</h3>
+        <div class="p-style-guide__grupo-logos">
+          @for (variant of logoVariants; track variant.variant) {
+          <div class="p-style-guide__logo-item">
+            <app-logo [variant]="variant.variant" size="md" [showText]="true" />
+            <p class="p-style-guide__logo-label">{{ variant.label }}</p>
+          </div>
+          }
+        </div>
+      </div>
+
+      <!-- Todas las variantes sin texto en tamaño mediano -->
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Variantes sin texto (tamaño mediano)</h3>
+        <div class="p-style-guide__grupo-logos">
+          @for (variant of logoVariants; track variant.variant) {
+          <div class="p-style-guide__logo-item">
+            <app-logo [variant]="variant.variant" size="md" [showText]="false" />
+            <p class="p-style-guide__logo-label">{{ variant.label }}</p>
+          </div>
+          }
+        </div>
+      </div>
+
+      <!-- Todos los tamaños (naranja con texto) -->
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Tamaños disponibles</h3>
+        <div class="p-style-guide__grupo-logos p-style-guide__grupo-logos--tamaños">
+          @for (size of logoSizes; track size.size) {
+          <div class="p-style-guide__logo-item">
+            <app-logo variant="naranja" [size]="size.size" [showText]="true" />
+            <p class="p-style-guide__logo-label">{{ size.label }}</p>
+          </div>
+          }
+        </div>
+      </div>
+
+      <!-- Casos de uso -->
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Casos de uso</h3>
+        <div class="p-style-guide__grupo-logos p-style-guide__grupo-logos--casos-uso">
+          <div class="p-style-guide__logo-caso">
+            <p class="p-style-guide__logo-caso-titulo">Header / Footer</p>
+            <app-logo variant="naranja" size="md" [showText]="true" />
+          </div>
+          <div class="p-style-guide__logo-caso">
+            <p class="p-style-guide__logo-caso-titulo">Formularios</p>
+            <app-logo variant="morado" size="lg" [showText]="true" />
+          </div>
+          <div class="p-style-guide__logo-caso">
+            <p class="p-style-guide__logo-caso-titulo">Favicons / Mini</p>
+            <app-logo variant="naranja" size="sm" [showText]="false" />
+          </div>
         </div>
       </div>
     </section>
@@ -487,6 +725,77 @@
             errorMessage="Debes seleccionar un método de pago"
           />
         </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SECCIÓN: FORMULARIOS COMPLETOS
+         =================================================================== -->
+    <section class="p-style-guide__seccion" aria-labelledby="titulo-formularios">
+      <div class="p-style-guide__seccion-encabezado">
+        <h2 id="titulo-formularios" class="p-style-guide__subtitulo">Formularios Completos</h2>
+        <p class="p-style-guide__nota">
+          Componentes de formulario completos implementados según las especificaciones de Figma.
+          Incluyen validación, estados de carga, manejo de errores y navegación entre formularios.
+        </p>
+      </div>
+
+      <!-- Registro e Inicio de sesión -->
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Autenticación</h3>
+        <div class="p-style-guide__rejilla-formularios">
+          <app-register-form
+            (submitted)="onRegisterSubmit($event)"
+            (cancelled)="onFormCancel()"
+            (loginRequested)="onFormSwitch('login')"
+          />
+          <app-login-form
+            (submitted)="onLoginSubmit($event)"
+            (cancelled)="onFormCancel()"
+            (registerRequested)="onFormSwitch('register')"
+          />
+        </div>
+      </div>
+
+      <!-- Grupos: Crear y Unirse -->
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Gestión de Grupos</h3>
+        <div class="p-style-guide__rejilla-formularios">
+          <app-create-group-form
+            (submitted)="onCreateGroupSubmit($event)"
+            (cancelled)="onFormCancel()"
+            (joinRequested)="onFormSwitch('join')"
+          />
+          <app-join-group-form
+            (submitted)="onJoinGroupSubmit($event)"
+            (cancelled)="onFormCancel()"
+            (createRequested)="onFormSwitch('create')"
+          />
+        </div>
+      </div>
+
+      <!-- Nueva Suscripción -->
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Suscripciones</h3>
+        <div class="p-style-guide__rejilla-formularios p-style-guide__rejilla-formularios--centrado">
+          <app-new-subscription-form
+            (submitted)="onNewSubscriptionSubmit($event)"
+            (cancelled)="onFormCancel()"
+          />
+        </div>
+      </div>
+
+      <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4);">
+        <strong>Características de los formularios:</strong>
+        <ul style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc;">
+          <li>✅ <strong>Validación reactiva</strong>: Validadores síncronos con Angular Forms</li>
+          <li>✅ <strong>Submit con Enter</strong>: Envío desde cualquier campo con la tecla Enter</li>
+          <li>✅ <strong>Throttle</strong>: Prevención de submit múltiple (300ms)</li>
+          <li>✅ <strong>Accesibilidad</strong>: Labels asociados, errores anunciados, foco gestionado</li>
+          <li>✅ <strong>Estados de carga</strong>: Indicadores visuales durante el procesamiento</li>
+          <li>✅ <strong>Navegación cruzada</strong>: Enlaces entre formularios relacionados</li>
+          <li>✅ <strong>OnPush</strong>: Optimizado para detección de cambios</li>
+        </ul>
       </div>
     </section>
 

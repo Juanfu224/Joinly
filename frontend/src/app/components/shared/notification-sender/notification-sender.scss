@@ -1,0 +1,88 @@
+/**
+ * Estilos del componente NotificationSender
+ * Envía alertas visuales y actualiza estado compartido
+ * 
+ * Sigue metodología BEM y usa variables CSS del sistema de diseño
+ */
+.notification-sender {
+  padding: var(--espaciado-6);
+  border-radius: var(--radio-grande);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+
+  // ========================================================================
+  // HEADER
+  // ========================================================================
+
+  &__header {
+    margin-block-end: var(--espaciado-6);
+  }
+
+  &__title {
+    font-size: var(--tamano-texto-2xl);
+    font-weight: var(--peso-fuente-negrita);
+    color: var(--text-primary);
+    margin-block-end: var(--espaciado-2);
+  }
+
+  &__description {
+    font-size: var(--tamano-texto-normal);
+    color: var(--text-secondary);
+  }
+
+  // ========================================================================
+  // CONTENT
+  // ========================================================================
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaciado-6);
+  }
+
+  &__section {
+    padding: var(--espaciado-4);
+    border-radius: var(--radio-mediano);
+    background-color: var(--bg-primary);
+    border: 1px solid var(--color-borde-base);
+  }
+
+  &__section-title {
+    font-size: var(--tamano-texto-xl);
+    font-weight: var(--peso-fuente-semi-negrita);
+    color: var(--text-primary);
+    margin-block-end: var(--espaciado-2);
+  }
+
+  &__section-description {
+    font-size: var(--tamano-texto-pequeno);
+    color: var(--text-secondary);
+    margin-block-end: var(--espaciado-4);
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--espaciado-3);
+  }
+
+  // ========================================================================
+  // RESPONSIVE (CSS moderno con range syntax)
+  // ========================================================================
+
+  @media (width < 768px) {
+    padding: var(--espaciado-4);
+
+    &__title {
+      font-size: var(--tamano-texto-xl);
+    }
+
+    &__actions {
+      flex-direction: column;
+
+      app-button {
+        inline-size: 100%;
+      }
+    }
+  }
+}

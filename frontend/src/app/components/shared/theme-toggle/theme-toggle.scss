@@ -1,0 +1,77 @@
+// ==========================================================================
+// COMPONENTE: Theme Toggle (Botón de cambio de tema)
+// ==========================================================================
+// Botón circular que alterna entre tema claro y oscuro.
+// Muestra icono de sol en tema claro y luna en tema oscuro.
+
+@use '../../../../styles/01-tools/mixins' as *;
+
+// ---------------------------------------------------------------------------
+// HOST: Encapsulación del componente Angular
+// ---------------------------------------------------------------------------
+:host {
+  display: inline-flex;
+}
+
+.c-theme-toggle {
+  // ---------------------------------------------------------------------------
+  // Layout y tamaño
+  // ---------------------------------------------------------------------------
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem; // 40px
+  height: 2.5rem; // 40px
+  padding: 0;
+
+  // ---------------------------------------------------------------------------
+  // Apariencia visual
+  // ---------------------------------------------------------------------------
+  background-color: transparent;
+  border: var(--borde-delgado) solid var(--border-color);
+  border-radius: var(--radio-completo);
+  color: var(--text-primary);
+  cursor: pointer;
+
+  // ---------------------------------------------------------------------------
+  // Transiciones suaves
+  // ---------------------------------------------------------------------------
+  transition: background-color var(--duracion-rapida) var(--transicion-estandar),
+    border-color var(--duracion-rapida) var(--transicion-estandar),
+    color var(--duracion-rapida) var(--transicion-estandar),
+    transform var(--duracion-rapida) var(--transicion-estandar);
+
+  // Usar mixin del proyecto para focus visible
+  @include foco-visible;
+
+  // ---------------------------------------------------------------------------
+  // Estados interactivos
+  // ---------------------------------------------------------------------------
+
+  // Hover: Fondo sutil y escala ligeramente
+  &:hover {
+    background-color: var(--bg-secondary);
+    border-color: var(--color-principal);
+    transform: scale(1.05);
+  }
+
+  // Active: Escala más pequeña al presionar
+  &:active {
+    transform: scale(0.95);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Icono interno
+  // ---------------------------------------------------------------------------
+  // El componente Icon hereda el color del botón
+  app-icon {
+    transition: transform var(--duracion-base) var(--transicion-estandar);
+  }
+
+  // Rotación sutil al cambiar de tema (animación de entrada)
+  &:active app-icon {
+    transform: rotate(180deg);
+  }
+}
+
+

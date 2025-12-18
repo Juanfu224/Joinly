@@ -13,12 +13,17 @@
 .c-card {
   display: flex;
   block-size: 100%;
-  background-color: var(--color-blanco);
+  background-color: var(--bg-secondary);
   border-radius: var(--radio-grande);
   padding: var(--espaciado-4);
   box-shadow: var(--sombra-1);
+  border: 1px solid var(--border-color);
 
-  @include transicion;
+  // Transición suave para cambio de tema
+  transition: background-color var(--duracion-base) var(--transicion-estandar),
+    box-shadow var(--duracion-base) var(--transicion-estandar),
+    transform var(--duracion-base) var(--transicion-estandar),
+    border-color var(--duracion-base) var(--transicion-estandar);
 
   // ==========================================================================
   // ELEMENTOS BASE (aplicables a todas las variantes)
@@ -69,7 +74,7 @@
   // ==========================================================================
 
   &--fondo-gris {
-    background-color: var(--color-fondo-claro);
+    background-color: var(--bg-primary);
   }
 
   // ==========================================================================

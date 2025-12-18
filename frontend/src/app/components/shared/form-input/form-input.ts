@@ -2,15 +2,14 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  ElementRef,
   forwardRef,
+  inject,
   input,
   signal,
+  viewChild,
 } from '@angular/core';
-import {
-  ControlValueAccessor,
-  NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
 type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search';
 
@@ -31,6 +30,9 @@ type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'sea
   ],
 })
 export class FormInputComponent implements ControlValueAccessor {
+  private readonly elementRef = inject(ElementRef);
+  private readonly inputElement = viewChild<ElementRef<HTMLInputElement>>('inputEl');
+
   readonly label = input.required<string>();
   readonly type = input<InputType>('text');
   readonly placeholder = input<string>('');
@@ -57,8 +59,16 @@ export class FormInputComponent implements ControlValueAccessor {
   readonly value = signal<string>('');
   readonly disabled = signal<boolean>(false);
 
+  get nativeElement(): HTMLElement {
+    return this.elementRef.nativeElement;
+  }
+
   private onChange: (value: string) => void = () => {};
   private onTouched: () => void = () => {};
+
+  focus(): void {
+    this.inputElement()?.nativeElement.focus();
+  }
 
   writeValue(value: string): void {
     this.value.set(value ?? '');

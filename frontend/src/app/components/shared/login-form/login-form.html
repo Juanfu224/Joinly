@@ -1,0 +1,74 @@
+<app-form-card
+  title="Iniciar sesión"
+  logoVariant="morado"
+>
+  <form class="c-login-form__form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <fieldset class="c-login-form__fieldset">
+      <legend class="c-login-form__legend">Credenciales de acceso</legend>
+
+      <app-form-input
+        #emailInput
+        label="Email"
+        type="email"
+        name="email"
+        autocomplete="email"
+        placeholder="Email"
+        [required]="true"
+        formControlName="email"
+        [errorMessage]="getErrorMessage('email')"
+      />
+
+      <app-form-input
+        #passwordInput
+        label="Contraseña"
+        type="password"
+        name="password"
+        autocomplete="current-password"
+        placeholder="Contraseña"
+        [required]="true"
+        formControlName="password"
+        [errorMessage]="getErrorMessage('password')"
+      />
+    </fieldset>
+
+    @if (formError()) {
+      <div class="c-login-form__error" role="alert">
+        {{ formError() }}
+      </div>
+    }
+
+    <div class="c-login-form__actions">
+      <app-button
+        type="button"
+        variant="secondary"
+        size="xl"
+        (click)="onCancel()"
+      >
+        Cancelar
+      </app-button>
+
+      <app-button
+        type="submit"
+        variant="purple"
+        size="xl"
+        [disabled]="isFormInvalid() || isLoading()"
+        [loading]="isLoading()"
+      >
+        @if (isLoading()) { Iniciando sesión... } @else { Iniciar sesión }
+      </app-button>
+    </div>
+  </form>
+
+  <footer slot="footer" class="c-login-form__footer">
+    <p class="c-login-form__footer-text">
+      ¿No tienes cuenta?
+      <a 
+        href="/register" 
+        class="c-login-form__link c-login-form__link--naranja"
+        (click)="$event.preventDefault(); onRegisterRequest()"
+      >
+        Regístrate
+      </a>
+    </p>
+  </footer>
+</app-form-card>

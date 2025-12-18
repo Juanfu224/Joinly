@@ -1,0 +1,12 @@
+<div class="c-toast-container" aria-label="Notificaciones" role="region">
+  @for (toast of toasts(); track toast.id) {
+    <app-toast
+      [type]="toast.type"
+      [message]="toast.message"
+      [closing]="toast.closing ?? false"
+      (closed)="onClose(toast.id)"
+      (mouseEntered)="onPause(toast.id)"
+      (mouseLeft)="onResume(toast.id)"
+    />
+  }
+</div>

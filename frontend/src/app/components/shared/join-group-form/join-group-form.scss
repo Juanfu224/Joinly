@@ -1,0 +1,50 @@
+@use '../../../../styles/01-tools/mixins' as *;
+@use '../../../../styles/00-settings/variables' as *;
+
+:host {
+  display: block;
+  width: 100%;
+  max-width: 40.625rem;
+}
+
+.c-join-group-form {
+  &__form {
+    @include formulario-base;
+  }
+
+  &__fieldset {
+    @include formulario-fieldset;
+  }
+
+  &__legend {
+    @include oculto-accesible;
+  }
+
+  &__error {
+    @include formulario-error;
+  }
+
+  &__actions {
+    @include formulario-acciones;
+  }
+
+  &__footer {
+    @include formulario-footer;
+  }
+
+  &__footer-text {
+    @include formulario-footer-text;
+  }
+
+  &__link {
+    @include formulario-link;
+
+    &--naranja {
+      color: var(--color-naranja-principal);
+    }
+
+    &--azul {
+      color: var(--color-azul);
+    }
+  }
+}

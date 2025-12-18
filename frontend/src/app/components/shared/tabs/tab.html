@@ -1,0 +1,16 @@
+<!-- 
+  Template del TabComponent
+  Panel de contenido que se muestra/oculta según el estado activo
+-->
+
+<div
+  #panel
+  class="c-tab-panel"
+  [class.c-tab-panel--active]="isActive()"
+  [attr.id]="panelId"
+  [attr.role]="'tabpanel'"
+  [attr.aria-labelledby]="tabId"
+  [attr.hidden]="!isActive() ? true : null"
+>
+  <ng-content />
+</div>

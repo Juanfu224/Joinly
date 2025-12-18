@@ -4,47 +4,16 @@
 :host {
   display: block;
   width: 100%;
-  max-width: 37.5rem;
+  max-width: 40.625rem;
 }
 
 .c-register-form {
   &__form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--espaciado-3);
-    padding: var(--espaciado-3);
-    background-color: var(--color-fondo-claro-normal);
-    border-radius: var(--radio-grande);
-    box-shadow: var(--sombra-3);
-
-    @media (min-width: $bp-tablet) {
-      padding: var(--espaciado-6);
-    }
-  }
-
-  &__header {
-    text-align: left;
-  }
-
-  &__title {
-    font-size: var(--tamano-h3);
-    font-weight: var(--peso-fuente-semi-negrita);
-    line-height: var(--altura-linea-compacta);
-    color: var(--color-texto-fuerte);
-    margin: 0;
-  }
-
-  &__title-highlight {
-    display: block;
+    @include formulario-base;
   }
 
   &__fieldset {
-    display: flex;
-    flex-direction: column;
-    gap: var(--espaciado-2);
-    border: none;
-    padding: 0;
-    margin: 0;
+    @include formulario-fieldset;
   }
 
   &__legend {
@@ -56,94 +25,36 @@
     grid-template-columns: 1fr;
     gap: var(--espaciado-2);
 
-    @media (min-width: $bp-tablet) {
+    @include responder-a('tablet') {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  &__actions {
-    display: flex;
-    flex-direction: column-reverse;
-    gap: var(--espaciado-2);
-    margin-top: var(--espaciado-2);
-
-    @media (min-width: $bp-tablet) {
-      flex-direction: row;
-      justify-content: flex-end;
-    }
+  &__error {
+    @include formulario-error;
   }
 
-  &__btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--espaciado-1);
-    padding: var(--espaciado-2);
-    font-family: var(--font-primaria);
-    font-size: var(--tamano-texto-grande);
-    font-weight: var(--peso-fuente-semi-negrita);
-    line-height: 1;
-    text-align: center;
-    text-decoration: none;
-    border: var(--borde-delgado) solid transparent;
-    border-radius: var(--radio-medio);
-    cursor: pointer;
-    transition:
-      background-color var(--duracion-rapida) var(--transicion-estandar),
-      border-color var(--duracion-rapida) var(--transicion-estandar),
-      opacity var(--duracion-rapida) var(--transicion-estandar);
-
-    @include foco-visible;
-
-    &--primary {
-      background-color: var(--color-acento);
-      color: var(--color-fondo-claro-normal);
-      border-color: var(--color-acento);
-      box-shadow: var(--sombra-naranja);
-
-      &:hover:not(:disabled) {
-        background-color: var(--color-acento-oscuro);
-        border-color: var(--color-acento-oscuro);
-      }
-
-      &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-    }
-
-    &--secondary {
-      background-color: transparent;
-      color: var(--color-texto-base);
-      border-color: var(--color-borde-fuerte);
-
-      &:hover {
-        background-color: var(--color-gris-medio);
-      }
-    }
+  &__actions {
+    @include formulario-acciones;
   }
 
   &__footer {
-    text-align: center;
-    margin-top: var(--espaciado-1);
+    @include formulario-footer;
   }
 
   &__footer-text {
-    font-size: var(--tamano-texto-regular);
-    color: var(--color-texto-fuerte);
-    margin: 0;
+    @include formulario-footer-text;
   }
 
   &__link {
-    color: var(--color-principal);
-    font-weight: var(--peso-fuente-regular);
-    text-decoration: none;
-    transition: color var(--duracion-rapida) var(--transicion-estandar);
+    @include formulario-link;
 
-    &:hover {
-      text-decoration: underline;
+    &--morado {
+      color: var(--color-morado-principal);
     }
 
-    @include foco-visible;
+    &--naranja {
+      color: var(--color-naranja-principal);
+    }
   }
 }

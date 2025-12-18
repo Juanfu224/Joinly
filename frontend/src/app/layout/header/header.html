@@ -2,30 +2,25 @@
   <div class="c-header__contenedor l-contenedor">
     <!-- Logotipo con enlace a inicio -->
     <a routerLink="/" class="c-header__logo" aria-label="Joinly, ir a la página de inicio">
-      <span class="c-header__logo-icono" aria-hidden="true">
-        <svg
-          width="34"
-          height="35"
-          viewBox="0 0 34 35"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <ellipse cx="28.5941" cy="4.85876" rx="4.67501" ry="4.85876" fill="#1E293B" />
-          <ellipse cx="28.5894" cy="17.062" rx="4.67501" ry="4.85862" fill="#4B5563" />
-          <ellipse cx="28.5939" cy="29.7174" rx="4.67501" ry="4.85875" fill="#1E293B" />
-          <ellipse cx="16.4173" cy="17.0619" rx="4.67485" ry="4.85863" fill="currentColor" />
-          <ellipse cx="16.4172" cy="29.7175" rx="4.67485" ry="4.85875" fill="#4B5563" />
-          <ellipse cx="4.67496" cy="29.7174" rx="4.67502" ry="4.85875" fill="#1E293B" />
-        </svg>
-      </span>
-      <span class="c-header__logo-texto">
-        <span class="c-header__logo-nombre">Join</span><span class="c-header__logo-acento">ly</span>
-      </span>
+      <app-logo variant="naranja" size="md" />
     </a>
 
-    <!-- Área de utilidad (acciones del usuario) -->
+    <!-- Botón menú hamburguesa (solo móvil/tablet) -->
+    <button
+      #menuButton
+      type="button"
+      class="c-header__menu-toggle"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="menuOpen()"
+      aria-label="Menú de navegación"
+      aria-controls="mobile-navigation"
+    >
+      <app-icon [name]="menuOpen() ? 'close' : 'menu'" size="md" />
+    </button>
+
+    <!-- Área de utilidad (acciones del usuario - desktop) -->
     <nav class="c-header__utilidad" aria-label="Acceso de usuario">
+      <app-theme-toggle />
       <a routerLink="/login" class="c-header__btn c-header__btn--secundario">
         Iniciar sesión
       </a>
@@ -34,4 +29,49 @@
       </a>
     </nav>
   </div>
+
+  <!-- Overlay oscuro (solo visible cuando menú móvil está abierto) -->
+  <div
+    class="c-header__overlay"
+    [class.c-header__overlay--visible]="menuOpen()"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Menú de navegación móvil -->
+  <nav
+    #mobileMenu
+    id="mobile-navigation"
+    class="c-header__nav-mobile"
+    [class.c-header__nav-mobile--abierto]="menuOpen()"
+    aria-label="Navegación principal"
+  >
+    <ul class="c-header__nav-lista">
+      <li class="c-header__nav-item">
+        <a routerLink="/" class="c-header__nav-enlace" routerLinkActive="c-header__nav-enlace--activo" [routerLinkActiveOptions]="{exact: true}">
+          <app-icon name="home" size="sm" />
+          <span>Inicio</span>
+        </a>
+      </li>
+      <li class="c-header__nav-item">
+        <a routerLink="/style-guide" class="c-header__nav-enlace" routerLinkActive="c-header__nav-enlace--activo">
+          <app-icon name="pencil" size="sm" />
+          <span>Guía de Estilos</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Separador visual -->
+    <hr class="c-header__nav-separador" />
+
+    <!-- Acciones de usuario en el menú móvil -->
+    <div class="c-header__nav-acciones">
+      <app-theme-toggle />
+      <a routerLink="/login" class="c-header__btn c-header__btn--secundario c-header__btn--block">
+        Iniciar sesión
+      </a>
+      <a routerLink="/registro" class="c-header__btn c-header__btn--primario c-header__btn--block">
+        Empezar
+      </a>
+    </div>
+  </nav>
 </header>

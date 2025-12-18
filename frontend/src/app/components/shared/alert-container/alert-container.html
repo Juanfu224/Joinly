@@ -3,8 +3,7 @@
     <app-alert
       [type]="alert.type"
       [message]="alert.message"
-      [closeable]="true"
-      (closed)="onClose(alert.id)"
+      [closing]="alert.closing ?? false"
     />
   }
 </div>

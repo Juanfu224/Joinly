@@ -1,0 +1,46 @@
+<!-- 
+  Template del TabsComponent
+  Sistema de pestañas con navegación y panels de contenido
+-->
+
+<div class="c-tabs">
+  
+  <!-- Contenedor de las pestañas (tablist) -->
+  <div 
+    #tablist
+    class="c-tabs__list"
+    role="tablist"
+    aria-label="Pestañas de navegación"
+  >
+    
+    <!-- Botones de navegación de tabs -->
+    @for (tab of tabs(); track tab.tabId; let i = $index) {
+      <button
+        type="button"
+        class="c-tabs__tab"
+        [class.c-tabs__tab--active]="activeIndexSignal() === i"
+        [attr.id]="tab.tabId"
+        [attr.role]="'tab'"
+        [attr.aria-selected]="activeIndexSignal() === i"
+        [attr.aria-controls]="tab.panelId"
+        [attr.tabindex]="activeIndexSignal() === i ? 0 : -1"
+        (click)="onTabClick(i, $event)"
+      >
+        {{ tab.title() }}
+      </button>
+    }
+
+    <!-- Indicador visual del tab activo -->
+    <span 
+      #indicator
+      class="c-tabs__indicator"
+      aria-hidden="true"
+    ></span>
+  </div>
+
+  <!-- Contenedor de los paneles de contenido -->
+  <div class="c-tabs__panels">
+    <ng-content />
+  </div>
+
+</div>

@@ -1,217 +1,52 @@
-// ==========================================================================
-// COMPONENTE: HEADER (.c-header)
-// ==========================================================================
-// Cabecera principal de la aplicación con logotipo y acciones de usuario.
-// Sigue metodología BEM y arquitectura ITCSS.
-// Basado en diseño Figma: https://www.figma.com/design/8q36kcT9LEqoXs99ZBxfV5/Joinly
-
 @use '../../../styles/00-settings/variables' as *;
 @use '../../../styles/01-tools/mixins' as *;
 
-// ---------------------------------------------------------------------------
-// HOST: Encapsulación del componente Angular
-// ---------------------------------------------------------------------------
-:host {
-  display: block;
+:host{display:block}
+
+.c-header{position:sticky;inset-block-start:0;z-index:var(--z-fixed);background-color:var(--bg-secondary);box-shadow:var(--sombra-2);border-bottom:1px solid var(--border-color);transition:background-color var(--duracion-base),box-shadow var(--duracion-base),border-color var(--duracion-base);
+  &__contenedor{display:flex;align-items:center;justify-content:space-between;min-block-size:var(--header-height);gap:var(--espaciado-2);padding-block:var(--espaciado-2)}
 }
 
-// ---------------------------------------------------------------------------
-// BLOQUE: .c-header
-// ---------------------------------------------------------------------------
-.c-header {
-  position: sticky;
-  inset-block-start: 0;
-  z-index: var(--z-fixed);
-  background-color: var(--color-superficie-blanca);
-  box-shadow: var(--sombra-2);
-
-  // Contenedor interno con layout flex
-  &__contenedor {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-block-size: 5.5rem;
-    gap: var(--espaciado-2);
-    padding-block: var(--espaciado-2);
-  }
+.c-header__logo{display:inline-flex;align-items:center;text-decoration:none;flex-shrink:0;@include foco-visible;@include transicion(opacity);
+  &:hover{opacity:0.85}
 }
 
-// ---------------------------------------------------------------------------
-// ELEMENTO: Logo (.c-header__logo)
-// ---------------------------------------------------------------------------
-.c-header__logo {
-  display: inline-flex;
-  align-items: baseline;
-  gap: var(--espaciado-1);
-  text-decoration: none;
-  flex-shrink: 0;
+.c-header__utilidad{display:flex;align-items:center;gap:var(--espaciado-2)}
 
-  @include foco-visible;
-  @include transicion(opacity);
-
-  &:hover {
-    opacity: 0.85;
+.c-header__btn{display:inline-flex;align-items:center;justify-content:center;padding:var(--espaciado-2);font-size:var(--tamano-texto-regular);font-weight:var(--peso-fuente-semi-negrita);line-height:1;text-decoration:none;border-radius:var(--radio-medio);cursor:pointer;white-space:nowrap;transition:background-color var(--duracion-base),border-color var(--duracion-base),color var(--duracion-base);@include foco-visible;
+  &--secundario{color:var(--color-texto-base);background-color:transparent;border:var(--borde-delgado) solid var(--color-borde-fuerte);
+    &:hover{color:var(--color-principal);border-color:var(--color-principal);background-color:var(--color-superficie-morada)}
   }
+  &--primario{color:var(--color-blanco);background-color:var(--color-acento);border:var(--borde-delgado) solid transparent;box-shadow:var(--sombra-naranja);
+    &:hover{background-color:var(--color-acento-oscuro)}
+  }
+  &--block{inline-size:100%}
 }
 
-.c-header__logo-icono {
-  display: inline-block;
-  color: var(--color-acento-oscuro);
-  inline-size: 2.0625rem;
-  block-size: 2.1875rem;
-
-  svg {
-    display: block;
-    inline-size: 100%;
-    block-size: 100%;
-  }
+.c-header__menu-toggle{display:none;align-items:center;justify-content:center;padding:var(--espaciado-2);background-color:transparent;border:none;border-radius:var(--radio-pequeno);color:var(--color-texto-base);cursor:pointer;transition:background-color var(--duracion-base);@include foco-visible;
+  &:hover{background-color:var(--color-superficie-base)}
+  &:active{background-color:var(--color-superficie-fuerte)}
+  @media(max-width:#{$bp-desktop - 0.0625rem}){display:inline-flex}
 }
 
-.c-header__logo-texto {
-  font-family: var(--font-primaria);
-  font-size: var(--tamano-h3);
-  font-weight: var(--peso-fuente-negrita);
-  line-height: 1;
-  letter-spacing: 0;
+.c-header__overlay{position:fixed;inset:0;background-color:rgba(0,0,0,0.5);opacity:0;visibility:hidden;z-index:calc(var(--z-fixed) + 1);transition:opacity var(--duracion-base),visibility var(--duracion-base);
+  &--visible{opacity:1;visibility:visible}
 }
 
-.c-header__logo-nombre {
-  color: var(--color-texto-fuerte);
+.c-header__nav-mobile{position:fixed;inset-block-start:var(--header-height);inset-inline-end:0;inline-size:80%;max-inline-size:20rem;block-size:calc(100vh - var(--header-height));background-color:var(--bg-primary);box-shadow:var(--sombra-4);z-index:calc(var(--z-fixed) + 2);overflow-y:auto;padding:var(--espaciado-4);transform:translateX(100%);transition:transform 300ms,background-color var(--duracion-base),box-shadow var(--duracion-base);
+  &--abierto{transform:translateX(0)}
+  @media(min-width:$bp-desktop){display:none}
 }
 
-.c-header__logo-acento {
-  color: var(--color-acento-oscuro);
+.c-header__nav-lista{display:flex;flex-direction:column;gap:var(--espaciado-1);list-style:none;padding:0;margin:0}
+
+.c-header__nav-enlace{display:flex;align-items:center;gap:var(--espaciado-2);padding:var(--espaciado-3);font-size:var(--tamano-texto-regular);font-weight:var(--peso-fuente-medio);color:var(--color-texto-base);text-decoration:none;border-radius:var(--radio-medio);transition:background-color var(--duracion-rapida),color var(--duracion-rapida);@include foco-visible;
+  &:hover{background-color:var(--color-superficie-base);color:var(--color-principal)}
+  &--activo{background-color:var(--color-superficie-morada);color:var(--color-principal);font-weight:var(--peso-fuente-semi-negrita)}
 }
 
-// ---------------------------------------------------------------------------
-// MODIFICADORES: Variantes de color del logotipo
-// ---------------------------------------------------------------------------
-// Variante: Claro naranja (texto claro + acento naranja)
-.c-header__logo--claro-naranja {
-  .c-header__logo-icono {
-    color: var(--color-acento);
-  }
+.c-header__nav-separador{border:none;block-size:1px;background-color:var(--color-borde-base);margin-block:var(--espaciado-3)}
 
-  .c-header__logo-nombre {
-    color: var(--color-gris-medio);
-  }
+.c-header__nav-acciones{display:flex;flex-direction:column;gap:var(--espaciado-2);margin-block-start:var(--espaciado-3)}
 
-  .c-header__logo-acento {
-    color: var(--color-acento);
-  }
-}
-
-// Variante: Morado (texto oscuro + acento morado oscuro)
-.c-header__logo--morado {
-  .c-header__logo-icono {
-    color: var(--color-principal-oscuro);
-  }
-
-  .c-header__logo-nombre {
-    color: var(--color-texto-fuerte);
-  }
-
-  .c-header__logo-acento {
-    color: var(--color-principal-oscuro);
-  }
-}
-
-// Variante: Claro morado (texto claro + acento morado principal)
-.c-header__logo--claro-morado {
-  .c-header__logo-icono {
-    color: var(--color-principal);
-  }
-
-  .c-header__logo-nombre {
-    color: var(--color-gris-medio);
-  }
-
-  .c-header__logo-acento {
-    color: var(--color-principal);
-  }
-}
-
-// Variante: Azul (texto oscuro + acento azul)
-.c-header__logo--azul {
-  .c-header__logo-icono {
-    color: var(--color-secundario-alt);
-  }
-
-  .c-header__logo-nombre {
-    color: var(--color-texto-fuerte);
-  }
-
-  .c-header__logo-acento {
-    color: var(--color-secundario-alt);
-  }
-}
-
-// Variante: Amarillo (texto oscuro + acento amarillo)
-.c-header__logo--amarillo {
-  .c-header__logo-icono {
-    color: var(--color-secundario);
-  }
-
-  .c-header__logo-nombre {
-    color: var(--color-texto-fuerte);
-  }
-
-  .c-header__logo-acento {
-    color: var(--color-secundario);
-  }
-}
-
-// ---------------------------------------------------------------------------
-// ELEMENTO: Área de utilidad (.c-header__utilidad)
-// ---------------------------------------------------------------------------
-.c-header__utilidad {
-  display: flex;
-  align-items: center;
-  gap: var(--espaciado-2);
-}
-
-// ---------------------------------------------------------------------------
-// ELEMENTO: Botones (.c-header__btn)
-// ---------------------------------------------------------------------------
-.c-header__btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--espaciado-2);
-  font-size: var(--tamano-texto-regular);
-  font-weight: var(--peso-fuente-semi-negrita);
-  line-height: 1;
-  text-decoration: none;
-  border-radius: var(--radio-medio);
-  cursor: pointer;
-  white-space: nowrap;
-  transition:
-    background-color var(--duracion-base) ease-out,
-    border-color var(--duracion-base) ease-out,
-    color var(--duracion-base) ease-out;
-
-  @include foco-visible;
-}
-
-.c-header__btn--secundario {
-  color: var(--color-texto-base);
-  background-color: transparent;
-  border: var(--borde-delgado) solid var(--color-borde-fuerte);
-
-  &:hover {
-    color: var(--color-principal);
-    border-color: var(--color-principal);
-    background-color: var(--color-superficie-morada);
-  }
-}
-
-.c-header__btn--primario {
-  color: var(--color-superficie-blanca);
-  background-color: var(--color-acento);
-  border: var(--borde-delgado) solid transparent;
-  box-shadow: var(--sombra-naranja);
-
-  &:hover {
-    background-color: var(--color-acento-oscuro);
-  }
-}
+@media(max-width:#{$bp-desktop - 0.0625rem}){.c-header__utilidad{display:none}}

@@ -1,0 +1,49 @@
+@use '../../../../styles/01-tools/mixins' as *;
+@use '../../../../styles/00-settings/variables' as *;
+
+:host {
+  display: block;
+  width: 100%;
+  max-width: 40.625rem;
+}
+
+.c-new-subscription-form {
+  &__form {
+    @include formulario-base;
+    gap: var(--espaciado-3);
+  }
+
+  &__fieldset {
+    @include formulario-fieldset;
+  }
+
+  &__legend {
+    @include oculto-accesible;
+  }
+
+  &__legend-visible {
+    font-size: var(--tamano-texto-regular);
+    font-weight: var(--peso-fuente-regular);
+    color: var(--color-texto-fuerte);
+    margin-bottom: var(--espaciado-1);
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--espaciado-2);
+
+    @include responder-a('tablet') {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  &__error {
+    @include formulario-error;
+  }
+
+  &__actions {
+    @include formulario-acciones;
+    margin-block-start: var(--espaciado-1);
+  }
+}

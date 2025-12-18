@@ -1,0 +1,133 @@
+// ==========================================================================
+// COMPONENTE: ACCORDION ITEM (.c-accordion-item)
+// ==========================================================================
+// Item individual expandible/colapsable dentro de un accordion.
+// Implementa animaciones fluidas y accesibilidad completa.
+
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as *;
+
+// ---------------------------------------------------------------------------
+// BLOQUE: Accordion Item
+// ---------------------------------------------------------------------------
+.c-accordion-item {
+  // Borde inferior para separar items
+  border-bottom: 1px solid var(--border-color);
+
+  // Transición suave al cambiar tema
+  transition: border-color var(--duracion-base) var(--transicion-estandar);
+
+  // Quitar borde del último item
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Header (botón clickeable)
+// ---------------------------------------------------------------------------
+.c-accordion-item__header {
+  // Layout
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--espaciado-3) var(--espaciado-4);
+  
+  // Estilos base
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  
+  // Transiciones
+  @include transicion((background-color, color));
+
+  // Focus visible para accesibilidad
+  @include foco-visible;
+
+  // Hover
+  &:hover:not(&--disabled) {
+    background-color: var(--bg-primary);
+  }
+
+  // Estado activo (expandido)
+  &--expanded {
+    background-color: var(--bg-primary);
+  }
+
+  // Estado deshabilitado
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  // Responsive: mantener padding consistente en móvil
+  @include responder-a('movil') {
+    padding: var(--espaciado-3) var(--espaciado-4);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Título del item
+// ---------------------------------------------------------------------------
+.c-accordion-item__titulo {
+  @include heading-4;
+  flex: 1;
+  color: var(--text-primary);
+  transition: color var(--duracion-base) var(--transicion-estandar);
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Icono indicador (chevron)
+// ---------------------------------------------------------------------------
+.c-accordion-item__icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: var(--espaciado-2);
+  color: var(--text-secondary);
+  
+  // Transición de rotación y color
+  transition: transform var(--duracion-base) var(--transicion-estandar),
+              color var(--duracion-base) var(--transicion-estandar);
+
+  // Estado expandido: rotar 180 grados
+  &--expandido {
+    transform: rotate(180deg);
+    color: var(--color-principal);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Contenedor del contenido expandible
+// ---------------------------------------------------------------------------
+.c-accordion-item__contenido-wrapper {
+  // Altura inicial 0 (colapsado)
+  height: 0;
+  overflow: hidden;
+  
+  // Transición suave de altura
+  transition: height var(--duracion-base) var(--transicion-estandar);
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Contenido interno (con padding)
+// ---------------------------------------------------------------------------
+.c-accordion-item__contenido {
+  padding: 0 var(--espaciado-4) var(--espaciado-4);
+  
+  @include texto-regular;
+  color: var(--text-secondary);
+
+  // Espaciado entre párrafos
+  > * + * {
+    margin-top: var(--espaciado-2);
+  }
+
+  // Responsive: padding más pequeño en móvil
+  @include responder-a('movil') {
+    padding: 0 var(--espaciado-4) var(--espaciado-4);
+  }
+}

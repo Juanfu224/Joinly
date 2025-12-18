@@ -21,10 +21,15 @@ export class AlertComponent {
   type = input<AlertType>('info');
   message = input.required<string>();
   closeable = input<boolean>(false);
+  closing = input<boolean>(false);
   closed = output<void>();
 
   alertClasses = computed(() => {
-    return ['c-alert', `c-alert--${this.type()}`].join(' ');
+    const classes = ['c-alert', `c-alert--${this.type()}`];
+    if (this.closing()) {
+      classes.push('c-alert--closing');
+    }
+    return classes.join(' ');
   });
 
   onClose(): void {

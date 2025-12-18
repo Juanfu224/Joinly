@@ -1,0 +1,109 @@
+<section class="notification-receiver">
+  <header class="notification-receiver__header">
+    <h2 class="notification-receiver__title">Componente Receptor</h2>
+    <p class="notification-receiver__description">
+      Recibe estado compartido y eventos en tiempo real
+    </p>
+  </header>
+
+  <div class="notification-receiver__content">
+    <!-- Estado de Usuario (Signal) -->
+    <article class="notification-receiver__card">
+      <h3 class="notification-receiver__section-title">
+        👤 Estado de Usuario (Signal)
+      </h3>
+
+      @if (isAuthenticated()) {
+        <div class="notification-receiver__user">
+          <div class="notification-receiver__user-info">
+            <p class="notification-receiver__user-name">
+              <strong>Nombre:</strong> {{ currentUser().name }}
+            </p>
+            <p class="notification-receiver__user-email">
+              <strong>Email:</strong> {{ currentUser().email }}
+            </p>
+            <p class="notification-receiver__user-id">
+              <strong>ID:</strong> {{ currentUser().id }}
+            </p>
+          </div>
+          <span class="notification-receiver__user-badge notification-receiver__user-badge--authenticated">
+            ✓ Autenticado
+          </span>
+        </div>
+      } @else {
+        <div class="notification-receiver__user">
+          <span class="notification-receiver__user-badge notification-receiver__user-badge--guest">
+            Usuario no autenticado
+          </span>
+        </div>
+      }
+    </article>
+
+    <!-- Filtros Compartidos (Signal) -->
+    <article class="notification-receiver__card">
+      <h3 class="notification-receiver__section-title">
+        🔍 Filtros Compartidos (Signal)
+      </h3>
+
+      <div class="notification-receiver__filters">
+        <div class="notification-receiver__filter-item">
+          <strong>Término de búsqueda:</strong>
+          <span>{{ currentFilters().searchTerm || 'N/A' }}</span>
+        </div>
+        <div class="notification-receiver__filter-item">
+          <strong>Categoría:</strong>
+          <span>{{ currentFilters().category || 'N/A' }}</span>
+        </div>
+        <div class="notification-receiver__filter-item">
+          <strong>Rango de fechas:</strong>
+          <span>{{ currentFilters().dateRange ? 'Configurado' : 'N/A' }}</span>
+        </div>
+        @if (hasActiveFilters()) {
+          <p class="notification-receiver__filter-active">
+            ⚡ Hay filtros activos
+          </p>
+        }
+      </div>
+    </article>
+
+    <!-- Historial de Eventos (Observable) -->
+    <article class="notification-receiver__card">
+      <div class="notification-receiver__section-header">
+        <h3 class="notification-receiver__section-title">
+          📋 Eventos Recibidos (Observable)
+        </h3>
+        @if (eventHistory().length > 0) {
+          <button
+            class="notification-receiver__clear-button"
+            (click)="clearHistory()"
+            type="button"
+          >
+            Limpiar
+          </button>
+        }
+      </div>
+
+      @if (eventHistory().length > 0) {
+        <ul class="notification-receiver__history-list">
+          @for (event of eventHistory(); track $index) {
+            <li class="notification-receiver__history-item">
+              <span class="notification-receiver__history-icon">
+                {{ getEventIcon(event.type) }}
+              </span>
+              <div class="notification-receiver__history-content">
+                <p class="notification-receiver__history-type">
+                  <strong>{{ event.type }}</strong>
+                </p>
+                <pre class="notification-receiver__history-payload">{{ formatPayload(event.payload) }}</pre>
+              </div>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="notification-receiver__empty">
+          No hay eventos en el historial
+        </p>
+      }
+    </article>
+  </div>
+</section>

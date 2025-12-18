@@ -7,6 +7,10 @@
 html {
   // Scroll suave cuando se navega a anclas (#seccion)
   scroll-behavior: smooth;
+
+  // Transición suave al cambiar de tema
+  transition: background-color var(--duracion-base) var(--transicion-estandar),
+    color var(--duracion-base) var(--transicion-estandar);
 }
 
 body {
@@ -25,6 +29,12 @@ body {
   // El color de texto y fondo por defecto de toda la aplicación.
   color: var(--color-texto-base);
   background-color: var(--color-superficie-base);
+
+  // ---------------------------------------------------------------------------
+  // Transición suave para cambio de tema
+  // ---------------------------------------------------------------------------
+  transition: background-color var(--duracion-base) var(--transicion-estandar),
+    color var(--duracion-base) var(--transicion-estandar);
 
   // ---------------------------------------------------------------------------
   // Mejoras de renderizado

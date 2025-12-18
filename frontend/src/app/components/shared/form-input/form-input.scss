@@ -5,14 +5,26 @@
   width: 100%;
 }
 
+// ==========================================================================
+// COMPONENTE: FORM INPUT
+// ==========================================================================
+// Campo de entrada de texto con label, validación y mensajes de ayuda/error.
+// Sigue el patrón de diseño accesible y tokens semánticos para temas.
+
 .c-form-input {
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaciado-1);
+  }
+
   &__label {
     display: inline-flex;
     align-items: center;
     gap: var(--radio-pequeno);
     color: var(--color-texto-fuerte);
-    font-size: var(--tamano-texto-pequeno);
-    font-weight: var(--peso-fuente-semi-negrita);
+    font-size: var(--tamano-texto-regular); // 16px según Figma
+    font-weight: var(--peso-fuente-regular);
   }
 
   &__required {
@@ -21,18 +33,21 @@
 
   &__field {
     width: 100%;
-    padding: var(--espaciado-1) var(--espaciado-2);
-    color: var(--color-texto-base);
+    padding: 1.25rem 1rem; // 20px vertical, 16px horizontal según Figma
+    color: var(--text-primary);
     font-size: var(--tamano-texto-regular);
-    background-color: transparent;
-    border: var(--borde-delgado) solid var(--color-borde-base);
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--color-gris-oscuro); // Border de 2px según Figma
     border-radius: var(--radio-medio);
     transition:
       border-color var(--duracion-rapida) var(--transicion-estandar),
-      box-shadow var(--duracion-rapida) var(--transicion-estandar);
+      box-shadow var(--duracion-rapida) var(--transicion-estandar),
+      background-color var(--duracion-rapida) var(--transicion-estandar);
 
     &::placeholder {
-      color: var(--color-borde-fuerte);
+      color: var(--color-gris-oscuro); // #9ca3af según Figma
+      font-size: var(--tamano-texto-regular);
+      font-weight: var(--peso-fuente-regular);
     }
 
     &:focus {
@@ -43,8 +58,8 @@
 
     &:disabled {
       cursor: not-allowed;
-      opacity: 0.5;
-      background-color: var(--color-superficie-blanca-alt);
+      opacity: 0.6;
+      background-color: var(--bg-secondary);
     }
 
     &[aria-invalid="true"] {
@@ -62,7 +77,7 @@
   }
 
   &__help {
-    color: var(--color-texto-base);
+    color: var(--text-secondary);
     font-size: var(--tamano-texto-pequeno);
   }
 }

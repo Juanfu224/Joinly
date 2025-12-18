@@ -1,0 +1,112 @@
+// ==========================================================================
+// COMPONENTE: TOOLTIP (.c-tooltip)
+// ==========================================================================
+// Tooltip informativo para mostrar ayuda contextual en elementos interactivos.
+// Implementado como directiva (appTooltip) con posicionamiento dinámico.
+
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as *;
+
+// ---------------------------------------------------------------------------
+// BLOQUE: .c-tooltip
+// ---------------------------------------------------------------------------
+.c-tooltip {
+  @include tooltip-base;
+  
+  // Estado inicial: oculto con opacidad 0
+  opacity: 0;
+  transform: scale(0.95);
+  
+  // Prevenir interacción
+  pointer-events: none;
+  
+  // Asegurar que el texto sea legible
+  text-align: center;
+
+  // Transición suave para entrada y salida
+  transition: opacity var(--duracion-rapida) var(--transicion-estandar),
+              transform var(--duracion-rapida) var(--transicion-estandar);
+}
+
+// ---------------------------------------------------------------------------
+// MODIFICADOR: Tooltip visible
+// ---------------------------------------------------------------------------
+.c-tooltip--visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Flecha del tooltip
+// ---------------------------------------------------------------------------
+.c-tooltip__flecha {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+// ---------------------------------------------------------------------------
+// MODIFICADORES: Posición de la flecha según posición del tooltip
+// ---------------------------------------------------------------------------
+
+// Tooltip arriba del elemento (flecha apunta hacia abajo)
+.c-tooltip--top .c-tooltip__flecha {
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px 6px 0 6px;
+  border-color: var(--color-texto-oscuro) transparent transparent transparent;
+}
+
+// Tooltip abajo del elemento (flecha apunta hacia arriba)
+.c-tooltip--bottom .c-tooltip__flecha {
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 0 6px 6px 6px;
+  border-color: transparent transparent var(--color-texto-oscuro) transparent;
+}
+
+// Tooltip a la izquierda del elemento (flecha apunta hacia la derecha)
+.c-tooltip--left .c-tooltip__flecha {
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px 0 6px 6px;
+  border-color: transparent transparent transparent var(--color-texto-oscuro);
+}
+
+// Tooltip a la derecha del elemento (flecha apunta hacia la izquierda)
+.c-tooltip--right .c-tooltip__flecha {
+  left: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px 6px 6px 0;
+  border-color: transparent var(--color-texto-oscuro) transparent transparent;
+}
+
+// ---------------------------------------------------------------------------
+// MODO OSCURO: Ajustes de contraste
+// ---------------------------------------------------------------------------
+[data-theme='dark'] .c-tooltip {
+  background-color: var(--color-blanco);
+  color: var(--color-texto-oscuro);
+  
+  // Ajustar color de las flechas en modo oscuro
+  &.c-tooltip--top .c-tooltip__flecha {
+    border-top-color: var(--color-blanco);
+  }
+  
+  &.c-tooltip--bottom .c-tooltip__flecha {
+    border-bottom-color: var(--color-blanco);
+  }
+  
+  &.c-tooltip--left .c-tooltip__flecha {
+    border-left-color: var(--color-blanco);
+  }
+  
+  &.c-tooltip--right .c-tooltip__flecha {
+    border-right-color: var(--color-blanco);
+  }
+}

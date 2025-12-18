@@ -219,3 +219,145 @@
 @mixin active-presion {
   transform: translateY(0) scale(1);
 }
+
+// ==========================================================================
+// 10. MODALES Y OVERLAYS
+// ==========================================================================
+
+// Overlay oscuro de fondo para modales
+@mixin overlay-modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: var(--z-modal-backdrop);
+  @include transicion(opacity, var(--duracion-base));
+}
+
+// Contenedor de modal centrado
+@mixin contenedor-modal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  @include centrar-flex;
+  padding: var(--espaciado-2);
+}
+
+// Animación de entrada de modal (fade + scale)
+@mixin modal-animacion-entrada {
+  animation: modal-fade-in var(--duracion-base) var(--transicion-estandar);
+}
+
+// Animación de salida de modal
+@mixin modal-animacion-salida {
+  animation: modal-fade-out var(--duracion-rapida) var(--transicion-estandar);
+}
+
+// ==========================================================================
+// 11. TOOLTIPS
+// ==========================================================================
+
+// Posicionamiento base de tooltip
+@mixin tooltip-base {
+  position: absolute;
+  z-index: var(--z-tooltip);
+  max-width: 20rem;
+  padding: var(--espaciado-1) var(--espaciado-2);
+  background-color: var(--color-texto-oscuro);
+  color: var(--color-blanco);
+  font-size: var(--tamano-texto-pequeno);
+  line-height: var(--altura-linea-body-small);
+  border-radius: var(--radio-medio);
+  box-shadow: var(--sombra-3);
+  pointer-events: none;
+  white-space: normal;
+  word-wrap: break-word;
+  @include transicion((opacity, transform), var(--duracion-rapida));
+}
+
+// Flecha del tooltip (usada con ::before o ::after)
+@mixin tooltip-flecha($size: 6px) {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: $size;
+}
+
+// ==========================================================================
+// 12. ESTILOS BASE DE FORMULARIOS
+// ==========================================================================
+// Mixins reutilizables para formularios con diseño consistente.
+// Usados por login-form, register-form, create-group-form, etc.
+
+@mixin formulario-base {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-3); // Mayor espaciado entre secciones según Figma
+}
+
+@mixin formulario-fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-2);
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+@mixin formulario-error {
+  padding: var(--espaciado-2);
+  background-color: color-mix(in srgb, var(--color-error) 10%, transparent);
+  border: 1px solid var(--color-error);
+  border-radius: var(--radio-medio);
+  color: var(--color-error);
+  font-size: var(--tamano-texto-pequeno);
+  text-align: center;
+}
+
+@mixin formulario-acciones {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--espaciado-2);
+  margin-block-start: var(--espaciado-2);
+  justify-content: center;
+  align-items: center;
+
+  @include responder-a('tablet') {
+    flex-direction: row;
+  }
+
+  app-button {
+    flex: 0 0 auto;
+    width: 100%;
+    
+    @include responder-a('tablet') {
+      width: auto;
+      min-width: 10rem;
+      max-width: 15.4375rem; // 247px según diseño Figma
+    }
+  }
+}
+
+@mixin formulario-footer {
+  text-align: center;
+}
+
+@mixin formulario-footer-text {
+  font-size: var(--tamano-texto-regular);
+  color: var(--color-texto-fuerte);
+  margin: 0;
+}
+
+@mixin formulario-link {
+  font-weight: var(--peso-fuente-regular);
+  text-decoration: none;
+  transition: color var(--duracion-rapida) var(--transicion-estandar);
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  @include foco-visible;
+}

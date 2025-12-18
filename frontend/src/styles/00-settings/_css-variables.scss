@@ -199,6 +199,79 @@
 }
 
 // ==========================================================================
+// TEMA OSCURO (Dark Theme)
+// ==========================================================================
+// Variables CSS que se sobrescriben cuando se aplica [data-theme="dark"]
+// Sigue la estrategia de tokens semánticos: solo modificamos las variables
+// que realmente necesitan cambiar, manteniendo la coherencia del diseño.
+
+[data-theme='dark'] {
+  // --- FONDOS ---
+  // Usamos escala de grises oscuros de Tailwind (slate) para coherencia
+  --bg-primary: #0f172a; // slate-900 - Fondo principal oscuro
+  --bg-secondary: #1e293b; // slate-800 - Fondo secundario ligeramente más claro
+
+  // --- TEXTO ---
+  --text-primary: #f8fafc; // slate-50 - Texto principal claro
+  --text-secondary: #cbd5e1; // slate-300 - Texto secundario (menor contraste)
+
+  // --- BORDES ---
+  --border-color: #334155; // slate-700 - Bordes sutiles en tema oscuro
+
+  // --- COLORES PRIMITIVOS OSCUROS ---
+  --color-blanco: #fefefe; // Mantener blanco puro para contraste
+
+  // --- SUPERFICIES ---
+  // Superficies con ligero tinte de color para mantener jerarquía visual
+  --color-superficie-base: #0f172a; // slate-900 - Base oscura
+  --color-superficie-blanca: #1e293b; // slate-800 - Antes "blanco", ahora gris oscuro
+  --color-superficie-blanca-alt: #1e293b; // slate-800 - Alternativa
+  --color-superficie-footer: #020617; // slate-950 - Footer más oscuro
+
+  // Superficies con tintes de color (más sutiles en dark mode)
+  --color-superficie-calida: #1e1410; // Tinte naranja muy sutil
+  --color-superficie-morada: #1a1625; // Tinte morado muy sutil
+  --color-superficie-azul: #0f1729; // Tinte azul muy sutil
+
+  // --- COLORES DE ACENTO (más brillantes para dark mode) ---
+  // Los colores de acento se mantienen vibrantes para garantizar contraste
+  --color-principal: #a855f7; // purple-500 - Morado más brillante
+  --color-principal-oscuro: #9333ea; // purple-600 - Hover
+  --color-acento: #fb923c; // orange-400 - Naranja más brillante
+  --color-acento-oscuro: #f97316; // orange-500 - Hover
+
+  // --- SOMBRAS AJUSTADAS ---
+  // Sombras más suaves y con mayor opacidad en dark mode
+  --sombra-1: 0 2px 6px rgba(0, 0, 0, 0.4);
+  --sombra-2: 0 2px 12px rgba(0, 0, 0, 0.5);
+  --sombra-3: 0 8px 28px rgba(0, 0, 0, 0.6);
+  --sombra-4: 0 14px 42px rgba(0, 0, 0, 0.7);
+  --sombra-5: 0 24px 65px rgba(0, 0, 0, 0.75);
+  --sombra-6: 0 32px 72px rgba(0, 0, 0, 0.8);
+
+  // Sombras de color para iconos (efecto glow) - más sutiles en dark mode
+  --sombra-amarillo: 0 4px 6px -4px rgba(250, 204, 21, 0.4),
+    0 10px 15px -3px rgba(250, 204, 21, 0.3);
+  --sombra-naranja: 0 4px 6px -4px rgba(249, 115, 22, 0.4),
+    0 10px 15px -3px rgba(249, 115, 22, 0.3);
+  --sombra-azul: 0 4px 6px -4px rgba(96, 165, 250, 0.4),
+    0 10px 15px -3px rgba(96, 165, 250, 0.3);
+  --sombra-morado: 0 4px 6px -4px rgba(168, 85, 247, 0.4),
+    0 10px 15px -3px rgba(168, 85, 247, 0.3);
+
+  // --- COLORES DE TEXTO BASE (aliases) ---
+  --color-texto-base: var(--text-secondary);
+  --color-texto-fuerte: var(--text-primary);
+
+  // --- COLORES DE ESTADO ---
+  // Se mantienen vibrantes para visibilidad
+  --color-exito: #4ade80; // green-400
+  --color-error: #f87171; // red-400
+  --color-advertencia: #fbbf24; // yellow-400
+  --color-informacion: #60a5fa; // blue-400
+}
+
+// ==========================================================================
 // GRID
 // ==========================================================================
 
@@ -286,5 +359,14 @@
   --z-modal-backdrop: 400;
   --z-modal: 500;
   --z-popover: 600;
+  --z-tooltip: 650;
   --z-toast: 700;
+}
+
+// ==========================================================================
+// COMPONENTES (Dimensiones de componentes globales)
+// ==========================================================================
+
+:root {
+  --header-height: 5.5rem;
 }

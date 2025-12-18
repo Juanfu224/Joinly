@@ -1,0 +1,159 @@
+// ==========================================================================
+// COMPONENTE: MODAL (.c-modal)
+// ==========================================================================
+// Modal accesible con overlay, focus trap y animaciones.
+// Gestionado centralizadamente a través de ModalService.
+
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as *;
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Overlay oscuro de fondo
+// ---------------------------------------------------------------------------
+.c-modal__overlay {
+  @include overlay-modal;
+  
+  // Animación de entrada
+  animation: overlay-fade-in var(--duracion-base) var(--transicion-estandar);
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Contenedor del modal (centrado)
+// ---------------------------------------------------------------------------
+.c-modal__contenedor {
+  @include contenedor-modal;
+  
+  // Animación de entrada del contenedor
+  animation: modal-slide-in var(--duracion-base) var(--transicion-estandar);
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Contenido del modal
+// ---------------------------------------------------------------------------
+.c-modal__contenido {
+  position: relative;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radio-grande);
+  box-shadow: var(--sombra-6);
+  padding: var(--espaciado-4);
+  max-width: 32rem;
+  width: 100%;
+  max-height: calc(100vh - var(--espaciado-4));
+  overflow-y: auto;
+  
+  // Transición suave para tema
+  transition: background-color var(--duracion-base) var(--transicion-estandar),
+              box-shadow var(--duracion-base) var(--transicion-estandar);
+
+  // Responsive: padding más pequeño en móvil
+  @include responder-a('movil') {
+    padding: var(--espaciado-5);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Botón de cerrar (X)
+// ---------------------------------------------------------------------------
+.c-modal__cerrar {
+  position: absolute;
+  top: var(--espaciado-2);
+  right: var(--espaciado-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  border-radius: var(--radio-medio);
+  color: var(--text-secondary);
+  cursor: pointer;
+  
+  @include foco-visible;
+  @include transicion((background-color, color));
+
+  &:hover {
+    background-color: var(--color-superficie-base);
+    color: var(--text-primary);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Título del modal
+// ---------------------------------------------------------------------------
+.c-modal__titulo {
+  @include heading-3;
+  margin: 0 0 var(--espaciado-3) 0;
+  padding-right: var(--espaciado-6); // Espacio para el botón X
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Texto del contenido
+// ---------------------------------------------------------------------------
+.c-modal__texto {
+  @include texto-regular;
+  margin-bottom: var(--espaciado-4);
+  color: var(--text-secondary);
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Contenedor de acciones (botones)
+// ---------------------------------------------------------------------------
+.c-modal__acciones {
+  display: flex;
+  gap: var(--espaciado-2);
+  justify-content: center;
+  align-items: center;
+  
+  // En móvil, botones apilados verticalmente pero centrados
+  @media (max-width: $bp-movil) {
+    flex-direction: column-reverse;
+    
+    app-button {
+      width: 100%;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ANIMACIONES
+// ---------------------------------------------------------------------------
+
+// Fade in del overlay
+@keyframes overlay-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// Slide in + fade in del modal
+@keyframes modal-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-2rem) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// Animación de salida (opcional, para futuras mejoras)
+@keyframes modal-fade-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
