@@ -1,0 +1,23 @@
+<div class="c-form-array-item__container">
+  <div class="c-form-array-item__header">
+    @if (title()) {
+      <h4 class="c-form-array-item__title">{{ title() }}</h4>
+    }
+    
+    @if (canRemove()) {
+      <button
+        type="button"
+        class="c-form-array-item__remove"
+        [attr.aria-label]="removeButtonLabel()"
+        (click)="onRemove()"
+      >
+        <app-icon name="close" />
+        <span class="c-form-array-item__remove-text">Eliminar</span>
+      </button>
+    }
+  </div>
+  
+  <div class="c-form-array-item__content">
+    <ng-content />
+  </div>
+</div>

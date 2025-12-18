@@ -45,40 +45,40 @@
           [errorMessage]="getErrorMessage('plazas')"
         />
       </div>
-
-      <app-form-input
-        label="Contraseña"
-        type="password"
-        name="password"
-        autocomplete="off"
-        placeholder="Contraseña"
-        formControlName="password"
-        [errorMessage]="getErrorMessage('password')"
-      />
     </fieldset>
 
-    <!-- Sección: Credenciales (opcional) -->
+    <!-- Sección: Credenciales de acceso -->
     <fieldset class="c-new-subscription-form__fieldset">
-      <legend class="c-new-subscription-form__legend-visible">Credenciales (opcional)</legend>
+      <legend class="c-new-subscription-form__legend-visible">Credenciales de acceso</legend>
+      <p class="c-new-subscription-form__help-text">
+        Agrega las credenciales que los miembros necesitarán para acceder al servicio
+      </p>
 
-      <app-form-input
-        label="Usuario"
-        type="email"
-        name="usuario"
-        autocomplete="off"
-        placeholder="Usuario: ejemplo@gmail.com"
-        formControlName="usuario"
-        helpText="Opcional: credenciales de acceso al servicio"
-      />
+      <div class="c-new-subscription-form__credentials">
+        @for (credencial of credenciales.controls; track $index; let i = $index) {
+          <app-form-array-item
+            [title]="'Credencial ' + (i + 1)"
+            [canRemove]="credenciales.length > 1"
+            (removed)="removeCredencial(i)"
+          >
+            <app-credential-input-group
+              [formGroup]="$any(credencial)"
+              [index]="i"
+            />
+          </app-form-array-item>
+        }
+      </div>
 
-      <app-form-input
-        label="Contraseña del servicio"
-        type="password"
-        name="passwordServicio"
-        autocomplete="off"
-        placeholder="Contraseña: ********"
-        formControlName="password"
-      />
+      <app-button
+        type="button"
+        variant="secondary"
+        size="md"
+        (click)="addCredencial()"
+        [disabled]="credenciales.length >= 10"
+      >
+        <app-icon name="add" />
+        Añadir credencial
+      </app-button>
     </fieldset>
 
     @if (formError()) {

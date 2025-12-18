@@ -17,6 +17,8 @@ export { FormSelectComponent, type SelectOption } from './form-select/form-selec
 export { FormCheckboxComponent } from './form-checkbox/form-checkbox';
 export { FormRadioGroupComponent, type RadioOption } from './form-radio-group/form-radio-group';
 export { FormCardComponent } from './form-card/form-card';
+export { FormArrayItemComponent } from './form-array-item/form-array-item';
+export { CredentialInputGroupComponent } from './credential-input-group/credential-input-group';
 export { RegisterFormComponent } from './register-form/register-form';
 export { LoginFormComponent } from './login-form/login-form';
 export { CreateGroupFormComponent } from './create-group-form/create-group-form';
@@ -47,6 +49,8 @@ export {
   atLeastOne,
   dateRange,
   minAge,
+  uniqueCredentialLabels,
+  credentialFieldsRequired,
   getErrorMessage,
   getAllErrorMessages,
   hasError,

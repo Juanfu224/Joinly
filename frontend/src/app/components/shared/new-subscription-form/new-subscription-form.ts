@@ -4,20 +4,25 @@ import {
   computed,
   HostListener,
   inject,
+  OnInit,
   output,
   signal,
   viewChild,
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ButtonComponent } from '../button/button';
 import { FormCardComponent } from '../form-card/form-card';
 import { FormInputComponent } from '../form-input/form-input';
+import { FormArrayItemComponent } from '../form-array-item/form-array-item';
+import { CredentialInputGroupComponent } from '../credential-input-group/credential-input-group';
+import { IconComponent } from '../icon/icon';
 import { canSubmit, focusInput, shouldTriggerSubmit } from '../form-utils';
 import {
   getErrorMessage,
   precioMinimoPlaza,
-  requireBothOrNeither,
+  uniqueCredentialLabels,
+  credentialFieldsRequired,
 } from '../validators';
 
 interface NewSubscriptionFormValue {
@@ -25,20 +30,34 @@ interface NewSubscriptionFormValue {
   precioTotal: number;
   frecuencia: 'mensual' | 'anual';
   plazas: number;
-  password?: string;
-  usuario?: string;
+  credenciales: Array<{
+    tipo: string;
+    etiqueta: string;
+    valor: string;
+    password: string;
+    instrucciones: string;
+    visibleParaMiembros: boolean;
+  }>;
 }
 
 @Component({
   selector: 'app-new-subscription-form',
   standalone: true,
-  imports: [ReactiveFormsModule, FormInputComponent, FormCardComponent, ButtonComponent],
+  imports: [
+    ReactiveFormsModule,
+    FormInputComponent,
+    FormCardComponent,
+    ButtonComponent,
+    FormArrayItemComponent,
+    CredentialInputGroupComponent,
+    IconComponent,
+  ],
   templateUrl: './new-subscription-form.html',
   styleUrl: './new-subscription-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'c-new-subscription-form' },
 })
-export class NewSubscriptionFormComponent {
+export class NewSubscriptionFormComponent implements OnInit {
   private readonly fb = inject(FormBuilder).nonNullable;
 
   readonly isLoading = signal(false);
@@ -59,18 +78,55 @@ export class NewSubscriptionFormComponent {
       precioTotal: [null as number | null, [Validators.required, Validators.min(0.01), Validators.max(9999)]],
       frecuencia: ['mensual' as 'mensual' | 'anual', [Validators.required]],
       plazas: [null as number | null, [Validators.required, Validators.min(1), Validators.max(20)]],
-      usuario: [''],
-      password: [''],
+      credenciales: this.fb.array(
+        [],
+        [Validators.minLength(1), Validators.maxLength(10), uniqueCredentialLabels()]
+      ),
     },
     {
-      validators: [
-        precioMinimoPlaza(1),
-        requireBothOrNeither('usuario', 'password'),
-      ],
+      validators: [precioMinimoPlaza(1)],
     }
   );
 
+  /** Getter para acceder al FormArray de credenciales */
+  get credenciales(): FormArray {
+    return this.form.get('credenciales') as FormArray;
+  }
+
+  /** Crea un nuevo FormGroup de credencial */
+  private newCredencial(): FormGroup {
+    return this.fb.group(
+      {
+        tipo: ['USUARIO_PASSWORD', [Validators.required]],
+        etiqueta: ['', [Validators.required, Validators.maxLength(50)]],
+        valor: ['', [Validators.required]],
+        password: [''],
+        instrucciones: [''],
+        visibleParaMiembros: [true],
+      },
+      { validators: [credentialFieldsRequired()] }
+    );
+  }
+
+  /** Agrega una nueva credencial al array */
+  addCredencial(): void {
+    if (this.credenciales.length >= 10) return;
+    this.credenciales.push(this.newCredencial());
+  }
+
+  /** Elimina una credencial del array */
+  removeCredencial(index: number): void {
+    if (this.credenciales.length > 1) {
+      this.credenciales.removeAt(index);
+    }
+  }
+
   readonly isFormInvalid = computed(() => this.form.invalid);
+
+  ngOnInit(): void {
+    // Inicializar con una credencial por defecto
+    this.addCredencial();
+  }
 
   @HostListener('keydown', ['$event'])
   protected handleEnterKey(event: KeyboardEvent): void {
@@ -100,8 +156,7 @@ export class NewSubscriptionFormComponent {
       precioTotal: rawValue.precioTotal!,
       frecuencia: rawValue.frecuencia,
       plazas: rawValue.plazas!,
-      ...(rawValue.usuario && { usuario: rawValue.usuario }),
-      ...(rawValue.password && { password: rawValue.password }),
+      credenciales: rawValue.credenciales as NewSubscriptionFormValue['credenciales'],
     };
     
     this.submitted.emit(value);
@@ -109,6 +164,8 @@ export class NewSubscriptionFormComponent {
 
   onCancel(): void {
     this.form.reset({ frecuencia: 'mensual' });
+    this.credenciales.clear();
+    this.addCredencial();
     this.formError.set(null);
     this.cancelled.emit();
   }
@@ -144,17 +201,25 @@ export class NewSubscriptionFormComponent {
   }
 
   getFormErrorMessages(): string[] {
-    if (!this.form.errors) return [];
-
     const errors: string[] = [];
 
-    if (this.form.errors['precioMinimoPlaza']) {
+    if (this.form.errors?.['precioMinimoPlaza']) {
       const error = this.form.errors['precioMinimoPlaza'];
       errors.push(`Precio mínimo por persona: ${error.min}€ (actual: ${error.actual.toFixed(2)}€)`);
     }
 
-    if (this.form.errors['requireBothOrNeither']) {
-      errors.push('Completa ambos campos de credenciales o deja ambos vacíos');
+    const credencialesControl = this.form.get('credenciales');
+    if (credencialesControl?.errors?.['minlength']) {
+      errors.push('Debes agregar al menos una credencial');
+    }
+
+    if (credencialesControl?.errors?.['maxlength']) {
+      errors.push('Máximo 10 credenciales permitidas');
+    }
+
+    if (credencialesControl?.errors?.['duplicateLabels']) {
+      const duplicates = credencialesControl.errors['duplicateLabels'].duplicates;
+      errors.push(`Etiquetas duplicadas: ${duplicates.join(', ')}`);
     }
 
     return errors;

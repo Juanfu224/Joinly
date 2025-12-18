@@ -1,0 +1,76 @@
+@use '../../../../styles/01-tools/mixins' as *;
+@use '../../../../styles/00-settings/variables' as *;
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.c-form-array-item {
+  &__container {
+    @include formulario-fieldset;
+    position: relative;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--espaciado-3);
+    padding-bottom: var(--espaciado-2);
+    border-bottom: 1px solid var(--color-borde-base);
+  }
+
+  &__title {
+    font-size: var(--tamano-texto-grande);
+    font-weight: var(--peso-fuente-semi-negrita);
+    color: var(--color-texto-fuerte);
+    margin: 0;
+  }
+
+  &__remove {
+    display: flex;
+    align-items: center;
+    gap: var(--espaciado-1);
+    padding: var(--espaciado-1) var(--espaciado-2);
+    background-color: transparent;
+    border: 1px solid var(--color-error);
+    border-radius: var(--radio-pequeno);
+    color: var(--color-error);
+    font-size: var(--tamano-texto-pequeno);
+    font-weight: var(--peso-fuente-medio);
+    cursor: pointer;
+    transition: all var(--duracion-rapida) var(--transicion-estandar);
+
+    &:hover {
+      background-color: var(--color-error);
+      color: var(--color-blanco);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-error);
+      outline-offset: 2px;
+    }
+
+    app-icon {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+
+  &__remove-text {
+    @include responder-a('movil') {
+      display: inline;
+    }
+
+    @media (max-width: 479px) {
+      @include oculto-accesible;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaciado-3);
+  }
+}

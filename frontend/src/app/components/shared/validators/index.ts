@@ -27,6 +27,12 @@ export {
   minAge,
 } from './cross-field.validators';
 
+// Validadores de credenciales
+export {
+  uniqueCredentialLabels,
+  credentialFieldsRequired,
+} from './credential.validators';
+
 // Sistema de mensajes de error
 export {
   getErrorMessage,
