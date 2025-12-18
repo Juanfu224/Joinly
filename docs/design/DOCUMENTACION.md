@@ -30,6 +30,7 @@ Plataforma de gestión de suscripciones compartidas desarrollada con Angular 21,
   - [4.1 ThemeService](#41-themeservice)
   - [4.2 ModalService](#42-modalservice)
   - [4.3 AlertService](#43-alertservice)
+  - [4.4 Arquitectura de Servicios](#44-arquitectura-de-servicios)
 - [5. Arquitectura de Eventos](#5-arquitectura-de-eventos)
   - [5.1 Estrategias de Event Binding](#51-estrategias-de-event-binding)
   - [5.2 Manipulación del DOM](#52-manipulación-del-dom)
@@ -3001,6 +3002,156 @@ this.alertService.success('Guardado', 3000);
 // Cerrar alerta específica
 this.alertService.close(alertId);
 ```
+
+### 4.4 Arquitectura de Servicios
+
+#### 4.4.1 Diagrama de Arquitectura
+
+La arquitectura de servicios sigue un patrón jerárquico donde los servicios de dominio consumen servicios de infraestructura y emiten a servicios reactivos globales.
+
+```
+Componentes
+    │
+    ▼
+Servicios de Dominio (UserService, ProductService, SuscripcionService)
+    │
+    ├──────────────────────────────────────┐
+    ▼                                      ▼
+HttpService                    Servicios Reactivos Globales
+(peticiones HTTP)              (LoadingService, ToastService)
+    │                                      │
+    ▼                                      ▼
+HttpInterceptor                        Estado Global
+(headers, loading automático)              │
+                                           ▼
+                                         Vista
+```
+
+**Flujo de comunicación:** La comunicación fluye unidireccionalmente desde los componentes hacia los servicios, luego al estado global, y finalmente a la vista.
+
+#### 4.4.2 Patrones de Comunicación
+
+Se implementan cuatro patrones principales para lograr una comunicación desacoplada entre componentes y servicios:
+
+| Patrón | Implementación | Uso |
+|--------|----------------|-----|
+| **Observable/Subject** | `BehaviorSubject` en servicios de comunicación | Comunicación entre componentes hermanos y estado persistente |
+| **Servicio Singleton** | `providedIn: 'root'` | Estado global compartido (LoadingService, ToastService) |
+| **HttpInterceptor** | Interceptor de Angular | Loading automático y headers globales en peticiones |
+| **Signals + AsyncPipe** | `signal()` + `async` pipe | Estado reactivo local sin suscripciones manuales |
+
+**Ejemplo de Servicio Singleton:**
+
+```typescript
+@Injectable({ providedIn: 'root' })
+export class LoadingService {
+  private readonly _loading = signal(false);
+  readonly loading = this._loading.asReadonly();
+
+  show(): void { this._loading.set(true); }
+  hide(): void { this._loading.set(false); }
+}
+```
+
+**Ejemplo de BehaviorSubject:**
+
+```typescript
+@Injectable({ providedIn: 'root' })
+export class CommunicationService {
+  private readonly _selectedItem = new BehaviorSubject<Item | null>(null);
+  readonly selectedItem$ = this._selectedItem.asObservable();
+
+  selectItem(item: Item): void {
+    this._selectedItem.next(item);
+  }
+}
+```
+
+#### 4.4.3 Separación de Responsabilidades
+
+La arquitectura distingue claramente entre componentes y servicios:
+
+**Componentes (Dumb Components):**
+- Solo contienen templates y handlers que delegan a servicios
+- Utilizan signals locales para estado de UI
+- No realizan peticiones HTTP directas
+- No contienen lógica de validación compleja
+- No acceden directamente al estado global
+
+**Servicios (Smart Services):**
+- Contienen toda la lógica de negocio
+- Gestionan caching y orquestación de APIs
+- Realizan validaciones de datos
+- Exponen métodos puros y observables pipeados
+
+**Ejemplo de separación correcta:**
+
+```typescript
+// Componente - Solo delega a servicios
+@Component({ ... })
+export class UserListComponent {
+  users$ = this.userService.getUsers();
+  
+  constructor(private userService: UserService) {}
+  
+  onSave(user: User): void {
+    this.userService.save(user);
+  }
+}
+
+// Servicio - Contiene la lógica
+@Injectable({ providedIn: 'root' })
+export class UserService {
+  constructor(private http: HttpClient) {}
+  
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>('/api/users').pipe(
+      catchError(this.handleError)
+    );
+  }
+  
+  save(user: User): Observable<User> {
+    return this.http.post<User>('/api/users', user);
+  }
+}
+```
+
+#### 4.4.4 Estructura de Carpetas por Feature
+
+La organización del código sigue una estructura modular por funcionalidad:
+
+```
+src/app/
+├── features/
+│   ├── user/
+│   │   ├── user.component.ts
+│   │   ├── user.component.html
+│   │   └── user.service.ts
+│   ├── suscripcion/
+│   │   ├── suscripcion.component.ts
+│   │   └── suscripcion.service.ts
+│   └── unidad-familiar/
+│       ├── unidad-familiar.component.ts
+│       └── unidad-familiar.service.ts
+├── shared/
+│   ├── services/
+│   │   ├── loading.service.ts
+│   │   ├── toast.service.ts
+│   │   └── http.service.ts
+│   └── components/
+│       ├── spinner/
+│       └── toast/
+└── core/
+    ├── interceptors/
+    │   └── http.interceptor.ts
+    └── guards/
+```
+
+Esta estructura facilita:
+- **Escalabilidad:** Cada feature es independiente y puede crecer sin afectar a otras
+- **Mantenibilidad:** Los cambios en una feature están localizados
+- **Onboarding:** Nuevos desarrolladores pueden entender rápidamente la organización
+- **Testing:** Cada módulo puede probarse de forma aislada
 
 ---
 
