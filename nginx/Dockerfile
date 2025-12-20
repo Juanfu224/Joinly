@@ -51,7 +51,8 @@ COPY nginx/nginx.conf /etc/nginx/nginx.conf.template
 
 # Copiar script de entrada
 COPY nginx/docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh && \
+    chown -R joinly:joinly /etc/nginx/
 
 # Copiar archivos compilados de Angular
 COPY --from=builder --chown=joinly:joinly /app/dist/joinly/browser /usr/share/nginx/html
