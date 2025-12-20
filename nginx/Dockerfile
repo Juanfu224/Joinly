@@ -46,8 +46,12 @@ RUN addgroup -g 1001 -S joinly && \
     mkdir -p /usr/share/nginx/html && \
     chown -R joinly:joinly /usr/share/nginx/html
 
-# Copiar configuración de Nginx
-COPY nginx/nginx.conf /etc/nginx/nginx.conf
+# Copiar configuración de Nginx como template
+COPY nginx/nginx.conf /etc/nginx/nginx.conf.template
+
+# Copiar script de entrada
+COPY nginx/docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
 # Copiar archivos compilados de Angular
 COPY --from=builder --chown=joinly:joinly /app/dist/joinly/browser /usr/share/nginx/html
@@ -65,5 +69,6 @@ EXPOSE 80 443
 HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
     CMD curl -f http://localhost/ || exit 1
 
-# Comando
+# Entrypoint y comando
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
