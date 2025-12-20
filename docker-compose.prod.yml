@@ -106,42 +106,13 @@ services:
     #   - "8080:8080"
 
   # ===========================================================================
-  # Frontend - Angular
-  # ===========================================================================
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    image: joinly-frontend:${APP_VERSION:-latest}
-    container_name: joinly-frontend-prod
-    restart: always
-    environment:
-      TZ: Europe/Madrid
-    networks:
-      - joinly-internal
-    depends_on:
-      - backend
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4200/"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-        reservations:
-          memory: 64M
-    # No exponer puerto externamente (nginx hace proxy)
-    # ports:
-    #   - "4200:4200"
-
-  # ===========================================================================
-  # Nginx - Reverse Proxy + SSL
+  # Nginx - Reverse Proxy + Frontend SPA Server
   # ===========================================================================
   nginx:
-    image: nginx:alpine
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    image: joinly-nginx:${APP_VERSION:-latest}
     container_name: joinly-nginx-prod
     restart: always
     ports:
@@ -151,8 +122,6 @@ services:
       DOMAIN: ${DOMAIN}
       TZ: Europe/Madrid
     volumes:
-      - ./nginx/nginx-initial.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/50x.html:/etc/nginx/html/50x.html:ro
       - certbot_conf:/etc/letsencrypt:ro
       - certbot_www:/var/www/certbot:ro
       - nginx_logs:/var/log/nginx
@@ -160,8 +129,6 @@ services:
       - joinly-internal
       - joinly-external
     depends_on:
-      frontend:
-        condition: service_healthy
       backend:
         condition: service_healthy
     healthcheck:
@@ -173,10 +140,9 @@ services:
     deploy:
       resources:
         limits:
-          memory: 128M
+          memory: 256M
         reservations:
-          memory: 32M
-    # Usar configuración simple sin sustitución
+          memory: 64M
     command: nginx -g "daemon off;"
 
   # ===========================================================================
