@@ -78,7 +78,7 @@ EXPOSE 4200
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
-    CMD wget -q --spider http://localhost:4200/health || exit 1
+    CMD wget -q --spider http://localhost:4200/ || exit 1
 
 # Comando de inicio
 CMD ["nginx", "-g", "daemon off;"]
