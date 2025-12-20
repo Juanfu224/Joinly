@@ -396,10 +396,63 @@ Joinly fue desarrollado como proyecto final para demostrar competencias en:
 
 ---
 
+## � Despliegue en Producción
+
+### Despliegue Rápido (Un Solo Comando)
+
+Para desplegar la aplicación en un VPS:
+
+```bash
+# Opción 1: Desde tu máquina local
+./scripts/quick-deploy.sh root@159.89.1.100
+
+# Opción 2: Directamente en el servidor
+ssh root@159.89.1.100
+curl -sSL https://raw.githubusercontent.com/Juanfu224/Joinly/main/scripts/quick-deploy.sh | bash
+```
+
+### Requisitos del Servidor VPS
+
+- **Sistema Operativo:** Ubuntu 22.04+ o 24.04 LTS
+- **Recursos:** Mínimo 2GB RAM, 1 CPU, 25GB disco
+- **Acceso:** SSH habilitado (puerto 22)
+- **Puertos:** 22, 80, 443 abiertos
+
+### Qué hace el script automáticamente:
+
+✅ Instala Docker y Docker Compose  
+✅ Configura firewall (UFW)  
+✅ Crea usuario de aplicación  
+✅ Clona el repositorio  
+✅ Genera credenciales seguras  
+✅ Construye y despliega contenedores  
+✅ Configura health checks  
+
+### Después del Despliegue
+
+Tu aplicación estará disponible en:
+- **Frontend:** `http://159.89.1.100`
+- **API:** `http://159.89.1.100/api`
+- **Swagger:** `http://159.89.1.100/swagger-ui/`
+
+### Configurar HTTPS (Opcional)
+
+Si tienes un dominio:
+
+```bash
+# 1. Configurar DNS A record apuntando a 159.89.1.100
+# 2. Actualizar .env.prod con tu dominio
+# 3. Ejecutar:
+./scripts/init-ssl.sh
+```
+
+---
+
 ## 📖 Documentación Adicional
 
-- **[🚀 Quick Start Producción](docs/QUICKSTART.md)** - Despliegue rápido en 15 minutos
-- **[📘 Guía Completa de Despliegue](docs/DEPLOYMENT.md)** - Despliegue detallado en Digital Ocean
+- **[🚀 Despliegue Rápido](docs/QUICKSTART_DEPLOY.md)** - Guía de despliegue en 5 minutos
+- **[🔑 Configurar SSH en VPS](docs/SSH_SETUP.md)** - Habilitar acceso SSH
+- **[📘 Guía Completa de Despliegue](docs/DEPLOYMENT.md)** - Despliegue detallado paso a paso
 - **[📊 Monitoreo y Observabilidad](docs/MONITORING.md)** - Guía de monitoreo y logs
 - **[⚙️ Variables de Entorno](docs/ENV_CONFIG.md)** - Configuración de variables
 - **[🎨 Buenas Prácticas CSS](docs/buenas_practicas/)** - Arquitectura CSS del proyecto
