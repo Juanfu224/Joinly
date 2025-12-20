@@ -32,9 +32,7 @@ RUN ./mvnw dependency:go-offline -B
 COPY src src
 
 # Compilar aplicación (skip tests - se ejecutan en CI/CD)
-RUN ./mvnw package -DskipTests -B && \
-    # Extraer capas para optimizar imagen final
-    java -Djarmode=tools -jar target/*.jar extract --layers --destination extracted
+RUN ./mvnw package -DskipTests -B
 
 # -----------------------------------------------------------------------------
 # Stage 2: Runtime
@@ -47,7 +45,8 @@ LABEL maintainer="Joinly Team" \
       description="Joinly Backend API - Spring Boot 4"
 
 # Variables de entorno por defecto
-ENV JAVA_OPTS="-XX:+UseZGC -XX:+ZGenerational -Xms256m -Xmx512m" \
+# Nota: ZGC está disponible en Java 11+, ZGenerational requiere Java 21+ (removido en 24+)
+ENV JAVA_OPTS="-XX:+UseZGC -Xms256m -Xmx512m -XX:+ExitOnOutOfMemoryError" \
     SPRING_PROFILES_ACTIVE="prod" \
     SERVER_PORT="8080" \
     TZ="Europe/Madrid"
@@ -65,11 +64,8 @@ RUN apk add --no-cache \
 
 WORKDIR /app
 
-# Copiar capas extraídas (orden optimizado para caché)
-COPY --from=builder --chown=joinly:joinly /app/extracted/dependencies/ ./
-COPY --from=builder --chown=joinly:joinly /app/extracted/spring-boot-loader/ ./
-COPY --from=builder --chown=joinly:joinly /app/extracted/snapshot-dependencies/ ./
-COPY --from=builder --chown=joinly:joinly /app/extracted/application/ ./
+# Copiar JAR compilado (el nombre es joinly-version.jar según el pom.xml)
+COPY --from=builder --chown=joinly:joinly /app/target/joinly-*.jar ./app.jar
 
 # Cambiar a usuario no-root
 USER joinly
@@ -82,4 +78,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD curl -f http://localhost:8080/actuator/health || exit 1
 
 # Punto de entrada optimizado para Spring Boot
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS org.springframework.boot.loader.launch.JarLauncher"]
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app/app.jar"]

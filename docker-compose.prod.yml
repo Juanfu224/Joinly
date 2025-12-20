@@ -73,10 +73,9 @@ services:
       ENCRYPTION_KEY: ${ENCRYPTION_KEY}
       # CORS
       CORS_ALLOWED_ORIGIN: https://${DOMAIN}
-      # Java options
+      # Java options (ZGenerational solo en Java 21-23, removido en 24+)
       JAVA_OPTS: >-
         -XX:+UseZGC
-        -XX:+ZGenerational
         -Xms512m
         -Xmx1g
         -XX:+ExitOnOutOfMemoryError
