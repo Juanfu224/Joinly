@@ -4,7 +4,7 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./pages/style-guide/style-guide').then((m) => m.StyleGuideComponent),
+      import('./pages/style-guide').then((m) => m.StyleGuideComponent),
     title: 'Guía de Estilos - Joinly',
   },
   {
