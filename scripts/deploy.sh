@@ -96,6 +96,13 @@ check_requirements() {
         exit 1
     fi
 
+    # Crear enlace simbólico .env -> .env.prod si no existe
+    # Docker Compose busca .env por defecto
+    if [ ! -f ".env" ] && [ ! -L ".env" ]; then
+        log_info "Creando enlace simbólico .env -> .env.prod"
+        ln -sf .env.prod .env
+    fi
+
     # Verificar variables críticas
     source "$ENV_FILE"
     
