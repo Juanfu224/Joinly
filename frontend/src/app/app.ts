@@ -11,7 +11,7 @@ import { LoadingService } from './services/loading';
 
 /**
  * Componente raíz de la aplicación Joinly.
- * Configurado para mostrar únicamente la Style Guide sin layout adicional.
+ * Versión simplificada que muestra solo la Style Guide.
  * 
  * @remarks
  * Inicializa servicios globales como ThemeService en el constructor.
