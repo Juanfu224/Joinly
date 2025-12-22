@@ -6,21 +6,26 @@ import {
   ToastContainerComponent,
   SpinnerOverlayComponent,
 } from './components/shared';
+import { HeaderComponent } from './layout/header/header';
+import { FooterComponent } from './layout/footer/footer';
 import { ThemeService } from './services/theme';
 import { LoadingService } from './services/loading';
 
 /**
  * Componente raíz de la aplicación Joinly.
- * Versión simplificada que muestra solo la Style Guide.
+ * Proporciona la estructura principal con header, main y footer.
  * 
  * @remarks
  * Inicializa servicios globales como ThemeService en el constructor.
+ * Estructura semántica HTML5 completa (header, main, footer).
  */
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     RouterOutlet,
+    HeaderComponent,
+    FooterComponent,
     AlertContainerComponent,
     ModalComponent,
     ToastContainerComponent,
