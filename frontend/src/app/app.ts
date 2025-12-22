@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HeaderComponent, MainComponent, FooterComponent } from './layout';
 import {
   AlertContainerComponent,
   ModalComponent,
@@ -12,7 +11,7 @@ import { LoadingService } from './services/loading';
 
 /**
  * Componente raíz de la aplicación Joinly.
- * Estructura semántica con Header, Main y Footer.
+ * Configurado para mostrar únicamente la Style Guide sin layout adicional.
  * 
  * @remarks
  * Inicializa servicios globales como ThemeService en el constructor.
@@ -22,9 +21,6 @@ import { LoadingService } from './services/loading';
   standalone: true,
   imports: [
     RouterOutlet,
-    HeaderComponent,
-    MainComponent,
-    FooterComponent,
     AlertContainerComponent,
     ModalComponent,
     ToastContainerComponent,

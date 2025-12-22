@@ -6,32 +6,19 @@
   - Footer: información legal y enlaces secundarios
 -->
 
-<!-- Skip link para accesibilidad (navegación por teclado) -->
-<a href="#contenido-principal" class="c-skip-link">
-  Saltar al contenido principal
-</a>
+<!-- Contenido principal (solo router-outlet para mostrar únicamente la Style Guide) -->
+<router-outlet />
 
-<!-- Cabecera de la aplicación -->
-<app-header />
-
-<!-- Contenido principal (proyecta el router-outlet) -->
-<app-main>
-  <router-outlet />
-</app-main>
-
-<!-- Pie de página -->
-<app-footer />
-
-<!-- Contenedor de alertas (esquina superior derecha) -->
+<!-- Contenedor de alertas -->
 <app-alert-container />
 
-<!-- Contenedor de toasts (esquina superior derecha, debajo del header) -->
+<!-- Contenedor de toasts -->
 <app-toast-container />
 
-<!-- Modal global (gestionado por ModalService) -->
+<!-- Modal global -->
 <app-modal />
 
-<!-- Spinner overlay global (gestionado por LoadingService) -->
+<!-- Spinner overlay global -->
 @if (loadingService.isLoading()) {
   <app-spinner-overlay />
 }
