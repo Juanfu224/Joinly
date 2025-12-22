@@ -4,12 +4,13 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./pages/style-guide').then((m) => m.StyleGuideComponent),
-    title: 'Guía de Estilos - Joinly',
+      import('./pages/test').then((m) => m.TestComponent),
+    title: 'Test - Joinly',
   },
   {
     path: 'style-guide',
-    redirectTo: '',
-    pathMatch: 'full',
+    loadComponent: () =>
+      import('./pages/style-guide').then((m) => m.StyleGuideComponent),
+    title: 'Guía de Estilos - Joinly',
   },
 ];
