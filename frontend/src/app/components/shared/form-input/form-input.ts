@@ -10,6 +10,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { generateShortId } from '../../../utils/uuid';
 
 type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search';
 
@@ -48,7 +49,7 @@ export class FormInputComponent implements ControlValueAccessor {
   readonly showSuccess = input<boolean>(false);
   readonly successMessage = input<string>('¡Campo válido!');
 
-  private readonly generatedId = `form-input-${crypto.randomUUID().slice(0, 8)}`;
+  private readonly generatedId = generateShortId('form-input');
 
   readonly computedId = computed(() => this.inputId() || this.generatedId);
   readonly helpTextId = computed(() => `${this.computedId()}-help`);

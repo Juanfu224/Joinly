@@ -7,6 +7,7 @@ import {
   Renderer2,
   inject,
 } from '@angular/core';
+import { generateShortId } from '../../../utils/uuid';
 
 export type TooltipPosition = 'top' | 'bottom' | 'left' | 'right';
 
@@ -78,7 +79,7 @@ export class TooltipDirective implements OnDestroy {
   /**
    * ID único para vinculación ARIA
    */
-  private readonly tooltipId = `tooltip-${crypto.randomUUID().slice(0, 8)}`;
+  private readonly tooltipId = generateShortId('tooltip');
 
   /**
    * Espaciado entre el tooltip y el elemento (en píxeles)

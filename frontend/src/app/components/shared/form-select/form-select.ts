@@ -12,6 +12,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { IconComponent } from '../icon/icon';
+import { generateShortId } from '../../../utils/uuid';
 
 export interface SelectOption {
   value: string | number;
@@ -45,7 +46,7 @@ export class FormSelectComponent implements ControlValueAccessor {
   readonly helpText = input<string>('');
   readonly errorMessage = input<string>('');
 
-  private readonly generatedId = `form-select-${crypto.randomUUID().slice(0, 8)}`;
+  private readonly generatedId = generateShortId('form-select');
 
   readonly computedId = computed(() => this.inputId() || this.generatedId);
   readonly helpTextId = computed(() => `${this.computedId()}-help`);

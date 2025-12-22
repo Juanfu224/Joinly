@@ -4,6 +4,7 @@ import {
   input,
   signal,
 } from '@angular/core';
+import { generateShortId } from '../../../utils/uuid';
 
 /**
  * Componente Tab - Panel de contenido individual dentro de un sistema de pestañas.
@@ -12,7 +13,7 @@ import {
  * - Signal para controlar visibilidad del contenido
  * - Transiciones CSS suaves (fade in/out)
  * - Atributos ARIA completos para accesibilidad
- * - IDs únicos generados con crypto.randomUUID()
+ * - IDs únicos generados automáticamente
  *
  * @usageNotes
  * ```html
@@ -58,8 +59,8 @@ export class TabComponent {
    * IDs únicos para vinculación ARIA entre tab y panel.
    * Generados automáticamente para garantizar unicidad.
    */
-  readonly tabId = `tab-${crypto.randomUUID().slice(0, 8)}`;
-  readonly panelId = `tabpanel-${crypto.randomUUID().slice(0, 8)}`;
+  readonly tabId = generateShortId('tab');
+  readonly panelId = generateShortId('tabpanel');
 
   /**
    * Activa este tab (llamado por el componente padre Tabs)

@@ -11,6 +11,7 @@ import {
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { generateShortId } from '../../../utils/uuid';
 
 @Component({
   selector: 'app-form-checkbox',
@@ -36,7 +37,7 @@ export class FormCheckboxComponent implements ControlValueAccessor {
   readonly helpText = input<string>('');
   readonly errorMessage = input<string>('');
 
-  private readonly generatedId = `form-checkbox-${crypto.randomUUID().slice(0, 8)}`;
+  private readonly generatedId = generateShortId('form-checkbox');
 
   readonly computedId = computed(() => this.inputId() || this.generatedId);
   readonly helpTextId = computed(() => `${this.computedId()}-help`);

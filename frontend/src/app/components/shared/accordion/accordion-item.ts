@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 import { IconComponent } from '../icon/icon';
 import type { AccordionComponent } from './accordion';
+import { generateShortId } from '../../../utils/uuid';
 
 /**
  * Componente AccordionItem - Item individual expandible/colapsable.
@@ -23,7 +24,7 @@ import type { AccordionComponent } from './accordion';
  * - Cálculo automático de altura con scrollHeight
  * - Navegación con teclado (Enter, Space)
  * - Atributos ARIA completos para accesibilidad
- * - IDs únicos generados con crypto.randomUUID()
+ * - IDs únicos generados automáticamente
  *
  * @usageNotes
  * ```html
@@ -96,8 +97,8 @@ export class AccordionItemComponent implements AfterViewInit {
   /**
    * IDs únicos para vinculación ARIA
    */
-  protected readonly headerId = `accordion-header-${crypto.randomUUID().slice(0, 8)}`;
-  protected readonly contentId = `accordion-content-${crypto.randomUUID().slice(0, 8)}`;
+  protected readonly headerId = generateShortId('accordion-header');
+  protected readonly contentId = generateShortId('accordion-content');
 
   /**
    * Referencia al componente padre (Accordion)

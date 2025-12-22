@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommunicationService } from '@services/communication';
 import { AlertService } from '@services/alert';
 import { ButtonComponent } from '../button/button';
+import { generateUUID } from '../../../utils/uuid';
 
 /**
  * Componente emisor de ejemplo para demostrar comunicación entre hermanos.
@@ -105,7 +106,7 @@ export class NotificationSenderComponent {
    */
   protected simulateLogin(): void {
     this.commService.updateUserState({
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       name: 'Juan Pérez',
       email: 'juan.perez@example.com',
       isAuthenticated: true,

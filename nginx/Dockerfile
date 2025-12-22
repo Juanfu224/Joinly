@@ -44,7 +44,9 @@ RUN addgroup -g 1001 -S joinly && \
     chown -R joinly:joinly /var/log/nginx && \
     chown -R joinly:joinly /var/run && \
     mkdir -p /usr/share/nginx/html && \
-    chown -R joinly:joinly /usr/share/nginx/html
+    chown -R joinly:joinly /usr/share/nginx/html && \
+    mkdir -p /etc/nginx/ssl && \
+    chown -R joinly:joinly /etc/nginx/ssl
 
 # Copiar configuración de Nginx como template
 COPY nginx/nginx.conf /etc/nginx/nginx.conf.template

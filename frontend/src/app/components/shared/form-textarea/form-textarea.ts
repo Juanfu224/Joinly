@@ -1,3 +1,4 @@
+import { generateShortId } from '../../../utils/uuid';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -39,7 +40,7 @@ export class FormTextareaComponent implements ControlValueAccessor {
   readonly helpText = input<string>('');
   readonly errorMessage = input<string>('');
 
-  private readonly generatedId = `form-textarea-${crypto.randomUUID().slice(0, 8)}`;
+  private readonly generatedId = generateShortId('form-textarea');
 
   readonly computedId = computed(() => this.inputId() || this.generatedId);
   readonly helpTextId = computed(() => `${this.computedId()}-help`);

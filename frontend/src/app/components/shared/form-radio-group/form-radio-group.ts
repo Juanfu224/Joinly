@@ -11,6 +11,7 @@ import {
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { generateShortId } from '../../../utils/uuid';
 
 export interface RadioOption {
   value: string | number;
@@ -44,7 +45,7 @@ export class FormRadioGroupComponent implements ControlValueAccessor {
   readonly errorMessage = input<string>('');
   readonly inline = input<boolean>(false);
 
-  private readonly generatedGroupId = `form-radio-${crypto.randomUUID().slice(0, 8)}`;
+  private readonly generatedGroupId = generateShortId('form-radio');
 
   readonly computedGroupId = computed(() => this.groupId() || this.generatedGroupId);
   readonly helpTextId = computed(() => `${this.computedGroupId()}-help`);

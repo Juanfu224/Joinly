@@ -125,6 +125,7 @@ services:
       - certbot_conf:/etc/letsencrypt:ro
       - certbot_www:/var/www/certbot:ro
       - nginx_logs:/var/log/nginx
+      - ./ssl:/etc/nginx/ssl:ro
     networks:
       - joinly-internal
       - joinly-external
