@@ -1,0 +1,32 @@
+<article class="c-group-card">
+  <!-- Contenedor de sombras (diseño Figma) -->
+  <div class="c-group-card__sombras"></div>
+
+  <!-- Header: Nombre del grupo y contador de miembros -->
+  <header class="c-group-card__header">
+    <h3 class="c-group-card__nombre">{{ grupo().nombre }}</h3>
+    <div class="c-group-card__miembros">
+      <app-icon name="users" size="sm" />
+      <span class="c-group-card__miembros-count">{{ grupo().totalMiembros }}</span>
+    </div>
+  </header>
+
+  <!-- Información de suscripciones -->
+  <section class="c-group-card__content">
+    <h4 class="c-group-card__label">Suscripciones</h4>
+    <p class="c-group-card__suscripciones">
+      {{ grupo().suscripciones || 'Ninguna' }}
+    </p>
+  </section>
+
+  <!-- Botón de acción -->
+  <footer class="c-group-card__footer">
+    <app-button 
+      variant="purple" 
+      size="sm"
+      leftIcon="add"
+      (click)="handleInvite()">
+      Invitar
+    </app-button>
+  </footer>
+</article>

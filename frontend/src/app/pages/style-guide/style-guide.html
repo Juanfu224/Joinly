@@ -500,41 +500,48 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
     </section>
 
     <!-- ===================================================================
-         SECCIÓN: TARJETAS DE LISTA
+         SECCIÓN: TARJETAS DE GRUPOS
          =================================================================== -->
-    <section class="p-style-guide__seccion" aria-labelledby="titulo-list">
+    <section class="p-style-guide__seccion" aria-labelledby="titulo-grupos">
       <div class="p-style-guide__seccion-encabezado">
-        <h2 id="titulo-list" class="p-style-guide__subtitulo">Tarjetas de Lista</h2>
+        <h2 id="titulo-grupos" class="p-style-guide__subtitulo">Tarjetas de Grupos</h2>
         <p class="p-style-guide__nota">
-          Tarjetas de lista con metadata y acciones. Uso: listados de suscripciones y grupos.
+          Tarjetas especializadas para mostrar grupos familiares. Incluye nombre, contador de miembros,
+          suscripciones y botón de invitar. Diseño según Figma con sombras combinadas.
         </p>
       </div>
 
       <div class="p-style-guide__demo">
-        <div class="p-style-guide__rejilla p-style-guide__rejilla--2col">
-          <app-card variant="list">
-            <h4 slot="title">Netflix Premium</h4>
-            <p slot="metadata">4,25€ · Renueva el 15/01/26</p>
-            <span slot="badge" class="c-card-badge">
-              <app-icon name="user" size="sm" />
-              4
-            </span>
-            <app-button slot="action" variant="purple" size="sm">Disponible</app-button>
-          </app-card>
-
-          <app-card variant="list">
-            <h4 slot="title">Familia García</h4>
-            <p slot="metadata">3 suscripciones activas</p>
-            <span slot="badge" class="c-card-badge">
-              <app-icon name="users" size="sm" />
-              6
-            </span>
-            <app-button slot="action" variant="purple" size="sm">
-              <app-icon name="add" size="xs" />
-              Invitar
-            </app-button>
-          </app-card>
+        <h3 class="p-style-guide__demo-titulo">Tarjetas de grupo con datos</h3>
+        <div class="p-style-guide__rejilla p-style-guide__rejilla--grupos">
+          @for (grupo of gruposEjemplo; track grupo.id) {
+            <app-group-card 
+              [grupo]="grupo"
+              (invite)="handleGroupInvite(grupo.id)" />
+          }
         </div>
+      </div>
+
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Estado vacío</h3>
+        <p class="p-style-guide__descripcion">
+          Componente que se muestra cuando el usuario no tiene grupos creados.
+          Incluye icono circular, mensaje y descripción centrados.
+        </p>
+        <app-empty-groups />
+      </div>
+
+      <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4);">
+        <strong>Características de las tarjetas de grupos:</strong>
+        <ul style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc;">
+          <li>✅ <strong>Diseño Figma</strong>: Sombras combinadas (sombra 1 + sombra 3)</li>
+          <li>✅ <strong>HTML Semántico</strong>: Uso de article, header, section, footer</li>
+          <li>✅ <strong>Efecto hover</strong>: Elevación suave con translateY</li>
+          <li>✅ <strong>Ancho máximo</strong>: 359px según diseño</li>
+          <li>✅ <strong>OnPush detection</strong>: Rendimiento optimizado</li>
+          <li>✅ <strong>Signals</strong>: Input signals para reactividad</li>
+          <li>✅ <strong>Evento invite</strong>: Output para gestionar invitaciones</li>
+        </ul>
       </div>
     </section>
 

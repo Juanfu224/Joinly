@@ -25,10 +25,13 @@ import {
   AccordionItemComponent,
   TabsComponent,
   TabComponent,
+  GroupCardComponent,
+  EmptyGroupsComponent,
   type SelectOption,
   type RadioOption,
   type BreadcrumbItem,
 } from '../../components/shared';
+import type { GrupoCardData } from '../../models/grupo.model';
 import { ModalService } from '../../services/modal';
 import { ThemeService, type Theme } from '../../services/theme';
 
@@ -78,6 +81,8 @@ import { ThemeService, type Theme } from '../../services/theme';
     AccordionItemComponent,
     TabsComponent,
     TabComponent,
+    GroupCardComponent,
+    EmptyGroupsComponent,
   ],
   templateUrl: './style-guide.html',
   styleUrl: './style-guide.scss',
@@ -181,6 +186,31 @@ export class StyleGuideComponent {
     { size: 'md', label: 'Mediano (48px)' },
     { size: 'lg', label: 'Grande (64px)' },
   ] as const;
+
+  /**
+   * Datos de ejemplo para tarjetas de grupos.
+   * Simula grupos familiares con diferentes configuraciones.
+   */
+  protected readonly gruposEjemplo: GrupoCardData[] = [
+    {
+      id: 1,
+      nombre: 'Familia García',
+      totalMiembros: 6,
+      suscripciones: 'Netflix, Spotify, Disney+',
+    },
+    {
+      id: 2,
+      nombre: 'Amigos del piso',
+      totalMiembros: 4,
+      suscripciones: 'HBO Max, Prime Video',
+    },
+    {
+      id: 3,
+      nombre: 'Compañeros de trabajo',
+      totalMiembros: 3,
+      suscripciones: null,
+    },
+  ];
 
   // =========================================================================
   // ESTADO REACTIVO CON SIGNALS
@@ -342,6 +372,14 @@ export class StyleGuideComponent {
    */
   protected onJoinGroupSubmit(data: { codigo: string }): void {
     console.log('[StyleGuide] Join group submit:', data);
+  }
+
+  /**
+   * Maneja el evento de invitar a grupo.
+   * Demuestra el output del componente GroupCard.
+   */
+  protected handleGroupInvite(groupId: number): void {
+    console.log('[StyleGuide] Invitar al grupo:', groupId);
   }
 
   /**

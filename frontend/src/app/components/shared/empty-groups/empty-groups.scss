@@ -1,0 +1,94 @@
+@use '../../../../styles/01-tools/mixins' as *;
+
+// ==========================================================================
+// COMPONENTE: EMPTY-GROUPS (Estado vacío de grupos)
+// ==========================================================================
+// Estado vacío que se muestra cuando el usuario no tiene grupos
+// Diseño basado en Figma con icono circular y texto centrado
+
+:host {
+  display: block;
+}
+
+.c-empty-groups {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espaciado-3);
+  background-color: var(--color-blanco);
+  border-radius: var(--radio-grande);
+  padding: var(--espaciado-8) var(--espaciado-4);
+  min-block-size: 379px;
+  inline-size: 100%;
+
+  // ==========================================================================
+  // ELEMENTO: Sombras (según diseño Figma)
+  // ==========================================================================
+
+  &__sombras {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radio-grande);
+    // Combinación de sombra 1 + sombra 3 según Figma
+    box-shadow: 
+      0 2px 6px 0 rgba(20, 20, 43, 0.06),
+      0 8px 28px 0 rgba(20, 20, 43, 0.1);
+    pointer-events: none;
+  }
+
+  // ==========================================================================
+  // ELEMENTO: Contenedor de icono circular
+  // ==========================================================================
+
+  &__icon-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 32px;
+    block-size: 32px;
+    background-color: var(--color-gris-oscuro);
+    border-radius: 50%;
+    // Sombras del botón según Figma
+    box-shadow: 
+      0 4px 6px -4px rgba(156, 163, 175, 0.3),
+      0 10px 15px -3px rgba(156, 163, 175, 0.3);
+    
+    app-icon {
+      color: var(--color-blanco);
+    }
+  }
+
+  // ==========================================================================
+  // ELEMENTO: Título
+  // ==========================================================================
+
+  &__titulo {
+    position: relative;
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-h4);
+    font-weight: var(--peso-fuente-semi-negrita);
+    line-height: var(--altura-linea-h4);
+    color: var(--color-texto-oscuro);
+    text-align: center;
+    margin: 0;
+  }
+
+  // ==========================================================================
+  // ELEMENTO: Descripción
+  // ==========================================================================
+
+  &__descripcion {
+    position: relative;
+    max-inline-size: 320px;
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-texto-normal);
+    font-weight: var(--peso-fuente-regular);
+    line-height: var(--altura-linea-normal);
+    color: var(--color-texto-normal);
+    text-align: center;
+    margin: 0;
+  }
+}

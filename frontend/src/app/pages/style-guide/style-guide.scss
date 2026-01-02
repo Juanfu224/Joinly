@@ -193,6 +193,18 @@
   }
 }
 
+// Variante: Tarjetas de grupos (auto-fill para ajuste orgánico)
+.p-style-guide__rejilla--grupos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 359px));
+  gap: var(--espaciado-4);
+  justify-content: start;
+
+  @include responder-a('tablet') {
+    gap: var(--espaciado-5);
+  }
+}
+
 // ---------------------------------------------------------------------------
 // GRUPOS DE ELEMENTOS
 // ---------------------------------------------------------------------------

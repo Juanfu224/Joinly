@@ -1,0 +1,132 @@
+@use '../../../../styles/01-tools/mixins' as *;
+
+// ==========================================================================
+// COMPONENTE: GROUP-CARD (Tarjeta de Grupo)
+// ==========================================================================
+// Tarjeta que muestra información resumida de un grupo familiar
+// Diseño basado en Figma: sombras, espaciado y tipografía consistentes
+
+:host {
+  display: block;
+}
+
+.c-group-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-2);
+  background-color: var(--color-blanco);
+  border-radius: var(--radio-grande);
+  padding: var(--espaciado-3);
+  min-block-size: 160px;
+  inline-size: 100%;
+  max-inline-size: 359px;
+
+  // Transición suave
+  transition: 
+    transform var(--duracion-base) var(--transicion-estandar),
+    box-shadow var(--duracion-base) var(--transicion-estandar);
+
+  // Estado hover
+  &:hover {
+    transform: translateY(-2px);
+
+    .c-group-card__sombras {
+      opacity: 0.8;
+    }
+  }
+
+  // ==========================================================================
+  // ELEMENTO: Sombras (según diseño Figma)
+  // ==========================================================================
+
+  &__sombras {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radio-grande);
+    // Combinación de sombra 1 + sombra 3 según Figma
+    box-shadow: 
+      0 2px 6px 0 rgba(20, 20, 43, 0.06),
+      0 8px 28px 0 rgba(20, 20, 43, 0.1);
+    pointer-events: none;
+    transition: opacity var(--duracion-base) var(--transicion-estandar);
+  }
+
+  // ==========================================================================
+  // ELEMENTO: Header (Nombre + Miembros)
+  // ==========================================================================
+
+  &__header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--espaciado-2);
+  }
+
+  &__nombre {
+    flex: 1;
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-h4);
+    font-weight: var(--peso-fuente-semi-negrita);
+    line-height: var(--altura-linea-h4);
+    color: var(--color-texto-oscuro);
+    margin: 0;
+  }
+
+  &__miembros {
+    display: flex;
+    align-items: center;
+    gap: var(--espaciado-1);
+    flex-shrink: 0;
+  }
+
+  &__miembros-count {
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-texto-grande);
+    font-weight: var(--peso-fuente-regular);
+    line-height: 1.6;
+    color: var(--color-texto-oscuro);
+  }
+
+  // ==========================================================================
+  // ELEMENTO: Content (Suscripciones)
+  // ==========================================================================
+
+  &__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaciado-1);
+    flex: 1;
+  }
+
+  &__label {
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-texto-normal);
+    font-weight: var(--peso-fuente-regular);
+    line-height: var(--altura-linea-normal);
+    color: var(--color-texto-normal);
+    margin: 0;
+  }
+
+  &__suscripciones {
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-texto-pequeno);
+    font-weight: var(--peso-fuente-regular);
+    line-height: 1.33;
+    color: var(--color-texto-normal);
+    margin: 0;
+  }
+
+  // ==========================================================================
+  // ELEMENTO: Footer (Botón de acción)
+  // ==========================================================================
+
+  &__footer {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+}

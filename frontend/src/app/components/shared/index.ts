@@ -77,3 +77,5 @@ export { NotificationReceiverComponent } from './notification-receiver/notificat
 export { ToastComponent } from './toast/toast';
 export { ToastContainerComponent } from './toast-container/toast-container';
 export { SpinnerOverlayComponent } from './spinner-overlay/spinner-overlay';
+export { GroupCardComponent } from './group-card/group-card';
+export { EmptyGroupsComponent } from './empty-groups/empty-groups';
