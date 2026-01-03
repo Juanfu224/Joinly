@@ -220,6 +220,42 @@
   align-items: center;
 }
 
+// ---------------------------------------------------------------------------
+// GRUPOS DE ICONOS
+// ---------------------------------------------------------------------------
+.p-style-guide__grupo-iconos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: var(--espaciado-5);
+  padding: var(--espaciado-4);
+  background: var(--bg-secondary);
+  border-radius: var(--radio-esquina-medio);
+}
+
+.p-style-guide__icono-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espaciado-2);
+  padding: var(--espaciado-3);
+  border-radius: var(--radio-esquina-pequeno);
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: var(--bg-tertiary);
+  }
+}
+
+.p-style-guide__icono-label {
+  font-size: var(--tamano-texto-pequeno);
+  color: var(--text-secondary);
+  text-align: center;
+  margin: 0;
+  word-break: break-word;
+  max-width: 100%;
+}
+
 // Grupo de logos con disposición flexible
 .p-style-guide__grupo-logos {
   display: flex;

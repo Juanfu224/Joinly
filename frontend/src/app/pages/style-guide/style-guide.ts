@@ -168,6 +168,45 @@ export class StyleGuideComponent {
   ] as const;
 
   /**
+   * Iconos de navegación disponibles en el sistema de diseño.
+   */
+  protected readonly navigationIcons = [
+    'arrow-right',
+    'arrow-left',
+    'arrow-external-right',
+    'arrow-external-left',
+    'chevron-left',
+    'chevron-right',
+    'chevron-down',
+    'chevron-up',
+  ] as const;
+
+  /**
+   * Iconos de acciones disponibles en el sistema de diseño.
+   */
+  protected readonly actionIcons = [
+    'menu',
+    'close',
+    'add',
+    'less',
+    'search',
+    'check',
+    'circle-check',
+    'circle-x',
+  ] as const;
+
+  /**
+   * Tamaños de iconos con su descripción.
+   */
+  protected readonly iconSizes = [
+    { size: 'xs' as const, label: 'xs (16px)' },
+    { size: 'sm' as const, label: 'sm (20px)' },
+    { size: 'md' as const, label: 'md (24px)' },
+    { size: 'lg' as const, label: 'lg (28px)' },
+    { size: 'xl' as const, label: 'xl (32px)' },
+  ] as const;
+
+  /**
    * Variantes de color para el logo en el sistema de diseño.
    * Incluye colores principales y claros para fondos oscuros.
    */

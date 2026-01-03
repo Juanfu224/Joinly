@@ -1101,6 +1101,58 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
     </section>
 
     <!-- ===================================================================
+         SECCIÓN: ICONOS
+         =================================================================== -->
+    <section class="p-style-guide__seccion" aria-labelledby="titulo-iconos">
+      <div class="p-style-guide__seccion-encabezado">
+        <h2 id="titulo-iconos" class="p-style-guide__subtitulo">Iconos</h2>
+        <p class="p-style-guide__nota">
+          Sistema completo de iconos SVG optimizados con stroke. Todos los iconos heredan el color del padre (currentColor),
+          usan stroke-width="2", stroke-linecap="round" y stroke-linejoin="round" para un estilo minimalista y consistente.
+        </p>
+      </div>
+
+      <!-- Iconos de Navegación -->
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Navegación</h3>
+        <div class="p-style-guide__grupo-iconos">
+          @for (icon of navigationIcons; track icon) {
+            <div class="p-style-guide__icono-item">
+              <app-icon [name]="icon" size="lg" />
+              <p class="p-style-guide__icono-label">{{ icon }}</p>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Iconos de Acciones -->
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Acciones</h3>
+        <div class="p-style-guide__grupo-iconos">
+          @for (icon of actionIcons; track icon) {
+            <div class="p-style-guide__icono-item">
+              <app-icon [name]="icon" size="lg" />
+              <p class="p-style-guide__icono-label">{{ icon }}</p>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Tamaños de iconos -->
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Tamaños disponibles</h3>
+        <div class="p-style-guide__grupo-botones p-style-guide__grupo-botones--alineado">
+          @for (sizeItem of iconSizes; track sizeItem.size) {
+            <div class="p-style-guide__icono-item">
+              <app-icon name="arrow-right" [size]="sizeItem.size" />
+              <p class="p-style-guide__icono-label">{{ sizeItem.label }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
          SECCIÓN: AVATARES
          =================================================================== -->
     <section class="p-style-guide__seccion" aria-labelledby="titulo-avatares">
