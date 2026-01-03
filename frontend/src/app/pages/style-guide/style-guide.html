@@ -546,6 +546,56 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
     </section>
 
     <!-- ===================================================================
+         SECCIÓN: TARJETAS DE SUSCRIPCIONES
+         =================================================================== -->
+    <section class="p-style-guide__seccion" aria-labelledby="titulo-suscripciones">
+      <div class="p-style-guide__seccion-encabezado">
+        <h2 id="titulo-suscripciones" class="p-style-guide__subtitulo">Tarjetas de Suscripciones</h2>
+        <p class="p-style-guide__nota">
+          Tarjetas especializadas para mostrar suscripciones compartidas. Incluye nombre del servicio, 
+          precio por plaza, fecha de renovación, plazas disponibles y botón de acción. 
+          Diseño según Figma con sombras combinadas.
+        </p>
+      </div>
+
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Tarjetas de suscripción con datos</h3>
+        <div class="p-style-guide__rejilla p-style-guide__rejilla--grupos">
+          @for (suscripcion of suscripcionesEjemplo; track suscripcion.id) {
+            <app-subscription-card 
+              [suscripcion]="suscripcion"
+              (viewDetails)="handleSubscriptionViewDetails(suscripcion.id)" />
+          }
+        </div>
+      </div>
+
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Estado vacío</h3>
+        <p class="p-style-guide__descripcion">
+          Componente que se muestra cuando el grupo no tiene suscripciones creadas.
+          Incluye icono circular, mensaje y descripción centrados.
+        </p>
+        <app-empty-subscriptions />
+      </div>
+
+      <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4);">
+        <strong>Características de las tarjetas de suscripciones:</strong>
+        <ul style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc;">
+          <li>✅ <strong>Diseño Figma</strong>: Sombras combinadas (sombra 1 + sombra 3)</li>
+          <li>✅ <strong>HTML Semántico</strong>: Uso de article, header, section, footer</li>
+          <li>✅ <strong>Efecto hover</strong>: Elevación suave con translateY</li>
+          <li>✅ <strong>Ancho máximo</strong>: 359px según diseño</li>
+          <li>✅ <strong>OnPush detection</strong>: Rendimiento optimizado</li>
+          <li>✅ <strong>Signals & Computed</strong>: Reactividad y formateo de datos</li>
+          <li>✅ <strong>Formato de fecha</strong>: dd/mm/aa automático</li>
+          <li>✅ <strong>Formato de precio</strong>: 2 decimales fijos</li>
+          <li>✅ <strong>Icono settings</strong>: Posicionado en esquina superior derecha</li>
+          <li>✅ <strong>Evento viewDetails</strong>: Output para gestionar detalles</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================================================================
          SECCIÓN: LOGOTIPOS
          =================================================================== -->
     <section class="p-style-guide__seccion" aria-labelledby="titulo-logos">

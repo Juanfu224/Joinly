@@ -27,11 +27,14 @@ import {
   TabComponent,
   GroupCardComponent,
   EmptyGroupsComponent,
+  SubscriptionCardComponent,
+  EmptySubscriptionsComponent,
   type SelectOption,
   type RadioOption,
   type BreadcrumbItem,
 } from '../../components/shared';
 import type { GrupoCardData } from '../../models/grupo.model';
+import type { SuscripcionCardData } from '../../models/suscripcion.model';
 import { ModalService } from '../../services/modal';
 import { ThemeService, type Theme } from '../../services/theme';
 
@@ -83,6 +86,8 @@ import { ThemeService, type Theme } from '../../services/theme';
     TabComponent,
     GroupCardComponent,
     EmptyGroupsComponent,
+    SubscriptionCardComponent,
+    EmptySubscriptionsComponent,
   ],
   templateUrl: './style-guide.html',
   styleUrl: './style-guide.scss',
@@ -209,6 +214,37 @@ export class StyleGuideComponent {
       nombre: 'Compañeros de trabajo',
       totalMiembros: 3,
       suscripciones: null,
+    },
+  ];
+
+  /**
+   * Datos de ejemplo para tarjetas de suscripciones.
+   * Simula suscripciones compartidas con diferentes estados.
+   */
+  protected readonly suscripcionesEjemplo: SuscripcionCardData[] = [
+    {
+      id: 1,
+      nombreServicio: 'Netflix Premium',
+      precioPorPlaza: 4.25,
+      fechaRenovacion: '2026-01-15',
+      plazasDisponibles: 2,
+      estado: 'ACTIVA',
+    },
+    {
+      id: 2,
+      nombreServicio: 'Spotify Family',
+      precioPorPlaza: 2.99,
+      fechaRenovacion: '2026-01-20',
+      plazasDisponibles: 1,
+      estado: 'ACTIVA',
+    },
+    {
+      id: 3,
+      nombreServicio: 'Disney+ Premium',
+      precioPorPlaza: 3.50,
+      fechaRenovacion: '2026-02-01',
+      plazasDisponibles: 3,
+      estado: 'ACTIVA',
     },
   ];
 
@@ -380,6 +416,14 @@ export class StyleGuideComponent {
    */
   protected handleGroupInvite(groupId: number): void {
     console.log('[StyleGuide] Invitar al grupo:', groupId);
+  }
+
+  /**
+   * Maneja el evento de ver detalles de suscripción.
+   * Demuestra el output del componente SubscriptionCard.
+   */
+  protected handleSubscriptionViewDetails(subscriptionId: number): void {
+    console.log('[StyleGuide] Ver detalles de la suscripción:', subscriptionId);
   }
 
   /**

@@ -1,16 +1,16 @@
 @use '../../../../styles/01-tools/mixins' as *;
 
 // ==========================================================================
-// COMPONENTE: EMPTY-GROUPS (Estado vacío de grupos)
+// COMPONENTE: EMPTY-SUBSCRIPTIONS (Estado vacío de suscripciones)
 // ==========================================================================
-// Estado vacío que se muestra cuando el usuario no tiene grupos
-// Diseño basado en Figma con icono circular y texto centrado
+// Estado vacío que se muestra cuando el grupo no tiene suscripciones
+// Diseño centrado con icono circular, texto jerárquico y espaciado balanceado
 
 :host {
   display: block;
 }
 
-.c-empty-groups {
+.c-empty-subscriptions {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -52,7 +52,7 @@
     background-color: var(--color-gris-medio);
     border-radius: 50%;
     margin-block-end: var(--espaciado-2);
-
+    
     app-icon {
       color: var(--color-gris-oscuro);
     }
