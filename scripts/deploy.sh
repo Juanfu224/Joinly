@@ -124,6 +124,42 @@ check_requirements() {
     log_success "Requisitos verificados correctamente"
 }
 
+ensure_ssl_certificates() {
+    log_info "Verificando certificados SSL..."
+    
+    SSL_DIR="$PROJECT_DIR/ssl"
+    SSL_CERT="$SSL_DIR/nginx.crt"
+    SSL_KEY="$SSL_DIR/nginx.key"
+    
+    # Crear directorio SSL si no existe
+    mkdir -p "$SSL_DIR"
+    
+    # Verificar si existen certificados válidos
+    if [ -f "$SSL_CERT" ] && [ -f "$SSL_KEY" ]; then
+        log_success "Certificados SSL encontrados"
+        return 0
+    fi
+    
+    log_warning "Certificados SSL no encontrados, generando autofirmados..."
+    
+    # Generar certificado autofirmado
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+        -keyout "$SSL_KEY" \
+        -out "$SSL_CERT" \
+        -subj "/CN=${DOMAIN:-localhost}/O=Joinly/C=ES" \
+        2>/dev/null
+    
+    if [ $? -eq 0 ]; then
+        # Ajustar permisos para el contenedor nginx (UID 1001)
+        chmod 644 "$SSL_CERT" "$SSL_KEY"
+        log_success "Certificados SSL autofirmados generados"
+        log_warning "NOTA: Para producción, ejecuta ./scripts/init-ssl.sh para obtener certificados de Let's Encrypt"
+    else
+        log_error "Error al generar certificados SSL"
+        exit 1
+    fi
+}
+
 backup_database() {
     log_info "Creando backup de base de datos..."
     
@@ -285,6 +321,7 @@ echo ""
 
 # Ejecutar pasos
 check_requirements
+ensure_ssl_certificates
 backup_database
 deploy
 health_check

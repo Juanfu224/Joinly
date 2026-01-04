@@ -32,9 +32,10 @@ LABEL maintainer="Joinly Team" \
       version="1.0.0" \
       description="Joinly - Nginx + Angular SPA"
 
-# Instalar utilidades necesarias
+# Instalar utilidades necesarias (incluyendo openssl para generar certificados)
 RUN apk add --no-cache \
     curl \
+    openssl \
     tzdata
 
 # Crear usuario no-root
@@ -62,8 +63,9 @@ COPY --from=builder --chown=joinly:joinly /app/dist/joinly/browser /usr/share/ng
 # Copiar página de error
 COPY nginx/50x.html /etc/nginx/html/50x.html
 
-# Cambiar usuario
-USER joinly
+# NOTA: No cambiamos a usuario joinly aquí para permitir que el entrypoint
+# genere certificados SSL si es necesario. El entrypoint ejecutará nginx
+# después de la configuración inicial.
 
 # Puerto
 EXPOSE 80 443
