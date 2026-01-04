@@ -17,25 +17,19 @@
   align-items: center;
   justify-content: center;
   gap: var(--espaciado-2);
-  background-color: var(--color-blanco);
+  background-color: transparent;
+  border: 2px dashed var(--border-color);
   border-radius: var(--radio-grande);
   padding: var(--espaciado-8) var(--espaciado-4);
   min-block-size: 379px;
   inline-size: 100%;
 
   // ==========================================================================
-  // ELEMENTO: Sombras suaves (diseño objetivo)
+  // ELEMENTO: Sombras eliminadas para modo oscuro
   // ==========================================================================
 
   &__sombras {
-    position: absolute;
-    inset: 0;
-    border-radius: var(--radio-grande);
-    // Sombra más suave y elegante
-    box-shadow: 
-      0 1px 3px 0 rgba(20, 20, 43, 0.04),
-      0 4px 12px 0 rgba(20, 20, 43, 0.06);
-    pointer-events: none;
+    display: none;
   }
 
   // ==========================================================================
@@ -49,12 +43,12 @@
     justify-content: center;
     inline-size: 64px;
     block-size: 64px;
-    background-color: var(--color-gris-medio);
+    background-color: var(--border-color);
     border-radius: 50%;
     margin-block-end: var(--espaciado-2);
     
     app-icon {
-      color: var(--color-gris-oscuro);
+      color: var(--text-secondary);
     }
   }
 
@@ -68,7 +62,7 @@
     font-size: var(--tamano-h3);
     font-weight: var(--peso-fuente-negrita);
     line-height: var(--altura-linea-h3);
-    color: var(--color-texto-oscuro);
+    color: var(--text-primary);
     text-align: center;
     margin: 0;
   }
@@ -84,7 +78,7 @@
     font-size: var(--tamano-texto-normal);
     font-weight: var(--peso-fuente-regular);
     line-height: var(--altura-linea-normal);
-    color: var(--color-texto-normal);
+    color: var(--text-secondary);
     text-align: center;
     margin: 0;
   }
