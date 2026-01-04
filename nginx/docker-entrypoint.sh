@@ -1,49 +1,65 @@
 #!/bin/sh
-set -e
-
 # =============================================================================
 # Joinly Nginx - Docker Entrypoint
 # =============================================================================
-# Genera certificados SSL autofirmados si no existen y procesa la configuración
+# Gestiona certificados SSL y procesa la configuración de nginx
+# Prioridad: Let's Encrypt > Certificados autofirmados
 # =============================================================================
 
+set -e
+
+DOMAIN="${DOMAIN:-localhost}"
+LETSENCRYPT_DIR="/etc/letsencrypt/live/$DOMAIN"
 SSL_DIR="/etc/nginx/ssl"
 SSL_CERT="$SSL_DIR/nginx.crt"
 SSL_KEY="$SSL_DIR/nginx.key"
 
 # -----------------------------------------------------------------------------
-# Generar certificados SSL autofirmados si no existen
+# Generar certificados SSL autofirmados si no hay ninguno disponible
 # -----------------------------------------------------------------------------
 generate_self_signed_cert() {
     echo "[INFO] Generando certificados SSL autofirmados..."
     
-    # Crear directorio si no existe
     mkdir -p "$SSL_DIR"
     
-    # Usar el dominio de la variable de entorno o localhost como fallback
-    CERT_DOMAIN="${DOMAIN:-localhost}"
-    
-    # Generar certificado autofirmado válido por 365 días
     openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
         -keyout "$SSL_KEY" \
         -out "$SSL_CERT" \
-        -subj "/CN=$CERT_DOMAIN/O=Joinly/C=ES" \
+        -subj "/CN=$DOMAIN/O=Joinly/C=ES" \
         2>/dev/null
     
-    # Ajustar permisos
-    chmod 644 "$SSL_CERT"
-    chmod 644 "$SSL_KEY"
+    chmod 644 "$SSL_CERT" "$SSL_KEY"
     
-    echo "[INFO] Certificados SSL autofirmados generados para: $CERT_DOMAIN"
+    echo "[INFO] Certificados SSL autofirmados generados para: $DOMAIN"
 }
 
-# Verificar si existen certificados SSL válidos
-if [ ! -f "$SSL_CERT" ] || [ ! -f "$SSL_KEY" ]; then
-    echo "[WARNING] Certificados SSL no encontrados en $SSL_DIR"
+# -----------------------------------------------------------------------------
+# Configurar los certificados SSL a usar
+# -----------------------------------------------------------------------------
+configure_ssl() {
+    # Verificar si existen certificados de Let's Encrypt
+    if [ -f "$LETSENCRYPT_DIR/fullchain.pem" ] && [ -f "$LETSENCRYPT_DIR/privkey.pem" ]; then
+        echo "[INFO] Usando certificados de Let's Encrypt desde $LETSENCRYPT_DIR"
+        return 0
+    fi
+    
+    echo "[WARNING] Certificados de Let's Encrypt no encontrados en $LETSENCRYPT_DIR"
+    
+    # Verificar si existen certificados autofirmados
+    if [ -f "$SSL_CERT" ] && [ -f "$SSL_KEY" ]; then
+        echo "[INFO] Usando certificados autofirmados desde $SSL_DIR"
+        sed -i "s|ssl_certificate .*|ssl_certificate $SSL_CERT;|g" /etc/nginx/nginx.conf
+        sed -i "s|ssl_certificate_key .*|ssl_certificate_key $SSL_KEY;|g" /etc/nginx/nginx.conf
+        return 0
+    fi
+    
+    # No hay certificados, generar autofirmados
+    echo "[WARNING] No se encontraron certificados SSL, generando autofirmados..."
     generate_self_signed_cert
-else
-    echo "[INFO] Certificados SSL encontrados en $SSL_DIR"
-fi
+    
+    sed -i "s|ssl_certificate .*|ssl_certificate $SSL_CERT;|g" /etc/nginx/nginx.conf
+    sed -i "s|ssl_certificate_key .*|ssl_certificate_key $SSL_KEY;|g" /etc/nginx/nginx.conf
+}
 
 # -----------------------------------------------------------------------------
 # Procesar template de configuración de Nginx
@@ -53,6 +69,13 @@ if [ -f "/etc/nginx/nginx.conf.template" ]; then
     envsubst '${DOMAIN}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
     echo "[INFO] Configuración de Nginx procesada correctamente"
 fi
+
+# Configurar SSL
+configure_ssl
+
+# Verificar configuración de nginx
+echo "[INFO] Verificando configuración de Nginx..."
+nginx -t
 
 # -----------------------------------------------------------------------------
 # Ejecutar comando principal

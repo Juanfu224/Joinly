@@ -212,6 +212,7 @@ El frontend estará disponible en: `http://localhost:4200`
 
 - **[Backend README](backend/README.md)** - Configuración detallada del backend, endpoints, testing
 - **[Frontend README](frontend/README.md)** - Guía del frontend Angular
+- **[Guía de Despliegue en Producción](docs/DEPLOYMENT.md)** - Instrucciones completas para desplegar en servidor
 - **[Documentación de Diseño](docs/design/DOCUMENTACION.md)** - Principios de diseño, CSS, BEM, ITCSS (2600+ líneas)
 - **[Guía de Seguridad](backend/docs/SECURITY.md)** - Buenas prácticas, generación de claves, rotación
 - **[Configuración de Entorno](docs/ENV_CONFIG.md)** - Variables de entorno centralizadas

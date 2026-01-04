@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # =============================================================================
 # Joinly - Script de Despliegue a Producción
 # =============================================================================
@@ -13,7 +13,7 @@
 #   --help      Mostrar ayuda
 # =============================================================================
 
-set -e  # Salir si hay errores
+set -euo pipefail  # Salir si hay errores, variables no definidas o errores en pipes
 
 # Colores para output
 RED='\033[0;31m'
