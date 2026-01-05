@@ -1,0 +1,146 @@
+<article class="c-subscription-info" aria-labelledby="subscription-info-title">
+  <!-- Header con Tabs -->
+  <header class="c-subscription-info__header" role="tablist" aria-label="Secciones de información">
+    <button
+      role="tab"
+      type="button"
+      class="c-subscription-info__tab"
+      [class.c-subscription-info__tab--active]="activeTab() === 'info'"
+      [attr.aria-selected]="activeTab() === 'info'"
+      [attr.tabindex]="activeTab() === 'info' ? 0 : -1"
+      aria-controls="panel-info"
+      id="tab-info"
+      (click)="setActiveTab('info')"
+    >
+      Información
+    </button>
+    <button
+      role="tab"
+      type="button"
+      class="c-subscription-info__tab"
+      [class.c-subscription-info__tab--active]="activeTab() === 'requests'"
+      [attr.aria-selected]="activeTab() === 'requests'"
+      [attr.tabindex]="activeTab() === 'requests' ? 0 : -1"
+      aria-controls="panel-requests"
+      id="tab-requests"
+      (click)="setActiveTab('requests')"
+    >
+      {{ requestsBadgeText() }}
+    </button>
+  </header>
+
+  <!-- Divider -->
+  <hr class="c-subscription-info__divider" aria-hidden="true">
+
+  <!-- Panel de Información -->
+  <section
+    role="tabpanel"
+    id="panel-info"
+    class="c-subscription-info__panel"
+    [class.c-subscription-info__panel--hidden]="activeTab() !== 'info'"
+    aria-labelledby="tab-info"
+    [attr.hidden]="activeTab() !== 'info' ? '' : null"
+  >
+    <div class="c-subscription-info__content">
+      <!-- Credenciales de acceso -->
+      <article class="c-subscription-info__section">
+        <h3 class="c-subscription-info__section-title">Credenciales de acceso</h3>
+        <div class="c-subscription-info__credentials-box">
+          <p class="c-subscription-info__credential">
+            <span class="c-subscription-info__credential-label">Usuario:</span>
+            <span class="c-subscription-info__credential-value">{{ info().credenciales.usuario }}</span>
+          </p>
+          <p class="c-subscription-info__credential">
+            <span class="c-subscription-info__credential-label">Contraseña:</span>
+            <span class="c-subscription-info__credential-value">{{ info().credenciales.contrasena }}</span>
+          </p>
+        </div>
+      </article>
+
+      <!-- Estado del pago -->
+      <article class="c-subscription-info__section">
+        <h3 class="c-subscription-info__section-title">Estado del pago</h3>
+        <div class="c-subscription-info__payment-box">
+          <dl class="c-subscription-info__payment-list">
+            <div class="c-subscription-info__payment-row">
+              <dt class="c-subscription-info__payment-label">Monto retenido</dt>
+              <dd class="c-subscription-info__payment-value">{{ formattedAmount() }}</dd>
+            </div>
+            <div class="c-subscription-info__payment-row">
+              <dt class="c-subscription-info__payment-label">Estado</dt>
+              <dd class="c-subscription-info__payment-value c-subscription-info__payment-value--status">
+                <span 
+                  class="c-subscription-info__status-badge"
+                  [class.c-subscription-info__status-badge--retenido]="info().pago.estado === 'retenido'"
+                  [class.c-subscription-info__status-badge--liberado]="info().pago.estado === 'liberado'"
+                  [class.c-subscription-info__status-badge--pendiente]="info().pago.estado === 'pendiente'"
+                >
+                  {{ paymentStatusText() }}
+                </span>
+              </dd>
+            </div>
+            <div class="c-subscription-info__payment-row">
+              <dt class="c-subscription-info__payment-label">Se liberará</dt>
+              <dd class="c-subscription-info__payment-value">{{ formattedReleaseDate() }}</dd>
+            </div>
+          </dl>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Panel de Solicitudes -->
+  <section
+    role="tabpanel"
+    id="panel-requests"
+    class="c-subscription-info__panel"
+    [class.c-subscription-info__panel--hidden]="activeTab() !== 'requests'"
+    aria-labelledby="tab-requests"
+    [attr.hidden]="activeTab() !== 'requests' ? '' : null"
+  >
+    @if (info().solicitudes.length === 0) {
+      <div class="c-subscription-info__empty">
+        <p class="c-subscription-info__empty-text">No hay solicitudes pendientes</p>
+      </div>
+    } @else {
+      <ul class="c-subscription-info__requests-grid" role="list">
+        @for (request of info().solicitudes; track request.id) {
+          <li class="c-subscription-info__request-item">
+            <article class="c-subscription-info__request-card">
+              <div class="c-subscription-info__request-user">
+                <app-avatar 
+                  [src]="request.avatarUrl || ''" 
+                  [name]="request.nombreUsuario"
+                  size="sm"
+                  aria-hidden="true"
+                />
+                <div class="c-subscription-info__request-info">
+                  <span class="c-subscription-info__request-name">{{ request.nombreUsuario }}</span>
+                  <span class="c-subscription-info__request-email">{{ request.email }}</span>
+                </div>
+              </div>
+              <div class="c-subscription-info__request-actions">
+                <app-button
+                  variant="secondary"
+                  size="md"
+                  (click)="handleReject(request)"
+                  aria-label="Rechazar solicitud de {{ request.nombreUsuario }}"
+                >
+                  Rechazar
+                </app-button>
+                <app-button
+                  variant="primary"
+                  size="md"
+                  (click)="handleAccept(request)"
+                  aria-label="Aceptar solicitud de {{ request.nombreUsuario }}"
+                >
+                  Aceptar
+                </app-button>
+              </div>
+            </article>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+</article>

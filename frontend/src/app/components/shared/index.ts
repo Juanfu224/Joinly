@@ -81,3 +81,11 @@ export { GroupCardComponent } from './group-card/group-card';
 export { EmptyGroupsComponent } from './empty-groups/empty-groups';
 export { SubscriptionCardComponent } from './subscription-card/subscription-card';
 export { EmptySubscriptionsComponent } from './empty-subscriptions/empty-subscriptions';
+export {
+  SubscriptionInfoCardComponent,
+  type SubscriptionCredentials,
+  type PaymentInfo,
+  type PaymentStatus,
+  type JoinRequest,
+  type SubscriptionInfoData,
+} from './subscription-info-card';

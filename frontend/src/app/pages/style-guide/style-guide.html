@@ -288,97 +288,6 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
     </section>
 
     <!-- ===================================================================
-         SECCIÓN: TABS - NAVEGACIÓN POR PESTAÑAS
-         =================================================================== -->
-    <section class="p-style-guide__seccion" aria-labelledby="titulo-tabs">
-      <div class="p-style-guide__seccion-encabezado">
-        <h2 id="titulo-tabs" class="p-style-guide__subtitulo">Tabs</h2>
-        <p class="p-style-guide__nota">
-          Sistema de pestañas para organizar contenido relacionado. Navegación intuitiva con teclado y mouse.
-        </p>
-      </div>
-
-      <div class="p-style-guide__demo">
-        <h3 class="p-style-guide__demo-titulo">Tabs básico</h3>
-        <app-tabs (tabChange)="onTabChange($event)">
-          <app-tab title="General">
-            <div style="padding: var(--espaciado-4);">
-              <h4 style="margin-bottom: var(--espaciado-2);">Información General</h4>
-              <p>Este es el contenido del tab General. Aquí puedes mostrar información principal sobre el usuario, suscripción o cualquier otro contenido relevante.</p>
-            </div>
-          </app-tab>
-          <app-tab title="Configuración">
-            <div style="padding: var(--espaciado-4);">
-              <h4 style="margin-bottom: var(--espaciado-2);">Ajustes de Configuración</h4>
-              <p>Panel de configuración donde el usuario puede ajustar sus preferencias, notificaciones y opciones de privacidad.</p>
-              <div style="margin-top: var(--espaciado-3);">
-                <app-form-checkbox label="Recibir notificaciones por email" />
-                <app-form-checkbox label="Permitir acceso a miembros" />
-              </div>
-            </div>
-          </app-tab>
-          <app-tab title="Seguridad">
-            <div style="padding: var(--espaciado-4);">
-              <h4 style="margin-bottom: var(--espaciado-2);">Centro de Seguridad</h4>
-              <p>Gestiona la seguridad de tu cuenta, cambia contraseñas y revisa el historial de accesos.</p>
-              <app-alert type="info" message="Tu última sesión fue hace 2 horas desde Madrid, España." style="margin-top: var(--espaciado-3);" />
-            </div>
-          </app-tab>
-        </app-tabs>
-      </div>
-
-      <div class="p-style-guide__demo">
-        <h3 class="p-style-guide__demo-titulo">Tabs con índice inicial</h3>
-        <app-tabs [activeIndex]="1">
-          <app-tab title="Perfil">
-            <div style="padding: var(--espaciado-4);">
-              <p>Contenido del perfil de usuario.</p>
-            </div>
-          </app-tab>
-          <app-tab title="Suscripciones">
-            <div style="padding: var(--espaciado-4);">
-              <p>Este tab comienza activo gracias a <code>[activeIndex]="1"</code>.</p>
-              <div style="display: flex; gap: var(--espaciado-3); margin-top: var(--espaciado-3); flex-wrap: wrap;">
-                <app-card variant="info">
-                  <div slot="icon" class="c-card-icon c-card-icon--naranja">
-                    <app-icon name="check" />
-                  </div>
-                  <h4 slot="title">Netflix</h4>
-                  <p slot="value">Activa</p>
-                </app-card>
-                <app-card variant="info">
-                  <div slot="icon" class="c-card-icon c-card-icon--morado">
-                    <app-icon name="check" />
-                  </div>
-                  <h4 slot="title">Spotify</h4>
-                  <p slot="value">Activa</p>
-                </app-card>
-              </div>
-            </div>
-          </app-tab>
-          <app-tab title="Historial">
-            <div style="padding: var(--espaciado-4);">
-              <p>Historial de pagos y actividad.</p>
-            </div>
-          </app-tab>
-        </app-tabs>
-      </div>
-
-      <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4);">
-        <strong>Características del sistema de Tabs:</strong>
-        <ul style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc;">
-          <li>✅ <strong>Navegación con teclado</strong>: Arrow Left/Right, Home/End, Enter/Space</li>
-          <li>✅ <strong>Indicador visual</strong>: Línea animada bajo el tab activo</li>
-          <li>✅ <strong>Roving tabindex</strong>: Solo el tab activo recibe foco con Tab</li>
-          <li>✅ <strong>Evento tabChange</strong>: Emite índice actual y anterior al cambiar</li>
-          <li>✅ <strong>Transiciones suaves</strong>: Fade in/out entre contenidos</li>
-          <li>✅ <strong>Accesibilidad ARIA</strong>: role="tablist", aria-selected, aria-controls</li>
-          <li>✅ <strong>ContentChildren</strong>: Detección automática de tabs hijos</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- ===================================================================
          SECCIÓN: TARJETAS DE CARACTERÍSTICAS
          =================================================================== -->
     <section class="p-style-guide__seccion" aria-labelledby="titulo-ventajas">
@@ -591,6 +500,48 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
           <li>✅ <strong>Formato de precio</strong>: 2 decimales fijos</li>
           <li>✅ <strong>Icono settings</strong>: Posicionado en esquina superior derecha</li>
           <li>✅ <strong>Evento viewDetails</strong>: Output para gestionar detalles</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SECCIÓN: INFORMACIÓN DE SUSCRIPCIÓN
+         =================================================================== -->
+    <section class="p-style-guide__seccion" aria-labelledby="titulo-subscription-info">
+      <div class="p-style-guide__seccion-encabezado">
+        <h2 id="titulo-subscription-info" class="p-style-guide__subtitulo">Información de Suscripción</h2>
+        <p class="p-style-guide__nota">
+          Tarjeta expandida con información detallada de una suscripción. Incluye sistema de pestañas
+          para mostrar credenciales de acceso, estado del pago y solicitudes de unión pendientes.
+          Diseño según Figma (node-id 1234-1814).
+        </p>
+      </div>
+
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Tarjeta de información completa</h3>
+        <p class="p-style-guide__descripcion">
+          Componente con dos pestañas: "Información" muestra credenciales de acceso y estado del pago,
+          mientras que "Solicitudes" muestra las peticiones de unión pendientes con acciones para aceptar o rechazar.
+        </p>
+        <app-subscription-info-card
+          [info]="subscriptionInfoEjemplo"
+          (acceptRequest)="handleAcceptRequest($event)"
+          (rejectRequest)="handleRejectRequest($event)" />
+      </div>
+
+      <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4);">
+        <strong>Características del componente:</strong>
+        <ul style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc;">
+          <li>✅ <strong>Diseño Figma</strong>: Basado en node-id 1234-1814</li>
+          <li>✅ <strong>Sistema de pestañas</strong>: Información / Solicitudes con contador</li>
+          <li>✅ <strong>Credenciales de acceso</strong>: Usuario y contraseña en box morado</li>
+          <li>✅ <strong>Estado del pago</strong>: Monto retenido, estado y fecha de liberación</li>
+          <li>✅ <strong>Badge de estado</strong>: Retenido (morado), Liberado (verde), Pendiente (amarillo)</li>
+          <li>✅ <strong>Grid de solicitudes</strong>: 2 columnas en tablet+, 1 en móvil</li>
+          <li>✅ <strong>Avatar integrado</strong>: Muestra iniciales o foto del solicitante</li>
+          <li>✅ <strong>Acciones</strong>: Botones Aceptar/Rechazar con outputs</li>
+          <li>✅ <strong>ARIA completo</strong>: Roles tab/tabpanel, labels descriptivos</li>
+          <li>✅ <strong>OnPush + Signals</strong>: Rendimiento optimizado</li>
         </ul>
       </div>
     </section>

@@ -1,0 +1,316 @@
+// ==========================================================================
+// COMPONENTE: SUBSCRIPTION INFO CARD (.c-subscription-info)
+// ==========================================================================
+// Tarjeta de información de suscripción con pestañas para mostrar
+// credenciales de acceso, estado del pago y solicitudes de unión.
+// Diseño basado en Figma: node-id 1234-1814
+
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as *;
+
+// ---------------------------------------------------------------------------
+// HOST STYLES
+// ---------------------------------------------------------------------------
+:host {
+  display: block;
+  width: 100%;
+}
+
+// ---------------------------------------------------------------------------
+// BLOQUE: Contenedor principal
+// ---------------------------------------------------------------------------
+.c-subscription-info {
+  background-color: var(--bg-secondary);
+  border-radius: var(--radio-grande);
+  box-shadow: var(--sombra-1), var(--sombra-3);
+  overflow: hidden;
+
+  // Transición para cambio de tema
+  @include transicion((background-color, box-shadow));
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Header con Tabs
+// ---------------------------------------------------------------------------
+.c-subscription-info__header {
+  display: flex;
+  gap: var(--espaciado-0);
+  padding: var(--espaciado-4) var(--espaciado-4) 0;
+}
+
+.c-subscription-info__tab {
+  // Reset de botón
+  appearance: none;
+  background: none;
+  border: 1px solid var(--color-borde-fuerte);
+  border-bottom: none;
+  cursor: pointer;
+
+  // Layout
+  padding: var(--espaciado-2) var(--espaciado-3);
+  border-radius: var(--radio-medio) var(--radio-medio) 0 0;
+
+  // Tipografía
+  @include texto-regular;
+  font-weight: var(--peso-fuente-semi-negrita);
+  color: var(--text-secondary);
+  white-space: nowrap;
+
+  // Transición
+  @include transicion((background-color, color, border-color, box-shadow));
+
+  // Focus visible
+  @include foco-visible;
+
+  // Hover
+  &:hover:not(&--active) {
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+  }
+
+  // Estado activo
+  &--active {
+    background-color: var(--color-principal);
+    border-color: var(--color-principal);
+    color: var(--color-blanco);
+    box-shadow:
+      0 4px 6px -4px rgba(147, 51, 234, 0.3),
+      0 10px 15px -3px rgba(147, 51, 234, 0.3);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Divider
+// ---------------------------------------------------------------------------
+.c-subscription-info__divider {
+  border: none;
+  border-top: 1px solid var(--color-borde-fuerte);
+  margin: 0 var(--espaciado-4);
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Panel de contenido
+// ---------------------------------------------------------------------------
+.c-subscription-info__panel {
+  padding: var(--espaciado-4);
+  min-height: 200px;
+
+  &--hidden {
+    display: none;
+  }
+}
+
+.c-subscription-info__content {
+  display: grid;
+  gap: var(--espaciado-4);
+
+  @include responder-a('tablet') {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Secciones (Credenciales y Pago)
+// ---------------------------------------------------------------------------
+.c-subscription-info__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-2);
+}
+
+.c-subscription-info__section-title {
+  @include heading-4;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Box de credenciales
+// ---------------------------------------------------------------------------
+.c-subscription-info__credentials-box {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-2);
+  padding: var(--espaciado-3);
+  background-color: var(--color-superficie-morada);
+  border-radius: var(--radio-medio);
+}
+
+.c-subscription-info__credential {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaciado-1);
+  margin: 0;
+  @include texto-grande;
+}
+
+.c-subscription-info__credential-label {
+  color: var(--text-primary);
+  font-weight: var(--peso-fuente-medio);
+}
+
+.c-subscription-info__credential-value {
+  color: var(--text-secondary);
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Box de pago
+// ---------------------------------------------------------------------------
+.c-subscription-info__payment-box {
+  padding: var(--espaciado-3);
+  background-color: var(--color-superficie-morada);
+  border-radius: var(--radio-medio);
+}
+
+.c-subscription-info__payment-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-2);
+  margin: 0;
+}
+
+.c-subscription-info__payment-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--espaciado-2);
+}
+
+.c-subscription-info__payment-label {
+  @include texto-grande;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.c-subscription-info__payment-value {
+  @include texto-grande;
+  color: var(--text-secondary);
+  text-align: right;
+  margin: 0;
+
+  &--status {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Badge de estado
+// ---------------------------------------------------------------------------
+.c-subscription-info__status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--espaciado-1) var(--espaciado-2);
+  border-radius: var(--radio-medio);
+  font-size: var(--tamano-texto-pequeno);
+  font-weight: var(--peso-fuente-semi-negrita);
+  line-height: 1;
+  white-space: nowrap;
+
+  // Estado retenido (morado)
+  &--retenido {
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
+    box-shadow:
+      0 4px 6px -4px rgba(147, 51, 234, 0.3),
+      0 10px 15px -3px rgba(147, 51, 234, 0.3);
+  }
+
+  // Estado liberado (verde)
+  &--liberado {
+    background-color: var(--color-exito);
+    color: var(--color-blanco);
+  }
+
+  // Estado pendiente (amarillo)
+  &--pendiente {
+    background-color: var(--color-advertencia);
+    color: var(--text-primary);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Panel de solicitudes vacío
+// ---------------------------------------------------------------------------
+.c-subscription-info__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+}
+
+.c-subscription-info__empty-text {
+  @include texto-grande;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Grid de solicitudes
+// ---------------------------------------------------------------------------
+.c-subscription-info__requests-grid {
+  display: grid;
+  gap: var(--espaciado-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  @include responder-a('tablet') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.c-subscription-info__request-item {
+  display: block;
+}
+
+.c-subscription-info__request-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-3);
+  padding: var(--espaciado-3);
+  background-color: var(--color-superficie-morada);
+  border-radius: var(--radio-medio);
+
+  @include responder-a('tablet') {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.c-subscription-info__request-user {
+  display: flex;
+  align-items: center;
+  gap: var(--espaciado-2);
+  flex: 1;
+  min-width: 0; // Permite truncamiento
+}
+
+.c-subscription-info__request-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-0);
+  min-width: 0; // Permite truncamiento
+}
+
+.c-subscription-info__request-name {
+  @include texto-regular;
+  color: var(--text-primary);
+  font-weight: var(--peso-fuente-medio);
+  @include truncar-texto;
+}
+
+.c-subscription-info__request-email {
+  font-size: var(--tamano-caption);
+  line-height: var(--altura-linea-caption);
+  color: var(--text-secondary);
+  @include truncar-texto;
+}
+
+.c-subscription-info__request-actions {
+  display: flex;
+  gap: var(--espaciado-2);
+  flex-shrink: 0;
+}

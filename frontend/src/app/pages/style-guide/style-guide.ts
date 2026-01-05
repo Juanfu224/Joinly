@@ -23,15 +23,16 @@ import {
   ThemeToggleComponent,
   AccordionComponent,
   AccordionItemComponent,
-  TabsComponent,
-  TabComponent,
   GroupCardComponent,
   EmptyGroupsComponent,
   SubscriptionCardComponent,
   EmptySubscriptionsComponent,
+  SubscriptionInfoCardComponent,
   type SelectOption,
   type RadioOption,
   type BreadcrumbItem,
+  type SubscriptionInfoData,
+  type JoinRequest,
 } from '../../components/shared';
 import type { GrupoCardData } from '../../models/grupo.model';
 import type { SuscripcionCardData } from '../../models/suscripcion.model';
@@ -82,12 +83,11 @@ import { ThemeService, type Theme } from '../../services/theme';
     ThemeToggleComponent,
     AccordionComponent,
     AccordionItemComponent,
-    TabsComponent,
-    TabComponent,
     GroupCardComponent,
     EmptyGroupsComponent,
     SubscriptionCardComponent,
     EmptySubscriptionsComponent,
+    SubscriptionInfoCardComponent,
   ],
   templateUrl: './style-guide.html',
   styleUrl: './style-guide.scss',
@@ -286,6 +286,34 @@ export class StyleGuideComponent {
       estado: 'ACTIVA',
     },
   ];
+
+  /**
+   * Datos de ejemplo para tarjeta de información de suscripción.
+   * Incluye credenciales, estado del pago y solicitudes de unión.
+   */
+  protected readonly subscriptionInfoEjemplo: SubscriptionInfoData = {
+    credenciales: {
+      usuario: 'ejemplo@gmail.com',
+      contrasena: 'ClaveSecreta1234',
+    },
+    pago: {
+      montoRetenido: 0.75,
+      estado: 'retenido',
+      fechaLiberacion: '2025-01-01',
+    },
+    solicitudes: [
+      {
+        id: 1,
+        nombreUsuario: 'Usuario1',
+        email: 'usuario1@gmail.com',
+      },
+      {
+        id: 2,
+        nombreUsuario: 'Usuario2',
+        email: 'usuario2@gmail.com',
+      },
+    ],
+  };
 
   // =========================================================================
   // ESTADO REACTIVO CON SIGNALS
@@ -522,5 +550,23 @@ export class StyleGuideComponent {
    */
   protected onTabChange(event: { index: number; previousIndex: number }): void {
     console.log('[StyleGuide] Tab changed:', event);
+  }
+
+  // =========================================================================
+  // MÉTODOS DE DEMOSTRACIÓN - SUBSCRIPTION INFO CARD
+  // =========================================================================
+
+  /**
+   * Maneja el evento de aceptar solicitud de unión.
+   */
+  protected handleAcceptRequest(request: JoinRequest): void {
+    console.log('[StyleGuide] Aceptar solicitud:', request);
+  }
+
+  /**
+   * Maneja el evento de rechazar solicitud de unión.
+   */
+  protected handleRejectRequest(request: JoinRequest): void {
+    console.log('[StyleGuide] Rechazar solicitud:', request);
   }
 }
