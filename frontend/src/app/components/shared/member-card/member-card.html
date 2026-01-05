@@ -1,0 +1,17 @@
+<article class="c-member-card">
+  <app-avatar
+    [src]="member().avatar || ''"
+    [name]="member().nombreCompleto"
+    [alt]="'Avatar de ' + member().nombreCompleto"
+    size="sm"
+  />
+  
+  <div class="c-member-card__info">
+    <p class="c-member-card__nombre">{{ member().nombreUsuario }}</p>
+    <p class="c-member-card__email">{{ member().email }}</p>
+  </div>
+
+  <span class="c-member-card__badge c-member-card__badge--{{ member().rol }}">
+    {{ member().rol === 'admin' ? 'Admin' : 'Miembro' }}
+  </span>
+</article>

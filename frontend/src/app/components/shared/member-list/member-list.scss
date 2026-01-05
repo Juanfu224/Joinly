@@ -1,0 +1,87 @@
+// ==========================================================================
+// COMPONENTE: MEMBER-LIST (.c-member-list)
+// ==========================================================================
+// Sección que muestra una lista de miembros con encabezado y contador.
+// Diseño basado en Figma: sección con sombras, bordes y espaciado consistentes.
+// Sigue metodología BEM y arquitectura ITCSS del proyecto.
+
+// ---------------------------------------------------------------------------
+// HOST: Encapsulación del componente Angular
+// ---------------------------------------------------------------------------
+:host {
+  display: block;
+}
+
+// ---------------------------------------------------------------------------
+// BLOQUE: .c-member-list
+// ---------------------------------------------------------------------------
+.c-member-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-3);
+  padding: var(--espaciado-3);
+  background-color: var(--bg-secondary);
+  border-radius: var(--radio-grande);
+  // Combinación de sombra 1 + sombra 3 según Figma
+  box-shadow: 
+    0 2px 6px 0 rgba(20, 20, 43, 0.06),
+    0 8px 28px 0 rgba(20, 20, 43, 0.1);
+
+  // ---------------------------------------------------------------------------
+  // ELEMENTO: Encabezado
+  // ---------------------------------------------------------------------------
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: var(--espaciado-1);
+  }
+
+  // ---------------------------------------------------------------------------
+  // ELEMENTO: Título
+  // ---------------------------------------------------------------------------
+  &__titulo {
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-texto-grande);
+    font-weight: var(--peso-fuente-regular);
+    line-height: var(--altura-linea-body-large);
+    color: var(--color-texto-fuerte);
+    margin: 0;
+  }
+
+  // ---------------------------------------------------------------------------
+  // ELEMENTO: Contador de miembros
+  // ---------------------------------------------------------------------------
+  &__contador {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--espaciado-1);
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-texto-grande);
+    font-weight: var(--peso-fuente-regular);
+    line-height: var(--altura-linea-body-large);
+    color: var(--color-texto-base);
+  }
+
+  // ---------------------------------------------------------------------------
+  // ELEMENTO: Grid de tarjetas
+  // ---------------------------------------------------------------------------
+  &__grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--espaciado-2);
+  }
+
+  // ---------------------------------------------------------------------------
+  // ELEMENTO: Mensaje vacío
+  // ---------------------------------------------------------------------------
+  &__empty {
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-texto-normal);
+    font-weight: var(--peso-fuente-regular);
+    line-height: var(--altura-linea-body-regular);
+    color: var(--color-texto-base);
+    margin: 0;
+    padding: var(--espaciado-4);
+    text-align: center;
+  }
+}

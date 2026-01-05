@@ -1,0 +1,21 @@
+<section class="c-member-list" aria-labelledby="member-list-title">
+  <!-- Encabezado -->
+  <header class="c-member-list__header">
+    <h3 id="member-list-title" class="c-member-list__titulo">{{ titulo() }}</h3>
+    <span class="c-member-list__contador">
+      <app-icon name="users" size="sm" />
+      <span>{{ totalMembers() }}</span>
+    </span>
+  </header>
+
+  <!-- Grid de tarjetas de miembros -->
+  @if (hasMembers()) {
+    <div class="c-member-list__grid" role="list">
+      @for (member of members(); track member.id) {
+        <app-member-card [member]="member" role="listitem" />
+      }
+    </div>
+  } @else {
+    <p class="c-member-list__empty">No hay miembros en este grupo.</p>
+  }
+</section>

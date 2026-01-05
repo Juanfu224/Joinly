@@ -1,0 +1,106 @@
+// ==========================================================================
+// COMPONENTE: MEMBER-CARD (.c-member-card)
+// ==========================================================================
+// Tarjeta individual de miembro que muestra avatar, nombre, email y rol.
+// Diseño basado en Figma: fondo morado claro, badge azul con sombra.
+// Sigue metodología BEM y arquitectura ITCSS del proyecto.
+
+// ---------------------------------------------------------------------------
+// HOST: Encapsulación del componente Angular
+// ---------------------------------------------------------------------------
+:host {
+  display: block;
+}
+
+// ---------------------------------------------------------------------------
+// BLOQUE: .c-member-card
+// ---------------------------------------------------------------------------
+.c-member-card {
+  display: flex;
+  align-items: center;
+  gap: var(--espaciado-2);
+  padding: var(--espaciado-2);
+  background-color: var(--color-superficie-morada);
+  border-radius: var(--radio-medio);
+  min-inline-size: 14rem;
+
+  // ---------------------------------------------------------------------------
+  // ELEMENTO: Información del usuario
+  // ---------------------------------------------------------------------------
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+    min-inline-size: 0;
+  }
+
+  // ---------------------------------------------------------------------------
+  // ELEMENTO: Nombre del usuario
+  // ---------------------------------------------------------------------------
+  &__nombre {
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-texto-normal);
+    font-weight: var(--peso-fuente-regular);
+    line-height: var(--altura-linea-body-regular);
+    color: var(--color-texto-fuerte);
+    margin: 0;
+
+    // Truncar texto largo
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // ---------------------------------------------------------------------------
+  // ELEMENTO: Email del usuario
+  // ---------------------------------------------------------------------------
+  &__email {
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-caption);
+    font-weight: var(--peso-fuente-regular);
+    line-height: var(--altura-linea-caption);
+    color: var(--color-texto-base);
+    margin: 0;
+
+    // Truncar texto largo
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // ---------------------------------------------------------------------------
+  // ELEMENTO: Badge de rol
+  // ---------------------------------------------------------------------------
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radio-medio);
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-caption);
+    font-weight: var(--peso-fuente-semi-negrita);
+    line-height: var(--altura-linea-caption);
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    // ---------------------------------------------------------------------------
+    // MODIFICADOR: Admin (azul)
+    // ---------------------------------------------------------------------------
+    &--admin {
+      background-color: var(--color-azul);
+      color: var(--color-blanco);
+      box-shadow: var(--sombra-azul);
+    }
+
+    // ---------------------------------------------------------------------------
+    // MODIFICADOR: Miembro (azul)
+    // ---------------------------------------------------------------------------
+    &--member {
+      background-color: var(--color-azul);
+      color: var(--color-blanco);
+      box-shadow: var(--sombra-azul);
+    }
+  }
+}

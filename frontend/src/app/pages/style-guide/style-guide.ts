@@ -28,11 +28,14 @@ import {
   SubscriptionCardComponent,
   EmptySubscriptionsComponent,
   SubscriptionInfoCardComponent,
+  MemberCardComponent,
+  MemberListComponent,
   type SelectOption,
   type RadioOption,
   type BreadcrumbItem,
   type SubscriptionInfoData,
   type JoinRequest,
+  type MemberData,
 } from '../../components/shared';
 import type { GrupoCardData } from '../../models/grupo.model';
 import type { SuscripcionCardData } from '../../models/suscripcion.model';
@@ -88,6 +91,8 @@ import { ThemeService, type Theme } from '../../services/theme';
     SubscriptionCardComponent,
     EmptySubscriptionsComponent,
     SubscriptionInfoCardComponent,
+    MemberCardComponent,
+    MemberListComponent,
   ],
   templateUrl: './style-guide.html',
   styleUrl: './style-guide.scss',
@@ -314,6 +319,41 @@ export class StyleGuideComponent {
       },
     ],
   };
+
+  /**
+   * Datos de ejemplo para tarjetas de miembros.
+   * Simula miembros de un grupo con diferentes roles (admin/member).
+   */
+  protected readonly miembrosEjemplo: MemberData[] = [
+    {
+      id: 1,
+      nombreCompleto: 'Juan García López',
+      nombreUsuario: 'Usuario1',
+      email: 'usuario1@gmail.com',
+      rol: 'admin',
+    },
+    {
+      id: 2,
+      nombreCompleto: 'María Rodríguez Sánchez',
+      nombreUsuario: 'Usuario2',
+      email: 'usuario2@gmail.com',
+      rol: 'member',
+    },
+    {
+      id: 3,
+      nombreCompleto: 'Carlos Martínez Fernández',
+      nombreUsuario: 'carlitos89',
+      email: 'carlos.martinez@gmail.com',
+      rol: 'member',
+    },
+    {
+      id: 4,
+      nombreCompleto: 'Ana López Díaz',
+      nombreUsuario: 'ana_lopez',
+      email: 'ana.lopez@email.com',
+      rol: 'member',
+    },
+  ];
 
   // =========================================================================
   // ESTADO REACTIVO CON SIGNALS
