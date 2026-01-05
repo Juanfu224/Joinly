@@ -198,6 +198,143 @@ export class StyleGuideComponent {
     'check',
     'circle-check',
     'circle-x',
+    'bin',
+    'edit',
+    'copy',
+    'save',
+    'download',
+    'upload',
+    'refresh',
+    'filter',
+  ] as const;
+
+  /**
+   * Iconos de usuario e interfaz disponibles en el sistema de diseño.
+   */
+  protected readonly uiIcons = [
+    'user',
+    'users',
+    'user-plus',
+    'user-minus',
+    'user-check',
+    'home',
+    'calendar',
+    'clock',
+    'bell',
+    'message',
+    'email',
+    'phone',
+    'settings',
+    'cog',
+    'eye',
+    'eye-off',
+    'lock',
+    'unlock',
+    'key',
+  ] as const;
+
+  /**
+   * Iconos de finanzas disponibles en el sistema de diseño.
+   */
+  protected readonly financeIcons = [
+    'dollar',
+    'coin',
+    'wallet',
+    'credit-card',
+    'gift',
+  ] as const;
+
+  /**
+   * Iconos de archivos y documentos disponibles en el sistema de diseño.
+   */
+  protected readonly fileIcons = [
+    'folder',
+    'file',
+    'file-text',
+    'report',
+    'bookmark',
+    'archive',
+    'inbox',
+    'paperclip',
+    'image',
+  ] as const;
+
+  /**
+   * Iconos de comunicación disponibles en el sistema de diseño.
+   */
+  protected readonly communicationIcons = [
+    'send',
+    'share',
+    'link',
+    'external-link',
+    'wifi',
+    'globe',
+  ] as const;
+
+  /**
+   * Iconos de gráficos y análisis disponibles en el sistema de diseño.
+   */
+  protected readonly chartIcons = [
+    'graph',
+    'graph-ascend',
+    'graph-descend',
+    'analytics-pie',
+    'trending-up',
+    'trending-down',
+    'activity',
+    'target',
+  ] as const;
+
+  /**
+   * Iconos de estado y marca disponibles en el sistema de diseño.
+   */
+  protected readonly brandIcons = [
+    'star',
+    'heart',
+    'flag',
+    'tag',
+    'badge',
+    'award',
+    'shield',
+    'shield-check',
+    'lightning',
+    'zap',
+    'info',
+    'support',
+  ] as const;
+
+  /**
+   * Iconos de dispositivos disponibles en el sistema de diseño.
+   */
+  protected readonly deviceIcons = [
+    'mobile',
+    'laptop',
+    'desktop',
+    'camera',
+    'video-camera',
+  ] as const;
+
+  /**
+   * Iconos de redes sociales disponibles en el sistema de diseño.
+   */
+  protected readonly socialIcons = [
+    'facebook',
+    'twitter',
+    'instagram',
+    'linkedin',
+    'youtube',
+    'github',
+    'dribbble',
+    'behance',
+    'whatsapp',
+    'telegram',
+    'discord',
+    'tiktok',
+    'spotify',
+    'reddit',
+    'pinterest',
+    'medium',
+    'twitch',
   ] as const;
 
   /**
