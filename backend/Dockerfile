@@ -1,81 +1,40 @@
 # =============================================================================
-# Joinly Backend - Dockerfile de Producción
-# =============================================================================
-# Multi-stage build optimizado para Spring Boot 4 + Java 25
-# Características:
-#   - Build en contenedor aislado
-#   - Imagen final mínima con JRE
-#   - Usuario no-root por seguridad
-#   - Health check integrado
-#   - Optimización de capas para caché
+# Joinly Backend - Dockerfile Producción (Multi-stage optimizado)
 # =============================================================================
 
-# -----------------------------------------------------------------------------
 # Stage 1: Build
-# -----------------------------------------------------------------------------
 FROM eclipse-temurin:25-jdk-alpine AS builder
-
 WORKDIR /app
 
-# Copiar Maven wrapper y pom.xml primero (mejor caché de capas)
-COPY mvnw .
+COPY mvnw pom.xml ./
 COPY .mvn .mvn
-COPY pom.xml .
+RUN chmod +x mvnw && ./mvnw dependency:go-offline -B
 
-# Dar permisos de ejecución al wrapper
-RUN chmod +x mvnw
-
-# Descargar dependencias (capa cacheada si pom.xml no cambia)
-RUN ./mvnw dependency:go-offline -B
-
-# Copiar código fuente
 COPY src src
+RUN ./mvnw package -DskipTests -B -q
 
-# Compilar aplicación (skip tests - se ejecutan en CI/CD)
-RUN ./mvnw package -DskipTests -B
-
-# -----------------------------------------------------------------------------
 # Stage 2: Runtime
-# -----------------------------------------------------------------------------
-FROM eclipse-temurin:25-jre-alpine AS runtime
+FROM eclipse-temurin:25-jre-alpine
 
-# Metadatos de la imagen
-LABEL maintainer="Joinly Team" \
-      version="1.0.0" \
-      description="Joinly Backend API - Spring Boot 4"
+LABEL org.opencontainers.image.title="Joinly Backend" \
+      org.opencontainers.image.description="Joinly API - Spring Boot" \
+      org.opencontainers.image.vendor="Joinly"
 
-# Variables de entorno por defecto
-# Nota: ZGC está disponible en Java 11+, ZGenerational requiere Java 21+ (removido en 24+)
-ENV JAVA_OPTS="-XX:+UseZGC -Xms256m -Xmx512m -XX:+ExitOnOutOfMemoryError" \
+ENV JAVA_OPTS="-XX:+UseZGC -Xms256m -Xmx512m -XX:+ExitOnOutOfMemoryError -Djava.security.egd=file:/dev/./urandom" \
     SPRING_PROFILES_ACTIVE="prod" \
-    SERVER_PORT="8080" \
     TZ="Europe/Madrid"
 
-# Instalar dependencias mínimas necesarias
-RUN apk add --no-cache \
-    curl \
-    tzdata && \
-    # Crear usuario no-root para seguridad
-    addgroup -g 1001 -S joinly && \
-    adduser -u 1001 -S joinly -G joinly && \
-    # Crear directorios necesarios
-    mkdir -p /app/logs && \
-    chown -R joinly:joinly /app
+RUN apk add --no-cache curl tzdata && \
+    addgroup -g 1001 -S app && adduser -u 1001 -S app -G app && \
+    mkdir -p /app/logs && chown -R app:app /app
 
 WORKDIR /app
+COPY --from=builder --chown=app:app /app/target/joinly-*.jar app.jar
 
-# Copiar JAR compilado (el nombre es joinly-version.jar según el pom.xml)
-COPY --from=builder --chown=joinly:joinly /app/target/joinly-*.jar ./app.jar
-
-# Cambiar a usuario no-root
-USER joinly
-
-# Puerto de la aplicación
+USER app
 EXPOSE 8080
 
-# Health check para orquestadores
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:8080/actuator/health || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=90s --retries=3 \
+    CMD curl -sf http://localhost:8080/actuator/health || exit 1
 
-# Punto de entrada optimizado para Spring Boot
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app/app.jar"]
+ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar app.jar"]

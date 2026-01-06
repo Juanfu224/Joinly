@@ -33,20 +33,22 @@ services:
     networks:
       - joinly-internal
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$${MYSQL_ROOT_PASSWORD}"]
       interval: 30s
       timeout: 10s
       retries: 5
       start_period: 60s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     deploy:
       resources:
         limits:
           memory: 1G
         reservations:
           memory: 512M
-    # No exponer puerto externamente en producción
-    # ports:
-    #   - "3306:3306"
 
   # ===========================================================================
   # Backend - Spring Boot API
@@ -95,15 +97,17 @@ services:
       timeout: 10s
       retries: 5
       start_period: 120s
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"
     deploy:
       resources:
         limits:
           memory: 1.5G
         reservations:
           memory: 512M
-    # No exponer puerto externamente (nginx hace proxy)
-    # ports:
-    #   - "8080:8080"
 
   # ===========================================================================
   # Nginx - Reverse Proxy + Frontend SPA Server
@@ -133,18 +137,22 @@ services:
       backend:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/"]
+      test: ["CMD", "curl", "-f", "http://localhost/nginx-health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 10s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     deploy:
       resources:
         limits:
           memory: 256M
         reservations:
           memory: 64M
-    command: nginx -g "daemon off;"
 
   # ===========================================================================
   # Certbot - SSL Certificate Management
@@ -158,14 +166,18 @@ services:
       - certbot_www:/var/www/certbot
     depends_on:
       - nginx
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "2"
     deploy:
       resources:
         limits:
           memory: 64M
         reservations:
           memory: 16M
-    # Renovar certificados cada 12 horas
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet; sleep 12h & wait $${!}; done;'"
+    entrypoint: /bin/sh -c "trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet; sleep 12h & wait $${!}; done"
 
 # =============================================================================
 # Volumes
