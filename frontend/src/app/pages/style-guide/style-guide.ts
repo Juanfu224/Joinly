@@ -316,25 +316,45 @@ export class StyleGuideComponent {
 
   /**
    * Iconos de redes sociales disponibles en el sistema de diseño.
+   * Todos los iconos tienen relleno (filled) siguiendo el diseño de Figma.
    */
   protected readonly socialIcons = [
+    // Fila 1 del diseño Figma
     'facebook',
     'twitter',
     'instagram',
     'linkedin',
     'youtube',
-    'github',
     'dribbble',
     'behance',
     'whatsapp',
-    'telegram',
-    'discord',
     'tiktok',
+    'google',
     'spotify',
+    'product-hunt',
+    // Fila 2 del diseño Figma
+    'yelp',
+    'twitch',
+    'tumblr',
+    'vk',
+    'line',
+    'soundcloud',
+    'github',
+    'messenger',
     'reddit',
     'pinterest',
+    'telegram',
     'medium',
-    'twitch',
+    // Fila 3 del diseño Figma
+    'snapchat',
+    'discord',
+    'skype',
+    'google-podcast',
+    'apple-podcast',
+    'apple',
+    'google-play',
+    'wechat',
+    'apple-music',
   ] as const;
 
   /**
