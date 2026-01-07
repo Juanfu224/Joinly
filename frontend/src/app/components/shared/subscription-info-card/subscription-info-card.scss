@@ -4,6 +4,8 @@
 // Tarjeta de información de suscripción con pestañas para mostrar
 // credenciales de acceso, estado del pago y solicitudes de unión.
 // Diseño basado en Figma: node-id 1234-1814
+// Container Queries: adapta layout basado en ancho del contenedor
+// Soporte: Chrome 105+, Firefox 110+, Safari 16+ (2022-2023)
 
 @use '../../../../styles/00-settings/variables' as *;
 @use '../../../../styles/01-tools/mixins' as *;
@@ -14,6 +16,8 @@
 :host {
   display: block;
   width: 100%;
+  container-type: inline-size;
+  container-name: subscription-info;
 }
 
 // ---------------------------------------------------------------------------
@@ -30,10 +34,11 @@
 }
 
 // ---------------------------------------------------------------------------
-// ELEMENTO: Header con Tabs
+// ELEMENTO: Header con Tabs (responsive con Container Queries)
 // ---------------------------------------------------------------------------
 .c-subscription-info__header {
   display: flex;
+  flex-wrap: wrap; // Permite wrap si es necesario en contenedores muy estrechos
   gap: var(--espaciado-0);
   padding: var(--espaciado-4) var(--espaciado-4) 0;
 }
@@ -46,9 +51,14 @@
   border-bottom: none;
   cursor: pointer;
 
-  // Layout
+  // Layout - Base: mobile compacto
   padding: var(--espaciado-2) var(--espaciado-3);
   border-radius: var(--radio-medio) var(--radio-medio) 0 0;
+
+  // Contenedor amplio (≥ 37.5rem / 600px) - más padding
+  @container subscription-info (min-width: 37.5rem) {
+    padding: var(--espaciado-2) var(--espaciado-4);
+  }
 
   // Tipografía
   @include texto-regular;
@@ -104,8 +114,15 @@
   display: grid;
   gap: var(--espaciado-4);
 
-  @include responder-a('tablet') {
+  // Base: 1 columna para mobile
+  // Contenedor amplio (≥ 37.5rem / 600px) - 2 columnas
+  @container subscription-info (min-width: 37.5rem) {
     grid-template-columns: 1fr 1fr;
+  }
+
+  // Contenedor muy amplio (≥ 50rem / 800px) - más gap
+  @container subscription-info (min-width: 50rem) {
+    gap: var(--espaciado-5);
   }
 }
 
@@ -247,7 +264,7 @@
 }
 
 // ---------------------------------------------------------------------------
-// ELEMENTO: Grid de solicitudes
+// ELEMENTO: Grid de solicitudes (con Container Queries)
 // ---------------------------------------------------------------------------
 .c-subscription-info__requests-grid {
   display: grid;
@@ -256,7 +273,9 @@
   margin: 0;
   padding: 0;
 
-  @include responder-a('tablet') {
+  // Base: 1 columna para mobile
+  // Contenedor amplio (≥ 37.5rem / 600px) - 2 columnas
+  @container subscription-info (min-width: 37.5rem) {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -267,13 +286,16 @@
 
 .c-subscription-info__request-card {
   display: flex;
-  flex-direction: column;
   gap: var(--espaciado-3);
   padding: var(--espaciado-3);
   background-color: var(--color-superficie-morada);
   border-radius: var(--radio-medio);
 
-  @include responder-a('tablet') {
+  // Base: layout vertical apilado
+  flex-direction: column;
+
+  // Contenedor amplio (≥ 37.5rem / 600px) - layout horizontal
+  @container subscription-info (min-width: 37.5rem) {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;

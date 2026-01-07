@@ -3,11 +3,15 @@
 // ==========================================================================
 // COMPONENTE: CARD
 // ==========================================================================
-// Tarjetas reutilizables con múltiples variantes
+// Tarjetas reutilizables con múltiples variantes con Container Queries
 // Variantes: feature, action, info, list
+// Container Queries: feature y list (variantes complejas)
+// Soporte: Chrome 105+, Firefox 110+, Safari 16+ (2022-2023)
 
 :host {
   display: block;
+  container-type: inline-size;
+  container-name: card;
 }
 
 .c-card {
@@ -78,27 +82,53 @@
   }
 
   // ==========================================================================
-  // VARIANTE: FEATURE
+  // VARIANTE: FEATURE (con Container Queries)
   // ==========================================================================
+  // Adaptaciones basadas en ancho del contenedor, no del viewport
 
   &--feature {
     flex-direction: column;
-    gap: var(--espaciado-3);
     // Combinación de Sombra 1 + Sombra 3 según diseño de Figma
     box-shadow: var(--sombra-1), var(--sombra-3);
+
+    // Base: Mobile pequeño (< 18.75rem / 300px)
+    gap: var(--espaciado-2);
+    padding: var(--espaciado-3);
 
     .c-card__contenido {
       gap: var(--espaciado-2);
     }
 
     .c-card__titulo {
-      font-size: var(--tamano-h4);
-      line-height: var(--altura-linea-h4);
+      font-size: var(--tamano-texto-grande);
+      line-height: var(--altura-linea-compacta);
     }
 
     .c-card__descripcion {
-      font-size: var(--tamano-texto-grande);
-      line-height: var(--altura-linea-body-large);
+      font-size: var(--tamano-texto-regular);
+      line-height: var(--altura-linea-normal);
+    }
+
+    // Contenedor mediano (≥ 18.75rem / 300px)
+    @container card (min-width: 18.75rem) {
+      gap: var(--espaciado-3);
+      padding: var(--espaciado-4);
+
+      .c-card__titulo {
+        font-size: var(--tamano-h4);
+        line-height: var(--altura-linea-h4);
+      }
+
+      .c-card__descripcion {
+        font-size: var(--tamano-texto-grande);
+        line-height: var(--altura-linea-body-large);
+      }
+    }
+
+    // Contenedor amplio (≥ 25rem / 400px)
+    @container card (min-width: 25rem) {
+      gap: var(--espaciado-4);
+      padding: var(--espaciado-5);
     }
 
     .c-card__valor,
@@ -158,17 +188,21 @@
   }
 
   // ==========================================================================
-  // VARIANTE: LIST
+  // VARIANTE: LIST (con Container Queries)
   // ==========================================================================
+  // Adaptación de layout vertical a horizontal según contenedor
 
   &--list {
-    flex-direction: row;
-    align-items: center;
     gap: var(--espaciado-3);
+
+    // Base: Mobile - layout vertical apilado
+    flex-direction: column;
+    align-items: flex-start;
 
     .c-card__contenido {
       gap: var(--espaciado-1);
       flex: 1;
+      width: 100%;
     }
 
     .c-card__titulo {
@@ -189,6 +223,17 @@
 
     .c-card__accion {
       flex-shrink: 0;
+      width: 100%;
+    }
+
+    // Contenedor amplio (≥ 37.5rem / 600px) - layout horizontal
+    @container card (min-width: 37.5rem) {
+      flex-direction: row;
+      align-items: center;
+
+      .c-card__accion {
+        width: auto;
+      }
     }
 
     .c-card__icon,
