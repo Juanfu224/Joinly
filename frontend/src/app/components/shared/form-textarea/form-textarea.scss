@@ -27,15 +27,16 @@
 
   &__field {
     width: 100%;
+    min-height: 6rem; // Altura mínima para contenido
     padding: var(--espaciado-2);
     color: var(--text-primary);
     font-size: var(--tamano-texto-regular);
     font-family: inherit;
+    line-height: 1.5; // Mejora legibilidad
     background-color: var(--bg-primary);
     border: var(--borde-medio) solid var(--border-color);
     border-radius: var(--radio-medio);
-    resize: vertical;
-    min-height: 6rem;
+    resize: vertical; // Permite resize vertical con touch
     transition:
       border-color var(--duracion-rapida) var(--transicion-estandar),
       box-shadow var(--duracion-rapida) var(--transicion-estandar),
@@ -78,6 +79,11 @@
       border-style: dashed;
       border-color: var(--color-principal);
     }
+  }
+
+  &__error,
+  &__help {
+    min-height: 1.5rem;
   }
 
   &__error {

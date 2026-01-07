@@ -196,6 +196,14 @@
    * Referencia: 04-layout/_contenedor.scss
    */
   --contenedor-padding-lateral: clamp(1rem, 10vw, 12rem);
+
+  // --- TAMAÑOS MÍNIMOS DE INTERACCIÓN ---
+  /**
+   * Tamaño mínimo para elementos táctiles (WCAG 2.1 AA/AAA)
+   * Target Size: 44×44px
+   * Aplica a: botones, inputs, checkboxes, radio buttons, enlaces táctiles
+   */
+  --tamano-minimo-tactil: 2.75rem; // 44px
 }
 
 // ==========================================================================

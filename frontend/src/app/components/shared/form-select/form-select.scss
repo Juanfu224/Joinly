@@ -33,13 +33,14 @@
 
   &__field {
     width: 100%;
-    padding: var(--espaciado-1) var(--espaciado-5) var(--espaciado-1) var(--espaciado-2);
+    min-height: var(--tamano-minimo-tactil);
+    padding: 0.625rem var(--espaciado-5) 0.625rem var(--espaciado-2); // Ajustado para 44px total
     color: var(--text-primary);
     font-size: var(--tamano-texto-regular);
     background-color: var(--bg-primary);
     border: var(--borde-medio) solid var(--border-color);
     border-radius: var(--radio-medio);
-    appearance: none;
+    appearance: none; // Mantener nativo pero styled
     cursor: pointer;
     transition:
       border-color var(--duracion-rapida) var(--transicion-estandar),
@@ -97,6 +98,11 @@
     .c-form-select__field:focus ~ & {
       color: var(--color-principal);
     }
+  }
+
+  &__error,
+  &__help {
+    min-height: 1.5rem;
   }
 
   &__error {

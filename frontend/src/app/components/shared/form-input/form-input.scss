@@ -33,11 +33,12 @@
 
   &__field {
     width: 100%;
-    padding: 1.25rem 1rem; // 20px vertical, 16px horizontal según Figma
+    min-height: var(--tamano-minimo-tactil);
+    padding: 0.625rem 1rem; // Ajustado para mantener 44px total con border
     color: var(--text-primary);
     font-size: var(--tamano-texto-regular);
     background-color: var(--bg-secondary);
-    border: 2px solid var(--color-gris-oscuro); // Border de 2px según Figma
+    border: 2px solid var(--color-gris-oscuro);
     border-radius: var(--radio-medio);
     transition:
       border-color var(--duracion-rapida) var(--transicion-estandar),
@@ -45,7 +46,7 @@
       background-color var(--duracion-rapida) var(--transicion-estandar);
 
     &::placeholder {
-      color: var(--color-gris-oscuro); // #9ca3af según Figma
+      color: var(--color-gris-oscuro);
       font-size: var(--tamano-texto-regular);
       font-weight: var(--peso-fuente-regular);
     }
@@ -87,6 +88,13 @@
       border-style: dashed;
       border-color: var(--color-principal);
     }
+  }
+
+  &__error,
+  &__success,
+  &__pending,
+  &__help {
+    min-height: 1.5rem;
   }
 
   &__error {

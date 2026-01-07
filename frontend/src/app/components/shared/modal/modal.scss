@@ -35,8 +35,10 @@
   background-color: var(--bg-secondary);
   border-radius: var(--radio-grande);
   box-shadow: var(--sombra-6);
-  padding: var(--espaciado-4);
-  max-width: 32rem;
+  
+  // Base Mobile-First: padding compacto
+  padding: var(--espaciado-3);
+  max-width: 100%;
   width: 100%;
   max-height: calc(100vh - var(--espaciado-4));
   overflow-y: auto;
@@ -45,9 +47,16 @@
   transition: background-color var(--duracion-base) var(--transicion-estandar),
               box-shadow var(--duracion-base) var(--transicion-estandar);
 
-  // Responsive: padding más pequeño en móvil
+  // Tablet: padding generoso + max-width
   @include responder-a('movil') {
     padding: var(--espaciado-5);
+    max-width: 32rem; // 512px
+  }
+
+  // Desktop: padding muy generoso
+  @include responder-a('escritorio') {
+    padding: var(--espaciado-6);
+    max-width: 40rem; // 640px para modales grandes
   }
 }
 
@@ -61,8 +70,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  min-width: var(--tamano-minimo-tactil);
+  min-height: var(--tamano-minimo-tactil);
   padding: 0;
   background-color: transparent;
   border: none;
