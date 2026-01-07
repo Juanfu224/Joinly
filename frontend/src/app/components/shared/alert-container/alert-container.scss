@@ -1,3 +1,5 @@
+@use '../../../../styles/01-tools/mixins' as *;
+
 // ==========================================================================
 // COMPONENTE: ALERT CONTAINER
 // ==========================================================================
@@ -26,13 +28,14 @@
   }
 
   // ==========================================================================
-  // RESPONSIVE
+  // RESPONSIVE (Mobile First)
   // ==========================================================================
 
-  @media (max-width: 47.9375rem) {
-    inset-inline: 0;
-    align-items: stretch;
-    max-inline-size: none;
-    min-inline-size: 0;
+  @include responder-a('tablet') {
+    max-inline-size: 32rem;
+    min-inline-size: 18rem;
+    inset-inline: auto;
+    inset-inline-end: 0;
+    align-items: flex-end;
   }
 }

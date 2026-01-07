@@ -15,7 +15,11 @@
 // Enfoque Mobile First: los estilos base son para móvil, luego escalamos.
 
 @mixin responder-a($punto-ruptura) {
-  @if $punto-ruptura == 'movil' {
+  @if $punto-ruptura == 'mobile-small' {
+    @media (min-width: $bp-mobile-small) {
+      @content;
+    }
+  } @else if $punto-ruptura == 'movil' {
     @media (min-width: $bp-movil) {
       @content;
     }
@@ -32,7 +36,7 @@
       @content;
     }
   } @else {
-    @warn "Breakpoint '#{$punto-ruptura}' no existe. Usa: movil, tablet, escritorio o escritorio-grande.";
+    @warn "Breakpoint '#{$punto-ruptura}' no existe. Usa: mobile-small, movil, tablet, escritorio o escritorio-grande.";
   }
 }
 
@@ -107,6 +111,19 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+// Revierte el mixin oculto-accesible para mostrar el elemento
+@mixin mostrar-accesible {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: initial;
+  margin: initial;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+  border: initial;
 }
 
 // ==========================================================================

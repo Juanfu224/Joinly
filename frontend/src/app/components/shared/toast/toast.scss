@@ -154,20 +154,18 @@
   }
 
   // ==========================================================================
-  // RESPONSIVE
+  // RESPONSIVE (Mobile First)
   // ==========================================================================
 
-  // En móviles, ocupar todo el ancho
-  @media (max-width: 47.9375rem) {
-    max-inline-size: none;
-    border-radius: var(--radio-medio);
+  @include responder-a('tablet') {
+    max-inline-size: 24rem;
+    border-radius: var(--radio-grande);
   }
 
-  // Reducir el padding en pantallas muy pequeñas
-  @media (max-width: 23.4375rem) {
-    padding-block: var(--espaciado-1);
-    padding-inline: var(--espaciado-2);
-    font-size: var(--tamano-texto-pequeno);
-    gap: var(--espaciado-1);
+  @include responder-a('mobile-small') {
+    padding-block: var(--espaciado-2);
+    padding-inline: var(--espaciado-3);
+    font-size: var(--tamano-texto-regular);
+    gap: var(--espaciado-2);
   }
 }

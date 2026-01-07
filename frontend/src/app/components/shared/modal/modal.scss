@@ -106,16 +106,22 @@
 // ---------------------------------------------------------------------------
 .c-modal__acciones {
   display: flex;
+  // Estilos base (mobile): botones apilados verticalmente
+  flex-direction: column-reverse;
   gap: var(--espaciado-2);
   justify-content: center;
   align-items: center;
   
-  // En móvil, botones apilados verticalmente pero centrados
-  @media (max-width: $bp-movil) {
-    flex-direction: column-reverse;
+  app-button {
+    width: 100%;
+  }
+
+  // A partir de móvil grande: botones en horizontal
+  @include responder-a('movil') {
+    flex-direction: row;
     
     app-button {
-      width: 100%;
+      width: auto;
     }
   }
 }

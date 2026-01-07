@@ -136,17 +136,16 @@
   }
 
   // ==========================================================================
-  // RESPONSIVE
+  // RESPONSIVE (Mobile First)
   // ==========================================================================
 
-  @media (max-width: 47.9375rem) {
-    border-radius: var(--radio-medio);
+  @include responder-a('tablet') {
+    border-radius: var(--radio-grande);
   }
 
-  // Reducir el padding en pantallas muy peque\u00f1as
-  @media (max-width: 23.4375rem) {
-    padding-block: calc(var(--espaciado-1) * 0.75);
-    padding-inline: var(--espaciado-1);
+  @include responder-a('mobile-small') {
+    padding-block: var(--espaciado-1);
+    padding-inline: var(--espaciado-2);
     font-size: var(--tamano-texto-regular);
   }
 }

@@ -12,6 +12,7 @@
 // Usados por el mixin responder-a() en _mixins.scss
 // Mobile First: Los valores representan el punto de ruptura mínimo
 
+$bp-mobile-small: 20rem; // 320px - Móvil muy pequeño (iPhone SE)
 $bp-movil: 40rem; // 640px - Móvil grande
 $bp-tablet: 48rem; // 768px - Tablet vertical
 $bp-desktop: 64rem; // 1024px - Desktop / Tablet horizontal

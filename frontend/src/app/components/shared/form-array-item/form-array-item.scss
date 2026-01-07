@@ -59,12 +59,13 @@
   }
 
   &__remove-text {
-    @include responder-a('movil') {
-      display: inline;
-    }
+    // Estilos base (mobile): ocultar texto, solo mostrar icono
+    @include oculto-accesible;
 
-    @media (max-width: 479px) {
-      @include oculto-accesible;
+    // Mostrar texto a partir de móvil grande
+    @include responder-a('movil') {
+      @include mostrar-accesible;
+      display: inline;
     }
   }
 

@@ -1,3 +1,5 @@
+@use '../../../../styles/01-tools/mixins' as *;
+
 /**
  * Estilos del componente NotificationSender
  * Envía alertas visuales y actualiza estado compartido
@@ -67,17 +69,21 @@
   }
 
   // ========================================================================
-  // RESPONSIVE (CSS moderno con range syntax)
+  // RESPONSIVE (Mobile First)
   // ========================================================================
 
-  @media (width < 768px) {
-    padding: var(--espaciado-4);
+  @include responder-a('tablet') {
+    padding: var(--espaciado-6);
 
     &__title {
-      font-size: var(--tamano-texto-xl);
+      font-size: var(--tamano-texto-2xl);
     }
 
     &__actions {
+      flex-wrap: nowrap;
+    }
+  }
+}
       flex-direction: column;
 
       app-button {

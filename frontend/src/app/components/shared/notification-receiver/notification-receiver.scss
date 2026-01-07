@@ -1,3 +1,5 @@
+@use '../../../../styles/01-tools/mixins' as *;
+
 /**
  * Estilos del componente NotificationReceiver
  * Muestra estado de usuario, filtros compartidos y eventos recibidos
@@ -236,18 +238,14 @@
   }
 
   // ========================================================================
-  // RESPONSIVE
+  // RESPONSIVE (Mobile First)
   // ========================================================================
 
-  @media (width < 768px) {
-    padding: var(--espaciado-4);
-
-    &__title {
-      font-size: var(--tamano-texto-xl);
-    }
+  @include responder-a('tablet') {
+    padding: var(--espaciado-6);
 
     &__content {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 }

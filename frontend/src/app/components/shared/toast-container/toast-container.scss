@@ -1,3 +1,5 @@
+@use '../../../../styles/01-tools/mixins' as *;
+
 // ==========================================================================
 // COMPONENTE: TOAST CONTAINER
 // ==========================================================================
@@ -27,21 +29,20 @@
   }
 
   // ==========================================================================
-  // RESPONSIVE
+  // RESPONSIVE (Mobile First)
   // ==========================================================================
 
-  // En tablets y móviles, centrar y ocupar más espacio
-  @media (max-width: 47.9375rem) {
-    inset-inline: var(--espaciado-2);
-    align-items: stretch;
-    max-inline-size: none;
-    min-inline-size: 0;
+  @include responder-a('tablet') {
+    max-inline-size: 24rem;
+    min-inline-size: 16rem;
+    inset-inline: auto;
+    inset-inline-end: var(--espaciado-2);
+    align-items: flex-end;
   }
 
-  // En móviles muy pequeños, reducir márgenes
-  @media (max-width: 23.4375rem) {
-    inset-inline: var(--espaciado-1);
-    inset-block-start: calc(var(--header-height) + var(--espaciado-1));
-    gap: var(--espaciado-1);
+  @include responder-a('mobile-small') {
+    inset-inline: var(--espaciado-2);
+    inset-block-start: calc(var(--header-height) + var(--espaciado-2));
+    gap: var(--espaciado-2);
   }
 }

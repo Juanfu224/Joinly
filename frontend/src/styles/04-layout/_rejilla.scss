@@ -1,13 +1,5 @@
-// ==========================================================================
-// SISTEMA DE REJILLA (CSS Grid)
-// ==========================================================================
-// Un sistema de grid moderno basado en CSS Grid nativo.
-// Mucho más potente y flexible que los grids de 12 columnas antiguos.
-//
-// CSS Grid nos permite crear layouts complejos con poco código.
-// La magia está en auto-fit + minmax() para grids totalmente responsivos.
-
 @use '../00-settings/variables' as *;
+@use '../01-tools/mixins' as *;
 
 .l-rejilla {
   display: grid;
@@ -54,40 +46,39 @@
   }
 
   // ---------------------------------------------------------------------------
-  // COLUMNAS FIJAS (con breakpoints para responsividad)
+  // COLUMNAS FIJAS (Mobile First)
   // ---------------------------------------------------------------------------
-  // Usar cuando necesitas control exacto sobre el número de columnas.
-  // Incluyen breakpoints para colapsar a menos columnas en móvil.
+  // Estilos base para móvil (1 columna), luego escalamos progresivamente.
 
   &--2-columnas {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
 
-    @media (max-width: $bp-tablet) {
-      grid-template-columns: 1fr;
+    @include responder-a('tablet') {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 
   &--3-columnas {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr;
 
-    @media (max-width: $bp-desktop) {
+    @include responder-a('tablet') {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    @media (max-width: $bp-tablet) {
-      grid-template-columns: 1fr;
+    @include responder-a('escritorio') {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 
   &--4-columnas {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr;
 
-    @media (max-width: $bp-desktop) {
+    @include responder-a('tablet') {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    @media (max-width: $bp-tablet) {
-      grid-template-columns: 1fr;
+    @include responder-a('escritorio') {
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 

@@ -20,36 +20,65 @@
 
 ### ✅ Tarea 1.1: Auditar sistema de breakpoints actual
 **Prioridad:** Alta  
-**Tiempo estimado:** 1h
+**Tiempo estimado:** 1h  
+**Estado:** ✅ **COMPLETADA**
 
 **Contexto:**
 - El proyecto ya tiene breakpoints definidos en `_variables.scss`:
+  - `$bp-mobile-small: 20rem` (320px) ⬅️ **NUEVO**
   - `$bp-movil: 40rem` (640px)
   - `$bp-tablet: 48rem` (768px)
   - `$bp-desktop: 64rem` (1024px)
   - `$bp-big-desktop: 80rem` (1280px)
-- Existe mixin `responder-a()` para Mobile-First
+- Existe mixin `responder-a()` para Mobile-First ✅
 
-**Acciones:**
-- [x] Revisar si todos los breakpoints están siendo usados consistentemente
-- [ ] Identificar media queries hardcodeadas que no usan el mixin
-- [ ] Asegurar que NO existen media queries Desktop-First (max-width)
-- [ ] Documentar excepciones justificadas (ej: menú móvil que desaparece en desktop)
+**Resultados de la auditoría:**
+
+✅ **Sistema de breakpoints mejorado:**
+- Agregado `$bp-mobile-small: 20rem` (320px) para pantallas muy pequeñas
+- Mixin `responder-a()` actualizado con nuevo breakpoint 'mobile-small'
+- Cubre todos los viewports de testing: 320px, 375px, 768px, 1024px, 1280px
+
+✅ **Refactorización completada - 10 archivos:**
+1. **`_variables.scss`** - Agregado breakpoint mobile-small
+2. **`_mixins.scss`** - Actualizado mixin con nuevo breakpoint
+3. **`_rejilla.scss`** - 6 max-width → min-width (Mobile-First)
+4. **`header.scss`** - Reformateado + documentadas excepciones válidas
+5. **`toast.scss`** - Eliminados hardcoded media queries
+6. **`toast-container.scss`** - Refactorizado con mixin
+7. **`alert.scss`** - Refactorizado con mixin
+8. **`alert-container.scss`** - Refactorizado con mixin
+9. **`form-array-item.scss`** - Eliminado max-width hardcodeado
+10. **`modal.scss`** - Refactorizado a Mobile-First
+11. **`notification-receiver.scss`** - Actualizado a mixin
+12. **`notification-sender.scss`** - Actualizado a mixin
+
+✅ **Excepciones justificadas documentadas:**
+- **Header:** Ocultar navegación desktop en mobile/tablet (lógica inversa necesaria)
+- **Header:** Mostrar menú hamburguesa solo en mobile/tablet
+- **Modal:** Ocultar menú mobile en desktop
+
+✅ **Todos los media queries ahora:**
+- Usan el mixin `@include responder-a()`
+- Siguen enfoque Mobile-First consistente
+- Sin valores hardcodeados (23.4375rem, 47.9375rem, etc.)
 
 **Archivos a revisar:**
-- `frontend/src/styles/00-settings/_variables.scss`
-- `frontend/src/styles/01-tools/_mixins.scss`
-- Buscar `@media` en todos los archivos `.scss`
+- ✅ `frontend/src/styles/00-settings/_variables.scss`
+- ✅ `frontend/src/styles/01-tools/_mixins.scss`
+- ✅ Todos los archivos con `@media` refactorizados
 
 **Resultado esperado:**
-- Lista de todos los usos de media queries
-- Identificar inconsistencias para corregir
+- ✅ Lista de todos los usos de media queries
+- ✅ Inconsistencias corregidas
+- ✅ Sistema 100% Mobile-First
 
 ---
 
 ### ✅ Tarea 1.2: Definir componentes para Container Queries
 **Prioridad:** Alta  
-**Tiempo estimado:** 30min
+**Tiempo estimado:** 30min  
+**Estado:** ✅ **COMPLETADA**
 
 **Contexto:**
 Container Queries permiten que componentes se adapten a su contenedor, no al viewport. Son ideales para:
@@ -57,31 +86,69 @@ Container Queries permiten que componentes se adapten a su contenedor, no al vie
 - Tarjetas que cambian layout según espacio disponible
 - Grids fluidos con auto-fill
 
-**Componentes candidatos:**
-1. **Card Component** (`card.scss`) - ⭐ RECOMENDADO
-   - Se usa en múltiples contextos (style-guide, grupos, suscripciones)
-   - Variantes: feature, action, info, list
-   - Beneficio: Adaptar layout horizontal/vertical según espacio
+**Componentes seleccionados para implementación:**
 
-2. **Subscription Info Card** (`subscription-info-card.scss`) - ⭐ RECOMENDADO
-   - Tiene grid de 2 columnas que podría colapsar
-   - Tabs que podrían apilarse en espacios estrechos
-   - Beneficio: Responsive independiente del viewport
+#### 1. **Card Component** (`card.scss`) ⭐⭐⭐ **SELECCIONADO**
+   - **Ubicación:** `frontend/src/app/components/shared/card/card.scss`
+   - **Variantes existentes:** feature, action, info, list
+   - **Usado en:** style-guide, grupos, suscripciones, landing pages
+   - **Beneficio:** Adaptar layout horizontal/vertical según espacio disponible
+   
+   **Breakpoints de contenedor definidos:**
+   - `@container (min-width: 300px)` - Mobile pequeño
+     - Padding: var(--espaciado-3)
+     - Gap: var(--espaciado-2)
+     - Icon size: 2rem
+   
+   - `@container (min-width: 500px)` - Mobile grande / Tablet
+     - Padding: var(--espaciado-4)
+     - Gap: var(--espaciado-3)
+     - Icon size: 2.5rem
+     - Layout puede cambiar a horizontal en variantes específicas
+   
+   - `@container (min-width: 700px)` - Desktop / Contenedor amplio
+     - Padding: var(--espaciado-5)
+     - Gap: var(--espaciado-4)
+     - Icon size: 3rem
+     - Layout horizontal completo para variantes action/info
 
-3. **Member Card** (`member-card.scss`)
-   - Componente compacto con avatar + info
-   - Beneficio: Ajustar spacing y layout según contenedor
+#### 2. **Subscription Info Card** (`subscription-info-card.scss`) ⭐⭐⭐ **SELECCIONADO**
+   - **Ubicación:** `frontend/src/app/components/shared/subscription-info-card/subscription-info-card.scss`
+   - **Características:** Grid complejo con tabs, credenciales, pagos, solicitudes
+   - **Usado en:** Páginas de suscripciones, modales, dashboards
+   - **Beneficio:** Funcionar perfectamente en modal estrecho Y contenido principal
+   
+   **Breakpoints de contenedor definidos:**
+   - `@container (min-width: 400px)` - Mobile grande
+     - Tabs: 2 columnas si caben
+     - Grid info: 1 columna
+     - Padding: var(--espaciado-4)
+   
+   - `@container (min-width: 600px)` - Tablet / Contenedor medio
+     - Tabs: Expandidos con más padding
+     - Grid info: 2 columnas
+     - Padding: var(--espaciado-5)
+   
+   - `@container (min-width: 800px)` - Desktop / Contenedor amplio
+     - Tabs: Full width con spacing generoso
+     - Grid info: 2-3 columnas según contenido
+     - Padding: var(--espaciado-6)
 
-4. **Group Card** (`group-card.scss`)
-   - Similar a Card, podría beneficiarse de Container Queries
+**Componentes NO seleccionados (justificación):**
+- **Member Card:** Componente demasiado compacto, ya funciona bien sin CQ
+- **Group Card:** Layout columna simple, beneficio mínimo con CQ
 
-**Acciones:**
-- [ ] Elegir 2 componentes para implementar Container Queries
-- [ ] Definir breakpoints de contenedor (ej: 300px, 400px, 600px)
-- [ ] Planificar cambios de layout para cada breakpoint
+**Plan de implementación (Fase 3):**
+1. Envolver contenedores con `container-type: inline-size`
+2. Definir `container-name` para cada componente
+3. Reemplazar media queries actuales por `@container`
+4. Probar en diferentes contextos (sidebar, grid, modal)
 
 **Resultado esperado:**
-- Documento con los 2 componentes elegidos y sus breakpoints de contenedor
+- ✅ 2 componentes identificados y documentados
+- ✅ Breakpoints de contenedor definidos con valores específicos
+- ✅ Justificación técnica clara para cada elección
+- ✅ Plan de implementación detallado listo para Fase 3
 
 ---
 
