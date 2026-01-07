@@ -1,0 +1,134 @@
+@use '../../../styles/00-settings/variables' as *;
+@use '../../../styles/01-tools/mixins' as *;
+
+// ==========================================================================
+// PAGE: DASHBOARD
+// ==========================================================================
+// Vista principal de grupos del usuario autenticado.
+//
+// ESTRATEGIA RESPONSIVE: Mobile-First
+// - Base: Mobile (< 640px) - 1 columna, header apilado
+// - @include responder-a('movil'): 640px+ - Header en línea
+// - @include responder-a('tablet'): 768px+ - Grid 2 columnas
+// - @include responder-a('desktop'): 1024px+ - Grid 3 columnas
+
+// ---------------------------------------------------------------------------
+// HOST STYLES
+// ---------------------------------------------------------------------------
+:host {
+  display: block;
+  min-block-size: 100vh;
+}
+
+// ---------------------------------------------------------------------------
+// CONTENEDOR PRINCIPAL
+// ---------------------------------------------------------------------------
+.p-dashboard {
+  padding-block: var(--espaciado-6);
+
+  @include responder-a('tablet') {
+    padding-block: var(--espaciado-8);
+  }
+
+  @include responder-a('escritorio') {
+    padding-block: var(--espaciado-10);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// HEADER DE PÁGINA
+// ---------------------------------------------------------------------------
+.p-dashboard__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-4);
+  margin-block-end: var(--espaciado-6);
+
+  @include responder-a('movil') {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  @include responder-a('tablet') {
+    margin-block-end: var(--espaciado-8);
+  }
+}
+
+.p-dashboard__header-content {
+  flex: 1;
+}
+
+.p-dashboard__titulo {
+  font-size: var(--tamano-texto-2xl);
+  font-weight: var(--peso-fuente-negrita);
+  line-height: 1.125;
+  color: var(--text-primary);
+  margin: 0 0 var(--espaciado-1) 0;
+
+  @include responder-a('tablet') {
+    font-size: var(--tamano-texto-3xl);
+  }
+
+  @include responder-a('escritorio') {
+    font-size: var(--tamano-texto-4xl);
+  }
+}
+
+.p-dashboard__subtitulo {
+  font-size: var(--tamano-texto-pequeno);
+  line-height: var(--altura-linea-normal);
+  color: var(--text-secondary);
+  margin: 0;
+
+  @include responder-a('tablet') {
+    font-size: var(--tamano-texto-normal);
+  }
+
+  strong {
+    color: var(--text-primary);
+    font-weight: var(--peso-fuente-semibold);
+  }
+}
+
+// Botón crear grupo - full width en mobile
+.p-dashboard__header app-button {
+  inline-size: 100%;
+
+  @include responder-a('movil') {
+    inline-size: auto;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// GRID DE GRUPOS
+// ---------------------------------------------------------------------------
+.p-dashboard__grid {
+  display: grid;
+  gap: var(--espaciado-5);
+
+  // 2 columnas en tablet
+  @include responder-a('tablet') {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--espaciado-6);
+  }
+
+  // 3 columnas en desktop
+  @include responder-a('escritorio') {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--espaciado-6);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// EMPTY STATE
+// ---------------------------------------------------------------------------
+.p-dashboard__empty {
+  display: flex;
+  justify-content: center;
+  padding-block: var(--espaciado-10);
+
+  @include responder-a('tablet') {
+    padding-block: var(--espaciado-12);
+  }
+}

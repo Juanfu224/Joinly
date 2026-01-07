@@ -1,0 +1,38 @@
+<main class="p-dashboard">
+  <div class="l-contenedor">
+    <!-- Header de página -->
+    <header class="p-dashboard__header">
+      <div class="p-dashboard__header-content">
+        <h1 class="p-dashboard__titulo">Mis Grupos</h1>
+        @if (currentUser(); as user) {
+          <p class="p-dashboard__subtitulo">
+            Bienvenido, <strong>{{ user.nombreUsuario }}</strong>
+          </p>
+        }
+      </div>
+      <app-button
+        variant="primary"
+        leftIcon="add"
+        (click)="onCreateGroup()"
+      >
+        Crear grupo
+      </app-button>
+    </header>
+
+    <!-- Grid de grupos o empty state -->
+    @if (grupos().length > 0) {
+      <div class="p-dashboard__grid">
+        @for (grupo of grupos(); track grupo.id) {
+          <app-group-card
+            [grupo]="grupo"
+            (invite)="onGroupInvite(grupo.id)"
+          />
+        }
+      </div>
+    } @else {
+      <div class="p-dashboard__empty">
+        <app-empty-groups />
+      </div>
+    }
+  </div>
+</main>

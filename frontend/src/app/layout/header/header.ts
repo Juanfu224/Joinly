@@ -13,6 +13,7 @@ import { Router, RouterLink, RouterLinkActive, NavigationStart } from '@angular/
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { ThemeToggleComponent, IconComponent, LogoComponent } from '../../components/shared';
+import { AuthService } from '../../services/auth';
 
 /**
  * Componente de cabecera principal de la aplicación.
@@ -23,7 +24,8 @@ import { ThemeToggleComponent, IconComponent, LogoComponent } from '../../compon
  * - Menú hamburguesa móvil responsive (< 1024px)
  * - Navegación con iconos semánticos
  * - Toggle de tema claro/oscuro
- * - Botones de acceso (Login, Registro)
+ * - Modo público: Botones Login/Registro
+ * - Modo autenticado: Navegación Dashboard + Avatar/Logout
  * - Overlay oscuro cuando el menú está abierto
  * - Cierre automático al navegar o presionar ESC
  * - Bloqueo de scroll del body cuando menú abierto
@@ -43,6 +45,7 @@ import { ThemeToggleComponent, IconComponent, LogoComponent } from '../../compon
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
   private navigationSubscription?: Subscription;
 
   /**
@@ -50,6 +53,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
    * true = menú abierto, false = menú cerrado
    */
   protected readonly menuOpen = signal(false);
+
+  /**
+   * Usuario actual desde AuthService
+   */
+  protected readonly currentUser = this.authService.currentUser;
+
+  /**
+   * Estado de autenticación
+   */
+  protected readonly isAuthenticated = this.authService.isAuthenticated;
 
   /**
    * Referencia al contenedor del menú móvil para gestión de clicks fuera.
@@ -146,6 +159,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (window.innerWidth >= 1024 && this.menuOpen()) {
       this.closeMenu();
     }
+  }
+
+  /**
+   * Maneja el logout del usuario.
+   * Cierra el menú y hace logout a través del AuthService.
+   */
+  protected onLogout(): void {
+    this.closeMenu();
+    this.authService.logout();
   }
 }
 

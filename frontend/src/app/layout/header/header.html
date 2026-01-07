@@ -18,15 +18,33 @@
       <app-icon [name]="menuOpen() ? 'close' : 'menu'" size="md" />
     </button>
 
-    <!-- Área de utilidad (acciones del usuario - desktop) -->
+    <!-- Área de utilidad (desktop) -->
     <nav class="c-header__utilidad" aria-label="Acceso de usuario">
       <app-theme-toggle />
-      <a routerLink="/login" class="c-header__btn c-header__btn--secundario">
-        Iniciar sesión
-      </a>
-      <a routerLink="/registro" class="c-header__btn c-header__btn--primario">
-        Empezar
-      </a>
+      
+      <!-- Modo público: Login/Registro -->
+      @if (!isAuthenticated()) {
+        <a routerLink="/login" class="c-header__btn c-header__btn--secundario">
+          Iniciar sesión
+        </a>
+        <a routerLink="/register" class="c-header__btn c-header__btn--primario">
+          Empezar
+        </a>
+      }
+      
+      <!-- Modo autenticado: Dashboard/Logout -->
+      @if (isAuthenticated()) {
+        <a routerLink="/dashboard" routerLinkActive="c-header__btn--activo" class="c-header__btn c-header__btn--secundario">
+          Dashboard
+        </a>
+        <button 
+          type="button"
+          class="c-header__btn c-header__btn--secundario"
+          (click)="onLogout()"
+        >
+          Cerrar sesión
+        </button>
+      }
     </nav>
   </div>
 
@@ -52,6 +70,17 @@
           <span>Inicio</span>
         </a>
       </li>
+      
+      <!-- Solo si está autenticado: Dashboard -->
+      @if (isAuthenticated()) {
+        <li class="c-header__nav-item">
+          <a routerLink="/dashboard" class="c-header__nav-enlace" routerLinkActive="c-header__nav-enlace--activo">
+            <app-icon name="users" size="sm" />
+            <span>Dashboard</span>
+          </a>
+        </li>
+      }
+      
       <li class="c-header__nav-item">
         <a routerLink="/style-guide" class="c-header__nav-enlace" routerLinkActive="c-header__nav-enlace--activo">
           <app-icon name="pencil" size="sm" />
@@ -66,12 +95,31 @@
     <!-- Acciones de usuario en el menú móvil -->
     <div class="c-header__nav-acciones">
       <app-theme-toggle />
-      <a routerLink="/login" class="c-header__btn c-header__btn--secundario c-header__btn--block">
-        Iniciar sesión
-      </a>
-      <a routerLink="/registro" class="c-header__btn c-header__btn--primario c-header__btn--block">
-        Empezar
-      </a>
+      
+      <!-- Modo público -->
+      @if (!isAuthenticated()) {
+        <a routerLink="/login" class="c-header__btn c-header__btn--secundario c-header__btn--block">
+          Iniciar sesión
+        </a>
+        <a routerLink="/register" class="c-header__btn c-header__btn--primario c-header__btn--block">
+          Empezar
+        </a>
+      }
+      
+      <!-- Modo autenticado -->
+      @if (isAuthenticated() && currentUser(); as user) {
+        <div class="c-header__user-info">
+          <app-icon name="user" size="sm" />
+          <span>{{ user.nombreUsuario }}</span>
+        </div>
+        <button 
+          type="button"
+          class="c-header__btn c-header__btn--secundario c-header__btn--block"
+          (click)="onLogout()"
+        >
+          Cerrar sesión
+        </button>
+      }
     </div>
   </nav>
 </header>

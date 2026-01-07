@@ -1,0 +1,153 @@
+<main class="p-home">
+  <!-- ===================================================================
+       HERO SECTION - Propuesta de valor principal
+       =================================================================== -->
+  <section class="p-home__hero">
+    <div class="l-contenedor">
+      <div class="p-home__hero-content">
+        <!-- Contenido textual -->
+        <div class="p-home__hero-text">
+          <h1 class="p-home__hero-titulo">
+            Comparte suscripciones con tu familia sin complicaciones
+          </h1>
+          <p class="p-home__hero-descripcion">
+            Gestiona Netflix, Spotify, Disney+ y más. Divide los costes automáticamente 
+            y paga solo tu parte. Todo desde una plataforma centralizada y segura.
+          </p>
+          <div class="p-home__hero-acciones">
+            <app-button 
+              variant="primary" 
+              size="lg"
+              [routerLink]="['/register']"
+            >
+              Empezar gratis
+            </app-button>
+            <app-button 
+              variant="secondary" 
+              size="lg"
+              [routerLink]="['/login']"
+            >
+              Iniciar sesión
+            </app-button>
+          </div>
+        </div>
+
+        <!-- Visual decorativo -->
+        <div class="p-home__hero-visual">
+          <div class="p-home__hero-visual-circle p-home__hero-visual-circle--1"></div>
+          <div class="p-home__hero-visual-circle p-home__hero-visual-circle--2"></div>
+          <div class="p-home__hero-visual-circle p-home__hero-visual-circle--3"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       FEATURES SECTION - Beneficios clave
+       =================================================================== -->
+  <section class="p-home__features">
+    <div class="l-contenedor">
+      <h2 class="p-home__section-titulo">¿Por qué elegir Joinly?</h2>
+      
+      <div class="p-home__features-grid">
+        <!-- Feature 1: Ahorro -->
+        <article class="p-home__feature">
+          <div class="p-home__feature-icon">
+            <app-icon name="dollar" size="lg" />
+          </div>
+          <h3 class="p-home__feature-titulo">Ahorra hasta 75%</h3>
+          <p class="p-home__feature-descripcion">
+            Divide el coste total entre todos los miembros de tu familia. 
+            Paga solo tu parte y ahorra cientos de euros al año.
+          </p>
+        </article>
+
+        <!-- Feature 2: Seguridad -->
+        <article class="p-home__feature">
+          <div class="p-home__feature-icon">
+            <app-icon name="lock" size="lg" />
+          </div>
+          <h3 class="p-home__feature-titulo">Pagos seguros</h3>
+          <p class="p-home__feature-descripcion">
+            El pago queda retenido hasta que finalice el período de suscripción, 
+            garantizando que todos reciban el servicio contratado.
+          </p>
+        </article>
+
+        <!-- Feature 3: Gestión familiar -->
+        <article class="p-home__feature">
+          <div class="p-home__feature-icon">
+            <app-icon name="users" size="lg" />
+          </div>
+          <h3 class="p-home__feature-titulo">Gestión centralizada</h3>
+          <p class="p-home__feature-descripcion">
+            Un solo lugar para todas las suscripciones familiares. 
+            Invita miembros, gestiona plazas y controla todo desde un panel.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       HOW IT WORKS SECTION - Pasos simples
+       =================================================================== -->
+  <section class="p-home__how-it-works">
+    <div class="l-contenedor">
+      <h2 class="p-home__section-titulo">Cómo funciona</h2>
+      
+      <div class="p-home__steps">
+        <!-- Paso 1 -->
+        <article class="p-home__step">
+          <div class="p-home__step-numero">1</div>
+          <h3 class="p-home__step-titulo">Crea tu unidad familiar</h3>
+          <p class="p-home__step-descripcion">
+            Regístrate y crea un grupo familiar. Recibirás un código único 
+            para invitar a tus familiares o amigos.
+          </p>
+        </article>
+
+        <!-- Paso 2 -->
+        <article class="p-home__step">
+          <div class="p-home__step-numero">2</div>
+          <h3 class="p-home__step-titulo">Añade suscripciones</h3>
+          <p class="p-home__step-descripcion">
+            Agrega las suscripciones que quieres compartir: Netflix, Spotify, 
+            Disney+... Define plazas y precio total.
+          </p>
+        </article>
+
+        <!-- Paso 3 -->
+        <article class="p-home__step">
+          <div class="p-home__step-numero">3</div>
+          <h3 class="p-home__step-titulo">Invita a tu familia</h3>
+          <p class="p-home__step-descripcion">
+            Comparte el código con tu familia. Cuando se unan, el pago 
+            se divide automáticamente entre todos los miembros.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       CTA FINAL - Llamada a acción secundaria
+       =================================================================== -->
+  <section class="p-home__cta-final">
+    <div class="l-contenedor">
+      <div class="p-home__cta-content">
+        <h2 class="p-home__cta-titulo">¿Listo para empezar a ahorrar?</h2>
+        <p class="p-home__cta-descripcion">
+          Únete a cientos de familias que ya comparten sus suscripciones con Joinly.
+        </p>
+        <app-button 
+          variant="primary" 
+          size="lg"
+          [routerLink]="['/register']"
+        >
+          Crear cuenta gratis
+        </app-button>
+      </div>
+    </div>
+  </section>
+</main>

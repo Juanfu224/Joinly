@@ -224,3 +224,20 @@
   gap: var(--espaciado-2);
   margin-block-start: var(--espaciado-3);
 }
+
+// User info en menú móvil
+.c-header__user-info {
+  display: flex;
+  align-items: center;
+  gap: var(--espaciado-2);
+  padding: var(--espaciado-3) var(--espaciado-4);
+  background: var(--bg-secondary);
+  border-radius: var(--radio-esquina-mediano);
+  font-size: var(--tamano-texto-normal);
+  font-weight: var(--peso-fuente-medio);
+  color: var(--text-primary);
+
+  app-icon {
+    color: var(--color-principal);
+  }
+}
