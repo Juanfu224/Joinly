@@ -54,6 +54,14 @@ export const routes: Routes = [
     title: 'Guía de Estilos - Joinly',
   },
 
+  // Responsive Test (solo desarrollo - Fase 6)
+  {
+    path: 'style-guide/responsive-test',
+    loadComponent: () =>
+      import('./pages/style-guide/responsive-test').then((m) => m.ResponsiveTestComponent),
+    title: 'Testing Responsive - Joinly',
+  },
+
   // =========================================================================
   // WILDCARD - Redirige a home
   // =========================================================================

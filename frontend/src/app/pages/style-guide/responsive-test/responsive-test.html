@@ -1,0 +1,317 @@
+<main class="p-responsive-test">
+  <div class="p-responsive-test__contenido l-contenedor">
+    <!-- ===================================================================
+         HEADER: Información y controles
+         =================================================================== -->
+    <header class="p-responsive-test__header">
+      <div class="p-responsive-test__encabezado">
+        <h1 class="p-responsive-test__titulo">🧪 Testing Responsive</h1>
+        <p class="p-responsive-test__descripcion">
+          Herramienta de testing para verificar el comportamiento responsive de los componentes
+          en los 5 viewports requeridos por la Fase 6.
+        </p>
+      </div>
+
+      <div class="p-responsive-test__controles">
+        <div class="p-responsive-test__info-grid">
+          <div class="p-responsive-test__info-item">
+            <span class="p-responsive-test__info-label">Viewport actual:</span>
+            <strong class="p-responsive-test__info-valor">{{ currentWidth() }}px</strong>
+          </div>
+
+          <div class="p-responsive-test__info-item">
+            <span class="p-responsive-test__info-label">Breakpoint activo:</span>
+            <strong class="p-responsive-test__info-valor">{{ currentBreakpoint() }}</strong>
+          </div>
+
+          <div class="p-responsive-test__info-item">
+            <span class="p-responsive-test__info-label">Container Queries:</span>
+            <strong [class]="supportsContainerQueries() ? 'p-responsive-test__info-valor--exito' : 'p-responsive-test__info-valor--error'">
+              {{ supportsContainerQueries() ? '✓ Soportado' : '✗ No soportado' }}
+            </strong>
+          </div>
+        </div>
+
+        <div class="p-responsive-test__selector">
+          <app-form-select
+            label="Simular viewport"
+            [options]="viewports"
+            (selectChange)="onViewportChange($event)"
+          />
+          
+          @if (selectedViewport() !== 'auto') {
+            <app-button
+              variant="secondary"
+              size="sm"
+              leftIcon="close"
+              (click)="resetViewport()"
+            >
+              Resetear
+            </app-button>
+          }
+        </div>
+      </div>
+    </header>
+
+    <!-- ===================================================================
+         CONTENEDOR DE TESTING (con viewport simulado)
+         =================================================================== -->
+    <div 
+      class="p-responsive-test__viewport"
+      [style]="containerStyle()"
+    >
+      <!-- Indicador de viewport simulado -->
+      @if (selectedViewport() !== 'auto') {
+        <div class="p-responsive-test__viewport-indicator">
+          📱 Simulando: {{ selectedViewport() }}px
+        </div>
+      }
+
+      <!-- ===================================================================
+           SECCIÓN: Card Component (con Container Queries)
+           =================================================================== -->
+      <section class="p-responsive-test__seccion" aria-labelledby="titulo-card">
+        <div class="p-responsive-test__seccion-encabezado">
+          <h2 id="titulo-card" class="p-responsive-test__subtitulo">
+            <app-icon name="credit-card" />
+            Card Component
+          </h2>
+          <p class="p-responsive-test__nota">
+            <strong>Container Queries:</strong> La variante 'feature' adapta su layout basándose en el ancho del contenedor,
+            no del viewport. Prueba diferentes anchos para ver el cambio.
+          </p>
+        </div>
+
+        <div class="p-responsive-test__demo">
+          <h3 class="p-responsive-test__demo-titulo">Card Feature (Container Query)</h3>
+          
+          <div class="p-responsive-test__card-container">
+            <app-card variant="feature">
+              <div slot="icon" class="c-card-icon c-card-icon--morado">
+                <app-icon name="users" />
+              </div>
+              <h4 slot="title">Grupos familiares</h4>
+              <p slot="description">
+                Crea unidades familiares y gestiona quién tiene acceso a cada suscripción de forma sencilla.
+              </p>
+            </app-card>
+          </div>
+
+          <h3 class="p-responsive-test__demo-titulo">Card Action (Horizontal)</h3>
+          
+          <div class="p-responsive-test__card-container">
+            <app-card variant="action">
+              <div slot="icon" class="c-card-icon c-card-icon--naranja">
+                <app-icon name="add" />
+              </div>
+              <h4 slot="title">Crear unidad familiar</h4>
+              <p slot="description">Empieza un nuevo grupo</p>
+            </app-card>
+          </div>
+
+          <h3 class="p-responsive-test__demo-titulo">Card Info (Compacta)</h3>
+          
+          <div class="p-responsive-test__card-container">
+            <app-card variant="info">
+              <div slot="icon" class="c-card-icon c-card-icon--naranja">
+                <app-icon name="calendar" />
+              </div>
+              <h4 slot="title">Renovación</h4>
+              <p slot="value">15 de Enero de 2026</p>
+            </app-card>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SECCIÓN: Group Card (Grid Responsive)
+           =================================================================== -->
+      <section class="p-responsive-test__seccion" aria-labelledby="titulo-group-card">
+        <div class="p-responsive-test__seccion-encabezado">
+          <h2 id="titulo-group-card" class="p-responsive-test__subtitulo">
+            <app-icon name="user" />
+            Group Card
+          </h2>
+          <p class="p-responsive-test__nota">
+            Tarjeta de grupo con layout responsive: columna en mobile, fila en desktop.
+          </p>
+        </div>
+
+        <div class="p-responsive-test__demo">
+          <app-group-card [grupo]="mockGrupo" />
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SECCIÓN: Subscription Info Card (Container Queries)
+           =================================================================== -->
+      <section class="p-responsive-test__seccion" aria-labelledby="titulo-subscription-card">
+        <div class="p-responsive-test__seccion-encabezado">
+          <h2 id="titulo-subscription-card" class="p-responsive-test__subtitulo">
+            <app-icon name="dollar" />
+            Subscription Info Card
+          </h2>
+          <p class="p-responsive-test__nota">
+            <strong>Container Queries:</strong> Layout complejo que se adapta basándose en su contenedor.
+            Mobile: columna | Tablet: 2 columnas | Desktop: grid complejo.
+          </p>
+        </div>
+
+        <div class="p-responsive-test__demo">
+          <app-subscription-info-card [info]="mockSubscription" />
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SECCIÓN: Formularios (Touch Target 44px)
+           =================================================================== -->
+      <section class="p-responsive-test__seccion" aria-labelledby="titulo-forms">
+        <div class="p-responsive-test__seccion-encabezado">
+          <h2 id="titulo-forms" class="p-responsive-test__subtitulo">
+            <app-icon name="edit" />
+            Formularios
+          </h2>
+          <p class="p-responsive-test__nota">
+            <strong>WCAG 2.1 AA:</strong> Todos los elementos interactivos tienen un área táctil mínima de 44x44px.
+            Verifica en mobile que sea cómodo interactuar.
+          </p>
+        </div>
+
+        <div class="p-responsive-test__demo">
+          <div class="p-responsive-test__form-grid">
+            <app-form-input
+              label="Nombre del grupo"
+              placeholder="Ej: Familia García"
+              helperText="Será visible para todos los miembros"
+            />
+
+            <app-form-select
+              label="Plataforma"
+              [options]="[
+                { value: 'netflix', label: 'Netflix' },
+                { value: 'disney', label: 'Disney+' },
+                { value: 'hbo', label: 'HBO Max' }
+              ]"
+              value="netflix"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SECCIÓN: Botones (Touch Target)
+           =================================================================== -->
+      <section class="p-responsive-test__seccion" aria-labelledby="titulo-buttons">
+        <div class="p-responsive-test__seccion-encabezado">
+          <h2 id="titulo-buttons" class="p-responsive-test__subtitulo">
+            <app-icon name="check" />
+            Botones
+          </h2>
+          <p class="p-responsive-test__nota">
+            Área táctil optimizada. En mobile deben ser cómodos de pulsar sin errores.
+          </p>
+        </div>
+
+        <div class="p-responsive-test__demo">
+          <div class="p-responsive-test__button-grid">
+            <app-button variant="primary">
+              Crear grupo
+            </app-button>
+
+            <app-button variant="purple" leftIcon="add">
+              Nueva suscripción
+            </app-button>
+
+            <app-button variant="blue" size="sm">
+              Botón pequeño
+            </app-button>
+
+            <app-button variant="secondary" [fullWidth]="true">
+              Botón ancho completo
+            </app-button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SECCIÓN: Checklist de verificación
+           =================================================================== -->
+      <section class="p-responsive-test__seccion p-responsive-test__seccion--checklist" aria-labelledby="titulo-checklist">
+        <div class="p-responsive-test__seccion-encabezado">
+          <h2 id="titulo-checklist" class="p-responsive-test__subtitulo">
+            <app-icon name="check" />
+            Checklist de Verificación
+          </h2>
+          <p class="p-responsive-test__nota">
+            Usa esta lista para verificar cada viewport manualmente en Chrome DevTools y Firefox.
+          </p>
+        </div>
+
+        <div class="p-responsive-test__checklist">
+          <h3 class="p-responsive-test__checklist-titulo">Layout General</h3>
+          <ul class="p-responsive-test__checklist-lista">
+            <li>☐ No hay overflow horizontal (scroll lateral no deseado)</li>
+            <li>☐ Todos los elementos son visibles y accesibles</li>
+            <li>☐ Spacing apropiado (ni muy apretado, ni muy espaciado)</li>
+            <li>☐ Imágenes no distorsionadas (aspect-ratio correcto)</li>
+          </ul>
+
+          <h3 class="p-responsive-test__checklist-titulo">Interactividad</h3>
+          <ul class="p-responsive-test__checklist-lista">
+            <li>☐ Botones tienen área táctil adecuada (44x44px mínimo)</li>
+            <li>☐ Formularios son usables (inputs no muy pequeños)</li>
+            <li>☐ Links y elementos interactivos son fáciles de pulsar</li>
+            <li>☐ Hover effects funcionan en desktop</li>
+          </ul>
+
+          <h3 class="p-responsive-test__checklist-titulo">Tipografía</h3>
+          <ul class="p-responsive-test__checklist-lista">
+            <li>☐ Texto legible (mínimo 16px en mobile)</li>
+            <li>☐ Líneas de texto apropiadas (45-75 caracteres)</li>
+            <li>☐ Jerarquía de headings clara</li>
+            <li>☐ Line-height cómodo (1.5-1.8)</li>
+          </ul>
+
+          <h3 class="p-responsive-test__checklist-titulo">Performance</h3>
+          <ul class="p-responsive-test__checklist-lista">
+            <li>☐ No hay jank al hacer scroll</li>
+            <li>☐ Transiciones suaves</li>
+            <li>☐ Imágenes cargan apropiadamente</li>
+            <li>☐ Container Queries funcionan correctamente</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <!-- ===================================================================
+         FOOTER: Instrucciones
+         =================================================================== -->
+    <footer class="p-responsive-test__footer">
+      <div class="p-responsive-test__instrucciones">
+        <h3 class="p-responsive-test__instrucciones-titulo">📋 Instrucciones de Testing</h3>
+        
+        <div class="p-responsive-test__instrucciones-grid">
+          <div class="p-responsive-test__instruccion">
+            <strong>1. Chrome DevTools</strong>
+            <p>F12 → Device Toolbar (Ctrl+Shift+M) → Seleccionar viewport o introducir dimensiones personalizadas</p>
+          </div>
+
+          <div class="p-responsive-test__instruccion">
+            <strong>2. Firefox Dev Tools</strong>
+            <p>F12 → Responsive Design Mode (Ctrl+Shift+M) → Verificar Container Queries en Inspector</p>
+          </div>
+
+          <div class="p-responsive-test__instruccion">
+            <strong>3. Network Throttling</strong>
+            <p>Probar en 3G Slow para simular conexiones lentas y verificar performance</p>
+          </div>
+
+          <div class="p-responsive-test__instruccion">
+            <strong>4. Touch Simulation</strong>
+            <p>Activar "Touch" en Device Toolbar para probar interacciones táctiles</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+</main>
