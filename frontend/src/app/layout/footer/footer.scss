@@ -4,6 +4,7 @@
 // ==========================================================================
 // FOOTER - Componente BEM
 // ==========================================================================
+// Estrategia: Mobile-First (1 col → 2 col nav → 2 col layout → spacing+)
 
 :host {
   display: block;
@@ -16,6 +17,10 @@
 
   @include responder-a('tablet') {
     padding-block: var(--espaciado-10) var(--espaciado-6);
+  }
+
+  @include responder-a('escritorio') {
+    padding-block: var(--espaciado-12) var(--espaciado-8);
   }
 }
 
@@ -112,13 +117,15 @@
 .c-footer__enlace {
   display: inline-flex;
   align-items: center;
-  padding-block: 0.25rem;
+  min-block-size: 2.75rem; // 44px - WCAG AA
+  padding-block: 0.5rem;
+  padding-inline: 0.25rem;
   font-size: var(--tamano-texto-grande);
   line-height: var(--altura-linea-relajada);
   color: var(--color-gris-medio);
   text-decoration: none;
-
-  @include transicion(color);
+  border-radius: var(--radio-pequeno);
+  transition: color var(--duracion-rapida) var(--transicion-estandar);
   @include foco-visible;
 
   &:hover {

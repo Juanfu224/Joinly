@@ -1,6 +1,12 @@
 @use '../../../styles/00-settings/variables' as *;
 @use '../../../styles/01-tools/mixins' as *;
 
+// ==========================================================================
+// HEADER - Componente BEM
+// ==========================================================================
+// Estrategia: Mobile-First con excepciones justificadas para mostrar/ocultar
+// Base (< 1024px): Menú hamburguesa | Desktop (≥ 1024px): Navegación inline
+
 :host {
   display: block;
 }
@@ -44,8 +50,7 @@
   align-items: center;
   gap: var(--espaciado-2);
 
-  // EXCEPCIÓN JUSTIFICADA: Ocultar utilidades en mobile/tablet
-  // Se muestran dentro del menú hamburguesa
+  // Excepción: max-width para ocultar en mobile/tablet (mostrado en menú)
   @media (max-width: #{$bp-desktop - 0.0625rem}) {
     display: none;
   }
@@ -100,6 +105,8 @@
   display: none;
   align-items: center;
   justify-content: center;
+  min-inline-size: 2.75rem; // 44px - WCAG AA
+  min-block-size: 2.75rem;
   padding: var(--espaciado-2);
   background-color: transparent;
   border: none;
@@ -117,7 +124,7 @@
     background-color: var(--color-superficie-fuerte);
   }
 
-  // EXCEPCIÓN JUSTIFICADA: Mostrar hamburguesa en mobile/tablet
+  // Excepción: mostrar solo en mobile/tablet
   @media (max-width: #{$bp-desktop - 0.0625rem}) {
     display: inline-flex;
   }
@@ -132,10 +139,12 @@
   z-index: calc(var(--z-fixed) + 1);
   transition: opacity var(--duracion-base),
     visibility var(--duracion-base);
+  pointer-events: none;
 
   &--visible {
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
   }
 }
 
@@ -150,9 +159,10 @@
   box-shadow: var(--sombra-4);
   z-index: calc(var(--z-fixed) + 2);
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: var(--espaciado-4);
   transform: translateX(100%);
-  transition: transform 300ms,
+  transition: transform var(--duracion-base) var(--transicion-estandar),
     background-color var(--duracion-base),
     box-shadow var(--duracion-base);
 
@@ -160,7 +170,6 @@
     transform: translateX(0);
   }
 
-  // EXCEPCIÓN JUSTIFICADA: Ocultar menú mobile en desktop
   @include responder-a('escritorio') {
     display: none;
   }
@@ -179,14 +188,15 @@
   display: flex;
   align-items: center;
   gap: var(--espaciado-2);
+  min-block-size: 2.75rem; // 44px - WCAG AA
   padding: var(--espaciado-3);
   font-size: var(--tamano-texto-regular);
   font-weight: var(--peso-fuente-medio);
   color: var(--color-texto-base);
   text-decoration: none;
   border-radius: var(--radio-medio);
-  transition: background-color var(--duracion-rapida),
-    color var(--duracion-rapida);
+  transition: background-color var(--duracion-rapida) var(--transicion-estandar),
+    color var(--duracion-rapida) var(--transicion-estandar);
   @include foco-visible;
 
   &:hover {
