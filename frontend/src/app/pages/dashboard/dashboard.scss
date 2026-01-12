@@ -40,10 +40,10 @@
 // HEADER DE PÁGINA
 // ---------------------------------------------------------------------------
 .p-dashboard__header {
-  margin-block: var(--espaciado-6) var(--espaciado-6);
+  margin-block: var(--espaciado-4) var(--espaciado-4);
 
   @include responder-a('tablet') {
-    margin-block: var(--espaciado-8) var(--espaciado-8);
+    margin-block: var(--espaciado-6) var(--espaciado-6);
   }
 }
 
@@ -84,10 +84,18 @@
 }
 
 // ---------------------------------------------------------------------------
-// SECCIÓN DE GRUPOS
+// SECCIÓN DE GRUPOS (Contenedor blanco con sombras según Figma)
 // ---------------------------------------------------------------------------
 .p-dashboard__grupos {
-  margin-block-start: var(--espaciado-4);
+  background-color: var(--bg-secondary);
+  border-radius: var(--radio-grande);
+  padding: var(--espaciado-5);
+  // Sombra combinada según diseño Figma (sombra 1 + sombra 3)
+  box-shadow: var(--sombra-1), var(--sombra-3);
+
+  @include responder-a('tablet') {
+    padding: var(--espaciado-5);
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -95,18 +103,18 @@
 // ---------------------------------------------------------------------------
 .p-dashboard__grid {
   display: grid;
-  gap: var(--espaciado-5);
+  gap: var(--espaciado-4);
 
   // 2 columnas en tablet
   @include responder-a('tablet') {
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--espaciado-6);
+    gap: var(--espaciado-5);
   }
 
-  // 3 columnas en desktop
-  @include responder-a('escritorio') {
+  // 3 columnas en desktop grande
+  @include responder-a('escritorio-grande') {
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--espaciado-6);
+    gap: var(--espaciado-5);
   }
 }
 

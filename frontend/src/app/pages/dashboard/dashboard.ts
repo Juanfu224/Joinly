@@ -56,7 +56,14 @@ export class DashboardComponent {
    * Grupos del usuario (mock data).
    * En producción vendría de un GruposService.
    */
-  protected readonly grupos = signal<GrupoCardData[]>([]);
+  protected readonly grupos = signal<GrupoCardData[]>([
+    {
+      id: 1,
+      nombre: 'Familia López',
+      totalMiembros: 1,
+      suscripciones: 'Ninguna',
+    },
+  ]);
 
   /**
    * Usuario actual desde AuthService.

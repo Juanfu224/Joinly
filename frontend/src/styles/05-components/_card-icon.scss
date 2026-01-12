@@ -26,13 +26,16 @@
   inline-size: 4rem; // 64px según diseño de Figma
   block-size: 4rem; // 64px según diseño de Figma
   color: var(--color-blanco);
+  
+  // Transición suave para efectos hover
+  transition: transform var(--duracion-base) var(--transicion-estandar);
 
   // Aseguramos que los iconos SVG internos se muestren en blanco
   svg,
   app-icon {
     display: block;
-    inline-size: 2rem; // 32px para el icono interno
-    block-size: 2rem; // 32px para el icono interno
+    inline-size: 1.5rem; // 24px para el icono interno
+    block-size: 1.5rem; // 24px para el icono interno
     pointer-events: none;
     color: var(--color-blanco);
   }

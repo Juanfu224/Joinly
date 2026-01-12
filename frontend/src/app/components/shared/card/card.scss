@@ -147,8 +147,9 @@
   &--info {
     flex-direction: row;
     align-items: center;
-    gap: var(--espaciado-3);
-    padding: var(--espaciado-3) var(--espaciado-4);
+    gap: var(--espaciado-4);
+    padding: var(--espaciado-4);
+    min-block-size: 7.5rem; // 120px según diseño Figma
 
     .c-card__contenido {
       gap: var(--espaciado-1);
@@ -159,6 +160,7 @@
       font-size: var(--tamano-h4);
       font-weight: var(--peso-fuente-semi-negrita);
       line-height: var(--altura-linea-h4);
+      color: var(--text-primary);
     }
 
     .c-card__badge,
@@ -168,12 +170,14 @@
   }
 
   &--action {
-    // Sombra más pronunciada para tarjetas de acción
+    // Sombra combinada según diseño Figma (sombra 1 + sombra 3)
     box-shadow: var(--sombra-1), var(--sombra-3);
+    border: none; // Sin borde para tarjetas de acción
 
     .c-card__descripcion {
       font-size: var(--tamano-texto-grande);
       line-height: var(--altura-linea-body-large);
+      color: var(--text-secondary);
     }
 
     .c-card__valor,
@@ -182,7 +186,7 @@
     }
 
     &:not(.c-card--no-hover):hover {
-      box-shadow: var(--sombra-4);
+      box-shadow: var(--sombra-3), var(--sombra-4);
     }
   }
 
