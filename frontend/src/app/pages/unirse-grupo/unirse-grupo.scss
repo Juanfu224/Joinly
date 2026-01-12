@@ -1,0 +1,29 @@
+@use '../../../styles/00-settings/variables' as *;
+@use '../../../styles/01-tools/mixins' as *;
+
+// ==========================================================================
+// PAGE: UNIRSE GRUPO
+// ==========================================================================
+// Página para unirse a grupo familiar con formulario centrado.
+// Fondo azul claro según diseño Figma.
+
+:host {
+  display: block;
+  min-block-size: 100vh;
+}
+
+.p-unirse-grupo {
+  @include centrar-flex;
+  min-block-size: 100vh;
+  padding: var(--espaciado-4);
+  background: var(--color-fondo-claro-azul);
+
+  @include responder-a('tablet') {
+    padding: var(--espaciado-6);
+  }
+}
+
+.p-unirse-grupo__container {
+  inline-size: 100%;
+  max-inline-size: 40.625rem;
+}

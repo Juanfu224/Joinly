@@ -42,6 +42,24 @@ export const routes: Routes = [
     title: 'Mis Grupos - Joinly',
   },
 
+  // Crear Grupo
+  {
+    path: 'crear-grupo',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/crear-grupo').then((m) => m.CrearGrupoComponent),
+    title: 'Crear Unidad Familiar - Joinly',
+  },
+
+  // Unirse Grupo
+  {
+    path: 'unirse-grupo',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/unirse-grupo').then((m) => m.UnirseGrupoComponent),
+    title: 'Unirse a Grupo - Joinly',
+  },
+
   // =========================================================================
   // RUTAS DE DESARROLLO
   // =========================================================================

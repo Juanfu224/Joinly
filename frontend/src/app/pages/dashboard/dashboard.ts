@@ -9,7 +9,7 @@ import {
   IconComponent,
 } from '../../components/shared';
 import type { GrupoCardData } from '../../models';
-import { AuthService, ModalService } from '../../services';
+import { AuthService } from '../../services';
 
 /**
  * Página Dashboard - Vista principal de grupos del usuario autenticado.
@@ -42,7 +42,6 @@ import { AuthService, ModalService } from '../../services';
 })
 export class DashboardComponent {
   private readonly authService = inject(AuthService);
-  private readonly modalService = inject(ModalService);
   private readonly router = inject(Router);
 
   /**
@@ -65,25 +64,17 @@ export class DashboardComponent {
   protected readonly currentUser = this.authService.currentUser;
 
   /**
-   * Abre modal para crear un nuevo grupo.
+   * Navega a la página de crear grupo.
    */
   protected onCreateGroup(): void {
-    this.modalService.open({
-      title: 'Crear unidad familiar',
-      content: 'Funcionalidad en desarrollo. Pronto podrás crear grupos.',
-      confirmText: 'Entendido',
-    });
+    this.router.navigate(['/crear-grupo']);
   }
 
   /**
-   * Abre modal para unirse a un grupo existente.
+   * Navega a la página de unirse a grupo.
    */
   protected onJoinGroup(): void {
-    this.modalService.open({
-      title: 'Unirse a un grupo',
-      content: 'Funcionalidad en desarrollo. Pronto podrás unirte a grupos con código.',
-      confirmText: 'Entendido',
-    });
+    this.router.navigate(['/unirse-grupo']);
   }
 
   /**

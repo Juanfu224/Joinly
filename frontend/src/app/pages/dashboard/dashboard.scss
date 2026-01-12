@@ -24,14 +24,15 @@
 // CONTENEDOR PRINCIPAL
 // ---------------------------------------------------------------------------
 .p-dashboard {
-  padding-block: var(--espaciado-4);
+  padding-block-start: var(--espaciado-2);
+  padding-block-end: var(--espaciado-4);
 
   @include responder-a('tablet') {
-    padding-block: var(--espaciado-6);
+    padding-block-end: var(--espaciado-6);
   }
 
   @include responder-a('escritorio') {
-    padding-block: var(--espaciado-8);
+    padding-block-end: var(--espaciado-8);
   }
 }
 
@@ -39,10 +40,10 @@
 // HEADER DE PÁGINA
 // ---------------------------------------------------------------------------
 .p-dashboard__header {
-  margin-block: var(--espaciado-4) var(--espaciado-6);
+  margin-block: var(--espaciado-6) var(--espaciado-6);
 
   @include responder-a('tablet') {
-    margin-block: var(--espaciado-6) var(--espaciado-8);
+    margin-block: var(--espaciado-8) var(--espaciado-8);
   }
 }
 

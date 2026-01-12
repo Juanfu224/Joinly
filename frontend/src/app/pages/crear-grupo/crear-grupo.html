@@ -1,0 +1,9 @@
+<main class="p-crear-grupo">
+  <div class="p-crear-grupo__container">
+    <app-create-group-form
+      (submitted)="onGroupSubmitted($event)"
+      (cancelled)="onExited()"
+      (joinRequested)="onJoinRequested()"
+    />
+  </div>
+</main>

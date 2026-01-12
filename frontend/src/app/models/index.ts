@@ -22,4 +22,10 @@ export {
   type GrupoCardData,
 } from './grupo.model';
 
+export {
+  type EstadoSolicitud,
+  type CreateSolicitudGrupoRequest,
+  type SolicitudResponse,
+} from './solicitud.model';
+
 export * from './suscripcion.model';

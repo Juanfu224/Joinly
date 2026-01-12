@@ -16,3 +16,5 @@ export {
 export { ToastService, type ToastType, type ToastMessage } from './toast';
 export { LoadingService } from './loading';
 export { AsyncValidatorsService } from './async-validators.service';
+export { UnidadFamiliarService } from './unidad-familiar';
+export { SolicitudService } from './solicitud';
