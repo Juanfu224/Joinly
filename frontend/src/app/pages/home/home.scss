@@ -4,357 +4,137 @@
 // ==========================================================================
 // PAGE: HOME (LANDING)
 // ==========================================================================
-// Landing page pública de Joinly con hero, features y CTA.
+// Landing page pública de Joinly según diseño Figma (node 859:546).
+// Implementa: Hero con título gradiente, 3 tarjetas de ventajas.
 //
 // ESTRATEGIA RESPONSIVE: Mobile-First
 // - Base: Mobile (< 640px)
 // - @include responder-a('movil'): 640px+
 // - @include responder-a('tablet'): 768px+
-// - @include responder-a('desktop'): 1024px+
+// - @include responder-a('escritorio'): 1024px+
 
-// ---------------------------------------------------------------------------
-// HOST STYLES
-// ---------------------------------------------------------------------------
 :host {
   display: block;
 }
 
-// ---------------------------------------------------------------------------
-// CONTENEDOR PRINCIPAL
-// ---------------------------------------------------------------------------
 .p-home {
   display: flex;
   flex-direction: column;
+  background-color: var(--color-fondo-claro);
 }
 
 // ---------------------------------------------------------------------------
 // HERO SECTION
 // ---------------------------------------------------------------------------
 .p-home__hero {
-  position: relative;
-  padding-block: var(--espaciado-10);
-  background: linear-gradient(
-    135deg,
-    var(--color-morado-principal),
-    var(--color-morado-oscuro)
-  );
-  overflow: hidden;
+  padding-block: var(--espaciado-2) var(--espaciado-10);
 
   @include responder-a('tablet') {
-    padding-block: var(--espaciado-12);
+    padding-block: var(--espaciado-2) var(--espaciado-12);
   }
 
   @include responder-a('escritorio') {
-    padding-block: var(--espaciado-16);
+    padding-block: var(--espaciado-2) var(--espaciado-16);
   }
 }
 
 .p-home__hero-content {
   display: flex;
   flex-direction: column;
-  gap: var(--espaciado-8);
-  position: relative;
-  z-index: 1;
+  align-items: center;
+  text-align: center;
+  gap: var(--espaciado-4);
+  margin-block-start: var(--espaciado-6);
 
-  @include responder-a('escritorio') {
-    flex-direction: row;
-    align-items: center;
-    gap: var(--espaciado-12);
+  @include responder-a('tablet') {
+    margin-block-start: var(--espaciado-8);
   }
-}
-
-.p-home__hero-text {
-  flex: 1;
 }
 
 .p-home__hero-titulo {
   font-size: var(--tamano-texto-3xl);
   font-weight: var(--peso-fuente-negrita);
-  line-height: 1.125;
-  color: #ffffff;
+  line-height: var(--altura-linea-ajustada);
+  color: var(--color-texto-oscuro);
   margin: 0;
+  max-inline-size: 18ch;
 
   @include responder-a('movil') {
     font-size: var(--tamano-texto-4xl);
+    max-inline-size: 20ch;
   }
 
   @include responder-a('tablet') {
     font-size: var(--tamano-texto-5xl);
+    line-height: var(--altura-linea-h1);
   }
 
   @include responder-a('escritorio') {
     font-size: var(--tamano-h1);
   }
+
+  &--gradiente {
+    background: linear-gradient(90deg, var(--color-naranja-principal) 50%, #5c2c0b 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
 
 .p-home__hero-descripcion {
   font-size: var(--tamano-texto-normal);
-  line-height: var(--altura-linea-relajada);
-  color: rgba(255, 255, 255, 0.9);
-  margin-block-start: var(--espaciado-4);
-  margin-block-end: 0;
-  max-inline-size: 60ch;
+  line-height: var(--altura-linea-body-large);
+  color: var(--color-texto-normal);
+  margin: 0;
+  max-inline-size: 55ch;
 
   @include responder-a('tablet') {
     font-size: var(--tamano-texto-grande);
+    max-inline-size: 58ch;
+  }
+
+  @include responder-a('escritorio') {
+    max-inline-size: 60ch;
   }
 }
 
 .p-home__hero-acciones {
   display: flex;
-  flex-direction: column;
-  gap: var(--espaciado-3);
-  margin-block-start: var(--espaciado-6);
-
-  @include responder-a('movil') {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  // Botones full-width en mobile
-  app-button {
-    inline-size: 100%;
-
-    @include responder-a('movil') {
-      inline-size: auto;
-    }
-  }
-}
-
-// Visual decorativo (círculos gradiente)
-.p-home__hero-visual {
-  position: relative;
-  flex: 1;
-  min-block-size: 16rem;
-  display: none; // Oculto en mobile
-
-  @include responder-a('escritorio') {
-    display: block;
-  }
-}
-
-.p-home__hero-visual-circle {
-  position: absolute;
-  border-radius: 50%;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.1),
-    rgba(255, 255, 255, 0.05)
-  );
-  backdrop-filter: blur(20px);
-
-  &--1 {
-    inline-size: 20rem;
-    block-size: 20rem;
-    inset-block-start: 0;
-    inset-inline-end: 0;
-  }
-
-  &--2 {
-    inline-size: 15rem;
-    block-size: 15rem;
-    inset-block-start: 8rem;
-    inset-inline-end: 12rem;
-  }
-
-  &--3 {
-    inline-size: 12rem;
-    block-size: 12rem;
-    inset-block-start: 4rem;
-    inset-inline-end: 20rem;
-  }
-}
-
-// ---------------------------------------------------------------------------
-// SECCIONES GENERALES
-// ---------------------------------------------------------------------------
-.p-home__features,
-.p-home__how-it-works,
-.p-home__cta-final {
-  padding-block: var(--espaciado-10);
+  justify-content: center;
+  margin-block-start: var(--espaciado-2);
 
   @include responder-a('tablet') {
-    padding-block: var(--espaciado-12);
-  }
-
-  @include responder-a('escritorio') {
-    padding-block: var(--espaciado-16);
-  }
-}
-
-.p-home__section-titulo {
-  font-size: var(--tamano-texto-2xl);
-  font-weight: var(--peso-fuente-negrita);
-  line-height: 1.125;
-  color: var(--text-primary);
-  text-align: center;
-  margin: 0 0 var(--espaciado-8) 0;
-
-  @include responder-a('tablet') {
-    font-size: var(--tamano-texto-3xl);
-    margin-block-end: var(--espaciado-10);
-  }
-
-  @include responder-a('escritorio') {
-    font-size: var(--tamano-texto-4xl);
+    margin-block-start: var(--espaciado-4);
   }
 }
 
 // ---------------------------------------------------------------------------
-// FEATURES GRID
+// FEATURES SECTION
 // ---------------------------------------------------------------------------
 .p-home__features {
-  background: var(--bg-secondary);
+  padding-block: var(--espaciado-8);
+  background-color: var(--color-fondo-claro-secundario);
+
+  @include responder-a('tablet') {
+    padding-block: var(--espaciado-10);
+  }
+
+  @include responder-a('escritorio') {
+    padding-block: var(--espaciado-12);
+  }
 }
 
 .p-home__features-grid {
   display: grid;
-  gap: var(--espaciado-6);
+  gap: var(--espaciado-4);
 
   @include responder-a('tablet') {
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--espaciado-8);
+    gap: var(--espaciado-5);
   }
 
   @include responder-a('escritorio') {
     grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.p-home__feature {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaciado-3);
-  padding: var(--espaciado-6);
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radio-esquina-grande);
-  @include transicion(transform, box-shadow);
-
-  &:hover {
-    transform: translateY(-0.25rem);
-    box-shadow: var(--sombra-media);
-  }
-}
-
-.p-home__feature-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  inline-size: 4rem;
-  block-size: 4rem;
-  border-radius: 50%;
-  background: linear-gradient(
-    135deg,
-    var(--color-morado-claro),
-    var(--color-morado-principal)
-  );
-  color: #ffffff;
-}
-
-.p-home__feature-titulo {
-  font-size: var(--tamano-texto-xl);
-  font-weight: var(--peso-fuente-semibold);
-  line-height: 1.25;
-  color: var(--text-primary);
-  margin: 0;
-}
-
-.p-home__feature-descripcion {
-  font-size: var(--tamano-texto-normal);
-  line-height: var(--altura-linea-relajada);
-  color: var(--text-secondary);
-  margin: 0;
-}
-
-// ---------------------------------------------------------------------------
-// HOW IT WORKS - STEPS
-// ---------------------------------------------------------------------------
-.p-home__steps {
-  display: grid;
-  gap: var(--espaciado-6);
-
-  @include responder-a('tablet') {
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--espaciado-8);
-  }
-}
-
-.p-home__step {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaciado-3);
-  text-align: center;
-}
-
-.p-home__step-numero {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  inline-size: 4rem;
-  block-size: 4rem;
-  margin-inline: auto;
-  font-size: var(--tamano-texto-2xl);
-  font-weight: var(--peso-fuente-negrita);
-  color: #ffffff;
-  background: var(--color-naranja-principal);
-  border-radius: 50%;
-}
-
-.p-home__step-titulo {
-  font-size: var(--tamano-texto-xl);
-  font-weight: var(--peso-fuente-semibold);
-  line-height: 1.25;
-  color: var(--text-primary);
-  margin: 0;
-}
-
-.p-home__step-descripcion {
-  font-size: var(--tamano-texto-normal);
-  line-height: var(--altura-linea-relajada);
-  color: var(--text-secondary);
-  margin: 0;
-}
-
-// ---------------------------------------------------------------------------
-// CTA FINAL
-// ---------------------------------------------------------------------------
-.p-home__cta-final {
-  background: linear-gradient(
-    135deg,
-    var(--color-naranja-principal),
-    var(--color-naranja-oscuro)
-  );
-}
-
-.p-home__cta-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--espaciado-4);
-  text-align: center;
-}
-
-.p-home__cta-titulo {
-  font-size: var(--tamano-texto-2xl);
-  font-weight: var(--peso-fuente-negrita);
-  line-height: 1.125;
-  color: #ffffff;
-  margin: 0;
-
-  @include responder-a('tablet') {
-    font-size: var(--tamano-texto-3xl);
-  }
-}
-
-.p-home__cta-descripcion {
-  font-size: var(--tamano-texto-normal);
-  line-height: var(--altura-linea-relajada);
-  color: rgba(255, 255, 255, 0.9);
-  margin: 0;
-  max-inline-size: 50ch;
-
-  @include responder-a('tablet') {
-    font-size: var(--tamano-texto-grande);
+    gap: var(--espaciado-6);
   }
 }
