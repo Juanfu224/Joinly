@@ -1,18 +1,5 @@
 <main class="p-login">
-  <div class="p-login__container l-contenedor l-contenedor--estrecho">
-    <!-- Logo -->
-    <div class="p-login__logo">
-      <a href="/" aria-label="Volver a inicio">
-        <app-logo color="orange" size="lg" />
-      </a>
-    </div>
-
-    <!-- Título -->
-    <h1 class="p-login__titulo">Iniciar sesión</h1>
-    <p class="p-login__subtitulo">
-      Accede a tu cuenta para gestionar tus suscripciones compartidas
-    </p>
-
+  <div class="p-login__container">
     <!-- Formulario de login -->
     <app-login-form
       (submitted)="onLoginSubmit($event)"

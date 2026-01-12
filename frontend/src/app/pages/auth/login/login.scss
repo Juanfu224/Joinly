@@ -5,30 +5,18 @@
 // PAGE: LOGIN
 // ==========================================================================
 // Página de autenticación con formulario centrado.
-// Sin header/footer para mantener focus en login.
-//
-// ESTRATEGIA RESPONSIVE: Mobile-First
-// - Base: Mobile (< 640px) - Full width con padding
-// - @include responder-a('tablet'): 768px+ - Card centrada
+// Fondo morado claro según diseño Figma.
 
-// ---------------------------------------------------------------------------
-// HOST STYLES
-// ---------------------------------------------------------------------------
 :host {
   display: block;
   min-block-size: 100vh;
 }
 
-// ---------------------------------------------------------------------------
-// CONTENEDOR PRINCIPAL
-// ---------------------------------------------------------------------------
 .p-login {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include centrar-flex;
   min-block-size: 100vh;
   padding: var(--espaciado-4);
-  background: var(--bg-secondary);
+  background: var(--color-fondo-claro-morado);
 
   @include responder-a('tablet') {
     padding: var(--espaciado-6);
@@ -37,64 +25,5 @@
 
 .p-login__container {
   inline-size: 100%;
-  max-inline-size: 28rem; // 448px
-  padding: var(--espaciado-6);
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radio-esquina-grande);
-  box-shadow: var(--sombra-media);
-
-  @include responder-a('tablet') {
-    padding: var(--espaciado-8);
-  }
-}
-
-// ---------------------------------------------------------------------------
-// LOGO
-// ---------------------------------------------------------------------------
-.p-login__logo {
-  display: flex;
-  justify-content: center;
-  margin-block-end: var(--espaciado-6);
-
-  a {
-    display: inline-flex;
-    @include transicion(opacity);
-
-    &:hover {
-      opacity: 0.8;
-    }
-
-    &:focus-visible {
-      @include foco-visible;
-    }
-  }
-}
-
-// ---------------------------------------------------------------------------
-// TÍTULO Y SUBTÍTULO
-// ---------------------------------------------------------------------------
-.p-login__titulo {
-  font-size: var(--tamano-texto-2xl);
-  font-weight: var(--peso-fuente-negrita);
-  line-height: 1.25;
-  color: var(--text-primary);
-  text-align: center;
-  margin: 0 0 var(--espaciado-2) 0;
-
-  @include responder-a('tablet') {
-    font-size: var(--tamano-texto-3xl);
-  }
-}
-
-.p-login__subtitulo {
-  font-size: var(--tamano-texto-pequeno);
-  line-height: var(--altura-linea-relajada);
-  color: var(--text-secondary);
-  text-align: center;
-  margin: 0 0 var(--espaciado-6) 0;
-
-  @include responder-a('tablet') {
-    font-size: var(--tamano-texto-normal);
-  }
+  max-inline-size: 40.625rem;
 }

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LoginFormComponent, LogoComponent } from '../../../components/shared';
+import { LoginFormComponent } from '../../../components/shared';
 import { AuthService } from '../../../services/auth';
 import { AlertService } from '../../../services/alert';
 
@@ -23,7 +23,7 @@ import { AlertService } from '../../../services/alert';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [LoginFormComponent, LogoComponent],
+  imports: [LoginFormComponent],
   templateUrl: './login.html',
   styleUrl: './login.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

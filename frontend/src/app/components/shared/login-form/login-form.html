@@ -54,7 +54,7 @@
         [disabled]="isFormInvalid() || form.pending || isLoading()"
         [loading]="isLoading()"
       >
-        @if (isLoading()) { Iniciando sesión... } 
+        @if (isLoading()) { Iniciando... } 
         @else if (form.pending) { Validando... }
         @else { Iniciar sesión }
       </app-button>

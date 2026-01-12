@@ -1,18 +1,5 @@
 <main class="p-register">
-  <div class="p-register__container l-contenedor l-contenedor--estrecho">
-    <!-- Logo -->
-    <div class="p-register__logo">
-      <a href="/" aria-label="Volver a inicio">
-        <app-logo color="orange" size="lg" />
-      </a>
-    </div>
-
-    <!-- Título -->
-    <h1 class="p-register__titulo">Crear cuenta</h1>
-    <p class="p-register__subtitulo">
-      Únete a Joinly y empieza a compartir suscripciones con tu familia
-    </p>
-
+  <div class="p-register__container">
     <!-- Formulario de registro -->
     <app-register-form
       (submitted)="onRegisterSubmit($event)"

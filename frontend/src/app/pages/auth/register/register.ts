@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { RegisterFormComponent, LogoComponent } from '../../../components/shared';
+import { RegisterFormComponent } from '../../../components/shared';
 import { AuthService } from '../../../services/auth';
 import { AlertService } from '../../../services/alert';
 
@@ -23,7 +23,7 @@ import { AlertService } from '../../../services/alert';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [RegisterFormComponent, LogoComponent],
+  imports: [RegisterFormComponent],
   templateUrl: './register.html',
   styleUrl: './register.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
