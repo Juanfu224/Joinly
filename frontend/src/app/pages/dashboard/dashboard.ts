@@ -1,12 +1,15 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import {
-  ButtonComponent,
+  BreadcrumbsComponent,
+  type BreadcrumbItem,
+  CardComponent,
   GroupCardComponent,
   EmptyGroupsComponent,
+  IconComponent,
 } from '../../components/shared';
-import { AuthService } from '../../services/auth';
-import type { GrupoCardData } from '../../models/grupo.model';
+import type { GrupoCardData } from '../../models';
+import { AuthService, ModalService } from '../../services';
 
 /**
  * Página Dashboard - Vista principal de grupos del usuario autenticado.
@@ -15,13 +18,14 @@ import type { GrupoCardData } from '../../models/grupo.model';
  * Protegida por authGuard - requiere autenticación.
  *
  * ### Características:
- * - Header con título + botón crear grupo
+ * - Breadcrumbs de navegación
+ * - Tarjetas de acción: Crear grupo / Unirse a grupo
  * - Grid responsive usando group-card component
  * - Empty state cuando no hay grupos (empty-groups component)
  * - Mobile-First responsive
  *
  * ### Responsive:
- * - Mobile (320-767px): 1 columna, botón full-width
+ * - Mobile (320-767px): 1 columna, tarjetas apiladas
  * - Tablet (768-1023px): 2 columnas
  * - Desktop (1024px+): 3 columnas
  *
@@ -31,39 +35,29 @@ import type { GrupoCardData } from '../../models/grupo.model';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [ButtonComponent, GroupCardComponent, EmptyGroupsComponent],
+  imports: [BreadcrumbsComponent, CardComponent, GroupCardComponent, EmptyGroupsComponent, IconComponent],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent {
   private readonly authService = inject(AuthService);
+  private readonly modalService = inject(ModalService);
   private readonly router = inject(Router);
+
+  /**
+   * Breadcrumbs de navegación
+   */
+  protected readonly breadcrumbs: BreadcrumbItem[] = [
+    { label: 'Inicio', url: '/dashboard' },
+    { label: 'Grupos' },
+  ];
 
   /**
    * Grupos del usuario (mock data).
    * En producción vendría de un GruposService.
    */
-  protected readonly grupos = signal<GrupoCardData[]>([
-    {
-      id: 1,
-      nombre: 'Familia García',
-      totalMiembros: 6,
-      suscripciones: 'Netflix, Spotify, Disney+',
-    },
-    {
-      id: 2,
-      nombre: 'Amigos del piso',
-      totalMiembros: 4,
-      suscripciones: 'HBO Max, Prime Video',
-    },
-    {
-      id: 3,
-      nombre: 'Compañeros de trabajo',
-      totalMiembros: 3,
-      suscripciones: null,
-    },
-  ]);
+  protected readonly grupos = signal<GrupoCardData[]>([]);
 
   /**
    * Usuario actual desde AuthService.
@@ -71,20 +65,31 @@ export class DashboardComponent {
   protected readonly currentUser = this.authService.currentUser;
 
   /**
-   * Maneja el clic en el botón "Crear grupo".
-   * En producción abrirá modal con CreateGroupFormComponent.
+   * Abre modal para crear un nuevo grupo.
    */
   protected onCreateGroup(): void {
-    // Mock: En desarrollo, redirige a página de creación cuando exista
-    this.router.navigate(['/grupos/crear']);
+    this.modalService.open({
+      title: 'Crear unidad familiar',
+      content: 'Funcionalidad en desarrollo. Pronto podrás crear grupos.',
+      confirmText: 'Entendido',
+    });
+  }
+
+  /**
+   * Abre modal para unirse a un grupo existente.
+   */
+  protected onJoinGroup(): void {
+    this.modalService.open({
+      title: 'Unirse a un grupo',
+      content: 'Funcionalidad en desarrollo. Pronto podrás unirte a grupos con código.',
+      confirmText: 'Entendido',
+    });
   }
 
   /**
    * Maneja el evento de invitar miembros a un grupo.
-   * En producción abrirá modal con formulario de invitación.
    */
   protected onGroupInvite(groupId: number): void {
-    // Mock: En desarrollo, redirige a página de gestión cuando exista
     this.router.navigate(['/grupos', groupId, 'invitar']);
   }
 }

@@ -41,11 +41,10 @@ export class LoginComponent {
   protected onLoginSubmit(data: { email: string; password: string }): void {
     this.authService.login(data).subscribe({
       next: (user) => {
-        // Guardar usuario en state
-        this.authService.setUser(user);
+        // Nota: AuthService ya guarda el usuario automáticamente en handleAuthSuccess()
 
         // Mostrar mensaje de éxito
-        this.alertService.success(`¡Bienvenido, ${user.nombreUsuario}!`);
+        this.alertService.success(`¡Bienvenido, ${user.nombre}!`);
 
         // Redirigir a returnUrl o dashboard
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';

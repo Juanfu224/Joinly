@@ -4,10 +4,11 @@
 // COMPONENTE: EMPTY-GROUPS (Estado vacío de grupos)
 // ==========================================================================
 // Estado vacío que se muestra cuando el usuario no tiene grupos
-// Diseño basado en Figma con icono circular y texto centrado
+// Diseño basado en Figma con tarjeta blanca, sombras e icono circular
 
 :host {
   display: block;
+  inline-size: 100%;
 }
 
 .c-empty-groups {
@@ -16,68 +17,58 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--espaciado-2);
-  background-color: transparent;
-  border: 2px dashed var(--border-color);
+  gap: var(--espaciado-3);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: var(--radio-grande);
-  padding: var(--espaciado-8) var(--espaciado-4);
-  min-block-size: 379px;
+  box-shadow: var(--sombra-1), var(--sombra-3);
+  padding: var(--espaciado-10) var(--espaciado-4);
+  min-block-size: 300px;
   inline-size: 100%;
 
   // ==========================================================================
-  // ELEMENTO: Sombras eliminadas para modo oscuro
-  // ==========================================================================
-
-  &__sombras {
-    display: none;
-  }
-
-  // ==========================================================================
-  // ELEMENTO: Contenedor de icono circular
+  // ELEMENTO: Contenedor de icono circular (gris oscuro según Figma)
   // ==========================================================================
 
   &__icon-container {
-    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     inline-size: 64px;
     block-size: 64px;
-    background-color: var(--border-color);
+    background-color: var(--color-gris-oscuro);
     border-radius: 50%;
-    margin-block-end: var(--espaciado-2);
+    box-shadow: var(--sombra-2);
 
     app-icon {
-      color: var(--text-secondary);
+      color: var(--color-fondo-claro);
     }
   }
 
   // ==========================================================================
-  // ELEMENTO: Título
+  // ELEMENTO: Título (20px semibold según Figma)
   // ==========================================================================
 
   &__titulo {
-    position: relative;
     font-family: var(--font-primaria);
-    font-size: var(--tamano-h3);
-    font-weight: var(--peso-fuente-negrita);
-    line-height: var(--altura-linea-h3);
+    font-size: var(--tamano-h4);
+    font-weight: var(--peso-fuente-semi-negrita);
+    line-height: var(--altura-linea-h4);
     color: var(--text-primary);
     text-align: center;
     margin: 0;
   }
 
   // ==========================================================================
-  // ELEMENTO: Descripción
+  // ELEMENTO: Descripción (16px regular según Figma)
   // ==========================================================================
 
   &__descripcion {
-    position: relative;
     max-inline-size: 320px;
     font-family: var(--font-primaria);
     font-size: var(--tamano-texto-normal);
     font-weight: var(--peso-fuente-regular);
-    line-height: var(--altura-linea-normal);
+    line-height: var(--altura-linea-body-regular);
     color: var(--text-secondary);
     text-align: center;
     margin: 0;

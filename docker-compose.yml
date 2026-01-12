@@ -4,16 +4,16 @@ services:
     container_name: joinly-mysql
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-joinly_dev_2024}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-bbdd_joinly}
+      MYSQL_USER: ${MYSQL_USER:-joinly_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-joinly_dev_2024}
     ports:
       - "${MYSQL_PORT:-3306}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-joinly_dev_2024}"]
       interval: 10s
       timeout: 5s
       retries: 5

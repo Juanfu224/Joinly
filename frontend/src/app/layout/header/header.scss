@@ -237,7 +237,62 @@
   font-weight: var(--peso-fuente-medio);
   color: var(--text-primary);
 
-  app-icon {
-    color: var(--color-principal);
+  app-avatar {
+    flex-shrink: 0;
+  }
+}
+
+// ==========================================================================
+// HEADER AUTENTICADO - Desktop
+// ==========================================================================
+
+// Botón de notificaciones (deshabilitado por ahora)
+.c-header__notificaciones {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 2.5rem;
+  min-block-size: 2.5rem;
+  padding: var(--espaciado-2);
+  background-color: transparent;
+  border: none;
+  border-radius: var(--radio-medio);
+  color: var(--color-texto-base);
+  cursor: not-allowed;
+  opacity: 0.6;
+  transition: background-color var(--duracion-base),
+    color var(--duracion-base),
+    opacity var(--duracion-base);
+
+  &:hover {
+    background-color: var(--color-superficie-base);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+// Botón con avatar
+.c-header__avatar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background-color: transparent;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color var(--duracion-base),
+    transform var(--duracion-base);
+  @include foco-visible;
+
+  &:hover {
+    border-color: var(--color-acento);
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.98);
   }
 }

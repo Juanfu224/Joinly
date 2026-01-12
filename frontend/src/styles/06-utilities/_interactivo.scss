@@ -1,0 +1,27 @@
+// ==========================================================================
+// UTILIDAD: INTERACTIVO
+// ==========================================================================
+// Clases utilitarias para elementos interactivos.
+
+// ---------------------------------------------------------------------------
+// Botón wrapper transparente
+// ---------------------------------------------------------------------------
+// Útil para envolver componentes en botones manteniendo accesibilidad.
+// El componente hijo mantiene sus propios estilos visuales.
+//
+// Ejemplo:
+// <button type="button" class="u-btn-wrapper">
+//   <app-card variant="action">...</app-card>
+// </button>
+
+.u-btn-wrapper {
+  display: block;
+  inline-size: 100%;
+  padding: 0;
+  text-align: inherit;
+  
+  // Focus visible heredado del componente hijo
+  &:focus-visible {
+    outline: none;
+  }
+}

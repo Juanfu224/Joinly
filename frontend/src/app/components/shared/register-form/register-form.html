@@ -96,7 +96,7 @@
         type="submit"
         variant="primary"
         size="xl"
-        [disabled]="isFormInvalid() || form.pending || isLoading()"
+        [disabled]="isSubmitDisabled()"
         [loading]="isLoading()"
       >
         @if (isLoading()) { Registrando... } 

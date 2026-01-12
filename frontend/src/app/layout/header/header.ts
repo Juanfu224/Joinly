@@ -12,7 +12,7 @@ import {
 import { Router, RouterLink, RouterLinkActive, NavigationStart } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { ThemeToggleComponent, IconComponent, LogoComponent } from '../../components/shared';
+import { ThemeToggleComponent, IconComponent, LogoComponent, AvatarComponent } from '../../components/shared';
 import { AuthService } from '../../services/auth';
 
 /**
@@ -38,7 +38,7 @@ import { AuthService } from '../../services/auth';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, ThemeToggleComponent, IconComponent, LogoComponent],
+  imports: [RouterLink, RouterLinkActive, ThemeToggleComponent, IconComponent, LogoComponent, AvatarComponent],
   templateUrl: './header.html',
   styleUrl: './header.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -32,17 +32,36 @@
         </a>
       }
       
-      <!-- Modo autenticado: Dashboard/Logout -->
+      <!-- Modo autenticado: Grupos + Notificaciones + Avatar -->
       @if (isAuthenticated()) {
-        <a routerLink="/dashboard" routerLinkActive="c-header__btn--activo" class="c-header__btn c-header__btn--secundario">
-          Dashboard
+        <a 
+          routerLink="/dashboard" 
+          routerLinkActive="c-header__btn--activo" 
+          class="c-header__btn c-header__btn--primario"
+        >
+          Grupos
         </a>
+        
         <button 
           type="button"
-          class="c-header__btn c-header__btn--secundario"
-          (click)="onLogout()"
+          class="c-header__notificaciones"
+          disabled
+          aria-label="Notificaciones (próximamente)"
+          title="Próximamente"
         >
-          Cerrar sesión
+          <app-icon name="bell" size="md" />
+        </button>
+        
+        <button 
+          type="button"
+          class="c-header__avatar-btn"
+          (click)="onLogout()"
+          aria-label="Menú de usuario, cerrar sesión"
+        >
+          <app-avatar 
+            [name]="currentUser()?.nombre || 'Usuario'" 
+            size="lg" 
+          />
         </button>
       }
     </nav>
@@ -71,12 +90,12 @@
         </a>
       </li>
       
-      <!-- Solo si está autenticado: Dashboard -->
+      <!-- Solo si está autenticado: Grupos -->
       @if (isAuthenticated()) {
         <li class="c-header__nav-item">
           <a routerLink="/dashboard" class="c-header__nav-enlace" routerLinkActive="c-header__nav-enlace--activo">
             <app-icon name="users" size="sm" />
-            <span>Dashboard</span>
+            <span>Grupos</span>
           </a>
         </li>
       }
@@ -109,8 +128,8 @@
       <!-- Modo autenticado -->
       @if (isAuthenticated() && currentUser(); as user) {
         <div class="c-header__user-info">
-          <app-icon name="user" size="sm" />
-          <span>{{ user.nombreUsuario }}</span>
+          <app-avatar [name]="user.nombre" size="sm" />
+          <span>{{ user.nombre }}</span>
         </div>
         <button 
           type="button"

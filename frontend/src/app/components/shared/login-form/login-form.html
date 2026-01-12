@@ -51,7 +51,7 @@
         type="submit"
         variant="purple"
         size="xl"
-        [disabled]="isFormInvalid() || form.pending || isLoading()"
+        [disabled]="isSubmitDisabled()"
         [loading]="isLoading()"
       >
         @if (isLoading()) { Iniciando... } 

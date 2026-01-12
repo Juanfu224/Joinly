@@ -8,6 +8,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ButtonComponent } from '../button/button';
@@ -53,7 +54,15 @@ export class JoinGroupFormComponent {
     }],
   });
 
-  readonly isFormInvalid = computed(() => this.form.invalid);
+  // Signal que observa el estado del formulario de forma reactiva
+  private readonly formStatus = toSignal(this.form.statusChanges, { 
+    initialValue: this.form.status 
+  });
+
+  readonly isFormInvalid = computed(() => {
+    const status = this.formStatus();
+    return this.form.invalid;
+  });
 
   @HostListener('keydown', ['$event'])
   protected handleEnterKey(event: KeyboardEvent): void {

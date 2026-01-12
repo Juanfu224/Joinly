@@ -1,0 +1,63 @@
+# =============================================================================
+# EditorConfig - Configuración de código consistente entre IDEs
+# https://editorconfig.org
+# =============================================================================
+
+root = true
+
+# Configuración por defecto para todos los archivos
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Java
+[*.java]
+indent_size = 4
+
+# JavaScript, TypeScript, Angular
+[*.{js,ts,jsx,tsx}]
+indent_size = 2
+
+# HTML, Angular templates
+[*.{html,htm}]
+indent_size = 2
+
+# CSS, SCSS
+[*.{css,scss,sass,less}]
+indent_size = 2
+
+# JSON (package.json, tsconfig, etc.)
+[*.json]
+indent_size = 2
+
+# YAML (docker-compose, Angular, etc.)
+[*.{yml,yaml}]
+indent_size = 2
+
+# XML (pom.xml, etc.)
+[*.xml]
+indent_size = 4
+
+# Markdown
+[*.md]
+trim_trailing_whitespace = false
+
+# Makefile (requiere tabs)
+[Makefile]
+indent_style = tab
+
+# Shell scripts
+[*.sh]
+indent_size = 2
+
+# SQL migrations
+[*.sql]
+indent_size = 2
+
+# Properties files
+[*.properties]
+indent_size = 4

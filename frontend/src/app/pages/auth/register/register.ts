@@ -44,21 +44,19 @@ export class RegisterComponent {
     password: string;
     confirmPassword: string;
   }): void {
-    // Mapear datos del formulario al formato que espera AuthService
+    // Mapear datos del formulario al formato que espera el backend (RegisterData)
     const registerData = {
+      nombre: `${data.nombre} ${data.apellido}`.trim(),
       email: data.email,
       password: data.password,
-      nombreUsuario: data.email.split('@')[0],
-      nombreCompleto: `${data.nombre} ${data.apellido}`,
     };
 
     this.authService.register(registerData).subscribe({
       next: (user) => {
-        // Guardar usuario en state (auto-login)
-        this.authService.setUser(user);
+        // Nota: AuthService ya guarda el usuario automáticamente en handleAuthSuccess()
 
         // Mostrar mensaje de éxito
-        this.alertService.success(`¡Cuenta creada! Bienvenido, ${user.nombreUsuario}!`);
+        this.alertService.success(`¡Cuenta creada! Bienvenido, ${user.nombre}!`);
 
         // Redirigir a dashboard
         this.router.navigate(['/dashboard']);

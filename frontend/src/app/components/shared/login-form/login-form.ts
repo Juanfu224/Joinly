@@ -8,6 +8,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ButtonComponent } from '../button/button';
@@ -68,7 +69,16 @@ export class LoginFormComponent {
     password: ['', [Validators.required, Validators.minLength(8)]],
   });
 
-  readonly isFormInvalid = computed(() => this.form.invalid);
+  // Signal que observa el estado del formulario de forma reactiva
+  private readonly formStatus = toSignal(this.form.statusChanges, { 
+    initialValue: this.form.status 
+  });
+
+  readonly isSubmitDisabled = computed(() => {
+    // Acceder al signal para activar la reactividad
+    const status = this.formStatus();
+    return this.form.invalid || this.form.pending || this.isLoading();
+  });
 
   @HostListener('keydown', ['$event'])
   protected handleEnterKey(event: KeyboardEvent): void {
@@ -83,7 +93,7 @@ export class LoginFormComponent {
 
     this.form.markAllAsTouched();
 
-    if (this.isFormInvalid()) {
+    if (this.form.invalid) {
       this.focusFirstInvalidField();
       return;
     }

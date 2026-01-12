@@ -1,38 +1,67 @@
 <main class="p-dashboard">
   <div class="l-contenedor">
+    <!-- Breadcrumbs de navegación -->
+    <app-breadcrumbs [items]="breadcrumbs" />
+
     <!-- Header de página -->
     <header class="p-dashboard__header">
-      <div class="p-dashboard__header-content">
-        <h1 class="p-dashboard__titulo">Mis Grupos</h1>
-        @if (currentUser(); as user) {
-          <p class="p-dashboard__subtitulo">
-            Bienvenido, <strong>{{ user.nombreUsuario }}</strong>
-          </p>
-        }
-      </div>
-      <app-button
-        variant="primary"
-        leftIcon="add"
-        (click)="onCreateGroup()"
-      >
-        Crear grupo
-      </app-button>
+      <h1 class="p-dashboard__titulo">Grupos</h1>
+      <p class="p-dashboard__subtitulo">
+        Gestiona tus unidades familiares y únete a alguno
+      </p>
     </header>
 
-    <!-- Grid de grupos o empty state -->
+    <!-- Tarjetas de acción: Crear / Unirse -->
+    <section class="p-dashboard__acciones" aria-label="Acciones de grupo">
+      <!-- Crear unidad familiar -->
+      <button 
+        type="button" 
+        class="u-btn-wrapper"
+        (click)="onCreateGroup()"
+        aria-label="Crear unidad familiar"
+      >
+        <app-card variant="action">
+          <div slot="icon" class="c-card-icon c-card-icon--naranja">
+            <app-icon name="add" size="md" />
+          </div>
+          <h3 slot="title">Crear unidad familiar</h3>
+          <p slot="description">Empieza un nuevo grupo</p>
+        </app-card>
+      </button>
+
+      <!-- Unirse a un grupo -->
+      <button 
+        type="button" 
+        class="u-btn-wrapper"
+        (click)="onJoinGroup()"
+        aria-label="Unirse a un grupo"
+      >
+        <app-card variant="action">
+          <div slot="icon" class="c-card-icon c-card-icon--azul">
+            <app-icon name="home" size="md" />
+          </div>
+          <h3 slot="title">Unirse a un grupo</h3>
+          <p slot="description">Usa un código de 12 dígitos</p>
+        </app-card>
+      </button>
+    </section>
+
+    <!-- Contenido principal: Grid de grupos o empty state -->
     @if (grupos().length > 0) {
-      <div class="p-dashboard__grid">
-        @for (grupo of grupos(); track grupo.id) {
-          <app-group-card
-            [grupo]="grupo"
-            (invite)="onGroupInvite(grupo.id)"
-          />
-        }
-      </div>
+      <section class="p-dashboard__grupos" aria-label="Mis grupos">
+        <div class="p-dashboard__grid">
+          @for (grupo of grupos(); track grupo.id) {
+            <app-group-card
+              [grupo]="grupo"
+              (invite)="onGroupInvite(grupo.id)"
+            />
+          }
+        </div>
+      </section>
     } @else {
-      <div class="p-dashboard__empty">
+      <section class="p-dashboard__empty" aria-label="Sin grupos">
         <app-empty-groups />
-      </div>
+      </section>
     }
   </div>
 </main>

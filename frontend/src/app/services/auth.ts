@@ -1,218 +1,155 @@
-import { Injectable, computed, signal, inject } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, of, throwError } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Observable, catchError, map, tap, throwError } from 'rxjs';
 
-/**
- * Datos del usuario autenticado
- */
-export interface User {
-  id: number;
-  email: string;
-  nombreUsuario: string;
-  nombreCompleto: string;
-}
+import type { AuthResponse, LoginData, RegisterData, User } from '../models';
+import { TokenStorage } from '../interceptors/auth.interceptor';
 
-/**
- * Datos para registro de usuario
- */
-export interface RegisterData {
-  email: string;
-  password: string;
-  nombreUsuario: string;
-  nombreCompleto: string;
-}
+// CONSTANTS
+const API_AUTH = '/api/v1/auth';
+const USER_STORAGE_KEY = 'joinly_user';
 
-/**
- * Datos para login de usuario
- */
-export interface LoginData {
-  email: string;
-  password: string;
-}
-
-/**
- * Servicio de autenticación mock.
- *
- * Simula un servicio de autenticación real con delays para testing de UX.
- * Usa signals para reactividad y está preparado para ser reemplazado
- * por implementación real con HttpClient.
- *
- * ### Características
- * - State management con signals (Angular 21)
- * - Computed signals para estado derivado
- * - Mock de delays HTTP realistas
- * - Validación básica de credenciales
- * - Persistencia en localStorage (simulada)
- * - Fácil migración a servicio real
- *
- * @usageNotes
- * ```typescript
- * // En component
- * private authService = inject(AuthService);
- *
- * // Login
- * this.authService.login(email, password).subscribe({
- *   next: (user) => this.router.navigate(['/dashboard']),
- *   error: (err) => this.handleError(err)
- * });
- *
- * // Check autenticación
- * if (this.authService.isAuthenticated()) {
- *   // Usuario logueado
- * }
- * ```
- */
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
 
-  /**
-   * Signal del usuario actual (null si no está autenticado)
-   */
   private readonly currentUserSignal = signal<User | null>(null);
-
-  /**
-   * Usuario actual (read-only)
-   */
   readonly currentUser = this.currentUserSignal.asReadonly();
-
-  /**
-   * Computed signal: indica si el usuario está autenticado
-   */
   readonly isAuthenticated = computed(() => this.currentUserSignal() !== null);
+  readonly displayName = computed(() => this.currentUserSignal()?.nombre ?? 'Usuario');
 
   constructor() {
     this.loadUserFromStorage();
   }
 
-  /**
-   * Intenta hacer login con email y contraseña.
-   *
-   * Mock: acepta cualquier email válido + password >= 8 chars.
-   * Simula delay de red de 800ms.
-   *
-   * @param data - Credenciales de login
-   * @returns Observable con usuario autenticado
-   */
   login(data: LoginData): Observable<User> {
-    // Validación básica
-    if (!data.email || !data.password) {
-      return throwError(() => ({
-        message: 'Email y contraseña son requeridos',
-      }));
-    }
-
-    if (data.password.length < 8) {
-      return throwError(() => ({
-        message: 'Contraseña incorrecta',
-      }));
-    }
-
-    // Simula usuario mock
-    const mockUser: User = {
-      id: 1,
-      email: data.email,
-      nombreUsuario: data.email.split('@')[0],
-      nombreCompleto: 'Usuario Demo',
-    };
-
-    // Simula delay de red + guarda en state
-    return of(mockUser).pipe(
-      delay(800),
-      // Efecto secundario: guardar en state y storage
-      // En producción esto se hace en el subscribe del component
+    return this.http.post<AuthResponse>(`${API_AUTH}/login`, data).pipe(
+      tap((response) => this.handleAuthSuccess(response)),
+      map((response) => this.extractUser(response)),
+      catchError((error) => this.handleAuthError(error))
     );
   }
 
-  /**
-   * Registra un nuevo usuario.
-   *
-   * Mock: acepta cualquier dato válido.
-   * Simula delay de red de 1000ms.
-   *
-   * @param data - Datos de registro
-   * @returns Observable con usuario creado y autenticado
-   */
   register(data: RegisterData): Observable<User> {
-    // Validación básica
-    if (!data.email || !data.password || !data.nombreUsuario) {
-      return throwError(() => ({
-        message: 'Todos los campos son requeridos',
-      }));
-    }
-
-    if (data.password.length < 8) {
-      return throwError(() => ({
-        message: 'La contraseña debe tener al menos 8 caracteres',
-      }));
-    }
-
-    // Simula usuario mock creado
-    const mockUser: User = {
-      id: 2,
-      email: data.email,
-      nombreUsuario: data.nombreUsuario,
-      nombreCompleto: data.nombreCompleto,
-    };
-
-    // Simula delay de red
-    return of(mockUser).pipe(delay(1000));
+    return this.http.post<AuthResponse>(`${API_AUTH}/register`, data).pipe(
+      tap((response) => this.handleAuthSuccess(response)),
+      map((response) => this.extractUser(response)),
+      catchError((error) => this.handleAuthError(error))
+    );
   }
 
-  /**
-   * Cierra sesión del usuario actual.
-   * Limpia state y storage, redirige a home.
-   */
   logout(): void {
+    TokenStorage.clearTokens();
+    this.clearUserFromStorage();
     this.currentUserSignal.set(null);
-    this.removeUserFromStorage();
     this.router.navigate(['/']);
   }
 
-  /**
-   * Guarda usuario autenticado en state y storage.
-   * Llamar después de login/register exitoso.
-   */
-  setUser(user: User): void {
+  validateToken(token: string): Observable<boolean> {
+    return this.http.get<void>(`${API_AUTH}/validate`, { params: { token } }).pipe(
+      map(() => true),
+      catchError(() => [false])
+    );
+  }
+
+  checkEmailAvailability(email: string, excludeUserId?: number): Observable<boolean> {
+    const params: Record<string, string> = { email };
+    if (excludeUserId) params['excludeUserId'] = excludeUserId.toString();
+
+    return this.http.get<{ available: boolean }>(`${API_AUTH}/check-email`, { params }).pipe(
+      map((response) => response.available),
+      catchError(() => [false])
+    );
+  }
+
+  updateUser(user: User): void {
     this.currentUserSignal.set(user);
     this.saveUserToStorage(user);
   }
 
-  /**
-   * Carga usuario desde localStorage al iniciar app.
-   * Permite persistir sesión entre recargas.
-   */
+  private handleAuthSuccess(response: AuthResponse): void {
+    // Solo guardar tokens si la respuesta los contiene
+    if (response.accessToken && response.refreshToken) {
+      TokenStorage.saveTokens(response);
+    }
+    const user = this.extractUser(response);
+    this.currentUserSignal.set(user);
+    this.saveUserToStorage(user);
+  }
+
+  private extractUser(response: AuthResponse): User {
+    return {
+      id: response.id,
+      nombre: response.nombre,
+      email: response.email,
+    };
+  }
+
+  private handleAuthError(error: HttpErrorResponse): Observable<never> {
+    let message = 'Error de autenticación';
+
+    // Primero intentar obtener mensaje del error del backend
+    if (error.error?.message) {
+      message = error.error.message;
+    } else if (typeof error.error === 'string') {
+      message = error.error;
+    } else {
+      // Mensajes por código de estado HTTP
+      switch (error.status) {
+        case 0:
+          message = 'Sin conexión al servidor. Verifica que el backend esté ejecutándose.';
+          break;
+        case 400:
+          message = 'Datos de registro inválidos';
+          break;
+        case 401:
+        case 403:
+          message = 'Credenciales incorrectas';
+          break;
+        case 409:
+          message = 'Este email ya está registrado';
+          break;
+        case 422:
+          message = 'Cuenta deshabilitada';
+          break;
+        case 500:
+          message = 'Error interno del servidor';
+          break;
+      }
+    }
+
+    console.error('[AuthService] Error:', error.status, message, error);
+    return throwError(() => ({ message, status: error.status }));
+  }
+
   private loadUserFromStorage(): void {
     try {
-      const stored = localStorage.getItem('joinly_user');
+      if (!TokenStorage.hasToken()) return;
+
+      const stored = localStorage.getItem(USER_STORAGE_KEY);
       if (stored) {
-        const user = JSON.parse(stored) as User;
-        this.currentUserSignal.set(user);
+        this.currentUserSignal.set(JSON.parse(stored) as User);
       }
-    } catch (error) {
-      // Si hay error parseando, limpiar storage
-      this.removeUserFromStorage();
+    } catch {
+      this.logout();
     }
   }
 
-  /**
-   * Guarda usuario en localStorage.
-   */
   private saveUserToStorage(user: User): void {
     try {
-      localStorage.setItem('joinly_user', JSON.stringify(user));
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
     } catch (error) {
-      console.error('[AuthService] Error guardando usuario en storage:', error);
+      console.error('[AuthService] Error guardando usuario:', error);
     }
   }
 
-  /**
-   * Elimina usuario de localStorage.
-   */
-  private removeUserFromStorage(): void {
-    localStorage.removeItem('joinly_user');
+  private clearUserFromStorage(): void {
+    localStorage.removeItem(USER_STORAGE_KEY);
   }
 }
+
+export type { User, LoginData, RegisterData, AuthResponse };

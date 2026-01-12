@@ -1,0 +1,45 @@
+# =============================================================================
+# Git Attributes - Normalización de líneas y archivos
+# =============================================================================
+
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Force LF for text files (cross-platform consistency)
+*.java text eol=lf
+*.ts text eol=lf
+*.js text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.xml text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.sql text eol=lf
+*.properties text eol=lf
+*.sh text eol=lf
+Makefile text eol=lf
+
+# Windows batch files need CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary files (don't modify)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.jar binary
+*.class binary
+
+# Linguist settings for GitHub
+*.scss linguist-language=SCSS
+*.ts linguist-language=TypeScript

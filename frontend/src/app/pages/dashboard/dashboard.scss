@@ -5,12 +5,12 @@
 // PAGE: DASHBOARD
 // ==========================================================================
 // Vista principal de grupos del usuario autenticado.
+// Diseño basado en Figma: Grupos con tarjetas de acción
 //
 // ESTRATEGIA RESPONSIVE: Mobile-First
-// - Base: Mobile (< 640px) - 1 columna, header apilado
-// - @include responder-a('movil'): 640px+ - Header en línea
-// - @include responder-a('tablet'): 768px+ - Grid 2 columnas
-// - @include responder-a('desktop'): 1024px+ - Grid 3 columnas
+// - Base: Mobile (< 640px) - 1 columna, tarjetas apiladas
+// - @include responder-a('tablet'): 768px+ - 2 columnas
+// - @include responder-a('escritorio'): 1024px+ - Layout completo
 
 // ---------------------------------------------------------------------------
 // HOST STYLES
@@ -24,14 +24,14 @@
 // CONTENEDOR PRINCIPAL
 // ---------------------------------------------------------------------------
 .p-dashboard {
-  padding-block: var(--espaciado-6);
+  padding-block: var(--espaciado-4);
 
   @include responder-a('tablet') {
-    padding-block: var(--espaciado-8);
+    padding-block: var(--espaciado-6);
   }
 
   @include responder-a('escritorio') {
-    padding-block: var(--espaciado-10);
+    padding-block: var(--espaciado-8);
   }
 }
 
@@ -39,65 +39,54 @@
 // HEADER DE PÁGINA
 // ---------------------------------------------------------------------------
 .p-dashboard__header {
+  margin-block: var(--espaciado-4) var(--espaciado-6);
+
+  @include responder-a('tablet') {
+    margin-block: var(--espaciado-6) var(--espaciado-8);
+  }
+}
+
+.p-dashboard__titulo {
+  font-size: var(--tamano-h2);
+  font-weight: var(--peso-fuente-negrita);
+  line-height: var(--altura-linea-h2);
+  color: var(--text-primary);
+  margin: 0 0 var(--espaciado-1) 0;
+}
+
+.p-dashboard__subtitulo {
+  font-size: var(--tamano-texto-grande);
+  line-height: var(--altura-linea-body-large);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+// ---------------------------------------------------------------------------
+// TARJETAS DE ACCIÓN (Crear / Unirse)
+// ---------------------------------------------------------------------------
+.p-dashboard__acciones {
   display: flex;
   flex-direction: column;
   gap: var(--espaciado-4);
   margin-block-end: var(--espaciado-6);
 
-  @include responder-a('movil') {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-
   @include responder-a('tablet') {
+    flex-direction: row;
+    gap: var(--espaciado-4);
     margin-block-end: var(--espaciado-8);
   }
-}
 
-.p-dashboard__header-content {
-  flex: 1;
-}
-
-.p-dashboard__titulo {
-  font-size: var(--tamano-texto-2xl);
-  font-weight: var(--peso-fuente-negrita);
-  line-height: 1.125;
-  color: var(--text-primary);
-  margin: 0 0 var(--espaciado-1) 0;
-
-  @include responder-a('tablet') {
-    font-size: var(--tamano-texto-3xl);
-  }
-
-  @include responder-a('escritorio') {
-    font-size: var(--tamano-texto-4xl);
+  // Hacer que los botones wrapper ocupen el mismo espacio
+  > .u-btn-wrapper {
+    flex: 1;
   }
 }
 
-.p-dashboard__subtitulo {
-  font-size: var(--tamano-texto-pequeno);
-  line-height: var(--altura-linea-normal);
-  color: var(--text-secondary);
-  margin: 0;
-
-  @include responder-a('tablet') {
-    font-size: var(--tamano-texto-normal);
-  }
-
-  strong {
-    color: var(--text-primary);
-    font-weight: var(--peso-fuente-semibold);
-  }
-}
-
-// Botón crear grupo - full width en mobile
-.p-dashboard__header app-button {
-  inline-size: 100%;
-
-  @include responder-a('movil') {
-    inline-size: auto;
-  }
+// ---------------------------------------------------------------------------
+// SECCIÓN DE GRUPOS
+// ---------------------------------------------------------------------------
+.p-dashboard__grupos {
+  margin-block-start: var(--espaciado-4);
 }
 
 // ---------------------------------------------------------------------------
@@ -126,9 +115,4 @@
 .p-dashboard__empty {
   display: flex;
   justify-content: center;
-  padding-block: var(--espaciado-10);
-
-  @include responder-a('tablet') {
-    padding-block: var(--espaciado-12);
-  }
 }

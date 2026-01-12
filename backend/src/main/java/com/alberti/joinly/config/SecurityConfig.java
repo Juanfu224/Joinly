@@ -58,6 +58,7 @@ public class SecurityConfig {
      */
     private static final String[] PUBLIC_ENDPOINTS = {
             "/api/v1/auth/**",
+            "/api/dev/**",        // DevController - solo activo en perfil dev
             "/swagger-ui/**",
             "/swagger-ui.html",
             "/v3/api-docs/**",

@@ -10,6 +10,11 @@
 // <div slot="icon" class="c-card-icon c-card-icon--amarillo">
 //   <svg>...</svg>
 // </div>
+//
+// @example Tamaño pequeño para tarjetas de acción
+// <div class="c-card-icon c-card-icon--naranja c-card-icon--sm">
+//   <app-icon name="add" size="md" />
+// </div>
 
 .c-card-icon {
   display: flex;
@@ -23,13 +28,16 @@
   color: var(--color-blanco);
 
   // Aseguramos que los iconos SVG internos se muestren en blanco
-  svg {
+  svg,
+  app-icon {
     display: block;
     inline-size: 2rem; // 32px para el icono interno
     block-size: 2rem; // 32px para el icono interno
     pointer-events: none;
     color: var(--color-blanco);
+  }
 
+  svg {
     // Aplicamos color blanco tanto a stroke como a fill
     path,
     circle,
@@ -44,6 +52,22 @@
     // Para elementos que necesiten relleno
     [fill]:not([fill="none"]) {
       fill: var(--color-blanco);
+    }
+  }
+
+  // ==========================================================================
+  // MODIFICADORES: Tamaños
+  // ==========================================================================
+
+  &--sm {
+    inline-size: 2rem; // 32px para tarjetas de acción
+    block-size: 2rem;
+    padding: var(--espaciado-1);
+
+    svg,
+    app-icon {
+      inline-size: 1.5rem; // 24px
+      block-size: 1.5rem;
     }
   }
 

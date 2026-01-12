@@ -106,97 +106,83 @@ Joinly es una solución completa para gestionar suscripciones digitales comparti
 - **Java Development Kit (JDK) 25** o superior
 - **Node.js 18+** y npm
 - **Docker** y **Docker Compose**
-- **Git**
 
-### Verificación
+### Verificación Rápida
 ```bash
-java -version    # Debe mostrar Java 25+
-node -v          # Debe mostrar v18+
-docker -v        # Debe mostrar Docker instalado
-git --version    # Debe mostrar Git instalado
+java -version    # Java 25+
+node -v          # v18+
+docker -v        # Docker instalado
 ```
 
 ---
 
 ## Instalación Rápida
 
-### 1. Clonar el Repositorio
+### 🚀 Inicio en 2 Comandos
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/Juanfu224/Joinly.git
+cd Joinly
+
+# 2. Iniciar todo (MySQL + Backend con migraciones automáticas)
+make start
+
+# 3. En otra terminal, iniciar frontend
+make frontend
+```
+
+**¡Listo!** 🎉
+- **Frontend**: http://localhost:4200
+- **Backend**: http://localhost:8080
+- **API Docs**: http://localhost:8080/swagger-ui.html
+
+> **Nota**: No necesitas configurar nada. Las migraciones de BD se ejecutan automáticamente.
+
+### 📋 Comandos Útiles
+
+```bash
+make help       # Ver todos los comandos disponibles
+make status     # Ver estado de los servicios
+make stop       # Detener todo
+make test       # Ejecutar tests
+make clean      # Limpiar archivos generados
+```
+
+---
+
+### 🔧 Instalación Manual (Alternativa)
+
+Si prefieres configurar manualmente:
+
+#### 1. Clonar
 
 ```bash
 git clone https://github.com/Juanfu224/Joinly.git
 cd Joinly
 ```
 
-### 2. Configurar Variables de Entorno
-
-Crea un archivo `.env` en la raíz del proyecto:
-
-```bash
-cp .env.example .env
-```
-
-Edita el archivo `.env` y genera claves seguras:
-
-```bash
-# Generar clave JWT (64 bytes)
-openssl rand -base64 64
-
-# Generar clave de encriptación AES-256 (32 bytes)
-openssl rand -base64 32
-```
-
-**Contenido del archivo `.env`:**
-
-```properties
-# Base de datos
-MYSQL_ROOT_PASSWORD=tu_password_seguro
-MYSQL_DATABASE=bbdd_joinly
-MYSQL_USER=joinly_user
-MYSQL_PASSWORD=tu_password_mysql
-MYSQL_PORT=3306
-
-# Backend
-DB_URL=jdbc:mysql://localhost:3306/bbdd_joinly
-DB_USERNAME=root
-DB_PASSWORD=tu_password_seguro
-
-# JWT (pegar salida de: openssl rand -base64 64)
-JWT_SECRET_KEY=tu_clave_jwt_generada
-JWT_ACCESS_TOKEN_EXPIRATION=3600000
-JWT_REFRESH_TOKEN_EXPIRATION=2592000000
-
-# Encriptación (pegar salida de: openssl rand -base64 32)
-ENCRYPTION_KEY=tu_clave_aes_generada
-```
-
-### 3. Iniciar Base de Datos
+#### 2. Iniciar Base de Datos
 
 ```bash
 docker-compose up -d
+# Esperar ~10 segundos a que MySQL esté listo
 ```
 
-Esto iniciará MySQL en el puerto 3306.
-
-### 4. Ejecutar Backend
+#### 3. Ejecutar Backend
 
 ```bash
 cd backend
-./mvnw spring-boot:run
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 En Windows:
 ```cmd
 cd backend
-mvnw.cmd spring-boot:run
+mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
-El backend estará disponible en: `http://localhost:8080`
-
-**Verificar:**
-- Health: `http://localhost:8080/actuator/health`
-- Swagger: `http://localhost:8080/swagger-ui.html`
-
-### 5. Ejecutar Frontend
+#### 4. Ejecutar Frontend (en otra terminal)
 
 ```bash
 cd frontend
@@ -204,7 +190,21 @@ npm install
 npm start
 ```
 
-El frontend estará disponible en: `http://localhost:4200`
+---
+
+### ⚙️ Configuración para Producción
+
+Para entornos de producción, **DEBES cambiar** las claves en el archivo `.env`:
+
+```bash
+# Generar clave JWT segura (64 bytes)
+openssl rand -base64 64
+
+# Generar clave de encriptación AES-256 (32 bytes)
+openssl rand -base64 32
+```
+
+Actualiza el archivo `.env` con los valores generados y contraseñas seguras.
 
 ---
 
@@ -215,7 +215,6 @@ El frontend estará disponible en: `http://localhost:4200`
 - **[Guía de Despliegue en Producción](docs/DEPLOYMENT.md)** - Instrucciones completas para desplegar en servidor
 - **[Documentación de Diseño](docs/design/DOCUMENTACION.md)** - Principios de diseño, CSS, BEM, ITCSS (2600+ líneas)
 - **[Guía de Seguridad](backend/docs/SECURITY.md)** - Buenas prácticas, generación de claves, rotación
-- **[Configuración de Entorno](docs/ENV_CONFIG.md)** - Variables de entorno centralizadas
 - **[Lista de Mejoras](backend/docs/TODO_MEJORAS.md)** - Roadmap y tareas completadas
 - **[Modelo ER](backend/docs/Modelo%20ER/)** - Diagrama de base de datos
 

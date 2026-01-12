@@ -148,7 +148,7 @@
     flex-direction: row;
     align-items: center;
     gap: var(--espaciado-3);
-    padding: var(--espaciado-3);
+    padding: var(--espaciado-3) var(--espaciado-4);
 
     .c-card__contenido {
       gap: var(--espaciado-1);
@@ -156,7 +156,9 @@
     }
 
     .c-card__titulo {
-      font-size: var(--tamano-texto-regular);
+      font-size: var(--tamano-h4);
+      font-weight: var(--peso-fuente-semi-negrita);
+      line-height: var(--altura-linea-h4);
     }
 
     .c-card__badge,
@@ -166,13 +168,21 @@
   }
 
   &--action {
+    // Sombra más pronunciada para tarjetas de acción
+    box-shadow: var(--sombra-1), var(--sombra-3);
+
     .c-card__descripcion {
-      font-size: var(--tamano-texto-pequeno);
+      font-size: var(--tamano-texto-grande);
+      line-height: var(--altura-linea-body-large);
     }
 
     .c-card__valor,
     .c-card__metadata {
       display: none;
+    }
+
+    &:not(.c-card--no-hover):hover {
+      box-shadow: var(--sombra-4);
     }
   }
 

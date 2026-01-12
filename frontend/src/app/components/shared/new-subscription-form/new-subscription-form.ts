@@ -9,6 +9,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ButtonComponent } from '../button/button';
@@ -121,7 +122,15 @@ export class NewSubscriptionFormComponent implements OnInit {
     }
   }
 
-  readonly isFormInvalid = computed(() => this.form.invalid);
+  // Signal que observa el estado del formulario de forma reactiva
+  private readonly formStatus = toSignal(this.form.statusChanges, { 
+    initialValue: this.form.status 
+  });
+
+  readonly isFormInvalid = computed(() => {
+    const status = this.formStatus();
+    return this.form.invalid;
+  });
 
   ngOnInit(): void {
     // Inicializar con una credencial por defecto

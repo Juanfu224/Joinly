@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/http';
 
 import { routes } from './app.routes';
-import { loadingInterceptor } from './interceptors';
+import { authInterceptor, loadingInterceptor } from './interceptors';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -11,7 +11,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(
       withFetch(),
-      withInterceptors([loadingInterceptor])
+      // Orden importante: auth primero (añade token), loading después (muestra spinner)
+      withInterceptors([authInterceptor, loadingInterceptor])
     ),
   ]
 };
