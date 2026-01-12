@@ -4,13 +4,17 @@
 # Un solo comando: make start
 # =============================================================================
 
-.PHONY: help start stop status test clean
+.PHONY: help start stop status test clean init
 
 GREEN  := \033[0;32m
 YELLOW := \033[0;33m
 BLUE   := \033[0;34m
 RED    := \033[0;31m
 NC     := \033[0m
+
+# Cargar variables de .env si existe
+-include .env
+export
 
 help: ## 📖 Mostrar ayuda
 	@echo ""
@@ -20,13 +24,25 @@ help: ## 📖 Mostrar ayuda
 	@echo ""
 	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z_-]+:.*?##/ { printf "  $(GREEN)%-12s$(NC) %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 	@echo ""
-	@echo "$(YELLOW)Después de clonar:$(NC)  make start"
+	@echo "$(YELLOW)Después de clonar:$(NC)  make init && make start"
 	@echo ""
+
+init: ## 🔧 Crear archivo .env desde .env.example
+	@if [ ! -f .env ]; then \
+		cp .env.example .env; \
+		echo "$(GREEN)✅ Archivo .env creado$(NC)"; \
+	else \
+		echo "$(YELLOW)⚠️  Archivo .env ya existe$(NC)"; \
+	fi
 
 start: ## ⭐ Iniciar TODO (MySQL + Backend + Frontend)
 	@command -v java >/dev/null 2>&1 || { echo "$(RED)❌ Java no encontrado$(NC)"; exit 1; }
 	@command -v docker >/dev/null 2>&1 || { echo "$(RED)❌ Docker no encontrado$(NC)"; exit 1; }
 	@command -v node >/dev/null 2>&1 || { echo "$(RED)❌ Node.js no encontrado$(NC)"; exit 1; }
+	@if [ ! -f .env ]; then \
+		echo "$(RED)❌ Archivo .env no encontrado. Ejecuta: make init$(NC)"; \
+		exit 1; \
+	fi
 	@echo ""
 	@echo "$(BLUE)╔════════════════════════════════════════════════════════════╗$(NC)"
 	@echo "$(BLUE)║                 🚀 Iniciando Joinly...                      ║$(NC)"
@@ -36,7 +52,7 @@ start: ## ⭐ Iniciar TODO (MySQL + Backend + Frontend)
 		echo "$(YELLOW)🐳 Iniciando MySQL...$(NC)"; \
 		docker compose up -d 2>/dev/null; \
 		echo "$(YELLOW)⏳ Esperando MySQL...$(NC)"; \
-		until docker exec joinly-mysql mysqladmin ping -h localhost -u root -pjoinly_dev_2024 --silent 2>/dev/null; do sleep 2; done; \
+		until docker compose exec -T mysql mysqladmin ping -h localhost --silent 2>/dev/null; do sleep 2; done; \
 	fi
 	@echo "$(GREEN)✅ MySQL listo$(NC)"
 	@echo ""
