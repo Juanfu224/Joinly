@@ -43,11 +43,26 @@ export interface CreateUnidadRequest {
 }
 
 /**
- * Datos resumidos de un grupo para mostrar en tarjetas
+ * Datos resumidos de un grupo para mostrar en tarjetas del dashboard.
+ * Corresponde al DTO UnidadFamiliarCardDTO del backend.
  */
 export interface GrupoCardData {
   id: number;
   nombre: string;
   totalMiembros: number;
-  suscripciones: string | null;
+  totalSuscripciones: number;
+}
+
+/**
+ * Respuesta paginada de Spring Data
+ */
+export interface Page<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
+  first: boolean;
+  last: boolean;
+  empty: boolean;
 }

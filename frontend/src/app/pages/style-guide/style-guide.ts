@@ -402,19 +402,19 @@ export class StyleGuideComponent {
       id: 1,
       nombre: 'Familia García',
       totalMiembros: 6,
-      suscripciones: 'Netflix, Spotify, Disney+',
+      totalSuscripciones: 3,
     },
     {
       id: 2,
       nombre: 'Amigos del piso',
       totalMiembros: 4,
-      suscripciones: 'HBO Max, Prime Video',
+      totalSuscripciones: 2,
     },
     {
       id: 3,
       nombre: 'Compañeros de trabajo',
       totalMiembros: 3,
-      suscripciones: null,
+      totalSuscripciones: 0,
     },
   ];
 

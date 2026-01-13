@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { IconComponent } from '../icon/icon';
 import { ButtonComponent } from '../button/button';
+import { FormatSuscripcionesPipe } from '../../../utils';
 import type { GrupoCardData } from '../../../models/grupo.model';
 
 /**
@@ -27,7 +28,7 @@ import type { GrupoCardData } from '../../../models/grupo.model';
 @Component({
   selector: 'app-group-card',
   standalone: true,
-  imports: [IconComponent, ButtonComponent],
+  imports: [IconComponent, ButtonComponent, FormatSuscripcionesPipe],
   templateUrl: './group-card.html',
   styleUrls: ['./group-card.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

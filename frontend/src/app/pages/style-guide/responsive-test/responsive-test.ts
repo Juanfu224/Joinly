@@ -127,7 +127,7 @@ export class ResponsiveTestComponent {
     id: 1,
     nombre: 'Familia García',
     totalMiembros: 4,
-    suscripciones: 'Netflix, Disney+, HBO Max',
+    totalSuscripciones: 3,
   };
 
   readonly mockSubscription: SubscriptionInfoData = {

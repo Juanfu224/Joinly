@@ -2,6 +2,7 @@ package com.alberti.joinly.controllers;
 
 import com.alberti.joinly.dto.unidad.CreateUnidadRequest;
 import com.alberti.joinly.dto.unidad.MiembroUnidadResponse;
+import com.alberti.joinly.dto.unidad.UnidadFamiliarCardDTO;
 import com.alberti.joinly.dto.unidad.UnidadFamiliarResponse;
 import com.alberti.joinly.security.CurrentUser;
 import com.alberti.joinly.security.UserPrincipal;
@@ -129,6 +130,25 @@ public class UnidadFamiliarController {
                 .map(UnidadFamiliarResponse::fromEntity);
 
         return ResponseEntity.ok(unidades);
+    }
+
+    @GetMapping("/miembro/cards")
+    @Operation(
+            summary = "Obtener tarjetas de grupos",
+            description = "Obtiene los datos resumidos de grupos para mostrar en tarjetas del dashboard. " +
+                    "Incluye nombre, total de miembros y suscripciones activas. " +
+                    "Query optimizada para evitar N+1."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Página de tarjetas de grupos",
+                    content = @Content(schema = @Schema(implementation = UnidadFamiliarCardDTO.class)))
+    })
+    public ResponseEntity<Page<UnidadFamiliarCardDTO>> obtenerTarjetasGrupos(
+            @CurrentUser UserPrincipal currentUser,
+            @PageableDefault(size = 50) Pageable pageable) {
+
+        var tarjetas = unidadFamiliarService.obtenerGruposCardDelUsuario(currentUser.getId(), pageable);
+        return ResponseEntity.ok(tarjetas);
     }
 
     @GetMapping("/{id}/miembros")

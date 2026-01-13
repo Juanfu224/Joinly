@@ -1,5 +1,6 @@
 package com.alberti.joinly.services;
 
+import com.alberti.joinly.dto.unidad.UnidadFamiliarCardDTO;
 import com.alberti.joinly.entities.enums.EstadoMiembro;
 import com.alberti.joinly.entities.enums.EstadoUnidadFamiliar;
 import com.alberti.joinly.entities.enums.RolMiembro;
@@ -110,6 +111,21 @@ public class UnidadFamiliarService {
      */
     public Page<UnidadFamiliar> listarGruposDondeEsMiembroPaginado(Long idUsuario, Pageable pageable) {
         return unidadFamiliarRepository.findUnidadesDondeEsMiembroActivoPaginado(idUsuario, pageable);
+    }
+
+    /**
+     * Obtiene los datos resumidos de grupos para mostrar en tarjetas del dashboard.
+     * <p>
+     * Utiliza una query optimizada con proyección directa a DTO para evitar
+     * el problema N+1 y mejorar el rendimiento.
+     *
+     * @param idUsuario ID del usuario
+     * @param pageable  Información de paginación
+     * @return Página de DTOs con datos resumidos de grupos
+     */
+    public Page<UnidadFamiliarCardDTO> obtenerGruposCardDelUsuario(Long idUsuario, Pageable pageable) {
+        log.debug("Obteniendo tarjetas de grupos para usuario: {}", idUsuario);
+        return unidadFamiliarRepository.findGruposCardPorUsuario(idUsuario, pageable);
     }
 
     /**

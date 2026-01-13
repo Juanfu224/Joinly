@@ -20,6 +20,7 @@ export {
   type UnidadFamiliar,
   type CreateUnidadRequest,
   type GrupoCardData,
+  type Page,
 } from './grupo.model';
 
 export {

@@ -12,7 +12,7 @@
   <section class="c-group-card__content">
     <h4 class="c-group-card__label">Suscripciones</h4>
     <p class="c-group-card__suscripciones">
-      {{ grupo().suscripciones || 'Ninguna' }}
+      {{ grupo().totalSuscripciones | formatSuscripciones }}
     </p>
   </section>
 

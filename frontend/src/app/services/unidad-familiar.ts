@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UnidadFamiliar, CreateUnidadRequest } from '../models';
+import { UnidadFamiliar, CreateUnidadRequest, GrupoCardData, Page } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +22,21 @@ export class UnidadFamiliarService {
    */
   getGruposAdministrados(): Observable<UnidadFamiliar[]> {
     return this.http.get<UnidadFamiliar[]>(`${this.apiUrl}/administradas`);
+  }
+
+  /**
+   * Obtiene las tarjetas de grupos del usuario para el dashboard.
+   * Incluye nombre, total de miembros y suscripciones activas.
+   * 
+   * @param page Número de página (base 0)
+   * @param size Elementos por página (default: 50)
+   */
+  getGruposCards(page = 0, size = 50): Observable<Page<GrupoCardData>> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    return this.http.get<Page<GrupoCardData>>(`${this.apiUrl}/miembro/cards`, { params });
   }
 
   /**
