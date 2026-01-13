@@ -21,6 +21,9 @@ export {
   type CreateUnidadRequest,
   type GrupoCardData,
   type Page,
+  type RolMiembro,
+  type EstadoMiembro,
+  type MiembroUnidadResponse,
 } from './grupo.model';
 
 export {

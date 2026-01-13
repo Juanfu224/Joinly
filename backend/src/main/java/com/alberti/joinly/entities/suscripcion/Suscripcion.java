@@ -115,7 +115,7 @@ public class Suscripcion {
     private String notas;
 
     @CreatedDate
-    @Column(name = "fecha_creacion", nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime fechaCreacion;
 
     @LastModifiedDate

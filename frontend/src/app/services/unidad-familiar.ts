@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UnidadFamiliar, CreateUnidadRequest, GrupoCardData, Page } from '../models';
+import { UnidadFamiliar, CreateUnidadRequest, GrupoCardData, Page, MiembroUnidadResponse } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +9,20 @@ import { UnidadFamiliar, CreateUnidadRequest, GrupoCardData, Page } from '../mod
 export class UnidadFamiliarService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = '/api/v1/unidades';
+
+  /**
+   * Obtiene un grupo por su ID
+   */
+  getGrupoById(id: number): Observable<UnidadFamiliar> {
+    return this.http.get<UnidadFamiliar>(`${this.apiUrl}/${id}`);
+  }
+
+  /**
+   * Obtiene los miembros activos de un grupo
+   */
+  getMiembrosGrupo(id: number): Observable<MiembroUnidadResponse[]> {
+    return this.http.get<MiembroUnidadResponse[]>(`${this.apiUrl}/${id}/miembros`);
+  }
 
   /**
    * Crea una nueva unidad familiar

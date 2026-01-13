@@ -75,7 +75,7 @@ public class UnidadFamiliarController {
     public ResponseEntity<UnidadFamiliarResponse> getUnidad(
             @Parameter(description = "ID de la unidad") @PathVariable Long id) {
 
-        var unidad = unidadFamiliarService.buscarPorId(id)
+        var unidad = unidadFamiliarService.buscarPorIdConAdministrador(id)
                 .orElseThrow(() -> new IllegalArgumentException("Unidad familiar no encontrada con ID: " + id));
 
         return ResponseEntity.ok(UnidadFamiliarResponse.fromEntity(unidad));
@@ -90,7 +90,7 @@ public class UnidadFamiliarController {
     public ResponseEntity<UnidadFamiliarResponse> getUnidadPorCodigo(
             @Parameter(description = "Código de invitación de 12 caracteres") @PathVariable String codigoInvitacion) {
 
-        var unidad = unidadFamiliarService.buscarPorCodigo(codigoInvitacion)
+        var unidad = unidadFamiliarService.buscarPorCodigoConAdministrador(codigoInvitacion)
                 .orElseThrow(() -> new IllegalArgumentException("Código de invitación inválido"));
 
         return ResponseEntity.ok(UnidadFamiliarResponse.fromEntity(unidad));
@@ -104,7 +104,7 @@ public class UnidadFamiliarController {
     public ResponseEntity<List<UnidadFamiliarResponse>> listarGruposAdministrados(
             @CurrentUser UserPrincipal currentUser) {
 
-        var unidades = unidadFamiliarService.listarGruposAdministrados(currentUser.getId())
+        var unidades = unidadFamiliarService.listarGruposAdministradosConAdmin(currentUser.getId())
                 .stream()
                 .map(UnidadFamiliarResponse::fromEntity)
                 .toList();
@@ -126,7 +126,7 @@ public class UnidadFamiliarController {
             @CurrentUser UserPrincipal currentUser,
             @PageableDefault(size = 10, sort = "fechaCreacion") Pageable pageable) {
 
-        var unidades = unidadFamiliarService.listarGruposDondeEsMiembroPaginado(currentUser.getId(), pageable)
+        var unidades = unidadFamiliarService.listarGruposDondeEsMiembroPaginadoConAdmin(currentUser.getId(), pageable)
                 .map(UnidadFamiliarResponse::fromEntity);
 
         return ResponseEntity.ok(unidades);

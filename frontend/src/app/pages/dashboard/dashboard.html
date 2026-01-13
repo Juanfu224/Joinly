@@ -92,6 +92,7 @@
             <app-group-card
               [grupo]="grupo"
               (invite)="onGroupInvite(grupo.id)"
+              (cardClick)="onGroupClick(grupo.id)"
             />
           }
         </div>

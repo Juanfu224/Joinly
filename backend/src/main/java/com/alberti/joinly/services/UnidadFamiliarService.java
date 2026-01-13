@@ -73,6 +73,18 @@ public class UnidadFamiliarService {
     }
 
     /**
+     * Busca una unidad familiar por ID con el administrador precargado.
+     * Usar este método cuando se necesite acceder a datos del administrador
+     * para evitar LazyInitializationException.
+     *
+     * @param id ID de la unidad familiar
+     * @return Optional con la unidad familiar y administrador cargados
+     */
+    public Optional<UnidadFamiliar> buscarPorIdConAdministrador(Long id) {
+        return unidadFamiliarRepository.findWithAdministradorById(id);
+    }
+
+    /**
      * Busca una unidad familiar por su código de invitación.
      *
      * @param codigoInvitacion Código de invitación (case insensitive)
@@ -83,6 +95,18 @@ public class UnidadFamiliarService {
     }
 
     /**
+     * Busca una unidad familiar por código de invitación con el administrador precargado.
+     * Usar este método cuando se necesite acceder a datos del administrador
+     * para evitar LazyInitializationException.
+     *
+     * @param codigoInvitacion Código de invitación (case insensitive)
+     * @return Optional con la unidad familiar y administrador cargados
+     */
+    public Optional<UnidadFamiliar> buscarPorCodigoConAdministrador(String codigoInvitacion) {
+        return unidadFamiliarRepository.findWithAdministradorByCodigoInvitacion(codigoInvitacion.toUpperCase());
+    }
+
+    /**
      * Lista los grupos donde el usuario es administrador.
      *
      * @param idUsuario ID del usuario
@@ -90,6 +114,18 @@ public class UnidadFamiliarService {
      */
     public List<UnidadFamiliar> listarGruposAdministrados(Long idUsuario) {
         return unidadFamiliarRepository.findUnidadesAdministradasActivas(idUsuario);
+    }
+
+    /**
+     * Lista los grupos donde el usuario es administrador, con administrador precargado.
+     * Usar este método cuando se necesite acceder a datos del administrador
+     * para evitar LazyInitializationException.
+     *
+     * @param idUsuario ID del usuario
+     * @return Lista de grupos administrados activos con administrador cargado
+     */
+    public List<UnidadFamiliar> listarGruposAdministradosConAdmin(Long idUsuario) {
+        return unidadFamiliarRepository.findUnidadesAdministradasActivasConAdmin(idUsuario);
     }
 
     /**
@@ -111,6 +147,19 @@ public class UnidadFamiliarService {
      */
     public Page<UnidadFamiliar> listarGruposDondeEsMiembroPaginado(Long idUsuario, Pageable pageable) {
         return unidadFamiliarRepository.findUnidadesDondeEsMiembroActivoPaginado(idUsuario, pageable);
+    }
+
+    /**
+     * Lista los grupos donde el usuario es miembro activo con paginación y administrador precargado.
+     * Usar este método cuando se necesite acceder a datos del administrador
+     * para evitar LazyInitializationException.
+     *
+     * @param idUsuario ID del usuario
+     * @param pageable  Información de paginación y ordenamiento
+     * @return Página de grupos donde es miembro con administrador cargado
+     */
+    public Page<UnidadFamiliar> listarGruposDondeEsMiembroPaginadoConAdmin(Long idUsuario, Pageable pageable) {
+        return unidadFamiliarRepository.findUnidadesDondeEsMiembroActivoPaginadoConAdmin(idUsuario, pageable);
     }
 
     /**

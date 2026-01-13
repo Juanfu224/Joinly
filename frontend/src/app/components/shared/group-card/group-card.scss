@@ -5,9 +5,18 @@
 // ==========================================================================
 // Tarjeta que muestra información resumida de un grupo familiar
 // Diseño basado en Figma: sombras, espaciado y tipografía consistentes
+// Clickeable para navegar al detalle del grupo
 
 :host {
   display: block;
+  cursor: pointer;
+  outline: none;
+
+  // Focus visible para accesibilidad (navegación por teclado)
+  &:focus-visible .c-group-card {
+    outline: 2px solid var(--color-principal);
+    outline-offset: 2px;
+  }
 }
 
 .c-group-card {
@@ -25,12 +34,19 @@
   // Transición suave
   transition: 
     transform var(--duracion-base) var(--transicion-estandar),
-    box-shadow var(--duracion-base) var(--transicion-estandar);
+    box-shadow var(--duracion-base) var(--transicion-estandar),
+    outline var(--duracion-rapida) var(--transicion-estandar);
 
   // Estado hover
   &:hover {
     transform: translateY(-2px);
     box-shadow: var(--sombra-3), var(--sombra-4);
+  }
+
+  // Estado active (feedback al hacer clic)
+  :host:active & {
+    transform: translateY(0);
+    box-shadow: var(--sombra-1), var(--sombra-2);
   }
 
   // ==========================================================================

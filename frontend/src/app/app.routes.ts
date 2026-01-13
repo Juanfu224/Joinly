@@ -60,6 +60,15 @@ export const routes: Routes = [
     title: 'Unirse a Grupo - Joinly',
   },
 
+  // Detalle del Grupo
+  {
+    path: 'grupos/:id',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/grupo-detalle').then((m) => m.GrupoDetalleComponent),
+    title: 'Detalle del Grupo - Joinly',
+  },
+
   // =========================================================================
   // RUTAS DE DESARROLLO
   // =========================================================================

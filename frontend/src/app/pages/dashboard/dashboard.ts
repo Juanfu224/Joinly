@@ -120,4 +120,11 @@ export class DashboardComponent implements OnInit {
   protected onGroupInvite(groupId: number): void {
     this.router.navigate(['/grupos', groupId, 'invitar']);
   }
+
+  /**
+   * Navega al detalle del grupo.
+   */
+  protected onGroupClick(groupId: number): void {
+    this.router.navigate(['/grupos', groupId]);
+  }
 }

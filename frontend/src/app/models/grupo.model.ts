@@ -66,3 +66,25 @@ export interface Page<T> {
   last: boolean;
   empty: boolean;
 }
+
+/**
+ * Rol de un miembro dentro del grupo
+ */
+export type RolMiembro = 'ADMINISTRADOR' | 'MIEMBRO';
+
+/**
+ * Estado de un miembro del grupo
+ */
+export type EstadoMiembro = 'ACTIVO' | 'INACTIVO' | 'EXPULSADO';
+
+/**
+ * Respuesta de miembro de unidad familiar.
+ * Corresponde al DTO MiembroUnidadResponse del backend.
+ */
+export interface MiembroUnidadResponse {
+  id: number;
+  usuario: UsuarioSummary;
+  rol: RolMiembro;
+  fechaUnion: string;
+  estado: EstadoMiembro;
+}

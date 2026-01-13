@@ -1,4 +1,5 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { ToastService } from './toast';
 
 /**
  * Configuración para abrir un modal
@@ -89,6 +90,8 @@ export interface ModalConfig {
   providedIn: 'root',
 })
 export class ModalService {
+  private readonly toastService = inject(ToastService);
+
   /**
    * Signal privado con la configuración del modal actual
    */
@@ -181,5 +184,23 @@ export class ModalService {
       config.onCancel();
     }
     this.close();
+  }
+
+  /**
+   * Abre un modal con código de invitación para copiar.
+   * 
+   * @param codigo - Código de invitación del grupo
+   */
+  openInviteCode(codigo: string): void {
+    this.open({
+      title: 'Invitar miembros',
+      content: `Comparte este código con las personas que quieras invitar:\n\n${codigo}`,
+      confirmText: 'Copiar código',
+      cancelText: 'Cerrar',
+      onConfirm: () => {
+        navigator.clipboard.writeText(codigo);
+        this.toastService.success('Código copiado al portapapeles');
+      },
+    });
   }
 }
