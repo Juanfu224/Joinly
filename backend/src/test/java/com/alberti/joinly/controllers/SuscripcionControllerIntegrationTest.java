@@ -250,6 +250,7 @@ class SuscripcionControllerIntegrationTest {
             var request = new CreateSuscripcionRequest(
                     unidadFamiliar.getId(),
                     spotify.getId(),
+                    null, // nombreServicio (usamos idServicio)
                     new BigDecimal("14.99"),
                     (short) 5,
                     LocalDate.now().plusDays(1),
@@ -274,6 +275,7 @@ class SuscripcionControllerIntegrationTest {
             var request = new CreateSuscripcionRequest(
                     unidadFamiliar.getId(),
                     servicioNetflix.getId(),
+                    null, // nombreServicio (usamos idServicio)
                     new BigDecimal("17.99"),
                     (short) 4,
                     LocalDate.now().plusDays(1),
@@ -293,6 +295,7 @@ class SuscripcionControllerIntegrationTest {
             var request = new CreateSuscripcionRequest(
                     unidadFamiliar.getId(),
                     servicioNetflix.getId(),
+                    null, // nombreServicio (usamos idServicio)
                     new BigDecimal("17.99"),
                     (short) 4,
                     LocalDate.now().plusDays(1),
@@ -305,6 +308,55 @@ class SuscripcionControllerIntegrationTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().is4xxClientError()); // 422 Business Rule
+        }
+
+        @Test
+        @DisplayName("✅ Debe crear suscripción con nombreServicio (servicio personalizado)")
+        void crearConNombreServicio() throws Exception {
+            var request = new CreateSuscripcionRequest(
+                    unidadFamiliar.getId(),
+                    null, // idServicio (usamos nombreServicio)
+                    "Mi Servicio Personalizado",
+                    new BigDecimal("9.99"),
+                    (short) 3,
+                    LocalDate.now().plusDays(1),
+                    Periodicidad.MENSUAL,
+                    true
+            );
+
+            mockMvc.perform(post(API_SUSCRIPCIONES)
+                            .header("Authorization", "Bearer " + anfitrionToken)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isCreated())
+                    .andExpect(jsonPath("$.id").isNumber())
+                    .andExpect(jsonPath("$.servicio.nombre").value("Mi Servicio Personalizado"))
+                    .andExpect(jsonPath("$.servicio.categoria").value("OTRO"))
+                    .andExpect(jsonPath("$.numPlazasTotal").value(3))
+                    .andExpect(jsonPath("$.estado").value("ACTIVA"));
+        }
+
+        @Test
+        @DisplayName("✅ Debe encontrar servicio existente por nombre")
+        void crearConNombreServicioExistente() throws Exception {
+            var request = new CreateSuscripcionRequest(
+                    unidadFamiliar.getId(),
+                    null, // idServicio (usamos nombreServicio)
+                    "Netflix Premium", // Servicio ya existente en setUp
+                    new BigDecimal("17.99"),
+                    (short) 4,
+                    LocalDate.now().plusDays(1),
+                    Periodicidad.MENSUAL,
+                    true
+            );
+
+            mockMvc.perform(post(API_SUSCRIPCIONES)
+                            .header("Authorization", "Bearer " + anfitrionToken)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isCreated())
+                    .andExpect(jsonPath("$.servicio.nombre").value("Netflix Premium"))
+                    .andExpect(jsonPath("$.servicio.categoria").value("STREAMING"));
         }
 
         @Test

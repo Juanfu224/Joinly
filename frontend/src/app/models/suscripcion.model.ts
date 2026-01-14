@@ -84,15 +84,29 @@ export interface SuscripcionCardData {
 }
 
 /**
- * Datos para crear una nueva suscripción (simplificado según diseño Figma)
+ * Datos para crear una nueva suscripción.
+ * 
+ * Permite identificar el servicio de dos formas:
+ * - `idServicio`: ID de un servicio existente en el catálogo
+ * - `nombreServicio`: Nombre del servicio (se buscará o creará automáticamente)
+ * 
+ * Al menos uno de los dos debe estar presente.
  */
 export interface CreateSuscripcionRequest {
+  /** ID de la unidad familiar donde se creará la suscripción */
   idUnidad: number;
-  nombreServicio: string;
+  /** ID del servicio del catálogo (opcional si se proporciona nombreServicio) */
+  idServicio?: number;
+  /** Nombre del servicio - se buscará o creará si no existe (opcional si se proporciona idServicio) */
+  nombreServicio?: string;
+  /** Precio total de la suscripción */
   precioTotal: number;
+  /** Número total de plazas */
   numPlazasTotal: number;
+  /** Fecha de inicio en formato ISO (YYYY-MM-DD) */
   fechaInicio: string;
+  /** Periodicidad del pago */
   periodicidad: Periodicidad;
-  credencialUsuario?: string;
-  credencialPassword?: string;
+  /** Si el anfitrión ocupará una plaza (default: true) */
+  anfitrionOcupaPlaza?: boolean;
 }

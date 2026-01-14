@@ -54,8 +54,7 @@ export class CrearSuscripcionComponent implements OnInit {
       numPlazasTotal: data.plazas,
       periodicidad: data.periodicidad as Periodicidad,
       fechaInicio: new Date().toISOString().split('T')[0],
-      credencialUsuario: data.credencialUsuario,
-      credencialPassword: data.credencialPassword,
+      anfitrionOcupaPlaza: true,
     };
 
     this.suscripcionService.crearSuscripcion(request).subscribe({

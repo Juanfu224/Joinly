@@ -7,15 +7,31 @@ import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * DTO para crear una nueva suscripción compartida.
+ * <p>
+ * Permite dos modos de identificación del servicio:
+ * <ul>
+ *   <li><b>idServicio</b>: Referencia a un servicio existente en el catálogo</li>
+ *   <li><b>nombreServicio</b>: Nombre del servicio (se buscará o creará automáticamente)</li>
+ * </ul>
+ * Al menos uno de los dos campos debe estar presente.
+ *
+ * @author Joinly Team
+ * @since 2025
+ */
 @Schema(description = "Datos para crear una nueva suscripción compartida")
 public record CreateSuscripcionRequest(
         @NotNull(message = "El ID de la unidad familiar es obligatorio")
         @Schema(description = "ID de la unidad familiar donde se creará la suscripción", example = "1")
         Long idUnidad,
         
-        @NotNull(message = "El ID del servicio es obligatorio")
-        @Schema(description = "ID del servicio de streaming (Netflix, Spotify, etc.)", example = "1")
+        @Schema(description = "ID del servicio de streaming (opcional si se proporciona nombreServicio)", example = "1")
         Long idServicio,
+        
+        @Size(min = 2, max = 100, message = "El nombre del servicio debe tener entre 2 y 100 caracteres")
+        @Schema(description = "Nombre del servicio (opcional si se proporciona idServicio)", example = "Netflix Premium")
+        String nombreServicio,
         
         @NotNull(message = "El precio total es obligatorio")
         @DecimalMin(value = "0.01", message = "El precio debe ser mayor a 0")
@@ -41,9 +57,21 @@ public record CreateSuscripcionRequest(
         @Schema(description = "Si el anfitrión ocupará una plaza (default: true)", example = "true")
         Boolean anfitrionOcupaPlaza
 ) {
+    /**
+     * Constructor compacto con validación y valores por defecto.
+     */
     public CreateSuscripcionRequest {
         if (anfitrionOcupaPlaza == null) {
             anfitrionOcupaPlaza = true;
         }
+    }
+    
+    /**
+     * Verifica si el request tiene un identificador de servicio válido.
+     *
+     * @return true si tiene idServicio o nombreServicio válido
+     */
+    public boolean tieneServicioValido() {
+        return idServicio != null || (nombreServicio != null && !nombreServicio.isBlank());
     }
 }

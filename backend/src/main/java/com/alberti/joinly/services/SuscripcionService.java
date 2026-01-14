@@ -1,10 +1,12 @@
 package com.alberti.joinly.services;
 
+import com.alberti.joinly.entities.enums.CategoriaServicio;
 import com.alberti.joinly.entities.enums.EstadoMiembro;
 import com.alberti.joinly.entities.enums.EstadoPlaza;
 import com.alberti.joinly.entities.enums.EstadoSuscripcion;
 import com.alberti.joinly.entities.enums.Periodicidad;
 import com.alberti.joinly.entities.suscripcion.Plaza;
+import com.alberti.joinly.entities.suscripcion.Servicio;
 import com.alberti.joinly.entities.suscripcion.Suscripcion;
 import com.alberti.joinly.entities.usuario.Usuario;
 import com.alberti.joinly.exceptions.*;
@@ -258,6 +260,99 @@ public class SuscripcionService {
         crearPlazas(suscripcionGuardada, anfitrion, numPlazasTotal, anfitrionOcupaPlaza);
 
         return suscripcionGuardada;
+    }
+
+    /**
+     * Crea una nueva suscripción compartida usando el nombre del servicio.
+     * <p>
+     * Este método sobrecargado permite crear suscripciones especificando el nombre
+     * del servicio en lugar de su ID. El servicio se buscará en el catálogo y,
+     * si no existe, se creará automáticamente con categoría {@code OTRO}.
+     * <p>
+     * <b>Flujo de resolución del servicio:</b>
+     * <ol>
+     *   <li>Busca un servicio existente por nombre (case-insensitive)</li>
+     *   <li>Si no existe, crea uno nuevo con categoría OTRO y maxUsuarios = 20</li>
+     * </ol>
+     *
+     * @param idUnidad           ID del grupo familiar propietario
+     * @param idAnfitrion        ID del usuario anfitrión (debe ser miembro activo)
+     * @param nombreServicio     Nombre del servicio (se buscará o creará)
+     * @param precioTotal        Precio mensual total de la suscripción
+     * @param numPlazasTotal     Número de plazas a crear
+     * @param fechaInicio        Fecha de inicio de la suscripción
+     * @param periodicidad       Ciclo de renovación
+     * @param anfitrionOcupaPlaza Si true, la plaza 1 se asigna al anfitrión
+     * @return La suscripción creada con todas sus plazas
+     * @throws ResourceNotFoundException si la unidad o anfitrión no existen
+     * @throws UnauthorizedException si el anfitrión no es miembro activo
+     * @throws BusinessException si se viola una regla de negocio
+     * @throws LimiteAlcanzadoException si se alcanza el límite de suscripciones
+     */
+    @Transactional
+    public Suscripcion crearSuscripcionPorNombre(
+            Long idUnidad,
+            Long idAnfitrion,
+            String nombreServicio,
+            BigDecimal precioTotal,
+            short numPlazasTotal,
+            LocalDate fechaInicio,
+            Periodicidad periodicidad,
+            boolean anfitrionOcupaPlaza
+    ) {
+        log.info("Creando suscripción por nombre: unidad={}, anfitrion={}, servicio='{}', plazas={}",
+                idUnidad, idAnfitrion, nombreServicio, numPlazasTotal);
+
+        // Buscar o crear el servicio
+        var servicio = buscarOCrearServicioPorNombre(nombreServicio, numPlazasTotal);
+
+        // Delegar al método principal
+        return crearSuscripcion(
+                idUnidad,
+                idAnfitrion,
+                servicio.getId(),
+                precioTotal,
+                numPlazasTotal,
+                fechaInicio,
+                periodicidad,
+                anfitrionOcupaPlaza
+        );
+    }
+
+    /**
+     * Busca un servicio por nombre o crea uno nuevo si no existe.
+     * <p>
+     * Los servicios creados automáticamente tienen:
+     * <ul>
+     *   <li>Categoría: OTRO</li>
+     *   <li>maxUsuarios: max(numPlazas, 20)</li>
+     *   <li>activo: true</li>
+     * </ul>
+     *
+     * @param nombreServicio Nombre del servicio a buscar/crear
+     * @param numPlazas      Número de plazas (para calcular maxUsuarios)
+     * @return El servicio encontrado o creado
+     */
+    private Servicio buscarOCrearServicioPorNombre(String nombreServicio, short numPlazas) {
+        var nombreNormalizado = nombreServicio.strip();
+        
+        // Buscar servicio existente (case-insensitive)
+        return servicioRepository.findByNombreIgnoreCase(nombreNormalizado)
+                .orElseGet(() -> {
+                    log.info("Servicio '{}' no encontrado, creando nuevo servicio personalizado", nombreNormalizado);
+                    
+                    var nuevoServicio = Servicio.builder()
+                            .nombre(nombreNormalizado)
+                            .categoria(CategoriaServicio.OTRO)
+                            .maxUsuarios((short) Math.max(numPlazas, 20))
+                            .activo(true)
+                            .build();
+                    
+                    var servicioGuardado = servicioRepository.save(nuevoServicio);
+                    log.info("Servicio personalizado creado con ID: {}", servicioGuardado.getId());
+                    
+                    return servicioGuardado;
+                });
     }
 
     /**

@@ -41,12 +41,21 @@ public class SuscripcionController {
     @PostMapping
     @Operation(
             summary = "Crear suscripción compartida",
-            description = "Crea una nueva suscripción dentro de un grupo familiar. El anfitrión debe ser miembro activo del grupo. " +
-                    "Se crean automáticamente todas las plazas, asignando la primera al anfitrión si se indica.")
+            description = """
+                    Crea una nueva suscripción dentro de un grupo familiar. El anfitrión debe ser miembro activo del grupo.
+                    Se crean automáticamente todas las plazas, asignando la primera al anfitrión si se indica.
+                    
+                    **Identificación del servicio:**
+                    - `idServicio`: ID de un servicio existente en el catálogo
+                    - `nombreServicio`: Nombre del servicio (se buscará o creará automáticamente)
+                    
+                    Al menos uno de los dos campos debe estar presente. Si se proporciona `nombreServicio` y no existe
+                    en el catálogo, se creará un nuevo servicio con categoría "OTRO".
+                    """)
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Suscripción creada con todas sus plazas",
                     content = @Content(schema = @Schema(implementation = SuscripcionResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos o número de plazas excede máximo del servicio",
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos o falta identificador de servicio",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Unidad, servicio o usuario no encontrado",
                     content = @Content),
@@ -57,15 +66,31 @@ public class SuscripcionController {
             @CurrentUser UserPrincipal currentUser,
             @Valid @RequestBody CreateSuscripcionRequest request) {
 
-        var suscripcion = suscripcionService.crearSuscripcion(
-                request.idUnidad(),
-                currentUser.getId(),
-                request.idServicio(),
-                request.precioTotal(),
-                request.numPlazasTotal(),
-                request.fechaInicio(),
-                request.periodicidad(),
-                request.anfitrionOcupaPlaza());
+        // Validar que al menos uno de los identificadores del servicio esté presente
+        if (!request.tieneServicioValido()) {
+            throw new IllegalArgumentException("Debe proporcionar idServicio o nombreServicio");
+        }
+
+        // Crear suscripción usando idServicio o nombreServicio
+        var suscripcion = request.idServicio() != null
+                ? suscripcionService.crearSuscripcion(
+                        request.idUnidad(),
+                        currentUser.getId(),
+                        request.idServicio(),
+                        request.precioTotal(),
+                        request.numPlazasTotal(),
+                        request.fechaInicio(),
+                        request.periodicidad(),
+                        request.anfitrionOcupaPlaza())
+                : suscripcionService.crearSuscripcionPorNombre(
+                        request.idUnidad(),
+                        currentUser.getId(),
+                        request.nombreServicio(),
+                        request.precioTotal(),
+                        request.numPlazasTotal(),
+                        request.fechaInicio(),
+                        request.periodicidad(),
+                        request.anfitrionOcupaPlaza());
 
         var plazasDisponibles = suscripcionService.contarPlazasDisponibles(suscripcion.getId());
         var plazasOcupadas = suscripcionService.contarPlazasOcupadas(suscripcion.getId());
