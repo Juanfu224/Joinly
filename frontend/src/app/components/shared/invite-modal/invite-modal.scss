@@ -1,0 +1,175 @@
+// ==========================================================================
+// COMPONENTE: INVITE-MODAL
+// ==========================================================================
+// Modal especializado para invitar familiares a un grupo.
+// Usa mixins del sistema para overlay y contenedor modal.
+
+@use '../../../../styles/01-tools/mixins' as *;
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Overlay oscuro de fondo
+// ---------------------------------------------------------------------------
+.c-modal__overlay {
+  @include overlay-modal;
+  animation: overlay-fade-in var(--duracion-base) var(--transicion-estandar);
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Contenedor del modal (centrado)
+// ---------------------------------------------------------------------------
+.c-modal__contenedor {
+  @include contenedor-modal;
+  animation: modal-slide-in var(--duracion-base) var(--transicion-estandar);
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Contenido del modal
+// ---------------------------------------------------------------------------
+.c-modal__contenido {
+  position: relative;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radio-grande);
+  box-shadow: var(--sombra-6);
+  padding: var(--espaciado-3);
+  max-width: 100%;
+  width: 100%;
+  max-height: calc(100vh - var(--espaciado-4));
+  overflow-y: auto;
+
+  @include responder-a('movil') {
+    padding: var(--espaciado-5);
+    max-width: 28.75rem; // 460px según Figma
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Botón de cerrar
+// ---------------------------------------------------------------------------
+.c-modal__cerrar {
+  position: absolute;
+  top: var(--espaciado-2);
+  right: var(--espaciado-2);
+  @include centrar-flex;
+  min-width: var(--tamano-minimo-tactil);
+  min-height: var(--tamano-minimo-tactil);
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  border-radius: var(--radio-medio);
+  color: var(--text-secondary);
+  cursor: pointer;
+  
+  @include foco-visible;
+  @include transicion((background-color, color));
+
+  &:hover {
+    background-color: var(--color-superficie-base);
+    color: var(--text-primary);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Título del modal
+// ---------------------------------------------------------------------------
+.c-modal__titulo {
+  @include heading-3;
+  margin: 0 0 var(--espaciado-3) 0;
+  padding-right: var(--espaciado-5);
+}
+
+// ---------------------------------------------------------------------------
+// ANIMACIONES
+// ---------------------------------------------------------------------------
+@keyframes overlay-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modal-slide-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Secciones del modal (código, enlace, compartir)
+// ---------------------------------------------------------------------------
+.c-invite-modal__seccion {
+  margin-bottom: var(--espaciado-3);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Labels de cada sección
+// ---------------------------------------------------------------------------
+.c-invite-modal__label {
+  @include heading-4;
+  margin: 0 0 var(--espaciado-1) 0;
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Fila con código/enlace + botón copiar
+// ---------------------------------------------------------------------------
+.c-invite-modal__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaciado-2);
+  flex-wrap: wrap;
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Código y enlace (texto naranja)
+// ---------------------------------------------------------------------------
+.c-invite-modal__valor {
+  @include texto-grande;
+  color: var(--color-naranja-oscuro);
+  word-break: break-all;
+  flex: 1;
+  min-width: 0;
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Grid de redes sociales
+// ---------------------------------------------------------------------------
+.c-invite-modal__social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaciado-2);
+  margin-top: var(--espaciado-1);
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Botón de red social individual
+// ---------------------------------------------------------------------------
+.c-invite-modal__social-btn {
+  @include centrar-flex;
+  width: 2.5rem; // 40px según Figma
+  height: 2.5rem;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  border-radius: var(--radio-medio);
+  color: var(--text-secondary);
+  cursor: pointer;
+  
+  @include foco-visible;
+  @include transicion((background-color, color, transform));
+
+  &:hover {
+    background-color: var(--color-superficie-base);
+    color: var(--text-primary);
+  }
+
+  &:active {
+    transform: scale(0.92);
+  }
+}

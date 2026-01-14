@@ -5,7 +5,7 @@
 
 export { AlertService, type AlertType, type AlertMessage } from './alert';
 export { AuthService, type User, type LoginData, type RegisterData, type AuthResponse } from './auth';
-export { ModalService, type ModalConfig } from './modal';
+export { ModalService, type ModalConfig, type InviteModalConfig } from './modal';
 export { ThemeService, type Theme } from './theme';
 export {
   CommunicationService,

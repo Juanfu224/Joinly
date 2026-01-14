@@ -152,7 +152,7 @@ export class GrupoDetalleComponent implements OnInit {
     const codigo = this.grupo()?.codigoInvitacion;
     if (!codigo) return;
 
-    this.modalService.openInviteCode(codigo);
+    this.modalService.openInviteModal(codigo);
   }
 
   /**

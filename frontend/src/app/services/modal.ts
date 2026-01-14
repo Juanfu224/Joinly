@@ -2,7 +2,7 @@ import { Injectable, signal, computed, inject } from '@angular/core';
 import { ToastService } from './toast';
 
 /**
- * Configuración para abrir un modal
+ * Configuración para abrir un modal genérico
  */
 export interface ModalConfig {
   /**
@@ -50,6 +50,16 @@ export interface ModalConfig {
 }
 
 /**
+ * Configuración para el modal de invitación
+ */
+export interface InviteModalConfig {
+  /**
+   * Código de invitación del grupo
+   */
+  codigo: string;
+}
+
+/**
  * Servicio para gestión centralizada de modales.
  * 
  * Proporciona una API fluida para abrir y cerrar modales desde cualquier
@@ -82,6 +92,9 @@ export interface ModalConfig {
  *   confirmText: 'Entendido',
  * });
  * 
+ * // Modal de invitación
+ * this.modalService.openInviteModal('ABC123456789');
+ * 
  * // Cerrar programáticamente
  * this.modalService.close();
  * ```
@@ -91,6 +104,10 @@ export interface ModalConfig {
 })
 export class ModalService {
   private readonly toastService = inject(ToastService);
+
+  // =========================================================================
+  // MODAL GENÉRICO
+  // =========================================================================
 
   /**
    * Signal privado con la configuración del modal actual
@@ -106,6 +123,25 @@ export class ModalService {
    * Signal computed que indica si el modal está abierto
    */
   readonly isOpen = computed(() => this.modalState() !== null);
+
+  // =========================================================================
+  // MODAL DE INVITACIÓN
+  // =========================================================================
+
+  /**
+   * Signal privado con la configuración del modal de invitación
+   */
+  private readonly inviteState = signal<InviteModalConfig | null>(null);
+
+  /**
+   * Signal público (read-only) con la configuración del modal de invitación
+   */
+  readonly inviteConfig = this.inviteState.asReadonly();
+
+  /**
+   * Signal computed que indica si el modal de invitación está abierto
+   */
+  readonly isInviteOpen = computed(() => this.inviteState() !== null);
 
   /**
    * Elemento que tenía el foco antes de abrir el modal (para restaurarlo al cerrar)
@@ -190,6 +226,7 @@ export class ModalService {
    * Abre un modal con código de invitación para copiar.
    * 
    * @param codigo - Código de invitación del grupo
+   * @deprecated Usar openInviteModal() en su lugar para el nuevo diseño
    */
   openInviteCode(codigo: string): void {
     this.open({
@@ -202,5 +239,50 @@ export class ModalService {
         this.toastService.success('Código copiado al portapapeles');
       },
     });
+  }
+
+  // =========================================================================
+  // MODAL DE INVITACIÓN - MÉTODOS
+  // =========================================================================
+
+  /**
+   * Abre el modal de invitación con el código del grupo.
+   * 
+   * @param codigo - Código de invitación del grupo
+   * 
+   * @remarks
+   * Este modal muestra el código formateado, el enlace de unión,
+   * y opciones para compartir en redes sociales.
+   */
+  openInviteModal(codigo: string): void {
+    // Guardar elemento activo actual
+    this.previousActiveElement = document.activeElement as HTMLElement;
+
+    // Prevenir scroll del body
+    document.body.style.overflow = 'hidden';
+
+    // Establecer configuración
+    this.inviteState.set({ codigo });
+  }
+
+  /**
+   * Cierra el modal de invitación.
+   */
+  closeInviteModal(): void {
+    if (!this.isInviteOpen()) {
+      return;
+    }
+
+    // Restaurar scroll del body
+    document.body.style.overflow = '';
+
+    // Limpiar configuración
+    this.inviteState.set(null);
+
+    // Restaurar foco al elemento anterior
+    setTimeout(() => {
+      this.previousActiveElement?.focus();
+      this.previousActiveElement = undefined;
+    }, 150);
   }
 }

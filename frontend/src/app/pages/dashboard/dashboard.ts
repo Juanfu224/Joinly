@@ -9,7 +9,7 @@ import {
   IconComponent,
 } from '../../components/shared';
 import type { GrupoCardData } from '../../models';
-import { AuthService, UnidadFamiliarService, ToastService } from '../../services';
+import { AuthService, UnidadFamiliarService, ToastService, ModalService } from '../../services';
 
 /**
  * Página Dashboard - Vista principal de grupos del usuario autenticado.
@@ -45,6 +45,7 @@ export class DashboardComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly unidadService = inject(UnidadFamiliarService);
   private readonly toastService = inject(ToastService);
+  private readonly modalService = inject(ModalService);
   private readonly router = inject(Router);
 
   /**
@@ -116,9 +117,18 @@ export class DashboardComponent implements OnInit {
 
   /**
    * Maneja el evento de invitar miembros a un grupo.
+   * Busca el código de invitación y abre el modal.
    */
   protected onGroupInvite(groupId: number): void {
-    this.router.navigate(['/grupos', groupId, 'invitar']);
+    // Obtener el grupo para acceder a su código de invitación
+    this.unidadService.getGrupoById(groupId).subscribe({
+      next: (grupo) => {
+        this.modalService.openInviteModal(grupo.codigoInvitacion);
+      },
+      error: () => {
+        this.toastService.error('No se pudo obtener el código de invitación');
+      },
+    });
   }
 
   /**

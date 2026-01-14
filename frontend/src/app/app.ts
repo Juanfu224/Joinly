@@ -5,6 +5,7 @@ import {
   ModalComponent,
   ToastContainerComponent,
   SpinnerOverlayComponent,
+  InviteModalComponent,
 } from './components/shared';
 import { HeaderComponent } from './layout/header/header';
 import { FooterComponent } from './layout/footer/footer';
@@ -28,6 +29,7 @@ import { LoadingService } from './services/loading';
     FooterComponent,
     AlertContainerComponent,
     ModalComponent,
+    InviteModalComponent,
     ToastContainerComponent,
     SpinnerOverlayComponent,
   ],
