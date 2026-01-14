@@ -53,6 +53,7 @@
   // Fondos (bg = background)
   --bg-primary: #{$color-fondo-claro};
   --bg-secondary: #{$color-blanco};
+  --bg-tertiary: #{$color-gris-medio}; // Gris claro para skeletons y placeholders
 
   // Texto
   --text-primary: #{$color-texto-oscuro};
@@ -218,6 +219,7 @@
   // Usamos escala de grises oscuros de Tailwind (slate) para coherencia
   --bg-primary: #0f172a; // slate-900 - Fondo principal oscuro
   --bg-secondary: #1e293b; // slate-800 - Fondo secundario ligeramente más claro
+  --bg-tertiary: #334155; // slate-700 - Skeletons y placeholders en dark mode
 
   // --- TEXTO ---
   --text-primary: #f8fafc; // slate-50 - Texto principal claro

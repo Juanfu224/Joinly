@@ -37,13 +37,13 @@
   }
 
   // ---------------------------------------------------------------------------
-  // ELEMENTO: Título
+  // ELEMENTO: Título - Estilo H4 según Figma (20px, semi-bold)
   // ---------------------------------------------------------------------------
   &__titulo {
     font-family: var(--font-primaria);
-    font-size: var(--tamano-texto-grande);
-    font-weight: var(--peso-fuente-regular);
-    line-height: var(--altura-linea-body-large);
+    font-size: var(--tamano-h4);
+    font-weight: var(--peso-fuente-semi-negrita);
+    line-height: var(--altura-linea-h4);
     color: var(--color-texto-fuerte);
     margin: 0;
   }

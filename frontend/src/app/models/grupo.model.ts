@@ -18,6 +18,7 @@ export interface UsuarioSummary {
   nombreCompleto: string;
   email: string;
   nombreUsuario: string;
+  avatar?: string;
 }
 
 /**

@@ -10,6 +10,7 @@
   display: block;
 }
 
+// Estado vacío centrado según Figma
 .c-empty-subscriptions {
   position: relative;
   display: flex;
@@ -18,10 +19,9 @@
   justify-content: center;
   gap: var(--espaciado-2);
   background-color: transparent;
-  border: 2px dashed var(--border-color);
-  border-radius: var(--radio-grande);
-  padding: var(--espaciado-8) var(--espaciado-4);
-  min-block-size: 379px;
+  padding: var(--espaciado-6) var(--espaciado-4);
+  // Altura mínima para que el contenido quede centrado en el contenedor padre
+  min-block-size: 340px;
   inline-size: 100%;
 
   // ==========================================================================
@@ -53,15 +53,15 @@
   }
 
   // ==========================================================================
-  // ELEMENTO: Título
+  // ELEMENTO: Título - H4 según Figma (20px semi-bold)
   // ==========================================================================
 
   &__titulo {
     position: relative;
     font-family: var(--font-primaria);
-    font-size: var(--tamano-h3);
-    font-weight: var(--peso-fuente-negrita);
-    line-height: var(--altura-linea-h3);
+    font-size: var(--tamano-h4);
+    font-weight: var(--peso-fuente-semi-negrita);
+    line-height: var(--altura-linea-h4);
     color: var(--text-primary);
     text-align: center;
     margin: 0;

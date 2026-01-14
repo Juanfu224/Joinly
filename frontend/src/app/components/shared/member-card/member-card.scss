@@ -86,7 +86,7 @@
     flex-shrink: 0;
 
     // ---------------------------------------------------------------------------
-    // MODIFICADOR: Admin (azul)
+    // MODIFICADOR: Admin (azul) - Visible según diseño Figma
     // ---------------------------------------------------------------------------
     &--admin {
       background-color: var(--color-azul);
@@ -95,12 +95,11 @@
     }
 
     // ---------------------------------------------------------------------------
-    // MODIFICADOR: Miembro (azul)
+    // MODIFICADOR: Miembro - Oculto según diseño Figma
+    // Solo el admin muestra badge
     // ---------------------------------------------------------------------------
     &--member {
-      background-color: var(--color-azul);
-      color: var(--color-blanco);
-      box-shadow: var(--sombra-azul);
+      display: none;
     }
   }
 }

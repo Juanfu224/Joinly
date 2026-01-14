@@ -84,6 +84,7 @@ export class GrupoDetalleComponent implements OnInit {
       nombreCompleto: m.usuario.nombreCompleto,
       nombreUsuario: m.usuario.nombreUsuario,
       email: m.usuario.email,
+      avatar: m.usuario.avatar,
       rol: m.rol === 'ADMINISTRADOR' ? 'admin' : 'member',
     }))
   );
