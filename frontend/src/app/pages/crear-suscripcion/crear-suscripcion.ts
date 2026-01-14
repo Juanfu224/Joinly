@@ -4,18 +4,13 @@ import {
   NewSubscriptionFormComponent,
   type NewSubscriptionFormValue,
 } from '../../components/shared';
+import type { CanComponentDeactivate } from '../../guards';
 import { SuscripcionService, ToastService } from '../../services';
 import type { CreateSuscripcionRequest, Periodicidad } from '../../models';
 
 /**
- * Página para crear una nueva suscripción dentro de un grupo.
- *
- * Obtiene el ID del grupo desde la ruta y permite crear suscripciones
- * con datos básicos y credenciales opcionales.
- *
- * @usageNotes
- * Requiere autenticación. Protegida por authGuard.
- * Ruta: /grupos/:id/crear-suscripcion
+ * Página para crear una nueva suscripción.
+ * Ruta: /grupos/:id/crear-suscripcion (protegida por authGuard y pendingChangesGuard)
  */
 @Component({
   selector: 'app-crear-suscripcion',
@@ -25,18 +20,19 @@ import type { CreateSuscripcionRequest, Periodicidad } from '../../models';
   styleUrl: './crear-suscripcion.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CrearSuscripcionComponent {
+export class CrearSuscripcionComponent implements CanComponentDeactivate {
   private readonly router = inject(Router);
   private readonly suscripcionService = inject(SuscripcionService);
   private readonly toastService = inject(ToastService);
 
   readonly formComponent = viewChild(NewSubscriptionFormComponent);
 
-  /**
-   * ID del grupo recibido desde la ruta mediante Router Input Binding.
-   * Angular 21 best practice: usar input() en lugar de ActivatedRoute.
-   */
+  /** ID del grupo desde Router Input Binding (Angular 21) */
   readonly id = input.required<string>();
+
+  canDeactivate(): boolean {
+    return this.formComponent()?.canDeactivate() ?? true;
+  }
 
   /**
    * ID del grupo parseado como número.

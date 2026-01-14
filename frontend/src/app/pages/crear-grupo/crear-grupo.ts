@@ -1,14 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CreateGroupFormComponent } from '../../components/shared/create-group-form/create-group-form';
+import type { CanComponentDeactivate } from '../../guards';
 import { UnidadFamiliarService, ToastService } from '../../services';
 import { CreateUnidadRequest } from '../../models';
 
 /**
  * Página para crear una nueva unidad familiar.
- * 
- * Contiene el formulario de creación y maneja la comunicación con el servicio.
- * Fondo naranja claro según diseño Figma.
+ * Ruta: /crear-grupo (protegida por authGuard y pendingChangesGuard)
  */
 @Component({
   selector: 'app-crear-grupo',
@@ -18,13 +17,16 @@ import { CreateUnidadRequest } from '../../models';
   styleUrl: './crear-grupo.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CrearGrupoComponent {
+export class CrearGrupoComponent implements CanComponentDeactivate {
   private readonly router = inject(Router);
   private readonly unidadService = inject(UnidadFamiliarService);
   private readonly toastService = inject(ToastService);
 
-  // Referencia al formulario para controlar estado de carga
   readonly formComponent = viewChild(CreateGroupFormComponent);
+
+  canDeactivate(): boolean {
+    return this.formComponent()?.canDeactivate() ?? true;
+  }
 
   /**
    * Crea una nueva unidad familiar.

@@ -1,11 +1,12 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './guards/auth.guard';
+import { authGuard, pendingChangesGuard } from './guards';
 
 /**
  * Configuración de rutas de la aplicación Joinly.
  *
  * - Lazy loading con `loadComponent` (standalone) y `loadChildren` (grupos)
- * - Rutas protegidas con authGuard
+ * - Rutas protegidas con authGuard (autenticación)
+ * - Rutas con pendingChangesGuard (formularios con cambios sin guardar)
  * - Precarga selectiva: todo excepto dev routes (`data.preload: false`)
  */
 export const routes: Routes = [
@@ -48,6 +49,7 @@ export const routes: Routes = [
   {
     path: 'crear-grupo',
     canActivate: [authGuard],
+    canDeactivate: [pendingChangesGuard],
     loadComponent: () =>
       import('./pages/crear-grupo').then((m) => m.CrearGrupoComponent),
     title: 'Crear Unidad Familiar - Joinly',
@@ -69,6 +71,7 @@ export const routes: Routes = [
   {
     path: 'grupos/:id/crear-suscripcion',
     canActivate: [authGuard],
+    canDeactivate: [pendingChangesGuard],
     loadComponent: () =>
       import('./pages/crear-suscripcion').then((m) => m.CrearSuscripcionComponent),
     title: 'Nueva Suscripción - Joinly',

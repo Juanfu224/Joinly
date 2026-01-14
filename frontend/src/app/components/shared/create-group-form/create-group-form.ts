@@ -11,6 +11,8 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
+import type { CanComponentDeactivate } from '../../../guards';
+
 import { ButtonComponent } from '../button/button';
 import { FormCardComponent } from '../form-card/form-card';
 import { FormInputComponent } from '../form-input/form-input';
@@ -21,6 +23,7 @@ interface CreateGroupFormValue {
   nombre: string;
 }
 
+/** Formulario para crear un nuevo grupo/unidad familiar. */
 @Component({
   selector: 'app-create-group-form',
   standalone: true,
@@ -30,7 +33,7 @@ interface CreateGroupFormValue {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'c-create-group-form' },
 })
-export class CreateGroupFormComponent {
+export class CreateGroupFormComponent implements CanComponentDeactivate {
   private readonly fb = inject(FormBuilder).nonNullable;
 
   readonly isLoading = signal(false);
@@ -57,6 +60,10 @@ export class CreateGroupFormComponent {
     const status = this.formStatus();
     return this.form.invalid;
   });
+
+  canDeactivate(): boolean {
+    return this.isLoading() || !this.form.dirty;
+  }
 
   @HostListener('keydown', ['$event'])
   protected handleEnterKey(event: KeyboardEvent): void {

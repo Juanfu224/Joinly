@@ -11,6 +11,8 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
+import type { CanComponentDeactivate } from '../../../guards';
+
 import { ButtonComponent } from '../button/button';
 import { FormCardComponent } from '../form-card/form-card';
 import { FormInputComponent } from '../form-input/form-input';
@@ -18,10 +20,7 @@ import { FormSelectComponent, type SelectOption } from '../form-select/form-sele
 import { canSubmit, focusInput, shouldTriggerSubmit } from '../form-utils';
 import { getErrorMessage, precioMinimoPlaza } from '../validators';
 
-/**
- * Datos del formulario de nueva suscripción.
- * Estructura simplificada según diseño Figma.
- */
+/** Datos del formulario de nueva suscripción. */
 export interface NewSubscriptionFormValue {
   nombre: string;
   precioTotal: number;
@@ -31,24 +30,7 @@ export interface NewSubscriptionFormValue {
   credencialPassword?: string;
 }
 
-/**
- * Formulario para crear una nueva suscripción.
- *
- * Diseño simple basado en Figma:
- * - Nombre del servicio (requerido)
- * - Precio total (requerido)
- * - Número de plazas (requerido)
- * - Periodicidad (requerido)
- * - Credenciales de acceso (opcionales)
- *
- * @usageNotes
- * ```html
- * <app-new-subscription-form
- *   (submitted)="onSubmit($event)"
- *   (cancelled)="onCancel()"
- * />
- * ```
- */
+/** Formulario para crear una nueva suscripción. */
 @Component({
   selector: 'app-new-subscription-form',
   standalone: true,
@@ -64,7 +46,7 @@ export interface NewSubscriptionFormValue {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'c-new-subscription-form' },
 })
-export class NewSubscriptionFormComponent {
+export class NewSubscriptionFormComponent implements CanComponentDeactivate {
   private readonly fb = inject(FormBuilder).nonNullable;
 
   readonly isLoading = signal(false);
@@ -105,6 +87,10 @@ export class NewSubscriptionFormComponent {
     const status = this.formStatus();
     return this.form.invalid;
   });
+
+  canDeactivate(): boolean {
+    return this.isLoading() || !this.form.dirty;
+  }
 
   @HostListener('keydown', ['$event'])
   protected handleEnterKey(event: KeyboardEvent): void {
