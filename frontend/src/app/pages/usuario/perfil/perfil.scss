@@ -1,0 +1,90 @@
+/**
+ * Perfil Page
+ * Arquitectura: BEM + ITCSS
+ */
+
+.p-perfil {
+  &__header {
+    margin-bottom: var(--space-4);
+  }
+
+  &__titulo {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-1);
+  }
+
+  &__descripcion {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+
+  &__card {
+    max-width: 36rem;
+  }
+
+  &__avatar-section {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+
+  &__avatar-info {
+    flex: 1;
+  }
+
+  &__nombre {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-1);
+  }
+
+  &__email {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+
+  &__separador {
+    border: none;
+    border-top: 1px solid var(--color-border-default);
+    margin: var(--space-4) 0;
+  }
+
+  &__datos {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+
+  &__campo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+
+    @media (width >= 640px) {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  &__etiqueta {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+  }
+
+  &__valor {
+    font-size: var(--font-size-base);
+    color: var(--color-text-primary);
+  }
+
+  &__acciones {
+    display: flex;
+    gap: var(--space-3);
+  }
+}

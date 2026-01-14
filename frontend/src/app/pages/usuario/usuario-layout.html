@@ -1,0 +1,47 @@
+<section class="p-usuario-layout">
+  <!-- Breadcrumbs -->
+  <app-breadcrumbs [items]="breadcrumbs" class="p-usuario-layout__breadcrumbs" />
+
+  <div class="p-usuario-layout__contenido">
+    <!-- Navegación lateral/tabs -->
+    <nav class="p-usuario-layout__nav" aria-label="Navegación de cuenta">
+      <ul class="p-usuario-layout__lista" role="list">
+        <li>
+          <a 
+            routerLink="perfil" 
+            routerLinkActive="p-usuario-layout__enlace--activo"
+            class="p-usuario-layout__enlace"
+            aria-label="Ver mi perfil">
+            <app-icon name="user" size="sm" />
+            <span>Mi perfil</span>
+          </a>
+        </li>
+        <li>
+          <a 
+            routerLink="configuracion" 
+            routerLinkActive="p-usuario-layout__enlace--activo"
+            class="p-usuario-layout__enlace"
+            aria-label="Configuración de la cuenta">
+            <app-icon name="settings" size="sm" />
+            <span>Configuración</span>
+          </a>
+        </li>
+        <li>
+          <a 
+            routerLink="notificaciones" 
+            routerLinkActive="p-usuario-layout__enlace--activo"
+            class="p-usuario-layout__enlace"
+            aria-label="Gestionar notificaciones">
+            <app-icon name="bell" size="sm" />
+            <span>Notificaciones</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Contenido de la ruta hija -->
+    <main class="p-usuario-layout__main">
+      <router-outlet />
+    </main>
+  </div>
+</section>

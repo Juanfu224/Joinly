@@ -132,9 +132,12 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * Navega al detalle del grupo.
+   * Navega al detalle del grupo con state para UX optimizada.
+   * Pasa datos en state para mostrar instantáneamente mientras carga la API.
    */
-  protected onGroupClick(groupId: number): void {
-    this.router.navigate(['/grupos', groupId]);
+  protected onGroupClick(groupId: number, groupData?: GrupoCardData): void {
+    this.router.navigate(['/grupos', groupId], {
+      state: { grupoPreview: groupData },
+    });
   }
 }

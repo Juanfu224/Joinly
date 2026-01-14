@@ -1,0 +1,67 @@
+<article class="p-notificaciones">
+  <header class="p-notificaciones__header">
+    <h1 class="p-notificaciones__titulo">Notificaciones</h1>
+    <p class="p-notificaciones__descripcion">Configura cómo quieres recibir las notificaciones</p>
+  </header>
+
+  <!-- Notificaciones por email -->
+  <app-card class="p-notificaciones__seccion">
+    <h2 class="p-notificaciones__subtitulo">
+      <app-icon name="email" size="sm" />
+      Notificaciones por email
+    </h2>
+    
+    <div class="p-notificaciones__opciones">
+      <div class="p-notificaciones__opcion">
+        <div class="p-notificaciones__opcion-info">
+          <span class="p-notificaciones__opcion-titulo">Nuevas solicitudes</span>
+          <span class="p-notificaciones__opcion-descripcion">
+            Cuando alguien solicita unirse a tu grupo o suscripción
+          </span>
+        </div>
+        <app-form-checkbox label="" />
+      </div>
+
+      <div class="p-notificaciones__opcion">
+        <div class="p-notificaciones__opcion-info">
+          <span class="p-notificaciones__opcion-titulo">Pagos recibidos</span>
+          <span class="p-notificaciones__opcion-descripcion">
+            Cuando recibes un pago de algún miembro
+          </span>
+        </div>
+        <app-form-checkbox label="" />
+      </div>
+
+      <div class="p-notificaciones__opcion">
+        <div class="p-notificaciones__opcion-info">
+          <span class="p-notificaciones__opcion-titulo">Recordatorios de pago</span>
+          <span class="p-notificaciones__opcion-descripcion">
+            Antes de que venza una suscripción
+          </span>
+        </div>
+        <app-form-checkbox label="" />
+      </div>
+
+      <div class="p-notificaciones__opcion">
+        <div class="p-notificaciones__opcion-info">
+          <span class="p-notificaciones__opcion-titulo">Novedades y actualizaciones</span>
+          <span class="p-notificaciones__opcion-descripcion">
+            Nuevas funcionalidades y mejoras de Joinly
+          </span>
+        </div>
+        <app-form-checkbox label="" />
+      </div>
+    </div>
+  </app-card>
+
+  <!-- Acciones -->
+  <footer class="p-notificaciones__footer">
+    <app-button variant="primary" (click)="onSave()" [disabled]="isSaving()">
+      @if (isSaving()) {
+        Guardando...
+      } @else {
+        Guardar preferencias
+      }
+    </app-button>
+  </footer>
+</article>

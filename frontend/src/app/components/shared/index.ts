@@ -96,3 +96,4 @@ export { MemberCardComponent, type MemberData, type MemberRole } from './member-
 export { MemberListComponent } from './member-list/member-list';
 export { InviteModalComponent } from './invite-modal/invite-modal';
 export { FormatCodigoPipe } from './invite-modal/format-codigo.pipe';
+export { NotFoundComponent } from './not-found';

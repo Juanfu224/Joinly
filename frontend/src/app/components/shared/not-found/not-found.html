@@ -1,0 +1,46 @@
+<section class="c-not-found" role="main" aria-labelledby="not-found-title">
+  <div class="c-not-found__contenido">
+    <!-- Ilustración del error -->
+    <div class="c-not-found__ilustracion" aria-hidden="true">
+      <span class="c-not-found__codigo">404</span>
+      <div class="c-not-found__icono">
+        <app-icon name="search" size="xl" />
+      </div>
+    </div>
+
+    <!-- Mensaje principal -->
+    <h1 id="not-found-title" class="c-not-found__titulo">
+      Página no encontrada
+    </h1>
+    
+    <p class="c-not-found__descripcion">
+      La página que buscas no existe, ha sido movida o el enlace es incorrecto.
+      Verifica la URL o vuelve al inicio.
+    </p>
+
+    <!-- Acciones -->
+    <div class="c-not-found__acciones">
+      <app-button 
+        routerLink="/" 
+        variant="primary"
+        aria-label="Volver a la página de inicio">
+        <app-icon name="home" size="sm" />
+        Volver al inicio
+      </app-button>
+      
+      <app-button 
+        routerLink="/dashboard" 
+        variant="secondary"
+        aria-label="Ir al panel de control">
+        <app-icon name="users" size="sm" />
+        Ir a mis grupos
+      </app-button>
+    </div>
+
+    <!-- Ayuda adicional -->
+    <p class="c-not-found__ayuda">
+      ¿Necesitas ayuda? 
+      <a routerLink="/faq" class="c-not-found__enlace">Visita nuestro centro de ayuda</a>
+    </p>
+  </div>
+</section>

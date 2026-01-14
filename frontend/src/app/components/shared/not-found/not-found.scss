@@ -1,0 +1,107 @@
+/**
+ * NotFound Component - Página 404
+ * Arquitectura: BEM + ITCSS
+ * Estrategia: Mobile-First
+ */
+
+.c-not-found {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: var(--space-6) var(--space-4);
+  text-align: center;
+
+  // =========================================================================
+  // ELEMENTOS
+  // =========================================================================
+
+  &__contenido {
+    max-width: 32rem;
+    margin: 0 auto;
+  }
+
+  &__ilustracion {
+    position: relative;
+    margin-bottom: var(--space-6);
+  }
+
+  &__codigo {
+    display: block;
+    font-size: clamp(6rem, 20vw, 10rem);
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+    color: var(--color-primary-100);
+    letter-spacing: -0.02em;
+    user-select: none;
+  }
+
+  &__icono {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    background-color: var(--color-surface-elevated);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-lg);
+    color: var(--color-primary-500);
+  }
+
+  &__titulo {
+    margin-bottom: var(--space-3);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    line-height: var(--line-height-tight);
+
+    @media (width >= 768px) {
+      font-size: var(--font-size-3xl);
+    }
+  }
+
+  &__descripcion {
+    margin-bottom: var(--space-6);
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+  }
+
+  &__acciones {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+
+    @media (width >= 640px) {
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+
+  &__ayuda {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
+  }
+
+  &__enlace {
+    color: var(--color-primary-500);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color var(--transition-fast);
+
+    &:hover {
+      color: var(--color-primary-600);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary-500);
+      outline-offset: 2px;
+      border-radius: var(--radius-sm);
+    }
+  }
+}

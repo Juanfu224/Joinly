@@ -35,7 +35,7 @@ export class RegisterComponent {
 
   /**
    * Maneja el submit del formulario de registro.
-   * Llama a AuthService y gestiona redirección o error.
+   * Usa `replaceUrl: true` para evitar re-submit con botón "Atrás".
    */
   protected onRegisterSubmit(data: {
     nombre: string;
@@ -44,7 +44,6 @@ export class RegisterComponent {
     password: string;
     confirmPassword: string;
   }): void {
-    // Mapear datos del formulario al formato que espera el backend (RegisterData)
     const registerData = {
       nombre: `${data.nombre} ${data.apellido}`.trim(),
       email: data.email,
@@ -53,13 +52,8 @@ export class RegisterComponent {
 
     this.authService.register(registerData).subscribe({
       next: (user) => {
-        // Nota: AuthService ya guarda el usuario automáticamente en handleAuthSuccess()
-
-        // Mostrar mensaje de éxito
         this.alertService.success(`¡Cuenta creada! Bienvenido, ${user.nombre}!`);
-
-        // Redirigir a dashboard
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/dashboard'], { replaceUrl: true });
       },
       error: (error) => {
         // Mostrar error en formulario

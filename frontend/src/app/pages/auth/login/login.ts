@@ -36,19 +36,14 @@ export class LoginComponent {
 
   /**
    * Maneja el submit del formulario de login.
-   * Llama a AuthService y gestiona redirección o error.
+   * Usa `replaceUrl: true` para evitar volver al formulario con botón "Atrás".
    */
   protected onLoginSubmit(data: { email: string; password: string }): void {
     this.authService.login(data).subscribe({
       next: (user) => {
-        // Nota: AuthService ya guarda el usuario automáticamente en handleAuthSuccess()
-
-        // Mostrar mensaje de éxito
         this.alertService.success(`¡Bienvenido, ${user.nombre}!`);
-
-        // Redirigir a returnUrl o dashboard
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
-        this.router.navigate([returnUrl]);
+        this.router.navigate([returnUrl], { replaceUrl: true });
       },
       error: (error) => {
         // Mostrar error en formulario

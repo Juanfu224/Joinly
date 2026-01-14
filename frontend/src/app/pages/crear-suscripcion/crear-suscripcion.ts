@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal, viewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, computed, inject, input, viewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   NewSubscriptionFormComponent,
   type NewSubscriptionFormValue,
@@ -25,23 +25,31 @@ import type { CreateSuscripcionRequest, Periodicidad } from '../../models';
   styleUrl: './crear-suscripcion.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CrearSuscripcionComponent implements OnInit {
+export class CrearSuscripcionComponent {
   private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
   private readonly suscripcionService = inject(SuscripcionService);
   private readonly toastService = inject(ToastService);
 
   readonly formComponent = viewChild(NewSubscriptionFormComponent);
-  protected readonly grupoId = signal<number | null>(null);
 
-  ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (!id || isNaN(id)) {
+  /**
+   * ID del grupo recibido desde la ruta mediante Router Input Binding.
+   * Angular 21 best practice: usar input() en lugar de ActivatedRoute.
+   */
+  readonly id = input.required<string>();
+
+  /**
+   * ID del grupo parseado como número.
+   * Redirige al dashboard si el ID no es válido.
+   */
+  protected readonly grupoId = computed(() => {
+    const numId = Number(this.id());
+    if (!numId || isNaN(numId)) {
       this.router.navigate(['/dashboard']);
-      return;
+      return null;
     }
-    this.grupoId.set(id);
-  }
+    return numId;
+  });
 
   protected onSubmitted(data: NewSubscriptionFormValue): void {
     const grupoId = this.grupoId();
@@ -60,7 +68,7 @@ export class CrearSuscripcionComponent implements OnInit {
     this.suscripcionService.crearSuscripcion(request).subscribe({
       next: () => {
         this.toastService.show('success', 'Suscripción creada exitosamente');
-        this.router.navigate(['/grupos', grupoId]);
+        this.router.navigate(['/grupos', grupoId], { replaceUrl: true });
       },
       error: (error) => {
         const msg = error.error?.message || 'Error al crear la suscripción';

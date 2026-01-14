@@ -1,0 +1,83 @@
+<article class="p-faq">
+  <!-- Hero -->
+  <header class="p-faq__hero">
+    <h1 class="p-faq__titulo">Centro de ayuda</h1>
+    <p class="p-faq__subtitulo">
+      Encuentra respuestas a las preguntas más frecuentes sobre Joinly
+    </p>
+  </header>
+
+  <!-- Navegación rápida con fragments -->
+  <nav class="p-faq__nav" aria-label="Navegación rápida de categorías">
+    <ul class="p-faq__nav-list">
+      @for (category of categories; track category.fragmentId) {
+        <li>
+          <button
+            type="button"
+            class="p-faq__nav-btn"
+            (click)="navigateToSection(category.fragmentId)"
+            [attr.aria-label]="'Ir a ' + category.title">
+            <app-icon [name]="$any(category.icon)" size="sm" />
+            {{ category.title }}
+          </button>
+        </li>
+      }
+    </ul>
+  </nav>
+
+  <!-- Categorías -->
+  <div class="p-faq__categorias">
+    @for (category of categories; track category.fragmentId) {
+      <section 
+        class="p-faq__categoria"
+        [id]="category.fragmentId"
+        [attr.aria-labelledby]="'heading-' + category.fragmentId">
+        <h2 
+          class="p-faq__categoria-titulo"
+          [id]="'heading-' + category.fragmentId">
+          <app-icon [name]="$any(category.icon)" size="sm" />
+          {{ category.title }}
+        </h2>
+
+        <div class="p-faq__lista">
+          @for (item of category.items; track item.question; let i = $index) {
+            <div class="p-faq__item">
+              <button 
+                type="button"
+                class="p-faq__pregunta"
+                [class.p-faq__pregunta--activa]="isOpen(category.title, i)"
+                (click)="toggleItem(category.title, i)"
+                [attr.aria-expanded]="isOpen(category.title, i)"
+                [attr.aria-controls]="'faq-' + category.fragmentId + '-' + i">
+                <span>{{ item.question }}</span>
+                <app-icon 
+                  [name]="isOpen(category.title, i) ? 'chevron-up' : 'chevron-down'" 
+                  size="sm" />
+              </button>
+              @if (isOpen(category.title, i)) {
+                <div 
+                  class="p-faq__respuesta" 
+                  [id]="'faq-' + category.fragmentId + '-' + i"
+                  role="region">
+                  <p>{{ item.answer }}</p>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </section>
+    }
+  </div>
+
+  <!-- CTA -->
+  <footer class="p-faq__footer">
+    <h2 class="p-faq__footer-titulo">¿No encuentras lo que buscas?</h2>
+    <p class="p-faq__footer-descripcion">
+      Nuestro equipo de soporte está aquí para ayudarte
+    </p>
+    <app-button routerLink="/contacto" variant="primary">
+      <app-icon name="email" size="sm" />
+      Contactar soporte
+    </app-button>
+  </footer>
+</article>

@@ -1,6 +1,20 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 
+/**
+ * Configuración de rutas de la aplicación Joinly.
+ *
+ * Estructura:
+ * - Rutas públicas: Landing, login, register, páginas institucionales
+ * - Rutas protegidas: Dashboard, grupos, suscripciones, área de usuario
+ * - Rutas de desarrollo: Style guide
+ * - Wildcard: Página 404
+ *
+ * @remarks
+ * - Todas las rutas usan lazy loading para optimizar el bundle inicial
+ * - Las rutas protegidas requieren authGuard
+ * - Las rutas con parámetros usan Router Input Binding (withComponentInputBinding)
+ */
 export const routes: Routes = [
   // =========================================================================
   // RUTAS PÚBLICAS
@@ -27,6 +41,42 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/auth/register').then((m) => m.RegisterComponent),
     title: 'Crear cuenta - Joinly',
+  },
+
+  // =========================================================================
+  // PÁGINAS INSTITUCIONALES (Públicas)
+  // =========================================================================
+
+  // Cómo funciona
+  {
+    path: 'como-funciona',
+    loadComponent: () =>
+      import('./pages/como-funciona').then((m) => m.ComoFuncionaComponent),
+    title: 'Cómo funciona - Joinly',
+  },
+
+  // FAQ / Centro de ayuda
+  {
+    path: 'faq',
+    loadComponent: () =>
+      import('./pages/faq').then((m) => m.FaqComponent),
+    title: 'Centro de ayuda - Joinly',
+  },
+
+  // Términos y condiciones
+  {
+    path: 'terminos',
+    loadComponent: () =>
+      import('./pages/legal/terminos').then((m) => m.TerminosComponent),
+    title: 'Términos y condiciones - Joinly',
+  },
+
+  // Política de privacidad
+  {
+    path: 'privacidad',
+    loadComponent: () =>
+      import('./pages/legal/privacidad').then((m) => m.PrivacidadComponent),
+    title: 'Política de privacidad - Joinly',
   },
 
   // =========================================================================
@@ -60,7 +110,7 @@ export const routes: Routes = [
     title: 'Unirse a Grupo - Joinly',
   },
 
-  // Detalle del Grupo
+  // Detalle del Grupo (usa Router Input Binding para :id)
   {
     path: 'grupos/:id',
     canActivate: [authGuard],
@@ -69,13 +119,49 @@ export const routes: Routes = [
     title: 'Detalle del Grupo - Joinly',
   },
 
-  // Crear Suscripción
+  // Crear Suscripción (usa Router Input Binding para :id)
   {
     path: 'grupos/:id/crear-suscripcion',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./pages/crear-suscripcion').then((m) => m.CrearSuscripcionComponent),
     title: 'Nueva Suscripción - Joinly',
+  },
+
+  // =========================================================================
+  // ÁREA DE USUARIO (Rutas hijas anidadas)
+  // =========================================================================
+  {
+    path: 'usuario',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/usuario').then((m) => m.UsuarioLayoutComponent),
+    title: 'Mi cuenta - Joinly',
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'perfil',
+      },
+      {
+        path: 'perfil',
+        loadComponent: () =>
+          import('./pages/usuario/perfil').then((m) => m.PerfilComponent),
+        title: 'Mi perfil - Joinly',
+      },
+      {
+        path: 'configuracion',
+        loadComponent: () =>
+          import('./pages/usuario/configuracion').then((m) => m.ConfiguracionComponent),
+        title: 'Configuración - Joinly',
+      },
+      {
+        path: 'notificaciones',
+        loadComponent: () =>
+          import('./pages/usuario/notificaciones').then((m) => m.NotificacionesComponent),
+        title: 'Notificaciones - Joinly',
+      },
+    ],
   },
 
   // =========================================================================
@@ -98,12 +184,21 @@ export const routes: Routes = [
     title: 'Testing Responsive - Joinly',
   },
 
+  // Navigation Guide (Fase 4 DWEC - Navegación Programática)
+  {
+    path: 'style-guide/navigation-guide',
+    loadComponent: () =>
+      import('./pages/style-guide/navigation-guide').then((m) => m.NavigationGuideComponent),
+    title: 'Guía de Navegación - Joinly',
+  },
+
   // =========================================================================
-  // WILDCARD - Redirige a home
+  // WILDCARD - Página 404
   // =========================================================================
   {
     path: '**',
-    redirectTo: '',
-    pathMatch: 'full',
+    loadComponent: () =>
+      import('./components/shared/not-found').then((m) => m.NotFoundComponent),
+    title: 'Página no encontrada - Joinly',
   },
 ];

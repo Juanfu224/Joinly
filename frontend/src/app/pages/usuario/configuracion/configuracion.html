@@ -1,0 +1,68 @@
+<article class="p-configuracion">
+  <header class="p-configuracion__header">
+    <h1 class="p-configuracion__titulo">Configuración</h1>
+    <p class="p-configuracion__descripcion">Personaliza tu experiencia en Joinly</p>
+  </header>
+
+  <!-- Preferencias de cuenta -->
+  <app-card class="p-configuracion__seccion">
+    <h2 class="p-configuracion__subtitulo">
+      <app-icon name="settings" size="sm" />
+      Preferencias de cuenta
+    </h2>
+    
+    <div class="p-configuracion__opciones">
+      <div class="p-configuracion__opcion">
+        <div class="p-configuracion__opcion-info">
+          <span class="p-configuracion__opcion-titulo">Perfil público</span>
+          <span class="p-configuracion__opcion-descripcion">
+            Permite que otros usuarios vean tu perfil
+          </span>
+        </div>
+        <app-form-checkbox label="" />
+      </div>
+
+      <div class="p-configuracion__opcion">
+        <div class="p-configuracion__opcion-info">
+          <span class="p-configuracion__opcion-titulo">Mostrar actividad</span>
+          <span class="p-configuracion__opcion-descripcion">
+            Muestra cuándo estuviste activo por última vez
+          </span>
+        </div>
+        <app-form-checkbox label="" />
+      </div>
+    </div>
+  </app-card>
+
+  <!-- Seguridad -->
+  <app-card class="p-configuracion__seccion">
+    <h2 class="p-configuracion__subtitulo">
+      <app-icon name="password" size="sm" />
+      Seguridad
+    </h2>
+    
+    <div class="p-configuracion__acciones-seguridad">
+      <app-button variant="secondary">
+        <app-icon name="password" size="sm" />
+        Cambiar contraseña
+      </app-button>
+    </div>
+  </app-card>
+
+  <!-- Zona de peligro -->
+  <app-card class="p-configuracion__seccion p-configuracion__seccion--peligro">
+    <h2 class="p-configuracion__subtitulo p-configuracion__subtitulo--peligro">
+      <app-icon name="alert-triangle" size="sm" />
+      Zona de peligro
+    </h2>
+    
+    <p class="p-configuracion__aviso">
+      Estas acciones son permanentes y no se pueden deshacer.
+    </p>
+    
+    <app-button variant="secondary" class="p-configuracion__btn-peligro">
+      <app-icon name="circle-x" size="sm" />
+      Eliminar cuenta
+    </app-button>
+  </app-card>
+</article>

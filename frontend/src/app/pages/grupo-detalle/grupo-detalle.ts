@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import {
@@ -12,7 +12,7 @@ import {
   SubscriptionCardComponent,
   IconComponent,
 } from '../../components/shared';
-import type { UnidadFamiliar, MiembroUnidadResponse, SuscripcionSummary, SuscripcionCardData } from '../../models';
+import type { UnidadFamiliar, MiembroUnidadResponse, SuscripcionSummary, SuscripcionCardData, GrupoCardData } from '../../models';
 import {
   UnidadFamiliarService,
   SuscripcionService,
@@ -21,22 +21,20 @@ import {
 } from '../../services';
 
 /**
- * Página Detalle de Grupo - Vista del grupo al que pertenece el usuario.
+ * Estado de navegación desde Dashboard.
+ */
+interface GrupoNavigationState {
+  grupoPreview?: GrupoCardData;
+}
+
+/**
+ * Página Detalle de Grupo.
  *
- * Muestra los miembros y suscripciones del grupo, permitiendo invitar
- * a más usuarios mediante código de invitación.
- *
- * ### Características:
- * - Breadcrumbs de navegación dinámicos
- * - Información del grupo (nombre y descripción)
- * - Lista de miembros con roles
- * - Grid de suscripciones compartidas
- * - Botón de invitar (modal con código)
- * - Estados de carga y error
+ * Soporta navegación con state desde Dashboard para mostrar
+ * datos instantáneamente mientras carga la API completa.
  *
  * @usageNotes
- * Requiere autenticación. Protegida por authGuard.
- * Ruta: /grupos/:id
+ * Ruta: /grupos/:id (protegida por authGuard)
  */
 @Component({
   selector: 'app-grupo-detalle',
@@ -53,20 +51,54 @@ import {
   styleUrl: './grupo-detalle.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GrupoDetalleComponent implements OnInit {
-  private readonly route = inject(ActivatedRoute);
+export class GrupoDetalleComponent {
   private readonly router = inject(Router);
   private readonly unidadService = inject(UnidadFamiliarService);
   private readonly suscripcionService = inject(SuscripcionService);
   private readonly toastService = inject(ToastService);
   private readonly modalService = inject(ModalService);
 
-  // --- Estado ---
+  /**
+   * ID del grupo recibido desde la ruta mediante Router Input Binding.
+   * Angular 21 best practice: usar input() en lugar de ActivatedRoute.
+   */
+  readonly id = input.required<string>();
+
   protected readonly grupo = signal<UnidadFamiliar | null>(null);
   protected readonly miembros = signal<MiembroUnidadResponse[]>([]);
   protected readonly suscripciones = signal<SuscripcionSummary[]>([]);
   protected readonly isLoading = signal(true);
   protected readonly error = signal<string | null>(null);
+
+  constructor() {
+    // Leer state de navegación (solo disponible en constructor)
+    const nav = this.router.getCurrentNavigation();
+    const state = nav?.extras?.state as GrupoNavigationState | undefined;
+
+    if (state?.grupoPreview) {
+      // Pre-poblar nombre para breadcrumbs instantáneos
+      this.grupo.set({
+        id: state.grupoPreview.id,
+        nombre: state.grupoPreview.nombre,
+        codigoInvitacion: '',
+        administrador: { id: 0, nombreCompleto: '', email: '', nombreUsuario: '' },
+        fechaCreacion: '',
+        descripcion: null,
+        maxMiembros: 0,
+        estado: 'ACTIVO',
+      });
+    }
+
+    // Cargar datos completos cuando cambia el ID
+    effect(() => {
+      const grupoId = Number(this.id());
+      if (!grupoId || isNaN(grupoId)) {
+        this.router.navigate(['/dashboard']);
+        return;
+      }
+      this.cargarDatos(grupoId);
+    });
+  }
 
   // --- Computed ---
   protected readonly breadcrumbs = computed<BreadcrumbItem[]>(() => {
@@ -103,14 +135,6 @@ export class GrupoDetalleComponent implements OnInit {
     }))
   );
 
-  ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (!id || isNaN(id)) {
-      this.router.navigate(['/dashboard']);
-      return;
-    }
-    this.cargarDatos(id);
-  }
 
   /**
    * Carga todos los datos del grupo en paralelo.
@@ -176,9 +200,9 @@ export class GrupoDetalleComponent implements OnInit {
    * Reintenta cargar los datos.
    */
   protected onReintentar(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (id && !isNaN(id)) {
-      this.cargarDatos(id);
+    const grupoId = Number(this.id());
+    if (grupoId && !isNaN(grupoId)) {
+      this.cargarDatos(grupoId);
     }
   }
 }

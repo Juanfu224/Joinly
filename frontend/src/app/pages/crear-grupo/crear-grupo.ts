@@ -27,17 +27,14 @@ export class CrearGrupoComponent {
   readonly formComponent = viewChild(CreateGroupFormComponent);
 
   /**
-   * Maneja el envío del formulario de creación
+   * Crea una nueva unidad familiar.
+   * Usa `replaceUrl: true` para evitar duplicados con botón "Atrás".
    */
   protected onGroupSubmitted(data: { nombre: string }): void {
-    const request: CreateUnidadRequest = {
-      nombre: data.nombre
-    };
-
-    this.unidadService.crearUnidad(request).subscribe({
-      next: (unidad) => {
+    this.unidadService.crearUnidad({ nombre: data.nombre }).subscribe({
+      next: () => {
         this.toastService.show('success', 'Grupo creado exitosamente');
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/dashboard'], { replaceUrl: true });
       },
       error: (error) => {
         const msg = error.error?.message || 'Error al crear el grupo';

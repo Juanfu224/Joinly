@@ -1,0 +1,44 @@
+<article class="p-perfil">
+  <header class="p-perfil__header">
+    <h1 class="p-perfil__titulo">Mi perfil</h1>
+    <p class="p-perfil__descripcion">Gestiona tu información personal</p>
+  </header>
+
+  <app-card class="p-perfil__card">
+    <div class="p-perfil__avatar-section">
+      <app-avatar 
+        [name]="usuario()?.nombre ?? 'Usuario'" 
+        size="xl" />
+      <div class="p-perfil__avatar-info">
+        <h2 class="p-perfil__nombre">{{ usuario()?.nombre ?? 'Usuario' }}</h2>
+        <p class="p-perfil__email">{{ usuario()?.email ?? 'email@ejemplo.com' }}</p>
+      </div>
+    </div>
+
+    <hr class="p-perfil__separador" />
+
+    <dl class="p-perfil__datos">
+      <div class="p-perfil__campo">
+        <dt class="p-perfil__etiqueta">Nombre completo</dt>
+        <dd class="p-perfil__valor">{{ usuario()?.nombre ?? 'No especificado' }}</dd>
+      </div>
+
+      <div class="p-perfil__campo">
+        <dt class="p-perfil__etiqueta">Correo electrónico</dt>
+        <dd class="p-perfil__valor">{{ usuario()?.email ?? 'No especificado' }}</dd>
+      </div>
+
+      <div class="p-perfil__campo">
+        <dt class="p-perfil__etiqueta">Miembro desde</dt>
+        <dd class="p-perfil__valor">Enero 2026</dd>
+      </div>
+    </dl>
+
+    <footer class="p-perfil__acciones">
+      <app-button variant="secondary" (click)="onEdit()">
+        <app-icon name="edit" size="sm" />
+        Editar perfil
+      </app-button>
+    </footer>
+  </app-card>
+</article>

@@ -1,0 +1,99 @@
+/**
+ * Configuracion Page
+ * Arquitectura: BEM + ITCSS
+ */
+
+.p-configuracion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+
+  &__header {
+    margin-bottom: var(--space-2);
+  }
+
+  &__titulo {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-1);
+  }
+
+  &__descripcion {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+
+  &__seccion {
+    max-width: 36rem;
+
+    &--peligro {
+      border-color: var(--color-error-200);
+    }
+  }
+
+  &__subtitulo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-4);
+
+    &--peligro {
+      color: var(--color-error-600);
+    }
+  }
+
+  &__opciones {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  &__opcion {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  &__opcion-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  &__opcion-titulo {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+  }
+
+  &__opcion-descripcion {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+  }
+
+  &__acciones-seguridad {
+    display: flex;
+    gap: var(--space-3);
+  }
+
+  &__aviso {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-4);
+  }
+
+  &__btn-peligro {
+    --btn-color: var(--color-error-600);
+    --btn-border-color: var(--color-error-300);
+    color: var(--color-error-600);
+
+    &:hover {
+      background-color: var(--color-error-50);
+    }
+  }
+}

@@ -1,0 +1,272 @@
+<article class="p-navigation-guide">
+  <!-- Header -->
+  <header class="p-navigation-guide__hero">
+    <h1 class="p-navigation-guide__titulo">
+      <app-icon name="home" size="md" />
+      Guía de Navegación Programática
+    </h1>
+    <p class="p-navigation-guide__subtitulo">
+      Ejemplos interactivos de técnicas avanzadas de navegación en Angular 21
+    </p>
+  </header>
+
+  <!-- Contenido principal -->
+  <div class="p-navigation-guide__content">
+    
+    <!-- Panel de Log -->
+    <aside class="p-navigation-guide__log">
+      <div class="p-navigation-guide__log-header">
+        <h3>
+          <app-icon name="settings" size="sm" />
+          Log de Navegación
+        </h3>
+        <app-button 
+          variant="ghost" 
+          size="sm" 
+          (click)="clearLog()"
+          [disabled]="navigationLog().length === 0">
+          Limpiar
+        </app-button>
+      </div>
+      <div class="p-navigation-guide__log-content">
+        @if (navigationLog().length === 0) {
+          <p class="p-navigation-guide__log-empty">
+            Haz clic en los botones para ver el código ejecutado
+          </p>
+        } @else {
+          @for (entry of navigationLog(); track $index) {
+            <code class="p-navigation-guide__log-entry">{{ entry }}</code>
+          }
+        }
+      </div>
+      @if (receivedState()) {
+        <div class="p-navigation-guide__log-state">
+          <h4>State Recibido:</h4>
+          <pre>{{ receivedState() }}</pre>
+        </div>
+      }
+    </aside>
+
+    <!-- Demos -->
+    <main class="p-navigation-guide__demos">
+
+      <!-- Demo 1: Fragments -->
+      <app-card>
+        <section class="p-navigation-guide__section" id="fragments">
+          <h2 class="p-navigation-guide__section-title">
+            <span class="p-navigation-guide__badge">1</span>
+            Navegación con Fragments
+          </h2>
+          <p class="p-navigation-guide__description">
+            Deep linking a secciones específicas usando <code>#fragment</code> en la URL.
+            Permite scroll automático y compartir enlaces directos a secciones.
+          </p>
+          
+          <div class="p-navigation-guide__code">
+            <code>router.navigate(['/faq'], &#123; fragment: 'suscripciones' &#125;);</code>
+          </div>
+
+          <div class="p-navigation-guide__actions">
+            <app-button variant="secondary" (click)="navigateWithFragment('primeros-pasos')">
+              #primeros-pasos
+            </app-button>
+            <app-button variant="secondary" (click)="navigateWithFragment('suscripciones')">
+              #suscripciones
+            </app-button>
+            <app-button variant="primary" (click)="goToFaqDemo()">
+              <app-icon name="arrow-external-right" size="sm" />
+              Probar en FAQ
+            </app-button>
+          </div>
+
+          <p class="p-navigation-guide__note">
+            <strong>Implementado en:</strong> <a routerLink="/faq">/faq</a>
+          </p>
+        </section>
+      </app-card>
+
+      <!-- Demo 2: Query Params -->
+      <app-card>
+        <section class="p-navigation-guide__section" id="query-params">
+          <h2 class="p-navigation-guide__section-title">
+            <span class="p-navigation-guide__badge">2</span>
+            Query Params
+          </h2>
+          <p class="p-navigation-guide__description">
+            Parámetros de búsqueda en la URL como <code>?sort=nombre&order=asc</code>.
+            Útiles para filtros, paginación y búsqueda.
+          </p>
+          
+          <div class="p-navigation-guide__code">
+            <code>router.navigate(['/page'], &#123; queryParams: &#123; sort: 'nombre' &#125; &#125;);</code>
+          </div>
+
+          <div class="p-navigation-guide__actions">
+            <app-button variant="secondary" (click)="navigateWithQueryParams()">
+              Simple
+            </app-button>
+            <app-button variant="secondary" (click)="navigateWithMerge()">
+              Con Merge
+            </app-button>
+          </div>
+
+          <app-accordion>
+            <app-accordion-item title="queryParamsHandling opciones">
+              <ul class="p-navigation-guide__list">
+                <li><code>'merge'</code> - Fusiona params nuevos con existentes</li>
+                <li><code>'preserve'</code> - Mantiene params existentes, ignora nuevos</li>
+                <li><code>''</code> (vacío) - Reemplaza todos los params (default)</li>
+              </ul>
+            </app-accordion-item>
+          </app-accordion>
+        </section>
+      </app-card>
+
+      <!-- Demo 3: State Navigation -->
+      <app-card>
+        <section class="p-navigation-guide__section" id="state">
+          <h2 class="p-navigation-guide__section-title">
+            <span class="p-navigation-guide__badge">3</span>
+            State Navigation
+          </h2>
+          <p class="p-navigation-guide__description">
+            Pasar datos entre componentes sin exponerlos en la URL.
+            Ideal para objetos complejos, datos temporales y UX optimizada.
+          </p>
+          
+          <div class="p-navigation-guide__code">
+            <code>router.navigate(['/detail'], &#123; state: &#123; product: data &#125; &#125;);</code>
+          </div>
+
+          <div class="p-navigation-guide__actions">
+            <app-button variant="secondary" (click)="navigateWithState()">
+              Enviar State
+            </app-button>
+            <app-button variant="secondary" (click)="simulateReceiveState()">
+              Simular Recepción
+            </app-button>
+            <app-button variant="primary" (click)="goToDashboardDemo()">
+              <app-icon name="arrow-external-right" size="sm" />
+              Probar en Dashboard
+            </app-button>
+          </div>
+
+          <app-accordion>
+            <app-accordion-item title="Cómo leer el state en destino">
+              <div class="p-navigation-guide__code-block">
+                <pre><code>// En el constructor del componente destino
+const nav = this.router.getCurrentNavigation();
+const state = nav?.extras?.state as MyState;
+if (state?.product) &#123;
+  this.product.set(state.product);
+&#125;</code></pre>
+              </div>
+            </app-accordion-item>
+          </app-accordion>
+
+          <p class="p-navigation-guide__note">
+            <strong>Implementado en:</strong> Dashboard → Grupo Detalle
+          </p>
+        </section>
+      </app-card>
+
+      <!-- Demo 4: Replace URL -->
+      <app-card>
+        <section class="p-navigation-guide__section" id="replace-url">
+          <h2 class="p-navigation-guide__section-title">
+            <span class="p-navigation-guide__badge">4</span>
+            Replace URL
+          </h2>
+          <p class="p-navigation-guide__description">
+            Reemplazar la entrada del historial en lugar de añadir una nueva.
+            Evita que el usuario vuelva a formularios con el botón "Atrás".
+          </p>
+          
+          <div class="p-navigation-guide__code">
+            <code>router.navigate(['/dashboard'], &#123; replaceUrl: true &#125;);</code>
+          </div>
+
+          <div class="p-navigation-guide__actions">
+            <app-button variant="secondary" (click)="navigateWithReplace()">
+              Demo replaceUrl
+            </app-button>
+          </div>
+
+          <p class="p-navigation-guide__note">
+            <strong>Implementado en:</strong> Login, Register, Crear Grupo, Crear Suscripción
+          </p>
+        </section>
+      </app-card>
+
+      <!-- Demo 5: Skip Location Change -->
+      <app-card>
+        <section class="p-navigation-guide__section" id="skip-location">
+          <h2 class="p-navigation-guide__section-title">
+            <span class="p-navigation-guide__badge">5</span>
+            Skip Location Change
+          </h2>
+          <p class="p-navigation-guide__description">
+            Cargar contenido de una ruta sin cambiar la URL visible.
+            Útil para modales, wizards y navegación interna.
+          </p>
+          
+          <div class="p-navigation-guide__code">
+            <code>router.navigate(['/modal'], &#123; skipLocationChange: true &#125;);</code>
+          </div>
+
+          <div class="p-navigation-guide__actions">
+            <app-button variant="secondary" (click)="navigateWithSkipLocation()">
+              Demo skipLocationChange
+            </app-button>
+          </div>
+        </section>
+      </app-card>
+
+      <!-- Resumen NavigationExtras -->
+      <app-card>
+        <section class="p-navigation-guide__section" id="summary">
+          <h2 class="p-navigation-guide__section-title">
+            <app-icon name="info" size="sm" />
+            Resumen NavigationExtras
+          </h2>
+          
+          <table class="p-navigation-guide__table">
+            <thead>
+              <tr>
+                <th>Propiedad</th>
+                <th>Uso Principal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>queryParams</code></td>
+                <td>Filtros, paginación, búsqueda</td>
+              </tr>
+              <tr>
+                <td><code>fragment</code></td>
+                <td>Scroll a secciones (#comentarios)</td>
+              </tr>
+              <tr>
+                <td><code>queryParamsHandling</code></td>
+                <td>Conservar/mezclar query params existentes</td>
+              </tr>
+              <tr>
+                <td><code>state</code></td>
+                <td>Pasar objetos sin exponerlos en la URL</td>
+              </tr>
+              <tr>
+                <td><code>replaceUrl</code></td>
+                <td>Evitar contaminar el historial (redirects, login)</td>
+              </tr>
+              <tr>
+                <td><code>skipLocationChange</code></td>
+                <td>Navegar sin cambiar la URL visible</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </app-card>
+
+    </main>
+  </div>
+</article>

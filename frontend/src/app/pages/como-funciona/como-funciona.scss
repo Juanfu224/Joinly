@@ -1,0 +1,141 @@
+/**
+ * Cómo Funciona Page
+ * Arquitectura: BEM + ITCSS
+ * Estrategia: Mobile-First
+ */
+
+.p-como-funciona {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4);
+
+  @media (width >= 768px) {
+    padding: var(--space-8) var(--space-6);
+  }
+
+  // =========================================================================
+  // HERO
+  // =========================================================================
+
+  &__hero {
+    text-align: center;
+    margin-bottom: var(--space-8);
+  }
+
+  &__titulo {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+
+    @media (width >= 768px) {
+      font-size: var(--font-size-3xl);
+    }
+  }
+
+  &__subtitulo {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    max-width: 32rem;
+    margin: 0 auto;
+  }
+
+  // =========================================================================
+  // PASOS
+  // =========================================================================
+
+  &__pasos {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    margin-bottom: var(--space-8);
+  }
+
+  &__paso {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: var(--space-4);
+    align-items: flex-start;
+    padding: var(--space-4);
+    background-color: var(--color-surface-secondary);
+    border-radius: var(--radius-xl);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+  }
+
+  &__paso-numero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-white);
+    background-color: var(--color-primary-500);
+    border-radius: var(--radius-full);
+  }
+
+  &__paso-contenido {
+    flex: 1;
+  }
+
+  &__paso-titulo {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-1);
+  }
+
+  &__paso-descripcion {
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+  }
+
+  &__paso-icono {
+    display: none;
+    color: var(--color-primary-400);
+
+    @media (width >= 640px) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 3rem;
+      height: 3rem;
+    }
+  }
+
+  // =========================================================================
+  // CTA
+  // =========================================================================
+
+  &__cta {
+    text-align: center;
+    padding: var(--space-6);
+    background-color: var(--color-primary-50);
+    border-radius: var(--radius-xl);
+  }
+
+  &__cta-titulo {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-4);
+  }
+
+  &__cta-acciones {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    justify-content: center;
+
+    @media (width >= 640px) {
+      flex-direction: row;
+    }
+  }
+}
