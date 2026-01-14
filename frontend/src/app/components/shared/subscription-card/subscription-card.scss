@@ -1,11 +1,5 @@
 @use '../../../../styles/01-tools/mixins' as *;
 
-// ==========================================================================
-// COMPONENTE: SUBSCRIPTION-CARD (Tarjeta de Suscripción)
-// ==========================================================================
-// Tarjeta que muestra información resumida de una suscripción compartida
-// Diseño basado en Figma: sombras suaves, espaciado y tipografía consistentes
-
 :host {
   display: block;
 }
@@ -21,40 +15,27 @@
   min-block-size: 160px;
   inline-size: 100%;
   max-inline-size: 359px;
+  cursor: pointer;
+  outline: none;
+  transition: transform var(--duracion-base) var(--transicion-estandar);
 
-  // Transición suave
-  transition: 
-    transform var(--duracion-base) var(--transicion-estandar),
-    box-shadow var(--duracion-base) var(--transicion-estandar);
-
-  // Estado hover
-  &:hover {
+  &:hover,
+  &:focus-visible {
     transform: translateY(-2px);
-
-    .c-subscription-card__sombras {
-      opacity: 0.9;
-    }
   }
 
-  // ==========================================================================
-  // ELEMENTO: Sombras suaves (según diseño objetivo)
-  // ==========================================================================
+  &:focus-visible {
+    outline: 2px solid var(--color-morado-principal);
+    outline-offset: 2px;
+  }
 
   &__sombras {
     position: absolute;
     inset: 0;
     border-radius: var(--radio-grande);
-    // Sombra más suave y elegante (reducida de Figma)
-    box-shadow: 
-      0 1px 3px 0 rgba(20, 20, 43, 0.04),
-      0 4px 12px 0 rgba(20, 20, 43, 0.06);
+    box-shadow: var(--sombra-1), var(--sombra-3);
     pointer-events: none;
-    transition: opacity var(--duracion-base) var(--transicion-estandar);
   }
-
-  // ==========================================================================
-  // ELEMENTO: Header (Nombre del servicio + Grupo de usuarios)
-  // ==========================================================================
 
   &__header {
     position: relative;
@@ -68,11 +49,10 @@
     flex: 1;
     font-family: var(--font-primaria);
     font-size: var(--tamano-h4);
-    font-weight: var(--peso-fuente-negrita);
+    font-weight: var(--peso-fuente-semi-negrita);
     line-height: var(--altura-linea-h4);
     color: var(--text-primary);
     margin: 0;
-    // Limitar a 2 líneas con ellipsis
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;
@@ -81,7 +61,7 @@
     text-overflow: ellipsis;
   }
 
-  &__grupo {
+  &__plazas {
     display: flex;
     align-items: center;
     gap: var(--espaciado-1);
@@ -89,17 +69,13 @@
     color: var(--text-primary);
   }
 
-  &__grupo-count {
+  &__plazas-count {
     font-family: var(--font-primaria);
     font-size: var(--tamano-texto-normal);
     font-weight: var(--peso-fuente-regular);
-    line-height: 1.5;
+    line-height: 1.6;
     color: var(--text-primary);
   }
-
-  // ==========================================================================
-  // ELEMENTO: Content (Precio y fecha de renovación)
-  // ==========================================================================
 
   &__content {
     position: relative;
@@ -111,10 +87,10 @@
 
   &__precio {
     font-family: var(--font-primaria);
-    font-size: var(--tamano-h4);
-    font-weight: var(--peso-fuente-semi-negrita);
-    line-height: var(--altura-linea-h4);
-    color: var(--text-primary);
+    font-size: var(--tamano-texto-normal);
+    font-weight: var(--peso-fuente-regular);
+    line-height: 1.5;
+    color: var(--text-secondary);
     margin: 0;
   }
 
@@ -127,24 +103,14 @@
     margin: 0;
   }
 
-  // ==========================================================================
-  // ELEMENTO: Footer (Botón con glow effect)
-  // ==========================================================================
-
   &__footer {
     position: relative;
     display: flex;
     justify-content: flex-end;
     align-items: center;
 
-    // Glow effect púrpura en el botón
     app-button {
-      filter: drop-shadow(0 4px 12px rgba(168, 85, 247, 0.35));
-      transition: filter var(--duracion-base) var(--transicion-estandar);
-
-      &:hover {
-        filter: drop-shadow(0 6px 16px rgba(168, 85, 247, 0.45));
-      }
+      filter: drop-shadow(var(--sombra-morado));
     }
   }
 }

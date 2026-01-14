@@ -428,7 +428,8 @@ export class StyleGuideComponent {
       nombreServicio: 'Netflix Premium',
       precioPorPlaza: 4.25,
       fechaRenovacion: '2026-01-15',
-      plazasDisponibles: 2,
+      plazasOcupadas: 2,
+      numPlazasTotal: 4,
       estado: 'ACTIVA',
     },
     {
@@ -436,7 +437,8 @@ export class StyleGuideComponent {
       nombreServicio: 'Spotify Family',
       precioPorPlaza: 2.99,
       fechaRenovacion: '2026-01-20',
-      plazasDisponibles: 1,
+      plazasOcupadas: 5,
+      numPlazasTotal: 6,
       estado: 'ACTIVA',
     },
     {
@@ -444,7 +446,8 @@ export class StyleGuideComponent {
       nombreServicio: 'Disney+ Premium',
       precioPorPlaza: 3.50,
       fechaRenovacion: '2026-02-01',
-      plazasDisponibles: 3,
+      plazasOcupadas: 1,
+      numPlazasTotal: 4,
       estado: 'ACTIVA',
     },
   ];

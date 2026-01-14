@@ -91,16 +91,14 @@ export class GrupoDetalleComponent implements OnInit {
 
   protected readonly hasSuscripciones = computed(() => this.suscripciones().length > 0);
 
-  /**
-   * Transforma SuscripcionSummary[] a SuscripcionCardData[] para el componente subscription-card.
-   */
   protected readonly suscripcionCards = computed<SuscripcionCardData[]>(() =>
     this.suscripciones().map((s) => ({
       id: s.id,
       nombreServicio: s.nombreServicio,
       precioPorPlaza: s.precioPorPlaza,
       fechaRenovacion: s.fechaRenovacion,
-      plazasDisponibles: s.numPlazasTotal,
+      plazasOcupadas: s.plazasOcupadas,
+      numPlazasTotal: s.numPlazasTotal,
       estado: s.estado,
     }))
   );

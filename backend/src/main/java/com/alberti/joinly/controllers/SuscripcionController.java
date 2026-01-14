@@ -127,7 +127,7 @@ public class SuscripcionController {
 
         var suscripciones = suscripcionService.listarSuscripcionesDeUnidadConFiltros(
                 idUnidad, estado, fechaDesde, fechaHasta, pageable)
-                .map(SuscripcionSummary::fromEntity);
+                .map(s -> SuscripcionSummary.fromEntity(s, suscripcionService.contarPlazasOcupadas(s.getId())));
 
         return ResponseEntity.ok(suscripciones);
     }
@@ -142,7 +142,7 @@ public class SuscripcionController {
 
         var suscripciones = suscripcionService.listarSuscripcionesDeAnfitrion(currentUser.getId())
                 .stream()
-                .map(SuscripcionSummary::fromEntity)
+                .map(s -> SuscripcionSummary.fromEntity(s, suscripcionService.contarPlazasOcupadas(s.getId())))
                 .toList();
 
         return ResponseEntity.ok(suscripciones);

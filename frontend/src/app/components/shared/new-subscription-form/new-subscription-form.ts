@@ -101,7 +101,10 @@ export class NewSubscriptionFormComponent {
     initialValue: this.form.status,
   });
 
-  readonly isFormInvalid = computed(() => this.form.invalid);
+  readonly isFormInvalid = computed(() => {
+    const status = this.formStatus();
+    return this.form.invalid;
+  });
 
   @HostListener('keydown', ['$event'])
   protected handleEnterKey(event: KeyboardEvent): void {

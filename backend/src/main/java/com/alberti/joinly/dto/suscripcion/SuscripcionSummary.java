@@ -15,8 +15,14 @@ public record SuscripcionSummary(
         LocalDate fechaRenovacion,
         Periodicidad periodicidad,
         EstadoSuscripcion estado,
-        Short numPlazasTotal) {
+        Short numPlazasTotal,
+        Long plazasOcupadas) {
+
     public static SuscripcionSummary fromEntity(Suscripcion suscripcion) {
+        return fromEntity(suscripcion, 0L);
+    }
+    
+    public static SuscripcionSummary fromEntity(Suscripcion suscripcion, long plazasOcupadas) {
         return new SuscripcionSummary(
                 suscripcion.getId(),
                 suscripcion.getServicio().getNombre(),
@@ -25,6 +31,7 @@ public record SuscripcionSummary(
                 suscripcion.getFechaRenovacion(),
                 suscripcion.getPeriodicidad(),
                 suscripcion.getEstado(),
-                suscripcion.getNumPlazasTotal());
+                suscripcion.getNumPlazasTotal(),
+                plazasOcupadas);
     }
 }

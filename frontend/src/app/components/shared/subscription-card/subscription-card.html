@@ -1,31 +1,26 @@
-<article class="c-subscription-card">
-  <!-- Contenedor de sombras (diseño Figma) -->
+<article
+  class="c-subscription-card"
+  role="button"
+  tabindex="0"
+  (click)="handleViewDetails()"
+  (keydown.enter)="handleViewDetails()"
+  (keydown.space)="handleViewDetails()">
   <div class="c-subscription-card__sombras"></div>
 
-  <!-- Header: Nombre del servicio y contador de usuarios -->
   <header class="c-subscription-card__header">
     <h3 class="c-subscription-card__nombre">{{ suscripcion().nombreServicio }}</h3>
-    <div class="c-subscription-card__grupo">
+    <div class="c-subscription-card__plazas">
       <app-icon name="users" size="sm" />
-      <span class="c-subscription-card__grupo-count">{{ suscripcion().plazasDisponibles }}</span>
+      <span class="c-subscription-card__plazas-count">{{ suscripcion().plazasOcupadas }}</span>
     </div>
   </header>
 
-  <!-- Información del precio -->
   <section class="c-subscription-card__content">
     <p class="c-subscription-card__precio">{{ precioFormateado() }}€</p>
-    <p class="c-subscription-card__renovacion">
-      Renueva el {{ fechaFormateada() }}
-    </p>
+    <p class="c-subscription-card__renovacion">Renueva el {{ fechaFormateada() }}</p>
   </section>
 
-  <!-- Botón de acción con glow effect -->
   <footer class="c-subscription-card__footer">
-    <app-button 
-      variant="purple" 
-      size="sm"
-      (click)="handleViewDetails()">
-      Disponible
-    </app-button>
+    <app-button variant="purple" size="sm">Disponible</app-button>
   </footer>
 </article>

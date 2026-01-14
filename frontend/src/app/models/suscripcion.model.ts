@@ -67,6 +67,7 @@ export interface SuscripcionSummary {
   periodicidad: Periodicidad;
   estado: EstadoSuscripcion;
   numPlazasTotal: number;
+  plazasOcupadas: number;
 }
 
 /**
@@ -77,7 +78,8 @@ export interface SuscripcionCardData {
   nombreServicio: string;
   precioPorPlaza: number;
   fechaRenovacion: string;
-  plazasDisponibles: number;
+  plazasOcupadas: number;
+  numPlazasTotal: number;
   estado: EstadoSuscripcion;
 }
 
