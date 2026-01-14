@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   BreadcrumbsComponent,
   type BreadcrumbItem,
@@ -9,29 +9,12 @@ import {
   IconComponent,
 } from '../../components/shared';
 import type { GrupoCardData } from '../../models';
+import { type DashboardData, type ResolvedData } from '../../resolvers';
 import { AuthService, UnidadFamiliarService, ToastService, ModalService } from '../../services';
 
 /**
- * Página Dashboard - Vista principal de grupos del usuario autenticado.
- *
- * Muestra grid responsive de grupos familiares del usuario.
- * Protegida por authGuard - requiere autenticación.
- *
- * ### Características:
- * - Breadcrumbs de navegación
- * - Tarjetas de acción: Crear grupo / Unirse a grupo
- * - Grid responsive usando group-card component
- * - Empty state cuando no hay grupos (empty-groups component)
- * - Mobile-First responsive
- * - Carga de datos desde API con estados de loading/error
- *
- * ### Responsive:
- * - Mobile (320-767px): 1 columna, tarjetas apiladas
- * - Tablet (768-1023px): 2 columnas
- * - Desktop (1024px+): 3 columnas
- *
- * @usageNotes
- * Requiere autenticación. Protegida por authGuard.
+ * Dashboard - Vista principal de grupos del usuario autenticado.
+ * Datos precargados via dashboardResolver.
  */
 @Component({
   selector: 'app-dashboard',
@@ -42,48 +25,36 @@ import { AuthService, UnidadFamiliarService, ToastService, ModalService } from '
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit {
+  private readonly route = inject(ActivatedRoute);
   private readonly authService = inject(AuthService);
   private readonly unidadService = inject(UnidadFamiliarService);
   private readonly toastService = inject(ToastService);
   private readonly modalService = inject(ModalService);
   private readonly router = inject(Router);
 
-  /**
-   * Breadcrumbs de navegación
-   */
   protected readonly breadcrumbs: BreadcrumbItem[] = [
     { label: 'Inicio', url: '/dashboard' },
     { label: 'Grupos' },
   ];
 
-  /**
-   * Grupos del usuario cargados desde la API
-   */
   protected readonly grupos = signal<GrupoCardData[]>([]);
-
-  /**
-   * Estado de carga
-   */
-  protected readonly isLoading = signal(true);
-
-  /**
-   * Error al cargar los grupos
-   */
+  protected readonly isLoading = signal(false);
   protected readonly error = signal<string | null>(null);
-
-  /**
-   * Usuario actual desde AuthService.
-   */
   protected readonly currentUser = this.authService.currentUser;
 
   ngOnInit(): void {
-    this.cargarGrupos();
+    const resolved = this.route.snapshot.data['dashboardData'] as ResolvedData<DashboardData>;
+
+    if (resolved.error) {
+      this.error.set(resolved.error);
+      this.toastService.error(resolved.error);
+    } else if (resolved.data) {
+      this.grupos.set(resolved.data.grupos);
+    }
   }
 
-  /**
-   * Carga los grupos del usuario desde la API.
-   */
-  protected cargarGrupos(): void {
+  /** Recarga grupos desde la API */
+  protected recargarGrupos(): void {
     this.isLoading.set(true);
     this.error.set(null);
 
@@ -92,8 +63,7 @@ export class DashboardComponent implements OnInit {
         this.grupos.set(page.content);
         this.isLoading.set(false);
       },
-      error: (err) => {
-        console.error('Error al cargar grupos:', err);
+      error: () => {
         this.error.set('No se pudieron cargar los grupos. Intenta de nuevo.');
         this.isLoading.set(false);
         this.toastService.error('Error al cargar los grupos');

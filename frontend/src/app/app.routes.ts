@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard, pendingChangesGuard } from './guards';
+import { dashboardResolver, grupoDetalleResolver } from './resolvers';
 
 /**
  * Configuración de rutas de la aplicación Joinly.
@@ -42,6 +43,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     canActivate: [authGuard],
+    resolve: { dashboardData: dashboardResolver },
     loadComponent: () =>
       import('./pages/dashboard').then((m) => m.DashboardComponent),
     title: 'Mis Grupos - Joinly',
@@ -64,6 +66,7 @@ export const routes: Routes = [
   {
     path: 'grupos/:id',
     canActivate: [authGuard],
+    resolve: { grupoData: grupoDetalleResolver },
     loadComponent: () =>
       import('./pages/grupo-detalle').then((m) => m.GrupoDetalleComponent),
     title: 'Detalle del Grupo - Joinly',

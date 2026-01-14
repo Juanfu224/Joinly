@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal } from '@angular/core';
-import { Router } from '@angular/router';
-import { forkJoin, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin, of, catchError, map } from 'rxjs';
 import {
   BreadcrumbsComponent,
   type BreadcrumbItem,
@@ -13,6 +12,7 @@ import {
   IconComponent,
 } from '../../components/shared';
 import type { UnidadFamiliar, MiembroUnidadResponse, SuscripcionSummary, SuscripcionCardData, GrupoCardData } from '../../models';
+import { type GrupoDetalleData, type ResolvedData } from '../../resolvers';
 import {
   UnidadFamiliarService,
   SuscripcionService,
@@ -30,11 +30,12 @@ interface GrupoNavigationState {
 /**
  * Página Detalle de Grupo.
  *
- * Soporta navegación con state desde Dashboard para mostrar
- * datos instantáneamente mientras carga la API completa.
+ * Los datos se precargan mediante `grupoDetalleResolver` antes de activar la ruta.
+ * Soporta navegación con state desde Dashboard para mostrar breadcrumbs
+ * instantáneamente mientras el resolver completa.
  *
  * @usageNotes
- * Ruta: /grupos/:id (protegida por authGuard)
+ * Ruta: /grupos/:id (protegida por authGuard, datos via grupoDetalleResolver)
  */
 @Component({
   selector: 'app-grupo-detalle',
@@ -51,7 +52,8 @@ interface GrupoNavigationState {
   styleUrl: './grupo-detalle.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GrupoDetalleComponent {
+export class GrupoDetalleComponent implements OnInit {
+  private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly unidadService = inject(UnidadFamiliarService);
   private readonly suscripcionService = inject(SuscripcionService);
@@ -67,16 +69,15 @@ export class GrupoDetalleComponent {
   protected readonly grupo = signal<UnidadFamiliar | null>(null);
   protected readonly miembros = signal<MiembroUnidadResponse[]>([]);
   protected readonly suscripciones = signal<SuscripcionSummary[]>([]);
-  protected readonly isLoading = signal(true);
+  protected readonly isLoading = signal(false);
   protected readonly error = signal<string | null>(null);
 
   constructor() {
-    // Leer state de navegación (solo disponible en constructor)
+    // Leer state de navegación para breadcrumbs instantáneos
     const nav = this.router.getCurrentNavigation();
     const state = nav?.extras?.state as GrupoNavigationState | undefined;
 
     if (state?.grupoPreview) {
-      // Pre-poblar nombre para breadcrumbs instantáneos
       this.grupo.set({
         id: state.grupoPreview.id,
         nombre: state.grupoPreview.nombre,
@@ -88,16 +89,20 @@ export class GrupoDetalleComponent {
         estado: 'ACTIVO',
       });
     }
+  }
 
-    // Cargar datos completos cuando cambia el ID
-    effect(() => {
-      const grupoId = Number(this.id());
-      if (!grupoId || isNaN(grupoId)) {
-        this.router.navigate(['/dashboard']);
-        return;
-      }
-      this.cargarDatos(grupoId);
-    });
+  ngOnInit(): void {
+    // Leer datos precargados por el resolver
+    const resolved = this.route.snapshot.data['grupoData'] as ResolvedData<GrupoDetalleData>;
+
+    if (resolved.error) {
+      this.error.set(resolved.error);
+      this.toastService.error(resolved.error);
+    } else if (resolved.data) {
+      this.grupo.set(resolved.data.grupo);
+      this.miembros.set(resolved.data.miembros);
+      this.suscripciones.set(resolved.data.suscripciones);
+    }
   }
 
   // --- Computed ---
@@ -137,10 +142,9 @@ export class GrupoDetalleComponent {
 
 
   /**
-   * Carga todos los datos del grupo en paralelo.
-   * Las suscripciones fallan graciosamente si hay error en el backend.
+   * Recarga todos los datos del grupo.
    */
-  private cargarDatos(id: number): void {
+  private recargarDatos(id: number): void {
     this.isLoading.set(true);
     this.error.set(null);
 
@@ -148,20 +152,17 @@ export class GrupoDetalleComponent {
       grupo: this.unidadService.getGrupoById(id),
       miembros: this.unidadService.getMiembrosGrupo(id),
       suscripciones: this.suscripcionService.getSuscripcionesGrupo(id).pipe(
-        catchError((err) => {
-          console.warn('Error al cargar suscripciones:', err);
-          return of({ content: [], totalElements: 0, totalPages: 0, size: 0, number: 0, first: true, last: true, empty: true });
-        })
+        map((page) => page.content),
+        catchError(() => of([] as SuscripcionSummary[]))
       ),
     }).subscribe({
       next: ({ grupo, miembros, suscripciones }) => {
         this.grupo.set(grupo);
         this.miembros.set(miembros);
-        this.suscripciones.set(suscripciones.content);
+        this.suscripciones.set(suscripciones);
         this.isLoading.set(false);
       },
-      error: (err) => {
-        console.error('Error al cargar grupo:', err);
+      error: () => {
         this.error.set('No se pudo cargar el grupo. Intenta de nuevo.');
         this.isLoading.set(false);
         this.toastService.error('Error al cargar el grupo');
@@ -202,7 +203,7 @@ export class GrupoDetalleComponent {
   protected onReintentar(): void {
     const grupoId = Number(this.id());
     if (grupoId && !isNaN(grupoId)) {
-      this.cargarDatos(grupoId);
+      this.recargarDatos(grupoId);
     }
   }
 }
