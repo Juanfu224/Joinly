@@ -1,6 +1,7 @@
-import { Routes } from '@angular/router';
+import { Routes, Data } from '@angular/router';
 import { authGuard, pendingChangesGuard } from './guards';
 import { dashboardResolver, grupoDetalleResolver } from './resolvers';
+import type { ResolvedData, GrupoDetalleData } from './resolvers';
 
 /**
  * Configuración de rutas de la aplicación Joinly.
@@ -9,9 +10,10 @@ import { dashboardResolver, grupoDetalleResolver } from './resolvers';
  * - Rutas protegidas con authGuard (autenticación)
  * - Rutas con pendingChangesGuard (formularios con cambios sin guardar)
  * - Precarga selectiva: todo excepto dev routes (`data.preload: false`)
+ * - Breadcrumbs dinámicos con `data.breadcrumb` (string o función)
  */
 export const routes: Routes = [
-  // Rutas públicas
+  // Rutas públicas (sin breadcrumbs)
   {
     path: '',
     loadComponent: () => import('./pages/home').then((m) => m.HomeComponent),
@@ -28,11 +30,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/como-funciona').then((m) => m.ComoFuncionaComponent),
     title: 'Cómo funciona - Joinly',
+    data: { breadcrumb: 'Cómo funciona' },
   },
   {
     path: 'faq',
     loadComponent: () => import('./pages/faq').then((m) => m.FaqComponent),
     title: 'Centro de ayuda - Joinly',
+    data: { breadcrumb: 'Centro de ayuda' },
   },
   {
     path: '',
@@ -47,6 +51,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/dashboard').then((m) => m.DashboardComponent),
     title: 'Mis Grupos - Joinly',
+    data: { breadcrumb: 'Mis Grupos' },
   },
   {
     path: 'crear-grupo',
@@ -55,6 +60,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/crear-grupo').then((m) => m.CrearGrupoComponent),
     title: 'Crear Unidad Familiar - Joinly',
+    data: { breadcrumb: 'Crear Grupo' },
   },
   {
     path: 'unirse-grupo',
@@ -62,6 +68,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/unirse-grupo').then((m) => m.UnirseGrupoComponent),
     title: 'Unirse a Grupo - Joinly',
+    data: { breadcrumb: 'Unirse a Grupo' },
   },
   {
     path: 'grupos/:id',
@@ -70,6 +77,12 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/grupo-detalle').then((m) => m.GrupoDetalleComponent),
     title: 'Detalle del Grupo - Joinly',
+    data: {
+      breadcrumb: (data: Data) => {
+        const resolved = data['grupoData'] as ResolvedData<GrupoDetalleData> | undefined;
+        return resolved?.data?.grupo?.nombre ?? 'Grupo';
+      },
+    },
   },
   {
     path: 'grupos/:id/crear-suscripcion',
@@ -78,6 +91,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/crear-suscripcion').then((m) => m.CrearSuscripcionComponent),
     title: 'Nueva Suscripción - Joinly',
+    data: { breadcrumb: 'Nueva Suscripción' },
   },
 
   // Área de usuario
@@ -87,6 +101,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/usuario').then((m) => m.UsuarioLayoutComponent),
     title: 'Mi cuenta - Joinly',
+    data: { breadcrumb: 'Mi Cuenta' },
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'perfil' },
       {
@@ -94,30 +109,33 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/usuario/perfil').then((m) => m.PerfilComponent),
         title: 'Mi perfil - Joinly',
+        data: { breadcrumb: 'Perfil' },
       },
       {
         path: 'configuracion',
         loadComponent: () =>
           import('./pages/usuario/configuracion').then((m) => m.ConfiguracionComponent),
         title: 'Configuración - Joinly',
+        data: { breadcrumb: 'Configuración' },
       },
       {
         path: 'notificaciones',
         loadComponent: () =>
           import('./pages/usuario/notificaciones').then((m) => m.NotificacionesComponent),
         title: 'Notificaciones - Joinly',
+        data: { breadcrumb: 'Notificaciones' },
       },
     ],
   },
 
-  // Rutas de desarrollo (sin precarga)
+  // Rutas de desarrollo (sin precarga, sin breadcrumbs)
   {
     path: 'style-guide',
     loadChildren: () => import('./routes/dev.routes').then((m) => m.DEV_ROUTES),
     data: { preload: false },
   },
 
-  // 404
+  // 404 (sin breadcrumbs)
   {
     path: '**',
     loadComponent: () =>

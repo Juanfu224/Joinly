@@ -2,8 +2,6 @@ import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, si
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, of, catchError, map } from 'rxjs';
 import {
-  BreadcrumbsComponent,
-  type BreadcrumbItem,
   ButtonComponent,
   MemberListComponent,
   type MemberData,
@@ -13,35 +11,20 @@ import {
 } from '../../components/shared';
 import type { UnidadFamiliar, MiembroUnidadResponse, SuscripcionSummary, SuscripcionCardData, GrupoCardData } from '../../models';
 import { type GrupoDetalleData, type ResolvedData } from '../../resolvers';
-import {
-  UnidadFamiliarService,
-  SuscripcionService,
-  ToastService,
-  ModalService,
-} from '../../services';
+import { UnidadFamiliarService, SuscripcionService, ToastService, ModalService } from '../../services';
 
-/**
- * Estado de navegación desde Dashboard.
- */
 interface GrupoNavigationState {
   grupoPreview?: GrupoCardData;
 }
 
 /**
  * Página Detalle de Grupo.
- *
- * Los datos se precargan mediante `grupoDetalleResolver` antes de activar la ruta.
- * Soporta navegación con state desde Dashboard para mostrar breadcrumbs
- * instantáneamente mientras el resolver completa.
- *
- * @usageNotes
- * Ruta: /grupos/:id (protegida por authGuard, datos via grupoDetalleResolver)
+ * Datos precargados via grupoDetalleResolver.
  */
 @Component({
   selector: 'app-grupo-detalle',
   standalone: true,
   imports: [
-    BreadcrumbsComponent,
     ButtonComponent,
     MemberListComponent,
     EmptySubscriptionsComponent,
@@ -73,7 +56,7 @@ export class GrupoDetalleComponent implements OnInit {
   protected readonly error = signal<string | null>(null);
 
   constructor() {
-    // Leer state de navegación para breadcrumbs instantáneos
+    // Leer state de navegación para mostrar datos instantáneamente
     const nav = this.router.getCurrentNavigation();
     const state = nav?.extras?.state as GrupoNavigationState | undefined;
 
@@ -106,15 +89,6 @@ export class GrupoDetalleComponent implements OnInit {
   }
 
   // --- Computed ---
-  protected readonly breadcrumbs = computed<BreadcrumbItem[]>(() => {
-    const nombreGrupo = this.grupo()?.nombre ?? 'Grupo';
-    return [
-      { label: 'Inicio', url: '/dashboard' },
-      { label: 'Grupos', url: '/dashboard' },
-      { label: nombreGrupo },
-    ];
-  });
-
   protected readonly membersData = computed<MemberData[]>(() =>
     this.miembros().map((m) => ({
       id: m.id,

@@ -1,69 +1,34 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-/**
- * Representa un elemento en la navegación de migas de pan.
- */
-export interface BreadcrumbItem {
-  /** Texto que se muestra para este elemento */
-  label: string;
-  /** URL de navegación (opcional, el último elemento no debe tener URL) */
-  url?: string;
-}
+import { BreadcrumbService, type Breadcrumb } from '../../../services';
+
+// Re-exportar tipo para compatibilidad
+export type BreadcrumbItem = Breadcrumb;
 
 /**
  * Componente de navegación de migas de pan (breadcrumbs).
  *
- * Muestra la ruta de navegación actual de forma semántica y accesible,
- * permitiendo al usuario entender su ubicación en la jerarquía de la aplicación
- * y navegar hacia niveles superiores.
- *
- * @usageNotes
- * ### Uso básico
- * ```typescript
- * // En tu componente
- * breadcrumbItems: BreadcrumbItem[] = [
- *   { label: 'Inicio', url: '/' },
- *   { label: 'Grupos', url: '/grupos' },
- *   { label: 'Familia López' } // último elemento sin URL
- * ];
- * ```
- *
- * ```html
- * <app-breadcrumbs [items]="breadcrumbItems" />
- * ```
- *
- * ### Características
- * - Navegación semántica con `<nav>` y `<ol>`
- * - Totalmente accesible (WCAG 2.1)
- * - Responsive con scroll horizontal en móviles
- * - Integración con Angular Router
- * - Separadores visuales personalizables
- *
- * @see {@link BreadcrumbItem} para la estructura de cada elemento
+ * Modo automático: obtiene breadcrumbs del servicio (desde `data.breadcrumb` en rutas).
+ * Modo manual: usa los items proporcionados via `[items]` (para demos).
  */
 @Component({
   selector: 'app-breadcrumbs',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
   templateUrl: './breadcrumbs.html',
   styleUrl: './breadcrumbs.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BreadcrumbsComponent {
-  /**
-   * Array de elementos que conforman la ruta de navegación.
-   * El último elemento representa la página actual y no debe incluir URL.
-   *
-   * @example
-   * ```typescript
-   * items = [
-   *   { label: 'Inicio', url: '/' },
-   *   { label: 'Productos', url: '/productos' },
-   *   { label: 'Electrónica' } // página actual
-   * ];
-   * ```
-   */
-  @Input() items: BreadcrumbItem[] = [];
+  private readonly breadcrumbService = inject(BreadcrumbService);
+
+  /** Items manuales (prioridad sobre servicio). */
+  readonly manualItems = input<Breadcrumb[]>([], { alias: 'items' });
+
+  /** Items a mostrar: manuales si existen, si no del servicio. */
+  protected readonly items = computed(() => {
+    const manual = this.manualItems();
+    return manual.length > 0 ? manual : this.breadcrumbService.breadcrumbs();
+  });
 }

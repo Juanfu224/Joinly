@@ -26,6 +26,11 @@
   // Suavizado de fuentes
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  // Breadcrumbs globales: espaciado vertical
+  > .l-contenedor:has(app-breadcrumbs) {
+    padding-block: var(--espaciado-3);
+  }
 }
 
 // ---------------------------------------------------------------------------

@@ -6,6 +6,7 @@ import {
   ToastContainerComponent,
   SpinnerOverlayComponent,
   InviteModalComponent,
+  BreadcrumbsComponent,
 } from './components/shared';
 import { HeaderComponent } from './layout/header/header';
 import { FooterComponent } from './layout/footer/footer';
@@ -14,11 +15,7 @@ import { LoadingService } from './services/loading';
 
 /**
  * Componente raíz de la aplicación Joinly.
- * Proporciona la estructura principal con header, main y footer.
- * 
- * @remarks
- * Inicializa servicios globales como ThemeService en el constructor.
- * Estructura semántica HTML5 completa (header, main, footer).
+ * Estructura: header, breadcrumbs, main (router-outlet), footer.
  */
 @Component({
   selector: 'app-root',
@@ -32,6 +29,7 @@ import { LoadingService } from './services/loading';
     InviteModalComponent,
     ToastContainerComponent,
     SpinnerOverlayComponent,
+    BreadcrumbsComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
@@ -42,7 +40,6 @@ export class App {
   protected readonly loadingService = inject(LoadingService);
 
   constructor() {
-    // Inicializar servicio de temas al cargar la aplicación
     this.themeService.initialize();
   }
 }

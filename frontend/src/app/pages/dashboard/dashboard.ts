@@ -1,13 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  BreadcrumbsComponent,
-  type BreadcrumbItem,
-  CardComponent,
-  GroupCardComponent,
-  EmptyGroupsComponent,
-  IconComponent,
-} from '../../components/shared';
+import { CardComponent, GroupCardComponent, EmptyGroupsComponent, IconComponent } from '../../components/shared';
 import type { GrupoCardData } from '../../models';
 import { type DashboardData, type ResolvedData } from '../../resolvers';
 import { AuthService, UnidadFamiliarService, ToastService, ModalService } from '../../services';
@@ -19,7 +12,7 @@ import { AuthService, UnidadFamiliarService, ToastService, ModalService } from '
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [BreadcrumbsComponent, CardComponent, GroupCardComponent, EmptyGroupsComponent, IconComponent],
+  imports: [CardComponent, GroupCardComponent, EmptyGroupsComponent, IconComponent],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,11 +24,6 @@ export class DashboardComponent implements OnInit {
   private readonly toastService = inject(ToastService);
   private readonly modalService = inject(ModalService);
   private readonly router = inject(Router);
-
-  protected readonly breadcrumbs: BreadcrumbItem[] = [
-    { label: 'Inicio', url: '/dashboard' },
-    { label: 'Grupos' },
-  ];
 
   protected readonly grupos = signal<GrupoCardData[]>([]);
   protected readonly isLoading = signal(false);

@@ -19,3 +19,4 @@ export { AsyncValidatorsService } from './async-validators.service';
 export { UnidadFamiliarService } from './unidad-familiar';
 export { SolicitudService } from './solicitud';
 export { SuscripcionService } from './suscripcion';
+export { BreadcrumbService, type Breadcrumb, type BreadcrumbResolver } from './breadcrumb.service';
