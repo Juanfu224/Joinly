@@ -37,6 +37,15 @@ Este directorio contiene toda la documentación técnica del proyecto Joinly.
   - Patrones de comunicación
   - Diagramas de flujo
 
+### Documentación Frontend
+
+- **[frontend/NAVIGATION.md](frontend/NAVIGATION.md)** - Navegación y enrutamiento
+  - Mapa completo de rutas
+  - Estrategia de lazy loading
+  - Guards y resolvers
+  - Características avanzadas
+  - Diagramas de arquitectura
+
 ### Buenas Prácticas
 
 - **[buenas_practicas/HTML5-semantico-la-base-de-todo.md](buenas_practicas/HTML5-semantico-la-base-de-todo.md)**
@@ -67,7 +76,9 @@ Consulta la documentación específica del backend en:
 ### Frontend
 
 Consulta la documentación específica del frontend en:
-- [frontend/README.md](../frontend/README.md)
+- [design/DOCUMENTACION.md](design/DOCUMENTACION.md) - Sistema de diseño y componentes
+- [design/event-architecture.md](design/event-architecture.md) - Arquitectura de eventos
+- [frontend/NAVIGATION.md](frontend/NAVIGATION.md) - Navegación y enrutamiento
 
 ## Scripts Disponibles
 
