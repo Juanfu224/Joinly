@@ -23,7 +23,10 @@ export { RegisterFormComponent } from './register-form/register-form';
 export { LoginFormComponent } from './login-form/login-form';
 export { CreateGroupFormComponent } from './create-group-form/create-group-form';
 export { JoinGroupFormComponent } from './join-group-form/join-group-form';
-export { NewSubscriptionFormComponent } from './new-subscription-form/new-subscription-form';
+export {
+  NewSubscriptionFormComponent,
+  type NewSubscriptionFormValue,
+} from './new-subscription-form/new-subscription-form';
 export {
   passwordStrengthValidator,
   matchFieldsValidator,

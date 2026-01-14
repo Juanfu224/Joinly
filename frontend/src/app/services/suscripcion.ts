@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Page, SuscripcionSummary } from '../models';
+import { Page, SuscripcionSummary, CreateSuscripcionRequest, SuscripcionResponse } from '../models';
 
 /**
  * Servicio para gestión de suscripciones compartidas.
@@ -29,5 +29,14 @@ export class SuscripcionService {
       .set('size', size.toString());
 
     return this.http.get<Page<SuscripcionSummary>>(`${this.apiUrl}/unidad/${idUnidad}`, { params });
+  }
+
+  /**
+   * Crea una nueva suscripción en un grupo.
+   * 
+   * @param request Datos de la nueva suscripción
+   */
+  crearSuscripcion(request: CreateSuscripcionRequest): Observable<SuscripcionResponse> {
+    return this.http.post<SuscripcionResponse>(this.apiUrl, request);
   }
 }

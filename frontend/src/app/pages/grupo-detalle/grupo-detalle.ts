@@ -161,7 +161,10 @@ export class GrupoDetalleComponent implements OnInit {
    * Navega a la página de crear suscripción.
    */
   protected onCrearSuscripcion(): void {
-    this.toastService.info('Crear suscripción próximamente');
+    const grupoId = this.grupo()?.id;
+    if (grupoId) {
+      this.router.navigate(['/grupos', grupoId, 'crear-suscripcion']);
+    }
   }
 
   /**

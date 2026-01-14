@@ -1,0 +1,28 @@
+@use '../../../styles/01-tools/mixins' as *;
+
+// ==========================================================================
+// PAGE: CREAR SUSCRIPCIÓN
+// ==========================================================================
+// Página para crear suscripción con formulario centrado.
+// Fondo azul claro según diseño Figma.
+
+:host {
+  display: block;
+  min-block-size: 100vh;
+}
+
+.p-crear-suscripcion {
+  @include centrar-flex;
+  min-block-size: 100vh;
+  padding: var(--espaciado-4);
+  background: var(--color-superficie-azul);
+
+  @include responder-a('tablet') {
+    padding: var(--espaciado-6);
+  }
+
+  &__container {
+    inline-size: 100%;
+    max-inline-size: 40.625rem;
+  }
+}

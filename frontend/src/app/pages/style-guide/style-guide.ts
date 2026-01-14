@@ -696,10 +696,10 @@ export class StyleGuideComponent {
   protected onNewSubscriptionSubmit(data: {
     nombre: string;
     precioTotal: number;
-    frecuencia: 'mensual' | 'anual';
+    periodicidad: 'MENSUAL' | 'ANUAL';
     plazas: number;
-    password?: string;
-    usuario?: string;
+    credencialUsuario?: string;
+    credencialPassword?: string;
   }): void {
     console.log('[StyleGuide] New subscription submit:', data);
   }

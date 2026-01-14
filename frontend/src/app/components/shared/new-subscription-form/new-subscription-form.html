@@ -14,7 +14,7 @@
         type="text"
         name="nombre"
         autocomplete="off"
-        placeholder="Ej: Netflix Premium, Spotify Family..."
+        placeholder="Ej: Netflix Premium, Spotify Family...."
         [required]="true"
         formControlName="nombre"
         [errorMessage]="getErrorMessage('nombre')"
@@ -45,40 +45,38 @@
           [errorMessage]="getErrorMessage('plazas')"
         />
       </div>
+
+      <app-form-select
+        label="Periodicidad"
+        name="periodicidad"
+        [options]="periodicidadOptions"
+        [required]="true"
+        formControlName="periodicidad"
+        [errorMessage]="getErrorMessage('periodicidad')"
+      />
     </fieldset>
 
-    <!-- Sección: Credenciales de acceso -->
+    <!-- Sección: Credenciales (opcional) -->
     <fieldset class="c-new-subscription-form__fieldset">
-      <legend class="c-new-subscription-form__legend-visible">Credenciales de acceso</legend>
-      <p class="c-new-subscription-form__help-text">
-        Agrega las credenciales que los miembros necesitarán para acceder al servicio
-      </p>
+      <legend class="c-new-subscription-form__legend-visible">Credenciales (opcional)</legend>
 
-      <div class="c-new-subscription-form__credentials">
-        @for (credencial of credenciales.controls; track $index; let i = $index) {
-          <app-form-array-item
-            [title]="'Credencial ' + (i + 1)"
-            [canRemove]="credenciales.length > 1"
-            (removed)="removeCredencial(i)"
-          >
-            <app-credential-input-group
-              [formGroup]="$any(credencial)"
-              [index]="i"
-            />
-          </app-form-array-item>
-        }
-      </div>
+      <app-form-input
+        label="Usuario"
+        type="text"
+        name="credencialUsuario"
+        autocomplete="off"
+        placeholder="Usuario: ejemplo@gmail.com"
+        formControlName="credencialUsuario"
+      />
 
-      <app-button
-        type="button"
-        variant="secondary"
-        size="md"
-        (click)="addCredencial()"
-        [disabled]="credenciales.length >= 10"
-      >
-        <app-icon name="add" />
-        Añadir credencial
-      </app-button>
+      <app-form-input
+        label="Contraseña"
+        type="password"
+        name="credencialPassword"
+        autocomplete="off"
+        placeholder="Contraseña: ********"
+        formControlName="credencialPassword"
+      />
     </fieldset>
 
     @if (formError()) {

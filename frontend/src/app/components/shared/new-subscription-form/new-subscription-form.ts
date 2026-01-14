@@ -4,66 +4,71 @@ import {
   computed,
   HostListener,
   inject,
-  OnInit,
   output,
   signal,
   viewChild,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ButtonComponent } from '../button/button';
 import { FormCardComponent } from '../form-card/form-card';
 import { FormInputComponent } from '../form-input/form-input';
-import { FormArrayItemComponent } from '../form-array-item/form-array-item';
-import { CredentialInputGroupComponent } from '../credential-input-group/credential-input-group';
-import { IconComponent } from '../icon/icon';
+import { FormSelectComponent, type SelectOption } from '../form-select/form-select';
 import { canSubmit, focusInput, shouldTriggerSubmit } from '../form-utils';
-import {
-  getErrorMessage,
-  precioMinimoPlaza,
-  uniqueCredentialLabels,
-  credentialFieldsRequired,
-} from '../validators';
+import { getErrorMessage, precioMinimoPlaza } from '../validators';
 
-interface NewSubscriptionFormValue {
+/**
+ * Datos del formulario de nueva suscripción.
+ * Estructura simplificada según diseño Figma.
+ */
+export interface NewSubscriptionFormValue {
   nombre: string;
   precioTotal: number;
-  frecuencia: 'mensual' | 'anual';
   plazas: number;
-  credenciales: Array<{
-    tipo: string;
-    etiqueta: string;
-    valor: string;
-    password: string;
-    instrucciones: string;
-    visibleParaMiembros: boolean;
-  }>;
+  periodicidad: 'MENSUAL' | 'ANUAL';
+  credencialUsuario?: string;
+  credencialPassword?: string;
 }
 
+/**
+ * Formulario para crear una nueva suscripción.
+ *
+ * Diseño simple basado en Figma:
+ * - Nombre del servicio (requerido)
+ * - Precio total (requerido)
+ * - Número de plazas (requerido)
+ * - Periodicidad (requerido)
+ * - Credenciales de acceso (opcionales)
+ *
+ * @usageNotes
+ * ```html
+ * <app-new-subscription-form
+ *   (submitted)="onSubmit($event)"
+ *   (cancelled)="onCancel()"
+ * />
+ * ```
+ */
 @Component({
   selector: 'app-new-subscription-form',
   standalone: true,
   imports: [
     ReactiveFormsModule,
     FormInputComponent,
+    FormSelectComponent,
     FormCardComponent,
     ButtonComponent,
-    FormArrayItemComponent,
-    CredentialInputGroupComponent,
-    IconComponent,
   ],
   templateUrl: './new-subscription-form.html',
   styleUrl: './new-subscription-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'c-new-subscription-form' },
 })
-export class NewSubscriptionFormComponent implements OnInit {
+export class NewSubscriptionFormComponent {
   private readonly fb = inject(FormBuilder).nonNullable;
 
   readonly isLoading = signal(false);
   readonly formError = signal<string | null>(null);
-  
   readonly submitted = output<NewSubscriptionFormValue>();
   readonly cancelled = output<void>();
 
@@ -73,69 +78,30 @@ export class NewSubscriptionFormComponent implements OnInit {
 
   private lastSubmitTime = 0;
 
+  readonly periodicidadOptions: SelectOption[] = [
+    { value: 'MENSUAL', label: 'Mensual' },
+    { value: 'ANUAL', label: 'Anual' },
+  ];
+
   readonly form = this.fb.group(
     {
       nombre: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
       precioTotal: [null as number | null, [Validators.required, Validators.min(0.01), Validators.max(9999)]],
-      frecuencia: ['mensual' as 'mensual' | 'anual', [Validators.required]],
       plazas: [null as number | null, [Validators.required, Validators.min(1), Validators.max(20)]],
-      credenciales: this.fb.array(
-        [],
-        [Validators.minLength(1), Validators.maxLength(10), uniqueCredentialLabels()]
-      ),
+      periodicidad: ['MENSUAL' as 'MENSUAL' | 'ANUAL', [Validators.required]],
+      credencialUsuario: [''],
+      credencialPassword: [''],
     },
     {
       validators: [precioMinimoPlaza(1)],
     }
   );
 
-  /** Getter para acceder al FormArray de credenciales */
-  get credenciales(): FormArray {
-    return this.form.get('credenciales') as FormArray;
-  }
-
-  /** Crea un nuevo FormGroup de credencial */
-  private newCredencial(): FormGroup {
-    return this.fb.group(
-      {
-        tipo: ['USUARIO_PASSWORD', [Validators.required]],
-        etiqueta: ['', [Validators.required, Validators.maxLength(50)]],
-        valor: ['', [Validators.required]],
-        password: [''],
-        instrucciones: [''],
-        visibleParaMiembros: [true],
-      },
-      { validators: [credentialFieldsRequired()] }
-    );
-  }
-
-  /** Agrega una nueva credencial al array */
-  addCredencial(): void {
-    if (this.credenciales.length >= 10) return;
-    this.credenciales.push(this.newCredencial());
-  }
-
-  /** Elimina una credencial del array */
-  removeCredencial(index: number): void {
-    if (this.credenciales.length > 1) {
-      this.credenciales.removeAt(index);
-    }
-  }
-
-  // Signal que observa el estado del formulario de forma reactiva
-  private readonly formStatus = toSignal(this.form.statusChanges, { 
-    initialValue: this.form.status 
+  private readonly formStatus = toSignal(this.form.statusChanges, {
+    initialValue: this.form.status,
   });
 
-  readonly isFormInvalid = computed(() => {
-    const status = this.formStatus();
-    return this.form.invalid;
-  });
-
-  ngOnInit(): void {
-    // Inicializar con una credencial por defecto
-    this.addCredencial();
-  }
+  readonly isFormInvalid = computed(() => this.form.invalid);
 
   @HostListener('keydown', ['$event'])
   protected handleEnterKey(event: KeyboardEvent): void {
@@ -158,44 +124,46 @@ export class NewSubscriptionFormComponent implements OnInit {
     this.lastSubmitTime = Date.now();
     this.formError.set(null);
     this.isLoading.set(true);
-    
+
     const rawValue = this.form.getRawValue();
     const value: NewSubscriptionFormValue = {
       nombre: rawValue.nombre,
       precioTotal: rawValue.precioTotal!,
-      frecuencia: rawValue.frecuencia,
       plazas: rawValue.plazas!,
-      credenciales: rawValue.credenciales as NewSubscriptionFormValue['credenciales'],
+      periodicidad: rawValue.periodicidad,
+      credencialUsuario: rawValue.credencialUsuario || undefined,
+      credencialPassword: rawValue.credencialPassword || undefined,
     };
-    
+
     this.submitted.emit(value);
   }
 
   onCancel(): void {
-    this.form.reset({ frecuencia: 'mensual' });
-    this.credenciales.clear();
-    this.addCredencial();
+    this.form.reset({ periodicidad: 'MENSUAL' });
     this.formError.set(null);
     this.cancelled.emit();
   }
 
+  /** Completa el estado de carga (llamado desde el padre) */
   completeLoading(): void {
     this.isLoading.set(false);
   }
 
+  /** Establece un error en el formulario (llamado desde el padre) */
   setError(message: string): void {
     this.formError.set(message);
     this.isLoading.set(false);
   }
 
+  /** Obtiene el mensaje de error para un campo específico */
   getErrorMessage(field: keyof typeof this.form.controls): string {
     const control = this.form.get(field);
 
     const fieldLabels: Record<string, string> = {
       nombre: 'El nombre',
       precioTotal: 'El precio',
-      frecuencia: 'La frecuencia',
       plazas: 'El número de plazas',
+      periodicidad: 'La periodicidad',
     };
 
     const customMessages: Record<string, string> = {
@@ -209,6 +177,7 @@ export class NewSubscriptionFormComponent implements OnInit {
     return getErrorMessage(control, customMessages);
   }
 
+  /** Obtiene errores de validación a nivel de formulario */
   getFormErrorMessages(): string[] {
     const errors: string[] = [];
 
@@ -217,23 +186,10 @@ export class NewSubscriptionFormComponent implements OnInit {
       errors.push(`Precio mínimo por persona: ${error.min}€ (actual: ${error.actual.toFixed(2)}€)`);
     }
 
-    const credencialesControl = this.form.get('credenciales');
-    if (credencialesControl?.errors?.['minlength']) {
-      errors.push('Debes agregar al menos una credencial');
-    }
-
-    if (credencialesControl?.errors?.['maxlength']) {
-      errors.push('Máximo 10 credenciales permitidas');
-    }
-
-    if (credencialesControl?.errors?.['duplicateLabels']) {
-      const duplicates = credencialesControl.errors['duplicateLabels'].duplicates;
-      errors.push(`Etiquetas duplicadas: ${duplicates.join(', ')}`);
-    }
-
     return errors;
   }
 
+  /** Enfoca el primer campo inválido */
   private focusFirstInvalidField(): void {
     const inputMap = {
       nombre: this.nombreInput,

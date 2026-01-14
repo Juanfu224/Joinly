@@ -69,6 +69,15 @@ export const routes: Routes = [
     title: 'Detalle del Grupo - Joinly',
   },
 
+  // Crear Suscripción
+  {
+    path: 'grupos/:id/crear-suscripcion',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/crear-suscripcion').then((m) => m.CrearSuscripcionComponent),
+    title: 'Nueva Suscripción - Joinly',
+  },
+
   // =========================================================================
   // RUTAS DE DESARROLLO
   // =========================================================================

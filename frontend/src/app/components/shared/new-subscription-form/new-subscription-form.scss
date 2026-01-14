@@ -1,5 +1,4 @@
 @use '../../../../styles/01-tools/mixins' as *;
-@use '../../../../styles/00-settings/variables' as *;
 
 :host {
   display: block;
@@ -26,19 +25,6 @@
     font-weight: var(--peso-fuente-regular);
     color: var(--color-texto-fuerte);
     margin-bottom: var(--espaciado-1);
-  }
-
-  &__help-text {
-    font-size: var(--tamano-texto-pequeno);
-    color: var(--color-texto-base);
-    margin-bottom: var(--espaciado-3);
-  }
-
-  &__credentials {
-    display: flex;
-    flex-direction: column;
-    gap: var(--espaciado-4);
-    margin-bottom: var(--espaciado-3);
   }
 
   &__row {

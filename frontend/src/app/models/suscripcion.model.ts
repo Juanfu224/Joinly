@@ -82,14 +82,15 @@ export interface SuscripcionCardData {
 }
 
 /**
- * Datos para crear una nueva suscripción
+ * Datos para crear una nueva suscripción (simplificado según diseño Figma)
  */
 export interface CreateSuscripcionRequest {
   idUnidad: number;
-  idServicio: number;
+  nombreServicio: string;
   precioTotal: number;
   numPlazasTotal: number;
   fechaInicio: string;
   periodicidad: Periodicidad;
-  anfitrionOcupaPlaza?: boolean;
+  credencialUsuario?: string;
+  credencialPassword?: string;
 }
