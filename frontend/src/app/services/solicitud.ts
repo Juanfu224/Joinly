@@ -1,19 +1,19 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
 import { CreateSolicitudGrupoRequest, SolicitudResponse } from '../models';
+import { ApiService } from '../core/services/api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SolicitudService {
-  private readonly http = inject(HttpClient);
-  private readonly apiUrl = '/api/v1/solicitudes';
+  private readonly api = inject(ApiService);
 
   /**
-   * Solicita unirse a un grupo familiar mediante código
+   * Solicita unirse a un grupo familiar mediante código.
    */
   unirseGrupo(data: CreateSolicitudGrupoRequest): Observable<SolicitudResponse> {
-    return this.http.post<SolicitudResponse>(`${this.apiUrl}/grupo`, data);
+    return this.api.post<SolicitudResponse>('solicitudes/grupo', data);
   }
 }

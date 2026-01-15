@@ -3,7 +3,7 @@ import { provideRouter, withComponentInputBinding, withViewTransitions, withPrel
 import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/http';
 
 import { routes } from './app.routes';
-import { authInterceptor, loadingInterceptor } from './interceptors';
+import { authInterceptor, loadingInterceptor, loggingInterceptor, errorInterceptor } from './interceptors';
 import { SelectivePreloadStrategy } from './strategies';
 
 /**
@@ -27,8 +27,12 @@ export const appConfig: ApplicationConfig = {
     ),
     provideHttpClient(
       withFetch(),
-      // Orden importante: auth primero (añade token), loading después (muestra spinner)
-      withInterceptors([authInterceptor, loadingInterceptor])
+      // Orden crítico:
+      // 1. auth: añade token y maneja refresh automático
+      // 2. loading: muestra/oculta spinner global
+      // 3. logging: registra requests/responses (desarrollo)
+      // 4. error: captura errores y muestra toasts (después de auth para no mostrar errores 401 durante refresh)
+      withInterceptors([authInterceptor, loadingInterceptor, loggingInterceptor, errorInterceptor])
     ),
   ]
 };

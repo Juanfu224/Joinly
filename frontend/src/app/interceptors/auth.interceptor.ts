@@ -64,24 +64,37 @@ function clearTokens(): void {
   localStorage.removeItem('joinly_user');
 }
 
-function addAuthHeader(req: HttpRequest<unknown>, token: string): HttpRequest<unknown> {
-  return req.clone({
-    setHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+function addRequestHeaders(req: HttpRequest<unknown>, token?: string | null): HttpRequest<unknown> {
+  const headers: Record<string, string> = {};
+
+  // Headers estándar para todas las peticiones (excepto FormData)
+  if (!(req.body instanceof FormData)) {
+    headers['Content-Type'] = 'application/json';
+    headers['Accept'] = 'application/json';
+  }
+
+  // Añadir token si se proporciona
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  return Object.keys(headers).length > 0
+    ? req.clone({ setHeaders: headers })
+    : req;
 }
 
 // MAIN INTERCEPTOR
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
 
+  // Endpoints públicos: solo headers estándar (sin token)
   if (isPublicEndpoint(req.url)) {
-    return next(req);
+    return next(addRequestHeaders(req));
   }
 
+  // Endpoints protegidos: headers estándar + token
   const accessToken = getAccessToken();
-  const authReq = accessToken ? addAuthHeader(req, accessToken) : req;
+  const authReq = addRequestHeaders(req, accessToken);
 
   return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
@@ -127,7 +140,7 @@ function handleUnauthorizedError(
           refreshTokenSubject.next(response.accessToken);
 
           // Reintentar petición original con nuevo token
-          return next(addAuthHeader(req, response.accessToken));
+          return next(addRequestHeaders(req, response.accessToken));
         }
         
         return throwError(() => new Error('Refresh response invalid'));
@@ -146,7 +159,7 @@ function handleUnauthorizedError(
   return refreshTokenSubject.pipe(
     filter((token): token is string => token !== null),
     take(1),
-    switchMap((token) => next(addAuthHeader(req, token)))
+    switchMap((token) => next(addRequestHeaders(req, token)))
   );
 }
 

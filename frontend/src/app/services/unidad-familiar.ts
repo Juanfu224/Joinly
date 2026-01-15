@@ -1,47 +1,48 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
 import { UnidadFamiliar, CreateUnidadRequest, GrupoCardData, Page, MiembroUnidadResponse } from '../models';
+import { ApiService } from '../core/services/api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UnidadFamiliarService {
-  private readonly http = inject(HttpClient);
-  private readonly apiUrl = '/api/v1/unidades';
+  private readonly api = inject(ApiService);
 
   /**
-   * Obtiene un grupo por su ID
+   * Obtiene un grupo por su ID.
    */
   getGrupoById(id: number): Observable<UnidadFamiliar> {
-    return this.http.get<UnidadFamiliar>(`${this.apiUrl}/${id}`);
+    return this.api.get<UnidadFamiliar>(`unidades/${id}`);
   }
 
   /**
-   * Obtiene los miembros activos de un grupo
+   * Obtiene los miembros activos de un grupo.
    */
   getMiembrosGrupo(id: number): Observable<MiembroUnidadResponse[]> {
-    return this.http.get<MiembroUnidadResponse[]>(`${this.apiUrl}/${id}/miembros`);
+    return this.api.get<MiembroUnidadResponse[]>(`unidades/${id}/miembros`);
   }
 
   /**
-   * Crea una nueva unidad familiar
+   * Crea una nueva unidad familiar.
    */
   crearUnidad(data: CreateUnidadRequest): Observable<UnidadFamiliar> {
-    return this.http.post<UnidadFamiliar>(this.apiUrl, data);
+    return this.api.post<UnidadFamiliar>('unidades', data);
   }
 
   /**
-   * Obtiene los grupos administrados por el usuario
+   * Obtiene los grupos administrados por el usuario.
    */
   getGruposAdministrados(): Observable<UnidadFamiliar[]> {
-    return this.http.get<UnidadFamiliar[]>(`${this.apiUrl}/administradas`);
+    return this.api.get<UnidadFamiliar[]>('unidades/administradas');
   }
 
   /**
    * Obtiene las tarjetas de grupos del usuario para el dashboard.
    * Incluye nombre, total de miembros y suscripciones activas.
-   * 
+   *
    * @param page Número de página (base 0)
    * @param size Elementos por página (default: 50)
    */
@@ -50,13 +51,13 @@ export class UnidadFamiliarService {
       .set('page', page.toString())
       .set('size', size.toString());
 
-    return this.http.get<Page<GrupoCardData>>(`${this.apiUrl}/miembro/cards`, { params });
+    return this.api.get<Page<GrupoCardData>>('unidades/miembro/cards', { params });
   }
 
   /**
-   * Valida si un código de invitación existe (usado por validadores asíncronos)
+   * Valida si un código de invitación existe (usado por validadores asíncronos).
    */
   validarCodigo(codigo: string): Observable<UnidadFamiliar> {
-    return this.http.get<UnidadFamiliar>(`${this.apiUrl}/codigo/${codigo}`);
+    return this.api.get<UnidadFamiliar>(`unidades/codigo/${codigo}`);
   }
 }

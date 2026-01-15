@@ -33,3 +33,11 @@ export {
 } from './solicitud.model';
 
 export * from './suscripcion.model';
+
+export {
+  type ResourceState,
+  initialResourceState,
+  loadingResourceState,
+  errorResourceState,
+  successResourceState,
+} from './resource-state.model';

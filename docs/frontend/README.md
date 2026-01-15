@@ -6,6 +6,15 @@ Documentación técnica completa de la aplicación frontend de Joinly construida
 
 ## 📚 Índice de documentación
 
+### Comunicación HTTP y API REST
+
+La comunicación con el backend se realiza mediante HttpClient con interceptores funcionales, servicios de dominio y tipado completo.
+
+| Documento                                                       | Descripción                                           | Líneas | Estado |
+| --------------------------------------------------------------- | ----------------------------------------------------- | ------ | ------ |
+| [HTTP_API.md](./HTTP_API.md)                                    | Documentación completa de integración HTTP            | 660    | ✅     |
+| [HTTP_IMPLEMENTATION_SUMMARY.md](./HTTP_IMPLEMENTATION_SUMMARY.md) | Resumen de implementación y checklist de tareas     | 343    | ✅     |
+
 ### Sistema de Navegación y Rutas
 
 El sistema de navegación SPA implementado con Angular Router incluye lazy loading, guards, resolvers y breadcrumbs dinámicos.
@@ -21,6 +30,12 @@ El sistema de navegación SPA implementado con Angular Router incluye lazy loadi
 ---
 
 ## 🚀 Quick Start
+
+### Guía rápida de HTTP/API
+
+Para consumir endpoints o añadir nuevos servicios:
+
+👉 **[HTTP_API.md](./HTTP_API.md)** - Endpoints, interfaces y manejo de errores
 
 ### Guía rápida de navegación
 
@@ -42,74 +57,31 @@ Para ver cómo se implementa la navegación en Joinly:
 
 ---
 
-## 📖 Contenido por tarea
+## 📖 Contenido por Fase
 
-### Tarea 1: Configuración de rutas
+### Fase 4: Enrutamiento y Navegación SPA
 
-- **Documentación**: [NAVIGATION.md - Tarea 1](./NAVIGATION.md#tarea-1-configuración-de-rutas)
-- **Contenido**:
-  - Rutas principales (16 implementadas)
-  - Rutas con parámetros (`:id`)
-  - Rutas hijas anidadas (`/usuario/**`)
-  - Ruta wildcard 404
+| Tarea | Documentación | Contenido principal |
+|-------|---------------|---------------------|
+| 1. Configuración de rutas | [NAVIGATION.md#tarea-1](./NAVIGATION.md#tarea-1-configuración-de-rutas) | 16 rutas, parámetros, rutas hijas |
+| 2. Navegación programática | [NAVIGATION_EXAMPLES.md](./NAVIGATION_EXAMPLES.md) | Router.navigate(), query params |
+| 3. Lazy Loading | [LAZY_LOADING.md](./LAZY_LOADING.md) | 23+ chunks, precarga selectiva |
+| 4. Route Guards | [NAVIGATION.md#tarea-4](./NAVIGATION.md#tarea-4-route-guards) | authGuard, pendingChangesGuard |
+| 5. Resolvers | [NAVIGATION.md#tarea-5](./NAVIGATION.md#tarea-5-resolvers) | dashboardResolver, grupoDetalleResolver |
+| 6. Breadcrumbs | [NAVIGATION.md#tarea-6](./NAVIGATION.md#tarea-6-breadcrumbs-dinámicos) | BreadcrumbService, breadcrumbs dinámicos |
+| 7. Documentación | Este directorio | 5 documentos, 3000+ líneas |
 
-### Tarea 2: Navegación programática
+### Fase 5: Servicios y Comunicación HTTP
 
-- **Documentación**: 
-  - [NAVIGATION.md - Tarea 2](./NAVIGATION.md#tarea-2-navegación-programática)
-  - [NAVIGATION_EXAMPLES.md](./NAVIGATION_EXAMPLES.md)
-- **Contenido**:
-  - `Router.navigate()` con ejemplos
-  - Query params y fragments
-  - `NavigationExtras` y `state`
-  - Redirección después de login
-
-### Tarea 3: Lazy Loading
-
-- **Documentación**: 
-  - [NAVIGATION.md - Tarea 3](./NAVIGATION.md#tarea-3-lazy-loading)
-  - [LAZY_LOADING.md](./LAZY_LOADING.md)
-- **Contenido**:
-  - `loadComponent` y `loadChildren`
-  - `SelectivePreloadStrategy` personalizada
-  - Análisis de chunks de producción (23+)
-  - Verificación en DevTools
-
-### Tarea 4: Route Guards
-
-- **Documentación**: [NAVIGATION.md - Tarea 4](./NAVIGATION.md#tarea-4-route-guards)
-- **Contenido**:
-  - `authGuard` (CanActivateFn)
-  - `pendingChangesGuard` (CanDeactivateFn)
-  - Interfaz `CanComponentDeactivate`
-  - Ejemplos de implementación
-
-### Tarea 5: Resolvers
-
-- **Documentación**: [NAVIGATION.md - Tarea 5](./NAVIGATION.md#tarea-5-resolvers)
-- **Contenido**:
-  - `dashboardResolver` (precarga grupos)
-  - `grupoDetalleResolver` (precarga datos completos)
-  - Tipo `ResolvedData<T>` para manejo de errores
-  - Loading states
-
-### Tarea 6: Breadcrumbs dinámicos
-
-- **Documentación**: [NAVIGATION.md - Tarea 6](./NAVIGATION.md#tarea-6-breadcrumbs-dinámicos)
-- **Contenido**:
-  - `BreadcrumbService` con signals
-  - `BreadcrumbsComponent` semántico
-  - Breadcrumbs estáticos y dinámicos
-  - Configuración en `data.breadcrumb`
-
-### Tarea 7: Documentación
-
-- **Documentación**: Todo este directorio (`docs/frontend/`)
-- **Contenido**:
-  - Mapa completo de rutas (tabla)
-  - Estrategia de lazy loading explicada
-  - Guards y resolvers documentados
-  - Ejemplos de navegación programática
+| Tarea | Documentación | Contenido principal |
+|-------|---------------|---------------------|
+| 1. Configuración HttpClient | [HTTP_API.md#configuración-http](./HTTP_API.md#configuración-http) | provideHttpClient, ApiService |
+| 2. Operaciones CRUD | [HTTP_API.md#catálogo-de-endpoints](./HTTP_API.md#catálogo-de-endpoints) | 13 endpoints REST |
+| 3. Manejo de respuestas | [HTTP_API.md#manejo-de-errores](./HTTP_API.md#manejo-de-errores) | Tipado, map, catchError, retry |
+| 4. Formatos diferentes | [HTTP_API.md#buenas-prácticas](./HTTP_API.md#buenas-prácticas) | JSON, FormData, query params |
+| 5. Estados de carga | [HTTP_API.md#estados-de-carga](./HTTP_API.md#estados-de-carga) | LoadingService, ResourceState |
+| 6. Interceptores HTTP | [HTTP_IMPLEMENTATION_SUMMARY.md](./HTTP_IMPLEMENTATION_SUMMARY.md) | 4 interceptores funcionales |
+| 7. Documentación API | [HTTP_API.md](./HTTP_API.md) | Catálogo completo de endpoints |
 
 ---
 
@@ -307,8 +279,15 @@ Si encuentras errores o quieres mejorar la documentación:
 - ✅ Breadcrumbs dinámicos implementados
 - ✅ Build de producción optimizado (145 kB gzip)
 
+### Versión 1.1 (15 de enero de 2026)
+
+- ✅ Comunicación HTTP completa implementada (Fase 5)
+- ✅ 4 interceptores funcionales (auth, loading, logging, error)
+- ✅ 13 endpoints REST documentados
+- ✅ Documentación centralizada en `docs/frontend/`
+
 ---
 
-**Última actualización**: 14 de enero de 2026  
+**Última actualización**: 15 de enero de 2026  
 **Mantenedor**: Equipo de desarrollo Joinly  
 **Versión de Angular**: 21.0.1

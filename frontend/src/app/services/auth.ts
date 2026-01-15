@@ -1,20 +1,20 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, catchError, map, tap, throwError } from 'rxjs';
 
 import type { AuthResponse, LoginData, RegisterData, User } from '../models';
 import { TokenStorage } from '../interceptors/auth.interceptor';
+import { ApiService } from '../core';
 
 // CONSTANTS
-const API_AUTH = '/api/v1/auth';
 const USER_STORAGE_KEY = 'joinly_user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly http = inject(HttpClient);
+  private readonly api = inject(ApiService);
   private readonly router = inject(Router);
 
   private readonly currentUserSignal = signal<User | null>(null);
@@ -27,7 +27,7 @@ export class AuthService {
   }
 
   login(data: LoginData): Observable<User> {
-    return this.http.post<AuthResponse>(`${API_AUTH}/login`, data).pipe(
+    return this.api.post<AuthResponse>('auth/login', data).pipe(
       tap((response) => this.handleAuthSuccess(response)),
       map((response) => this.extractUser(response)),
       catchError((error) => this.handleAuthError(error))
@@ -35,7 +35,7 @@ export class AuthService {
   }
 
   register(data: RegisterData): Observable<User> {
-    return this.http.post<AuthResponse>(`${API_AUTH}/register`, data).pipe(
+    return this.api.post<AuthResponse>('auth/register', data).pipe(
       tap((response) => this.handleAuthSuccess(response)),
       map((response) => this.extractUser(response)),
       catchError((error) => this.handleAuthError(error))
@@ -50,7 +50,7 @@ export class AuthService {
   }
 
   validateToken(token: string): Observable<boolean> {
-    return this.http.get<void>(`${API_AUTH}/validate`, { params: { token } }).pipe(
+    return this.api.get<void>('auth/validate', { params: { token } }).pipe(
       map(() => true),
       catchError(() => [false])
     );
@@ -60,7 +60,7 @@ export class AuthService {
     const params: Record<string, string> = { email };
     if (excludeUserId) params['excludeUserId'] = excludeUserId.toString();
 
-    return this.http.get<{ available: boolean }>(`${API_AUTH}/check-email`, { params }).pipe(
+    return this.api.get<{ available: boolean }>('auth/check-email', { params }).pipe(
       map((response) => response.available),
       catchError(() => [false])
     );

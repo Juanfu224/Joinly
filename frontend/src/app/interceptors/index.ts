@@ -5,3 +5,5 @@
 
 export { authInterceptor, TokenStorage } from './auth.interceptor';
 export { loadingInterceptor } from './loading.interceptor';
+export { loggingInterceptor } from './logging.interceptor';
+export { errorInterceptor } from './error.interceptor';
