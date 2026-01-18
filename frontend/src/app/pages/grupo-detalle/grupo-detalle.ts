@@ -9,12 +9,16 @@ import {
   SubscriptionCardComponent,
   IconComponent,
 } from '../../components/shared';
-import type { UnidadFamiliar, MiembroUnidadResponse, SuscripcionSummary, SuscripcionCardData, GrupoCardData } from '../../models';
+import type { UnidadFamiliar, MiembroUnidadResponse, SuscripcionSummary, SuscripcionCardData, GrupoCardData, SuscripcionResponse } from '../../models';
 import { type GrupoDetalleData, type ResolvedData } from '../../resolvers';
 import { UnidadFamiliarService, SuscripcionService, ToastService, ModalService } from '../../services';
 
+/**
+ * Estado de navegación para mostrar datos optimistamente.
+ */
 interface GrupoNavigationState {
   grupoPreview?: GrupoCardData;
+  nuevaSuscripcion?: SuscripcionResponse;
 }
 
 /**
@@ -55,15 +59,19 @@ export class GrupoDetalleComponent implements OnInit {
   protected readonly isLoading = signal(false);
   protected readonly error = signal<string | null>(null);
 
-  constructor() {
-    // Leer state de navegación para mostrar datos instantáneamente
-    const nav = this.router.getCurrentNavigation();
-    const state = nav?.extras?.state as GrupoNavigationState | undefined;
+  /** State de navegación capturado en el constructor (antes de que termine la navegación). */
+  private readonly navigationState: GrupoNavigationState | undefined;
 
-    if (state?.grupoPreview) {
+  constructor() {
+    // Capturar state DURANTE la navegación (solo disponible en constructor)
+    const nav = this.router.getCurrentNavigation();
+    this.navigationState = nav?.extras?.state as GrupoNavigationState | undefined;
+
+    // Preview optimista del grupo
+    if (this.navigationState?.grupoPreview) {
       this.grupo.set({
-        id: state.grupoPreview.id,
-        nombre: state.grupoPreview.nombre,
+        id: this.navigationState.grupoPreview.id,
+        nombre: this.navigationState.grupoPreview.nombre,
         codigoInvitacion: '',
         administrador: { id: 0, nombreCompleto: '', email: '', nombreUsuario: '' },
         fechaCreacion: '',
@@ -85,6 +93,36 @@ export class GrupoDetalleComponent implements OnInit {
       this.grupo.set(resolved.data.grupo);
       this.miembros.set(resolved.data.miembros);
       this.suscripciones.set(resolved.data.suscripciones);
+
+      // Actualización optimista: agregar suscripción recién creada
+      this.aplicarSuscripcionOptimista();
+    }
+  }
+
+  /**
+   * Aplica actualización optimista si hay una suscripción nueva en el state.
+   * Transforma SuscripcionResponse a SuscripcionSummary y la agrega al inicio.
+   */
+  private aplicarSuscripcionOptimista(): void {
+    if (!this.navigationState?.nuevaSuscripcion) return;
+
+    const nueva = this.navigationState.nuevaSuscripcion;
+    const suscripcionSummary: SuscripcionSummary = {
+      id: nueva.id,
+      nombreServicio: nueva.servicio.nombre,
+      logoServicio: nueva.servicio.logo,
+      precioPorPlaza: nueva.precioPorPlaza,
+      fechaRenovacion: nueva.fechaRenovacion,
+      periodicidad: nueva.periodicidad,
+      estado: nueva.estado,
+      numPlazasTotal: nueva.numPlazasTotal,
+      plazasOcupadas: nueva.plazasOcupadas,
+    };
+
+    // Evitar duplicados (por si el resolver ya la trajo)
+    const yaExiste = this.suscripciones().some((s) => s.id === nueva.id);
+    if (!yaExiste) {
+      this.suscripciones.update((current) => [suscripcionSummary, ...current]);
     }
   }
 

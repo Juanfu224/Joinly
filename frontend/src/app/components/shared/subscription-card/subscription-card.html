@@ -7,20 +7,19 @@
   (keydown.space)="handleViewDetails()">
   <div class="c-subscription-card__sombras"></div>
 
-  <header class="c-subscription-card__header">
-    <h3 class="c-subscription-card__nombre">{{ suscripcion().nombreServicio }}</h3>
-    <div class="c-subscription-card__plazas">
-      <app-icon name="users" size="sm" />
-      <span class="c-subscription-card__plazas-count">{{ suscripcion().plazasOcupadas }}</span>
-    </div>
-  </header>
+  <h3 class="c-subscription-card__nombre">{{ suscripcion().nombreServicio }}</h3>
 
-  <section class="c-subscription-card__content">
-    <p class="c-subscription-card__precio">{{ precioFormateado() }}€</p>
-    <p class="c-subscription-card__renovacion">Renueva el {{ fechaFormateada() }}</p>
-  </section>
+  <div class="c-subscription-card__plazas-icon">
+    <app-icon name="users" size="sm" />
+  </div>
 
-  <footer class="c-subscription-card__footer">
+  <span class="c-subscription-card__plazas-count">{{ suscripcion().plazasOcupadas }}</span>
+
+  <p class="c-subscription-card__precio">{{ precioFormateado() }}€</p>
+
+  <p class="c-subscription-card__renovacion">Renueva el {{ fechaFormateada() }}</p>
+
+  <div class="c-subscription-card__footer">
     <app-button variant="purple" size="sm">Disponible</app-button>
-  </footer>
+  </div>
 </article>

@@ -138,6 +138,10 @@
   @include responder-a('escritorio') {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  @include responder-a('escritorio-grande') {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 // ---------------------------------------------------------------------------

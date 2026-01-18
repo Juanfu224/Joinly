@@ -343,7 +343,7 @@ public class SuscripcionService {
                     
                     var nuevoServicio = Servicio.builder()
                             .nombre(nombreNormalizado)
-                            .categoria(CategoriaServicio.OTRO)
+                            .categoria(CategoriaServicio.OTROS)
                             .maxUsuarios((short) Math.max(numPlazas, 20))
                             .activo(true)
                             .build();

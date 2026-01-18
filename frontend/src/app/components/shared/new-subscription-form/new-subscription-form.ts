@@ -138,6 +138,16 @@ export class NewSubscriptionFormComponent implements CanComponentDeactivate {
     this.isLoading.set(false);
   }
 
+  /**
+   * Marca el formulario como exitosamente guardado.
+   * Establece el formulario como pristine para permitir navegación sin diálogo de confirmación.
+   * Debe llamarse tras guardar exitosamente en el servidor.
+   */
+  markAsSuccessful(): void {
+    this.form.markAsPristine();
+    this.isLoading.set(false);
+  }
+
   /** Establece un error en el formulario (llamado desde el padre) */
   setError(message: string): void {
     this.formError.set(message);

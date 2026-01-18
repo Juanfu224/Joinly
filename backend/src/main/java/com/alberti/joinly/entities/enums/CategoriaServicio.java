@@ -11,5 +11,5 @@ public enum CategoriaServicio {
     SOFTWARE,
     ALMACENAMIENTO,
     PRODUCTIVIDAD,
-    OTRO
+    OTROS
 }

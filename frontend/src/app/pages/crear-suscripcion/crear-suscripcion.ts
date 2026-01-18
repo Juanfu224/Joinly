@@ -6,7 +6,7 @@ import {
 } from '../../components/shared';
 import type { CanComponentDeactivate } from '../../guards';
 import { SuscripcionService, ToastService } from '../../services';
-import type { CreateSuscripcionRequest, Periodicidad } from '../../models';
+import type { CreateSuscripcionRequest, Periodicidad, SuscripcionResponse } from '../../models';
 
 /**
  * Página para crear una nueva suscripción.
@@ -62,9 +62,15 @@ export class CrearSuscripcionComponent implements CanComponentDeactivate {
     };
 
     this.suscripcionService.crearSuscripcion(request).subscribe({
-      next: () => {
+      next: (response: SuscripcionResponse) => {
+        // Marcar formulario como exitosamente guardado (pristine)
+        this.formComponent()?.markAsSuccessful();
         this.toastService.show('success', 'Suscripción creada exitosamente');
-        this.router.navigate(['/grupos', grupoId], { replaceUrl: true });
+        // Navegar con la suscripción en el state para actualización optimista
+        this.router.navigate(['/grupos', grupoId], {
+          replaceUrl: true,
+          state: { nuevaSuscripcion: response },
+        });
       },
       error: (error) => {
         const msg = error.error?.message || 'Error al crear la suscripción';
