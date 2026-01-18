@@ -9,6 +9,10 @@
 !.env.example
 !.env.prod.example
 
+# Claude configuration (contiene API keys)
+.claude.json
+.claude.json.backup
+
 # Docker
 mysql_data/
 

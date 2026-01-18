@@ -1,0 +1,47 @@
+<main class="p-suscripcion-detalle">
+  <div class="l-contenedor">
+    <!-- Estado de error -->
+    @if (error()) {
+      <section class="p-suscripcion-detalle__error" aria-label="Error al cargar">
+        <div class="p-suscripcion-detalle__error-content">
+          <app-icon name="alert-triangle" size="lg" />
+          <p class="p-suscripcion-detalle__error-message">{{ error() }}</p>
+          <app-button variant="primary" (click)="onReintentar()">
+            Reintentar
+          </app-button>
+        </div>
+      </section>
+    } @else if (suscripcion()) {
+      <!-- Header -->
+      <header class="p-suscripcion-detalle__header">
+        <div class="p-suscripcion-detalle__header-content">
+          <h1 class="p-suscripcion-detalle__title">{{ tituloSuscripcion() }}</h1>
+          <p class="p-suscripcion-detalle__description">{{ descripcionSuscripcion() }}</p>
+        </div>
+      </header>
+
+      <!-- Stat Cards -->
+      <div class="p-suscripcion-detalle__stats">
+        @for (stat of statCards(); track stat.tipo) {
+          <app-subscription-stat-card
+            [tipo]="stat.tipo"
+            [titulo]="stat.titulo"
+            [valor]="stat.valor" />
+        }
+      </div>
+
+      <!-- Miembros -->
+      <app-member-list
+        [members]="miembrosData()"
+        [titulo]="'Miembros'"
+        class="p-suscripcion-detalle__members" />
+
+      <!-- Info Card -->
+      <app-subscription-info-card
+        [info]="infoData()"
+        (acceptRequest)="onAceptarSolicitud($event)"
+        (rejectRequest)="onRechazarSolicitud($event)"
+        class="p-suscripcion-detalle__info" />
+    }
+  </div>
+</main>

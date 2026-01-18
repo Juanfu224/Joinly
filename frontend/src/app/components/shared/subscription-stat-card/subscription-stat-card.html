@@ -1,0 +1,10 @@
+<article class="c-subscription-stat-card" [class]="colorClass()" role="article" [attr.aria-label]="titulo()">
+  <div class="c-subscription-stat-card__icon-wrapper" aria-hidden="true">
+    <app-icon [name]="iconName()" size="md" class="c-subscription-stat-card__icon" />
+  </div>
+
+  <div class="c-subscription-stat-card__content">
+    <h3 class="c-subscription-stat-card__title">{{ titulo() }}</h3>
+    <p class="c-subscription-stat-card__value">{{ valor() }}</p>
+  </div>
+</article>

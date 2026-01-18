@@ -2,9 +2,12 @@ package com.alberti.joinly.controllers;
 
 import com.alberti.joinly.dto.suscripcion.CreateSuscripcionRequest;
 import com.alberti.joinly.dto.suscripcion.PlazaResponse;
+import com.alberti.joinly.dto.suscripcion.SuscripcionDetalleResponse;
 import com.alberti.joinly.dto.suscripcion.SuscripcionResponse;
 import com.alberti.joinly.dto.suscripcion.SuscripcionSummary;
 import com.alberti.joinly.entities.enums.EstadoSuscripcion;
+import com.alberti.joinly.repositories.CredencialRepository;
+import com.alberti.joinly.repositories.SolicitudRepository;
 import com.alberti.joinly.security.CurrentUser;
 import com.alberti.joinly.security.UserPrincipal;
 import com.alberti.joinly.services.SuscripcionService;
@@ -37,6 +40,8 @@ import java.util.List;
 public class SuscripcionController {
 
     private final SuscripcionService suscripcionService;
+    private final CredencialRepository credencialRepository;
+    private final SolicitudRepository solicitudRepository;
 
     @PostMapping
     @Operation(
@@ -101,21 +106,38 @@ public class SuscripcionController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener suscripción por ID")
+    @Operation(summary = "Obtener detalle completo de suscripción por ID",
+            description = "Devuelve toda la información de la suscripción incluyendo miembros, solicitudes y credenciales")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Suscripción encontrada"),
             @ApiResponse(responseCode = "404", description = "Suscripción no encontrada")
     })
-    public ResponseEntity<SuscripcionResponse> getSuscripcion(
+    public ResponseEntity<SuscripcionDetalleResponse> getSuscripcion(
             @Parameter(description = "ID de la suscripción") @PathVariable Long id) {
 
         var suscripcion = suscripcionService.buscarPorIdConPlazas(id)
                 .orElseThrow(() -> new IllegalArgumentException("Suscripción no encontrada con ID: " + id));
 
+        // Obtener datos adicionales
         var plazasDisponibles = suscripcionService.contarPlazasDisponibles(id);
         var plazasOcupadas = suscripcionService.contarPlazasOcupadas(id);
+        var plazasOcupadasList = suscripcionService.listarPlazasOcupadasDeSuscripcion(id);
+        
+        // Obtener credenciales visibles para miembros
+        var credenciales = credencialRepository.findCredencialesVisiblesPorSuscripcion(id);
+        var credencial = credenciales.isEmpty() ? null : credenciales.get(0);
+        
+        // Obtener solicitudes pendientes
+        var solicitudes = solicitudRepository.findSolicitudesPendientesSuscripcion(id);
 
-        return ResponseEntity.ok(SuscripcionResponse.fromEntity(suscripcion, plazasDisponibles, plazasOcupadas));
+        return ResponseEntity.ok(SuscripcionDetalleResponse.fromEntity(
+                suscripcion, 
+                plazasDisponibles, 
+                plazasOcupadas, 
+                credencial,
+                plazasOcupadasList,
+                solicitudes
+        ));
     }
 
     @GetMapping("/unidad/{idUnidad}")

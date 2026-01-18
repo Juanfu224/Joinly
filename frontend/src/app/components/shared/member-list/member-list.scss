@@ -5,6 +5,8 @@
 // Diseño basado en Figma: sección con sombras, bordes y espaciado consistentes.
 // Sigue metodología BEM y arquitectura ITCSS del proyecto.
 
+@use '../../../../styles/01-tools/mixins' as *;
+
 // ---------------------------------------------------------------------------
 // HOST: Encapsulación del componente Angular
 // ---------------------------------------------------------------------------
@@ -40,11 +42,7 @@
   // ELEMENTO: Título - Estilo H4 según Figma (20px, semi-bold)
   // ---------------------------------------------------------------------------
   &__titulo {
-    font-family: var(--font-primaria);
-    font-size: var(--tamano-h4);
-    font-weight: var(--peso-fuente-semi-negrita);
-    line-height: var(--altura-linea-h4);
-    color: var(--color-texto-fuerte);
+    @include heading-4;
     margin: 0;
   }
 
@@ -55,11 +53,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--espaciado-1);
-    font-family: var(--font-primaria);
-    font-size: var(--tamano-texto-grande);
-    font-weight: var(--peso-fuente-regular);
-    line-height: var(--altura-linea-body-large);
-    color: var(--color-texto-base);
+    @include texto-grande;
   }
 
   // ---------------------------------------------------------------------------
@@ -75,11 +69,7 @@
   // ELEMENTO: Mensaje vacío
   // ---------------------------------------------------------------------------
   &__empty {
-    font-family: var(--font-primaria);
-    font-size: var(--tamano-texto-normal);
-    font-weight: var(--peso-fuente-regular);
-    line-height: var(--altura-linea-body-regular);
-    color: var(--color-texto-base);
+    @include texto-regular;
     margin: 0;
     padding: var(--espaciado-4);
     text-align: center;

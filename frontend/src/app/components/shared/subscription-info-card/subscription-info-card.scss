@@ -220,7 +220,7 @@
   justify-content: center;
   padding: var(--espaciado-1) var(--espaciado-2);
   border-radius: var(--radio-medio);
-  font-size: var(--tamano-texto-pequeno);
+  @include texto-pequeno;
   font-weight: var(--peso-fuente-semi-negrita);
   line-height: 1;
   white-space: nowrap;
@@ -325,9 +325,7 @@
 }
 
 .c-subscription-info__request-email {
-  font-size: var(--tamano-caption);
-  line-height: var(--altura-linea-caption);
-  color: var(--text-secondary);
+  @include caption;
   @include truncar-texto;
 }
 

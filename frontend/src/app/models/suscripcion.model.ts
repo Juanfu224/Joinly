@@ -1,23 +1,7 @@
-/**
- * Modelos de datos para Suscripciones
- * 
- * Estos modelos representan las estructuras de datos relacionadas con
- * las suscripciones compartidas en la aplicación Joinly.
- */
-
-/**
- * Estado de una suscripción
- */
 export type EstadoSuscripcion = 'ACTIVA' | 'PAUSADA' | 'CANCELADA' | 'EXPIRADA';
-
-/**
- * Periodicidad de pago de una suscripción
- */
 export type Periodicidad = 'MENSUAL' | 'TRIMESTRAL' | 'ANUAL';
+export type PaymentStatus = 'retenido' | 'liberado' | 'pendiente';
 
-/**
- * Resumen de un servicio de suscripción
- */
 export interface ServicioSummary {
   id: number;
   nombre: string;
@@ -27,10 +11,6 @@ export interface ServicioSummary {
   maxUsuarios: number;
   precioReferencia: number | null;
 }
-
-/**
- * Respuesta completa de una suscripción
- */
 export interface SuscripcionResponse {
   id: number;
   servicio: ServicioSummary;
@@ -54,10 +34,6 @@ export interface SuscripcionResponse {
   plazasDisponibles: number;
   plazasOcupadas: number;
 }
-
-/**
- * Resumen de suscripción
- */
 export interface SuscripcionSummary {
   id: number;
   nombreServicio: string;
@@ -69,10 +45,6 @@ export interface SuscripcionSummary {
   numPlazasTotal: number;
   plazasOcupadas: number;
 }
-
-/**
- * Datos resumidos de una suscripción para mostrar en tarjetas
- */
 export interface SuscripcionCardData {
   id: number;
   nombreServicio: string;
@@ -82,31 +54,73 @@ export interface SuscripcionCardData {
   numPlazasTotal: number;
   estado: EstadoSuscripcion;
 }
-
-/**
- * Datos para crear una nueva suscripción.
- * 
- * Permite identificar el servicio de dos formas:
- * - `idServicio`: ID de un servicio existente en el catálogo
- * - `nombreServicio`: Nombre del servicio (se buscará o creará automáticamente)
- * 
- * Al menos uno de los dos debe estar presente.
- */
 export interface CreateSuscripcionRequest {
-  /** ID de la unidad familiar donde se creará la suscripción */
   idUnidad: number;
-  /** ID del servicio del catálogo (opcional si se proporciona nombreServicio) */
   idServicio?: number;
-  /** Nombre del servicio - se buscará o creará si no existe (opcional si se proporciona idServicio) */
   nombreServicio?: string;
-  /** Precio total de la suscripción */
   precioTotal: number;
-  /** Número total de plazas */
   numPlazasTotal: number;
-  /** Fecha de inicio en formato ISO (YYYY-MM-DD) */
   fechaInicio: string;
-  /** Periodicidad del pago */
   periodicidad: Periodicidad;
-  /** Si el anfitrión ocupará una plaza (default: true) */
   anfitrionOcupaPlaza?: boolean;
+}
+export interface MiembroSuscripcion {
+  id: number;
+  usuario: {
+    id: number;
+    nombreCompleto: string;
+    nombreUsuario: string;
+    email: string;
+    avatar?: string;
+  };
+  fechaUnion: string;
+  esAnfitrion: boolean;
+}
+export interface SolicitudSuscripcion {
+  id: number;
+  usuario: {
+    id: number;
+    nombreCompleto: string;
+    nombreUsuario: string;
+    email: string;
+    avatar?: string;
+  };
+  fechaSolicitud: string;
+  estado: 'PENDIENTE' | 'ACEPTADA' | 'RECHAZADA';
+}
+export interface SuscripcionDetalle {
+  id: number;
+  servicio: ServicioSummary;
+  idUnidad: number;
+  nombreUnidad: string;
+  anfitrion: {
+    id: number;
+    nombreCompleto: string;
+    email: string;
+    nombreUsuario: string;
+    avatar?: string;
+  };
+  precioTotal: number;
+  moneda: string;
+  precioPorPlaza: number;
+  numPlazasTotal: number;
+  plazasDisponibles: number;
+  plazasOcupadas: number;
+  anfitrionOcupaPlaza: boolean;
+  fechaInicio: string;
+  fechaRenovacion: string;
+  periodicidad: Periodicidad;
+  renovacionAutomatica: boolean;
+  estado: EstadoSuscripcion;
+  credenciales: {
+    usuario: string;
+    contrasena: string;
+  } | null;
+  pago: {
+    montoRetenido: number;
+    estado: PaymentStatus;
+    fechaLiberacion: string;
+  };
+  miembros: MiembroSuscripcion[];
+  solicitudes: SolicitudSuscripcion[];
 }

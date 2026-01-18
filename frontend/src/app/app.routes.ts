@@ -1,7 +1,8 @@
 import { Routes, Data } from '@angular/router';
 import { authGuard, pendingChangesGuard } from './guards';
-import { dashboardResolver, grupoDetalleResolver } from './resolvers';
+import { dashboardResolver, grupoDetalleResolver, suscripcionDetalleResolver } from './resolvers';
 import type { ResolvedData, GrupoDetalleData } from './resolvers';
+import type { SuscripcionDetalle } from './models';
 
 /**
  * Configuración de rutas de la aplicación Joinly.
@@ -92,6 +93,20 @@ export const routes: Routes = [
       import('./pages/crear-suscripcion').then((m) => m.CrearSuscripcionComponent),
     title: 'Nueva Suscripción - Joinly',
     data: { breadcrumb: 'Nueva Suscripción' },
+  },
+  {
+    path: 'grupos/:grupoId/suscripciones/:id',
+    canActivate: [authGuard],
+    resolve: { suscripcionData: suscripcionDetalleResolver },
+    loadComponent: () =>
+      import('./pages/suscripcion-detalle').then((m) => m.SuscripcionDetalleComponent),
+    title: 'Detalle de Suscripción - Joinly',
+    data: {
+      breadcrumb: (data: Data) => {
+        const resolved = data['suscripcionData'] as ResolvedData<SuscripcionDetalle> | undefined;
+        return resolved?.data?.servicio.nombre ?? 'Suscripción';
+      },
+    },
   },
 
   // Área de usuario

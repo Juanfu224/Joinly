@@ -73,7 +73,10 @@ public interface SuscripcionRepository extends JpaRepository<Suscripcion, Long> 
 
     @Query("""
         SELECT s FROM Suscripcion s
-        JOIN FETCH s.plazas
+        JOIN FETCH s.servicio
+        JOIN FETCH s.anfitrion
+        JOIN FETCH s.unidad
+        LEFT JOIN FETCH s.plazas
         WHERE s.id = :id
         """)
     Optional<Suscripcion> findByIdConPlazas(@Param("id") Long id);

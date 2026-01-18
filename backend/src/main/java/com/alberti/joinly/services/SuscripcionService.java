@@ -62,6 +62,8 @@ public class SuscripcionService {
     private final UnidadFamiliarRepository unidadFamiliarRepository;
     private final MiembroUnidadRepository miembroUnidadRepository;
     private final UsuarioRepository usuarioRepository;
+    private final CredencialRepository credencialRepository;
+    private final SolicitudRepository solicitudRepository;
 
     /**
      * Busca una suscripción por su ID.
@@ -644,5 +646,15 @@ public class SuscripcionService {
 
     public boolean usuarioTienePlazaEnSuscripcion(Long idSuscripcion, Long idUsuario) {
         return plazaRepository.existsBySuscripcionIdAndUsuarioId(idSuscripcion, idUsuario);
+    }
+
+    /**
+     * Obtiene las plazas ocupadas de una suscripción con usuarios cargados.
+     *
+     * @param idSuscripcion ID de la suscripción
+     * @return Lista de plazas ocupadas ordenadas por número
+     */
+    public List<Plaza> listarPlazasOcupadasDeSuscripcion(Long idSuscripcion) {
+        return plazaRepository.findPlazasOcupadasDeSuscripcion(idSuscripcion);
     }
 }

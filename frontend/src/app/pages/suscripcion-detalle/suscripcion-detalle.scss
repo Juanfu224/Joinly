@@ -1,0 +1,88 @@
+// ==========================================================================
+// PÁGINA: SUSCRIPCIÓN DETALLE (.p-suscripcion-detalle)
+// ==========================================================================
+// Página de detalle de una suscripción compartida.
+// Muestra información completa: estadísticas, miembros, credenciales y solicitudes.
+// Diseño basado en Figma: node-id 1130-2408
+
+@use '../../../styles/00-settings/variables' as *;
+@use '../../../styles/01-tools/mixins' as *;
+
+// ---------------------------------------------------------------------------
+// BLOQUE: .p-suscripcion-detalle
+// ---------------------------------------------------------------------------
+.p-suscripcion-detalle {
+  // El padding lo maneja .l-contenedor
+  // ---------------------------------------------------------------------------
+  // ELEMENTO: Header
+  // ---------------------------------------------------------------------------
+  &__header {
+    margin-bottom: var(--espaciado-6);
+    padding-block: var(--espaciado-6);
+  }
+
+  &__title {
+    @include heading-2;
+    margin: 0 0 var(--espaciado-2) 0;
+  }
+
+  &__description {
+    @include texto-grande;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  // ---------------------------------------------------------------------------
+  // ELEMENTO: Grid de tarjetas de estadísticas
+  // ---------------------------------------------------------------------------
+  &__stats {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--espaciado-5);
+    margin-bottom: var(--espaciado-6);
+
+    @include responder-a('tablet') {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // ELEMENTO: Sección de miembros
+  // ---------------------------------------------------------------------------
+  &__members {
+    margin-bottom: var(--espaciado-6);
+  }
+
+  // ---------------------------------------------------------------------------
+  // ELEMENTO: Card de información
+  // ---------------------------------------------------------------------------
+  &__info {
+    margin-bottom: var(--espaciado-6);
+  }
+
+  // ---------------------------------------------------------------------------
+  // ELEMENTO: Estado de error
+  // ---------------------------------------------------------------------------
+  &__error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    padding: var(--espaciado-8);
+  }
+
+  &__error-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--espaciado-4);
+    max-width: 600px;
+    text-align: center;
+  }
+
+  &__error-message {
+    @include texto-grande;
+    color: var(--text-primary);
+    margin: 0;
+  }
+}

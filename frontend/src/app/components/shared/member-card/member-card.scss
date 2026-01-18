@@ -5,6 +5,8 @@
 // Diseño basado en Figma: fondo morado claro, badge azul con sombra.
 // Sigue metodología BEM y arquitectura ITCSS del proyecto.
 
+@use '../../../../styles/01-tools/mixins' as *;
+
 // ---------------------------------------------------------------------------
 // HOST: Encapsulación del componente Angular
 // ---------------------------------------------------------------------------
@@ -30,7 +32,7 @@
   &__info {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: var(--espaciado-1);
     flex: 1;
     min-inline-size: 0;
   }
@@ -39,34 +41,19 @@
   // ELEMENTO: Nombre del usuario
   // ---------------------------------------------------------------------------
   &__nombre {
-    font-family: var(--font-primaria);
-    font-size: var(--tamano-texto-normal);
-    font-weight: var(--peso-fuente-regular);
-    line-height: var(--altura-linea-body-regular);
+    @include texto-regular;
     color: var(--color-texto-fuerte);
     margin: 0;
-
-    // Truncar texto largo
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    @include truncar-texto;
   }
 
   // ---------------------------------------------------------------------------
   // ELEMENTO: Email del usuario
   // ---------------------------------------------------------------------------
   &__email {
-    font-family: var(--font-primaria);
-    font-size: var(--tamano-caption);
-    font-weight: var(--peso-fuente-regular);
-    line-height: var(--altura-linea-caption);
-    color: var(--color-texto-base);
+    @include caption;
     margin: 0;
-
-    // Truncar texto largo
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    @include truncar-texto;
   }
 
   // ---------------------------------------------------------------------------
@@ -76,12 +63,10 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.5rem 1rem;
+    padding: var(--espaciado-1) var(--espaciado-2);
     border-radius: var(--radio-medio);
-    font-family: var(--font-primaria);
-    font-size: var(--tamano-caption);
+    @include caption;
     font-weight: var(--peso-fuente-semi-negrita);
-    line-height: var(--altura-linea-caption);
     white-space: nowrap;
     flex-shrink: 0;
 

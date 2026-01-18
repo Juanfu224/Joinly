@@ -1,0 +1,93 @@
+// ==========================================================================
+// COMPONENTE: SUBSCRIPTION STAT CARD (.c-subscription-stat-card)
+// ==========================================================================
+// Tarjeta de estadística de suscripción (Renovación, Plazas, Aporte).
+// Diseño basado en Figma: node-id 1251-1942, 1251-1944, 1251-2015
+// Sigue metodología BEM y arquitectura ITCSS del proyecto.
+
+@use '../../../../styles/01-tools/mixins' as *;
+
+// ---------------------------------------------------------------------------
+// HOST: Encapsulación del componente Angular
+// ---------------------------------------------------------------------------
+:host {
+  display: block;
+}
+
+// ---------------------------------------------------------------------------
+// BLOQUE: .c-subscription-stat-card
+// ---------------------------------------------------------------------------
+.c-subscription-stat-card {
+  background-color: var(--bg-secondary);
+  border-radius: var(--radio-grande);
+  padding: var(--espaciado-5);
+  display: flex;
+  align-items: center;
+  gap: var(--espaciado-4);
+  min-height: 120px;
+  // Combinación de sombra 1 + sombra 3 según Figma (consistente con member-list)
+  box-shadow:
+    0 2px 6px 0 rgba(20, 20, 43, 0.06),
+    0 8px 28px 0 rgba(20, 20, 43, 0.1);
+
+  // ---------------------------------------------------------------------------
+  // ELEMENTO: Wrapper del icono
+  // ---------------------------------------------------------------------------
+  &__icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radio-medio);
+    flex-shrink: 0;
+  }
+
+  &__icon {
+    color: var(--bg-secondary);
+  }
+
+  // ---------------------------------------------------------------------------
+  // MODIFICADORES: Variantes de color
+  // ---------------------------------------------------------------------------
+  // Variante Naranja (Renovación)
+  &--naranja &__icon-wrapper {
+    background-color: var(--color-naranja-principal);
+    box-shadow: var(--sombra-naranja);
+  }
+
+  // Variante Morado (Plazas)
+  &--morado &__icon-wrapper {
+    background-color: var(--color-morado-principal);
+    box-shadow: var(--sombra-morado);
+  }
+
+  // Variante Amarillo (Aporte)
+  &--amarillo &__icon-wrapper {
+    background-color: var(--color-amarillo);
+    box-shadow: var(--sombra-amarillo);
+  }
+
+  // ---------------------------------------------------------------------------
+  // ELEMENTO: Contenido
+  // ---------------------------------------------------------------------------
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaciado-1);
+    flex: 1;
+  }
+
+  &__title {
+    @include texto-grande;
+    font-weight: var(--peso-fuente-semi-negrita);
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  &__value {
+    @include texto-grande;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+}

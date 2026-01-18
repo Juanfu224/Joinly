@@ -205,8 +205,11 @@ export class GrupoDetalleComponent implements OnInit {
   /**
    * Navega al detalle de la suscripción.
    */
-  protected onSuscripcionClick(_id: number): void {
-    this.toastService.info('Detalles de suscripción próximamente');
+  protected onSuscripcionClick(id: number): void {
+    const grupoId = this.grupo()?.id;
+    if (grupoId) {
+      this.router.navigate(['/grupos', grupoId, 'suscripciones', id]);
+    }
   }
 
   /**
