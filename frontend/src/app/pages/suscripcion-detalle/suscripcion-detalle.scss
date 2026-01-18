@@ -37,6 +37,25 @@
     margin: 0;
   }
 
+  &__actions {
+    margin-block-start: var(--espaciado-4);
+  }
+
+  &__pending-notice {
+    display: flex;
+    align-items: center;
+    gap: var(--espaciado-2);
+    margin-block-start: var(--espaciado-3);
+    padding: var(--espaciado-3);
+    background-color: var(--color-advertencia-fondo);
+    border-radius: var(--radio-mediano);
+    color: var(--color-advertencia);
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-texto-normal);
+    font-weight: var(--peso-fuente-semi-negrita);
+    line-height: var(--altura-linea-normal);
+  }
+
   // ---------------------------------------------------------------------------
   // ELEMENTO: Grid de tarjetas de estadísticas
   // ---------------------------------------------------------------------------

@@ -322,8 +322,8 @@ class UnidadFamiliarControllerIntegrationTest {
                             .header("Authorization", "Bearer " + adminToken))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$", hasSize(2))) // Admin + Miembro
-                    .andExpect(jsonPath("$[*].usuario.nombre", hasItem("Admin Test")))
-                    .andExpect(jsonPath("$[*].usuario.nombre", hasItem("Miembro Test")));
+                    .andExpect(jsonPath("$[*].usuario.nombreCompleto", hasItem("Admin Test")))
+                    .andExpect(jsonPath("$[*].usuario.nombreCompleto", hasItem("Miembro Test")));
         }
 
         @Test

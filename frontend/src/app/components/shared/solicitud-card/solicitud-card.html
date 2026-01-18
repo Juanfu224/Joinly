@@ -1,0 +1,35 @@
+<article class="c-solicitud-card">
+  <header class="c-solicitud-card__header">
+    <div class="c-solicitud-card__tipo">
+      <app-icon [name]="iconoTipo()" size="sm" />
+      <span class="c-solicitud-card__tipo-texto">{{ textoTipo() }}</span>
+    </div>
+    <span class="c-solicitud-card__badge" [class]="estadoClass()">
+      {{ estadoTexto() }}
+    </span>
+  </header>
+
+  <section class="c-solicitud-card__content">
+    <h3 class="c-solicitud-card__nombre">{{ nombreDestino() }}</h3>
+    <p class="c-solicitud-card__fecha">Solicitada el {{ fechaFormateada() }}</p>
+    @if (solicitud().mensaje) {
+      <p class="c-solicitud-card__mensaje">{{ solicitud().mensaje }}</p>
+    }
+    @if (solicitud().estado === 'RECHAZADA' && solicitud().motivoRechazo) {
+      <p class="c-solicitud-card__motivo-rechazo">
+        <strong>Motivo:</strong> {{ solicitud().motivoRechazo }}
+      </p>
+    }
+  </section>
+
+  @if (puedeCancelar()) {
+    <footer class="c-solicitud-card__footer">
+      <app-button
+        variant="secondary"
+        size="sm"
+        (click)="handleCancel($event)">
+        Cancelar solicitud
+      </app-button>
+    </footer>
+  }
+</article>

@@ -14,19 +14,21 @@
     >
       Información
     </button>
-    <button
-      role="tab"
-      type="button"
-      class="c-subscription-info__tab"
-      [class.c-subscription-info__tab--active]="activeTab() === 'requests'"
-      [attr.aria-selected]="activeTab() === 'requests'"
-      [attr.tabindex]="activeTab() === 'requests' ? 0 : -1"
-      aria-controls="panel-requests"
-      id="tab-requests"
-      (click)="setActiveTab('requests')"
-    >
-      {{ requestsBadgeText() }}
-    </button>
+    @if (isAdmin()) {
+      <button
+        role="tab"
+        type="button"
+        class="c-subscription-info__tab"
+        [class.c-subscription-info__tab--active]="activeTab() === 'requests'"
+        [attr.aria-selected]="activeTab() === 'requests'"
+        [attr.tabindex]="activeTab() === 'requests' ? 0 : -1"
+        aria-controls="panel-requests"
+        id="tab-requests"
+        (click)="setActiveTab('requests')"
+      >
+        {{ requestsBadgeText() }}
+      </button>
+    }
   </header>
 
   <!-- Divider -->
@@ -45,16 +47,22 @@
       <!-- Credenciales de acceso -->
       <article class="c-subscription-info__section">
         <h3 class="c-subscription-info__section-title">Credenciales de acceso</h3>
-        <div class="c-subscription-info__credentials-box">
-          <p class="c-subscription-info__credential">
-            <span class="c-subscription-info__credential-label">Usuario:</span>
-            <span class="c-subscription-info__credential-value">{{ info().credenciales.usuario }}</span>
-          </p>
-          <p class="c-subscription-info__credential">
-            <span class="c-subscription-info__credential-label">Contraseña:</span>
-            <span class="c-subscription-info__credential-value">{{ info().credenciales.contrasena }}</span>
-          </p>
-        </div>
+        @if (hasCredenciales()) {
+          <div class="c-subscription-info__credentials-box">
+            <p class="c-subscription-info__credential">
+              <span class="c-subscription-info__credential-label">Usuario:</span>
+              <span class="c-subscription-info__credential-value">{{ info().credenciales.usuario || 'No definido' }}</span>
+            </p>
+            <p class="c-subscription-info__credential">
+              <span class="c-subscription-info__credential-label">Contraseña:</span>
+              <span class="c-subscription-info__credential-value">{{ info().credenciales.contrasena || 'No definida' }}</span>
+            </p>
+          </div>
+        } @else {
+          <div class="c-subscription-info__credentials-box c-subscription-info__credentials-box--empty">
+            <p class="c-subscription-info__empty-text">El anfitrión no ha compartido credenciales</p>
+          </div>
+        }
       </article>
 
       <!-- Estado del pago -->
@@ -69,11 +77,15 @@
             <div class="c-subscription-info__payment-row">
               <dt class="c-subscription-info__payment-label">Estado</dt>
               <dd class="c-subscription-info__payment-value c-subscription-info__payment-value--status">
-                <span 
+                <span
                   class="c-subscription-info__status-badge"
-                  [class.c-subscription-info__status-badge--retenido]="info().pago.estado === 'retenido'"
-                  [class.c-subscription-info__status-badge--liberado]="info().pago.estado === 'liberado'"
-                  [class.c-subscription-info__status-badge--pendiente]="info().pago.estado === 'pendiente'"
+                  [class.c-subscription-info__status-badge--PENDIENTE]="info().pago.estado === 'PENDIENTE'"
+                  [class.c-subscription-info__status-badge--FALLIDO]="info().pago.estado === 'FALLIDO'"
+                  [class.c-subscription-info__status-badge--RETENIDO]="info().pago.estado === 'RETENIDO'"
+                  [class.c-subscription-info__status-badge--LIBERADO]="info().pago.estado === 'LIBERADO'"
+                  [class.c-subscription-info__status-badge--REEMBOLSADO]="info().pago.estado === 'REEMBOLSADO'"
+                  [class.c-subscription-info__status-badge--REEMBOLSO_PARCIAL]="info().pago.estado === 'REEMBOLSO_PARCIAL'"
+                  [class.c-subscription-info__status-badge--DISPUTADO]="info().pago.estado === 'DISPUTADO'"
                 >
                   {{ paymentStatusText() }}
                 </span>

@@ -8,10 +8,11 @@ import {
   EmptySubscriptionsComponent,
   SubscriptionCardComponent,
   IconComponent,
+  PendingRequestsCardComponent,
 } from '../../components/shared';
-import type { UnidadFamiliar, MiembroUnidadResponse, SuscripcionSummary, SuscripcionCardData, GrupoCardData, SuscripcionResponse } from '../../models';
+import type { UnidadFamiliar, MiembroUnidadResponse, SuscripcionSummary, SuscripcionCardData, GrupoCardData, SuscripcionResponse, SolicitudResponse } from '../../models';
 import { type GrupoDetalleData, type ResolvedData } from '../../resolvers';
-import { UnidadFamiliarService, SuscripcionService, ToastService, ModalService } from '../../services';
+import { UnidadFamiliarService, SuscripcionService, ToastService, ModalService, SolicitudService, AuthService } from '../../services';
 
 /**
  * Estado de navegación para mostrar datos optimistamente.
@@ -34,6 +35,7 @@ interface GrupoNavigationState {
     EmptySubscriptionsComponent,
     SubscriptionCardComponent,
     IconComponent,
+    PendingRequestsCardComponent,
   ],
   templateUrl: './grupo-detalle.html',
   styleUrl: './grupo-detalle.scss',
@@ -44,8 +46,10 @@ export class GrupoDetalleComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly unidadService = inject(UnidadFamiliarService);
   private readonly suscripcionService = inject(SuscripcionService);
+  private readonly solicitudService = inject(SolicitudService);
   private readonly toastService = inject(ToastService);
   private readonly modalService = inject(ModalService);
+  private readonly authService = inject(AuthService);
 
   /**
    * ID del grupo recibido desde la ruta mediante Router Input Binding.
@@ -56,6 +60,7 @@ export class GrupoDetalleComponent implements OnInit {
   protected readonly grupo = signal<UnidadFamiliar | null>(null);
   protected readonly miembros = signal<MiembroUnidadResponse[]>([]);
   protected readonly suscripciones = signal<SuscripcionSummary[]>([]);
+  protected readonly solicitudesPendientes = signal<SolicitudResponse[]>([]);
   protected readonly isLoading = signal(false);
   protected readonly error = signal<string | null>(null);
 
@@ -95,6 +100,11 @@ export class GrupoDetalleComponent implements OnInit {
       this.suscripciones.set(resolved.data.suscripciones);
 
       // Actualización optimista: agregar suscripción recién creada
+
+      // Cargar solicitudes pendientes si es admin
+      if (this.isAdmin()) {
+        this.cargarSolicitudesPendientes();
+      }
       this.aplicarSuscripcionOptimista();
     }
   }
@@ -138,6 +148,16 @@ export class GrupoDetalleComponent implements OnInit {
     }))
   );
 
+  protected readonly isAdmin = computed(() => {
+    const grupoActual = this.grupo();
+    const usuarioActual = this.authService.currentUser();
+    if (!grupoActual || !usuarioActual) return false;
+    // Verificar si el usuario actual es el administrador del grupo
+    return grupoActual.administrador.id === usuarioActual.id;
+  });
+
+  protected readonly hasSolicitudesPendientes = computed(() => this.solicitudesPendientes().length > 0);
+
   protected readonly hasSuscripciones = computed(() => this.suscripciones().length > 0);
 
   protected readonly suscripcionCards = computed<SuscripcionCardData[]>(() =>
@@ -173,11 +193,72 @@ export class GrupoDetalleComponent implements OnInit {
         this.miembros.set(miembros);
         this.suscripciones.set(suscripciones);
         this.isLoading.set(false);
+        
+        // Cargar solicitudes si es admin
+        if (this.isAdmin()) {
+          this.cargarSolicitudesPendientes();
+        }
       },
       error: () => {
         this.error.set('No se pudo cargar el grupo. Intenta de nuevo.');
         this.isLoading.set(false);
         this.toastService.error('Error al cargar el grupo');
+      },
+    });
+  }
+
+  /**
+   * Carga las solicitudes pendientes del grupo
+   */
+  private cargarSolicitudesPendientes(): void {
+    const grupoId = this.grupo()?.id;
+    if (!grupoId) return;
+
+    this.solicitudService.getSolicitudesPendientesGrupo(grupoId).subscribe({
+      next: (solicitudes) => {
+        this.solicitudesPendientes.set(solicitudes);
+      },
+      error: (error) => {
+        // Manejar silenciosamente - puede ser que no haya solicitudes o no tenga permisos
+        console.warn('No se pudieron cargar las solicitudes pendientes:', error);
+        this.solicitudesPendientes.set([]);
+      },
+    });
+  }
+
+  /**
+   * Maneja la aceptación de una solicitud
+   */
+  protected onAceptarSolicitud(solicitud: SolicitudResponse): void {
+    this.solicitudService.aprobarSolicitud(solicitud.id).subscribe({
+      next: () => {
+        this.toastService.show('success', `Solicitud de ${solicitud.solicitante.nombreCompleto} aceptada`);
+        // Recargar datos para mostrar el nuevo miembro
+        const grupoId = Number(this.id());
+        if (grupoId && !isNaN(grupoId)) {
+          this.recargarDatos(grupoId);
+        }
+      },
+      error: () => {
+        this.toastService.error('Error al aceptar la solicitud');
+      },
+    });
+  }
+
+  /**
+   * Maneja el rechazo de una solicitud
+   */
+  protected onRechazarSolicitud(solicitud: SolicitudResponse): void {
+    this.solicitudService.rechazarSolicitud(solicitud.id).subscribe({
+      next: () => {
+        this.toastService.show('info', `Solicitud de ${solicitud.solicitante.nombreCompleto} rechazada`);
+        // Eliminar la solicitud de la lista
+        this.solicitudesPendientes.update(solicitudes => 
+          solicitudes.filter(s => s.id !== solicitud.id)
+        );
+      },
+      error: () => {
+        this.toastService.error('Error al rechazar la solicitud');
       },
     });
   }

@@ -47,6 +47,17 @@
         <app-member-list [members]="membersData()" />
       </section>
 
+      <!-- Sección de solicitudes pendientes (solo para admin) -->
+      @if (isAdmin() && hasSolicitudesPendientes()) {
+        <section class="p-grupo-detalle__solicitudes" aria-labelledby="titulo-solicitudes">
+          <app-pending-requests-card
+            [solicitudes]="solicitudesPendientes()"
+            (acceptRequest)="onAceptarSolicitud($event)"
+            (rejectRequest)="onRechazarSolicitud($event)"
+          />
+        </section>
+      }
+
       <!-- Sección de suscripciones -->
       <section class="p-grupo-detalle__suscripciones" aria-labelledby="titulo-suscripciones">
         <header class="p-grupo-detalle__suscripciones-header">

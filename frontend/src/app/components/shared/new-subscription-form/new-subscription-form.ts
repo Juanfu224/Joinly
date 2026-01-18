@@ -25,7 +25,7 @@ export interface NewSubscriptionFormValue {
   nombre: string;
   precioTotal: number;
   plazas: number;
-  periodicidad: 'MENSUAL' | 'ANUAL';
+  periodicidad: 'MENSUAL' | 'TRIMESTRAL' | 'ANUAL';
   credencialUsuario?: string;
   credencialPassword?: string;
 }
@@ -62,6 +62,7 @@ export class NewSubscriptionFormComponent implements CanComponentDeactivate {
 
   readonly periodicidadOptions: SelectOption[] = [
     { value: 'MENSUAL', label: 'Mensual' },
+    { value: 'TRIMESTRAL', label: 'Trimestral' },
     { value: 'ANUAL', label: 'Anual' },
   ];
 
@@ -70,7 +71,7 @@ export class NewSubscriptionFormComponent implements CanComponentDeactivate {
       nombre: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
       precioTotal: [null as number | null, [Validators.required, Validators.min(0.01), Validators.max(9999)]],
       plazas: [null as number | null, [Validators.required, Validators.min(1), Validators.max(20)]],
-      periodicidad: ['MENSUAL' as 'MENSUAL' | 'ANUAL', [Validators.required]],
+      periodicidad: ['MENSUAL' as 'MENSUAL' | 'TRIMESTRAL' | 'ANUAL', [Validators.required]],
       credencialUsuario: [''],
       credencialPassword: [''],
     },

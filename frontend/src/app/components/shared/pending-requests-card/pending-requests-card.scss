@@ -1,0 +1,162 @@
+@use '../../../../styles/01-tools/mixins' as *;
+
+// ==========================================================================
+// COMPONENTE: PENDING-REQUESTS-CARD
+// ==========================================================================
+// Tarjeta que muestra solicitudes pendientes de unión al grupo
+// Solo visible para el administrador del grupo
+
+:host {
+  display: block;
+}
+
+.c-pending-requests {
+  background-color: var(--bg-secondary);
+  border-radius: var(--radio-grande);
+  box-shadow: var(--sombra-1), var(--sombra-3);
+  overflow: hidden;
+  @include transicion((background-color, box-shadow));
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Header
+// ---------------------------------------------------------------------------
+.c-pending-requests__header {
+  padding: var(--espaciado-4);
+  background-color: var(--color-superficie-morada);
+  border-bottom: 1px solid var(--color-borde-suave);
+}
+
+.c-pending-requests__header-content {
+  display: flex;
+  align-items: center;
+  gap: var(--espaciado-2);
+}
+
+.c-pending-requests__title {
+  @include heading-4;
+  color: var(--text-primary);
+  margin: 0;
+  flex: 1;
+}
+
+.c-pending-requests__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding: 0 var(--espaciado-1);
+  background-color: var(--color-principal);
+  color: var(--color-blanco);
+  border-radius: var(--radio-completo);
+  font-family: var(--font-primaria);
+  font-size: var(--tamano-texto-pequeno);
+  font-weight: var(--peso-fuente-semi-negrita);
+  line-height: 1;
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Content
+// ---------------------------------------------------------------------------
+.c-pending-requests__content {
+  padding: var(--espaciado-4);
+}
+
+.c-pending-requests__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.c-pending-requests__item {
+  display: block;
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Card (cada solicitud)
+// ---------------------------------------------------------------------------
+.c-pending-requests__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-3);
+  padding: var(--espaciado-3);
+  background-color: var(--bg-primary);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-medio);
+  @include transicion(border-color);
+
+  &:hover {
+    border-color: var(--color-borde-fuerte);
+  }
+
+  // En pantallas medianas y grandes, layout horizontal
+  @media (min-width: 37.5rem) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.c-pending-requests__user {
+  display: flex;
+  gap: var(--espaciado-3);
+  flex: 1;
+  min-width: 0;
+}
+
+.c-pending-requests__user-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-1);
+  min-width: 0;
+}
+
+.c-pending-requests__user-name {
+  @include texto-regular;
+  color: var(--text-primary);
+  font-weight: var(--peso-fuente-medio);
+  margin: 0;
+  @include truncar-texto;
+}
+
+.c-pending-requests__user-email {
+  @include caption;
+  margin: 0;
+  @include truncar-texto;
+}
+
+.c-pending-requests__message {
+  @include texto-pequeno;
+  color: var(--text-secondary);
+  margin: 0;
+  margin-top: var(--espaciado-1);
+  font-style: italic;
+}
+
+.c-pending-requests__actions {
+  display: flex;
+  gap: var(--espaciado-2);
+  flex-shrink: 0;
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTO: Empty state
+// ---------------------------------------------------------------------------
+.c-pending-requests__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+  padding: var(--espaciado-4);
+}
+
+.c-pending-requests__empty-text {
+  @include texto-grande;
+  color: var(--text-secondary);
+  margin: 0;
+  text-align: center;
+}

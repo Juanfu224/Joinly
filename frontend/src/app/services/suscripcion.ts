@@ -33,11 +33,12 @@ export class SuscripcionService {
     return this.api.get<SuscripcionDetalle>(`suscripciones/${id}`);
   }
 
-  aceptarSolicitud(idSuscripcion: number, idSolicitud: number): Observable<void> {
-    return this.api.post<void>(`suscripciones/${idSuscripcion}/solicitudes/${idSolicitud}/aceptar`, {});
+  aceptarSolicitud(idSolicitud: number): Observable<void> {
+    return this.api.post<void>(`solicitudes/${idSolicitud}/aprobar`, {});
   }
 
-  rechazarSolicitud(idSuscripcion: number, idSolicitud: number): Observable<void> {
-    return this.api.post<void>(`suscripciones/${idSuscripcion}/solicitudes/${idSolicitud}/rechazar`, {});
+  rechazarSolicitud(idSolicitud: number, motivo?: string): Observable<void> {
+    const body = motivo ? { motivoRechazo: motivo } : {};
+    return this.api.post<void>(`solicitudes/${idSolicitud}/rechazar`, body);
   }
 }

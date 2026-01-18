@@ -255,7 +255,9 @@ class SuscripcionControllerIntegrationTest {
                     (short) 5,
                     LocalDate.now().plusDays(1),
                     Periodicidad.MENSUAL,
-                    true
+                    true,
+                    null, // credencialUsuario
+                    null  // credencialPassword
             );
 
             mockMvc.perform(post(API_SUSCRIPCIONES)
@@ -280,7 +282,9 @@ class SuscripcionControllerIntegrationTest {
                     (short) 4,
                     LocalDate.now().plusDays(1),
                     Periodicidad.MENSUAL,
-                    true
+                    true,
+                    null,
+                    null
             );
 
             mockMvc.perform(post(API_SUSCRIPCIONES)
@@ -300,7 +304,9 @@ class SuscripcionControllerIntegrationTest {
                     (short) 4,
                     LocalDate.now().plusDays(1),
                     Periodicidad.MENSUAL,
-                    true
+                    true,
+                    null,
+                    null
             );
 
             mockMvc.perform(post(API_SUSCRIPCIONES)
@@ -321,7 +327,9 @@ class SuscripcionControllerIntegrationTest {
                     (short) 3,
                     LocalDate.now().plusDays(1),
                     Periodicidad.MENSUAL,
-                    true
+                    true,
+                    null,
+                    null
             );
 
             mockMvc.perform(post(API_SUSCRIPCIONES)
@@ -331,7 +339,7 @@ class SuscripcionControllerIntegrationTest {
                     .andExpect(status().isCreated())
                     .andExpect(jsonPath("$.id").isNumber())
                     .andExpect(jsonPath("$.servicio.nombre").value("Mi Servicio Personalizado"))
-                    .andExpect(jsonPath("$.servicio.categoria").value("OTRO"))
+                    .andExpect(jsonPath("$.servicio.categoria").value("OTROS"))
                     .andExpect(jsonPath("$.numPlazasTotal").value(3))
                     .andExpect(jsonPath("$.estado").value("ACTIVA"));
         }
@@ -347,7 +355,9 @@ class SuscripcionControllerIntegrationTest {
                     (short) 4,
                     LocalDate.now().plusDays(1),
                     Periodicidad.MENSUAL,
-                    true
+                    true,
+                    null,
+                    null
             );
 
             mockMvc.perform(post(API_SUSCRIPCIONES)
@@ -441,7 +451,7 @@ class SuscripcionControllerIntegrationTest {
                             .header("Authorization", "Bearer " + miembroToken))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.estado").value("OCUPADA"))
-                    .andExpect(jsonPath("$.usuario.nombre").value("Miembro"));
+                    .andExpect(jsonPath("$.usuario.nombreCompleto").value("Miembro"));
         }
 
         @Test

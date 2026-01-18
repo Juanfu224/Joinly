@@ -279,7 +279,7 @@ class SolicitudControllerIntegrationTest {
         @Test
         @DisplayName("Debe listar solicitudes pendientes del grupo")
         void debeListarSolicitudesPendientes() throws Exception {
-            when(solicitudService.listarSolicitudesPendientesGrupo(100L))
+            when(solicitudService.listarSolicitudesPendientesGrupo(anyLong(), eq(100L)))
                     .thenReturn(List.of(solicitudGrupo));
 
             mockMvc.perform(get("/api/v1/solicitudes/grupo/100/pendientes"))

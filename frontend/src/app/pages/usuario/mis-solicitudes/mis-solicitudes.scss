@@ -1,0 +1,138 @@
+@use '../../../../styles/01-tools/mixins' as *;
+
+// ==========================================================================
+// PÁGINA: MIS-SOLICITUDES
+// ==========================================================================
+// Página de gestión de solicitudes del usuario (grupos y suscripciones)
+
+.p-mis-solicitudes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-4);
+  padding: var(--espaciado-4);
+
+  @include responder-a('tablet') {
+    padding: var(--espaciado-6);
+  }
+
+  // ==========================================================================
+  // ELEMENTO: Header
+  // ==========================================================================
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaciado-2);
+  }
+
+  &__title {
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-h2);
+    font-weight: var(--peso-fuente-negrita);
+    line-height: var(--altura-linea-h2);
+    color: var(--text-primary);
+    margin: 0;
+
+    @include responder-a('tablet') {
+      font-size: var(--tamano-h1);
+      line-height: var(--altura-linea-h1);
+    }
+  }
+
+  &__description {
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-texto-normal);
+    font-weight: var(--peso-fuente-regular);
+    line-height: var(--altura-linea-normal);
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  // ==========================================================================
+  // ELEMENTO: Filtros
+  // ==========================================================================
+
+  &__filters {
+    display: flex;
+    gap: var(--espaciado-3);
+    flex-wrap: wrap;
+  }
+
+  &__filter-group {
+    display: flex;
+    gap: var(--espaciado-2);
+    flex-wrap: wrap;
+  }
+
+  &__filter-btn {
+    padding: var(--espaciado-2) var(--espaciado-3);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radio-mediano);
+    background-color: var(--bg-secondary);
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-texto-normal);
+    font-weight: var(--peso-fuente-regular);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition:
+      background-color var(--duracion-base) var(--transicion-estandar),
+      border-color var(--duracion-base) var(--transicion-estandar),
+      color var(--duracion-base) var(--transicion-estandar);
+
+    &:hover {
+      background-color: var(--bg-terciary);
+      border-color: var(--color-principal);
+    }
+
+    &--active {
+      background-color: var(--color-principal);
+      border-color: var(--color-principal);
+      color: var(--color-blanco);
+      font-weight: var(--peso-fuente-semi-negrita);
+    }
+  }
+
+  // ==========================================================================
+  // ELEMENTO: Tabs
+  // ==========================================================================
+
+  &__tabs {
+    flex: 1;
+  }
+
+  // ==========================================================================
+  // ELEMENTO: Grid de solicitudes
+  // ==========================================================================
+
+  &__grid {
+    display: grid;
+    gap: var(--espaciado-4);
+    grid-template-columns: 1fr;
+
+    @include responder-a('tablet') {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include responder-a('escritorio') {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  // ==========================================================================
+  // ELEMENTO: Estado vacío
+  // ==========================================================================
+
+  &__empty {
+    padding: var(--espaciado-6);
+    text-align: center;
+  }
+
+  &__empty-text {
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-texto-normal);
+    font-weight: var(--peso-fuente-regular);
+    line-height: var(--altura-linea-normal);
+    color: var(--text-secondary);
+    margin: 0;
+  }
+}

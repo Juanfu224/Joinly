@@ -162,9 +162,10 @@ public class SolicitudController {
             @ApiResponse(responseCode = "200", description = "Lista de solicitudes pendientes")
     })
     public ResponseEntity<List<SolicitudResponse>> listarSolicitudesPendientesGrupo(
+            @CurrentUser UserPrincipal currentUser,
             @Parameter(description = "ID de la unidad familiar") @PathVariable Long idUnidad) {
 
-        var solicitudes = solicitudService.listarSolicitudesPendientesGrupo(idUnidad)
+        var solicitudes = solicitudService.listarSolicitudesPendientesGrupo(idUnidad, currentUser.getId())
                 .stream()
                 .map(SolicitudResponse::fromEntity)
                 .toList();

@@ -28,7 +28,10 @@ export {
 
 export {
   type EstadoSolicitud,
+  type TipoSolicitud,
   type CreateSolicitudGrupoRequest,
+  type CreateSolicitudSuscripcionRequest,
+  type UnidadFamiliarSummary,
   type SolicitudResponse,
 } from './solicitud.model';
 

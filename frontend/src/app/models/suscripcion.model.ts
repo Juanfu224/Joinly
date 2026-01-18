@@ -1,6 +1,13 @@
 export type EstadoSuscripcion = 'ACTIVA' | 'PAUSADA' | 'CANCELADA' | 'EXPIRADA';
 export type Periodicidad = 'MENSUAL' | 'TRIMESTRAL' | 'ANUAL';
-export type PaymentStatus = 'retenido' | 'liberado' | 'pendiente';
+export type PaymentStatus =
+  | 'PENDIENTE'
+  | 'FALLIDO'
+  | 'RETENIDO'
+  | 'LIBERADO'
+  | 'REEMBOLSADO'
+  | 'REEMBOLSO_PARCIAL'
+  | 'DISPUTADO';
 
 export interface ServicioSummary {
   id: number;
@@ -63,6 +70,8 @@ export interface CreateSuscripcionRequest {
   fechaInicio: string;
   periodicidad: Periodicidad;
   anfitrionOcupaPlaza?: boolean;
+  credencialUsuario?: string;
+  credencialPassword?: string;
 }
 export interface MiembroSuscripcion {
   id: number;

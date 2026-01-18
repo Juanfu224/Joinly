@@ -12,7 +12,14 @@ import { ButtonComponent } from '../button/button';
 /**
  * Estado del pago de una suscripción
  */
-export type PaymentStatus = 'retenido' | 'liberado' | 'pendiente';
+export type PaymentStatus =
+  | 'PENDIENTE'
+  | 'FALLIDO'
+  | 'RETENIDO'
+  | 'LIBERADO'
+  | 'REEMBOLSADO'
+  | 'REEMBOLSO_PARCIAL'
+  | 'DISPUTADO';
 
 /**
  * Datos de las credenciales de acceso de una suscripción
@@ -89,6 +96,11 @@ export class SubscriptionInfoCardComponent {
   info = input.required<SubscriptionInfoData>();
 
   /**
+   * Indica si el usuario actual es administrador (anfitrión) de la suscripción
+   */
+  isAdmin = input<boolean>(false);
+
+  /**
    * Evento emitido cuando se acepta una solicitud de unión
    */
   acceptRequest = output<JoinRequest>();
@@ -102,6 +114,14 @@ export class SubscriptionInfoCardComponent {
    * Signal que controla la pestaña activa: 'info' o 'requests'
    */
   protected readonly activeTab = signal<'info' | 'requests'>('info');
+
+  /**
+   * Verifica si hay credenciales configuradas
+   */
+  protected readonly hasCredenciales = computed(() => {
+    const cred = this.info().credenciales;
+    return !!(cred.usuario?.trim() || cred.contrasena?.trim());
+  });
 
   /**
    * Número de solicitudes pendientes
@@ -122,11 +142,15 @@ export class SubscriptionInfoCardComponent {
   protected readonly paymentStatusText = computed(() => {
     const estado = this.info().pago.estado;
     const textos: Record<PaymentStatus, string> = {
-      retenido: 'Retenido',
-      liberado: 'Liberado',
-      pendiente: 'Pendiente',
+      PENDIENTE: 'Pendiente',
+      FALLIDO: 'Fallido',
+      RETENIDO: 'Retenido',
+      LIBERADO: 'Liberado',
+      REEMBOLSADO: 'Reembolsado',
+      REEMBOLSO_PARCIAL: 'Reembolso parcial',
+      DISPUTADO: 'Disputado',
     };
-    return textos[estado];
+    return textos[estado] ?? 'Desconocido';
   });
 
   /**

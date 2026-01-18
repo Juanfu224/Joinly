@@ -137,7 +137,7 @@ export class ResponsiveTestComponent {
     },
     pago: {
       montoRetenido: 4.25,
-      estado: 'retenido',
+      estado: 'RETENIDO',
       fechaLiberacion: '2026-01-15',
     },
     solicitudes: [] as JoinRequest[],

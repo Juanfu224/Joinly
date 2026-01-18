@@ -4,7 +4,7 @@ import { IconComponent } from '../../components/shared';
 
 /**
  * Layout para el área de usuario con navegación lateral.
- * Rutas hijas: /usuario/perfil, /usuario/configuracion, /usuario/notificaciones
+ * Rutas hijas: /usuario/perfil, /usuario/configuracion, /usuario/notificaciones, /usuario/solicitudes
  */
 @Component({
   selector: 'app-usuario-layout',

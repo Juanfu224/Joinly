@@ -150,7 +150,9 @@ class SuscripcionServiceTest {
                     (short) 5,
                     LocalDate.now(),
                     Periodicidad.MENSUAL,
-                    true
+                    true,
+                    null,
+                    null
             );
 
             // Then
@@ -204,7 +206,9 @@ class SuscripcionServiceTest {
                     (short) 5,
                     LocalDate.now(),
                     Periodicidad.MENSUAL,
-                    false // anfitrión NO ocupa plaza
+                    false, // anfitrión NO ocupa plaza
+                    null,
+                    null
             );
 
             // Then
@@ -235,7 +239,7 @@ class SuscripcionServiceTest {
             // When/Then
             assertThatThrownBy(() -> suscripcionService.crearSuscripcion(
                     10L, 1L, 100L, new BigDecimal("17.99"), (short) 5,
-                    LocalDate.now(), Periodicidad.MENSUAL, true))
+                    LocalDate.now(), Periodicidad.MENSUAL, true, null, null))
                     .isInstanceOf(UnauthorizedException.class)
                     .hasMessageContaining("miembro activo");
         }
@@ -253,7 +257,7 @@ class SuscripcionServiceTest {
             // When/Then - servicio permite máximo 5, intentamos crear 10
             assertThatThrownBy(() -> suscripcionService.crearSuscripcion(
                     10L, 1L, 100L, new BigDecimal("17.99"), (short) 10,
-                    LocalDate.now(), Periodicidad.MENSUAL, true))
+                    LocalDate.now(), Periodicidad.MENSUAL, true, null, null))
                     .isInstanceOf(BusinessException.class)
                     .hasMessageContaining("excede el máximo");
         }
@@ -272,7 +276,7 @@ class SuscripcionServiceTest {
             // When/Then
             assertThatThrownBy(() -> suscripcionService.crearSuscripcion(
                     10L, 1L, 100L, new BigDecimal("17.99"), (short) 5,
-                    LocalDate.now(), Periodicidad.MENSUAL, true))
+                    LocalDate.now(), Periodicidad.MENSUAL, true, null, null))
                     .isInstanceOf(LimiteAlcanzadoException.class)
                     .hasMessageContaining("límite máximo");
         }

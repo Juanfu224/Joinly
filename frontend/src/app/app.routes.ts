@@ -153,6 +153,13 @@ export const routes: Routes = [
         title: 'Notificaciones - Joinly',
         data: { breadcrumb: 'Notificaciones' },
       },
+      {
+        path: 'solicitudes',
+        loadComponent: () =>
+          import('./pages/usuario/mis-solicitudes').then((m) => m.MisSolicitudesComponent),
+        title: 'Mis Solicitudes - Joinly',
+        data: { breadcrumb: 'Solicitudes' },
+      },
     ],
   },
 

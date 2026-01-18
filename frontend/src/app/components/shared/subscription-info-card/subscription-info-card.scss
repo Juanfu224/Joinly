@@ -151,6 +151,12 @@
   padding: var(--espaciado-3);
   background-color: var(--color-superficie-morada);
   border-radius: var(--radio-medio);
+
+  &--empty {
+    align-items: center;
+    justify-content: center;
+    min-height: 4rem;
+  }
 }
 
 .c-subscription-info__credential {
@@ -225,8 +231,20 @@
   line-height: 1;
   white-space: nowrap;
 
-  // Estado retenido (morado)
-  &--retenido {
+  // Estado pendiente (amarillo/advertencia)
+  &--PENDIENTE {
+    background-color: var(--color-advertencia);
+    color: var(--text-primary);
+  }
+
+  // Estado fallido (rojo)
+  &--FALLIDO {
+    background-color: var(--color-error);
+    color: var(--color-blanco);
+  }
+
+  // Estado retenido (morado principal)
+  &--RETENIDO {
     background-color: var(--color-principal);
     color: var(--color-blanco);
     box-shadow:
@@ -234,14 +252,26 @@
       0 10px 15px -3px rgba(147, 51, 234, 0.3);
   }
 
-  // Estado liberado (verde)
-  &--liberado {
+  // Estado liberado (verde éxito)
+  &--LIBERADO {
     background-color: var(--color-exito);
     color: var(--color-blanco);
   }
 
-  // Estado pendiente (amarillo)
-  &--pendiente {
+  // Estado reembolsado (azul información)
+  &--REEMBOLSADO {
+    background-color: var(--color-informacion);
+    color: var(--color-blanco);
+  }
+
+  // Estado reembolso parcial (azul información)
+  &--REEMBOLSO_PARCIAL {
+    background-color: var(--color-informacion);
+    color: var(--color-blanco);
+  }
+
+  // Estado disputado (naranja advertencia)
+  &--DISPUTADO {
     background-color: var(--color-advertencia);
     color: var(--text-primary);
   }

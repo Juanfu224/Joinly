@@ -79,6 +79,17 @@
 }
 
 // ---------------------------------------------------------------------------
+// SECCIÓN DE SOLICITUDES PENDIENTES
+// ---------------------------------------------------------------------------
+.p-grupo-detalle__solicitudes {
+  margin-block-end: var(--espaciado-6);
+
+  @include responder-a('tablet') {
+    margin-block-end: var(--espaciado-8);
+  }
+}
+
+// ---------------------------------------------------------------------------
 // SECCIÓN DE SUSCRIPCIONES
 // ---------------------------------------------------------------------------
 .p-grupo-detalle__suscripciones {

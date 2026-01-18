@@ -55,7 +55,15 @@ public record CreateSuscripcionRequest(
         Periodicidad periodicidad,
         
         @Schema(description = "Si el anfitrión ocupará una plaza (default: true)", example = "true")
-        Boolean anfitrionOcupaPlaza
+        Boolean anfitrionOcupaPlaza,
+        
+        @Size(max = 255, message = "El usuario de la credencial no puede superar 255 caracteres")
+        @Schema(description = "Usuario o email de acceso al servicio (opcional)", example = "ejemplo@gmail.com")
+        String credencialUsuario,
+        
+        @Size(max = 500, message = "La contraseña de la credencial no puede superar 500 caracteres")
+        @Schema(description = "Contraseña de acceso al servicio (opcional)", example = "ClaveSecreta1234")
+        String credencialPassword
 ) {
     /**
      * Constructor compacto con validación y valores por defecto.
@@ -64,6 +72,16 @@ public record CreateSuscripcionRequest(
         if (anfitrionOcupaPlaza == null) {
             anfitrionOcupaPlaza = true;
         }
+    }
+    
+    /**
+     * Verifica si se proporcionaron credenciales válidas.
+     *
+     * @return true si tanto usuario como contraseña están presentes y no están vacíos
+     */
+    public boolean tieneCredencialesValidas() {
+        return credencialUsuario != null && !credencialUsuario.isBlank() &&
+               credencialPassword != null && !credencialPassword.isBlank();
     }
     
     /**

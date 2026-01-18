@@ -59,6 +59,8 @@ export class CrearSuscripcionComponent implements CanComponentDeactivate {
       periodicidad: data.periodicidad as Periodicidad,
       fechaInicio: new Date().toISOString().split('T')[0],
       anfitrionOcupaPlaza: true,
+      credencialUsuario: data.credencialUsuario,
+      credencialPassword: data.credencialPassword,
     };
 
     this.suscripcionService.crearSuscripcion(request).subscribe({

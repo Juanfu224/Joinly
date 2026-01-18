@@ -13,7 +13,7 @@ import {
 } from '../../components/shared';
 import type { SuscripcionDetalle } from '../../models';
 import { type ResolvedData } from '../../resolvers';
-import { SuscripcionService, ToastService } from '../../services';
+import { SuscripcionService, ToastService, AuthService, SolicitudService } from '../../services';
 
 @Component({
   selector: 'app-suscripcion-detalle',
@@ -32,7 +32,9 @@ import { SuscripcionService, ToastService } from '../../services';
 export class SuscripcionDetalleComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly suscripcionService = inject(SuscripcionService);
+  private readonly solicitudService = inject(SolicitudService);
   private readonly toastService = inject(ToastService);
+  private readonly authService = inject(AuthService);
 
   readonly id = input.required<string>();
   readonly grupoId = input.required<string>();
@@ -40,6 +42,31 @@ export class SuscripcionDetalleComponent implements OnInit {
   protected readonly suscripcion = signal<SuscripcionDetalle | null>(null);
   protected readonly isLoading = signal(false);
   protected readonly error = signal<string | null>(null);
+  protected readonly tieneSolicitudPendiente = signal(false);
+
+  protected readonly esAnfitrion = computed(() => {
+    const sub = this.suscripcion();
+    const currentUser = this.authService.currentUser();
+    if (!sub || !currentUser) return false;
+    return sub.anfitrion.id === currentUser.id;
+  });
+
+  protected readonly esMiembro = computed(() => {
+    const sub = this.suscripcion();
+    const currentUser = this.authService.currentUser();
+    if (!sub || !currentUser) return false;
+    return sub.miembros.some(m => m.usuario.id === currentUser.id);
+  });
+
+  protected readonly puedeSolicitarPlaza = computed(() => {
+    const sub = this.suscripcion();
+    if (!sub) return false;
+    if (this.esAnfitrion() || this.esMiembro()) return false;
+    if (sub.plazasDisponibles === 0) return false;
+    if (this.tieneSolicitudPendiente()) return false;
+    if (sub.estado !== 'ACTIVA') return false;
+    return true;
+  });
 
   ngOnInit(): void {
     const resolved = this.route.snapshot.data['suscripcionData'] as ResolvedData<SuscripcionDetalle>;
@@ -49,7 +76,22 @@ export class SuscripcionDetalleComponent implements OnInit {
       this.toastService.error(resolved.error);
     } else if (resolved.data) {
       this.suscripcion.set(resolved.data);
+      this.verificarSolicitudPendiente();
     }
+  }
+
+  private verificarSolicitudPendiente(): void {
+    const subId = this.suscripcion()?.id;
+    if (!subId) return;
+
+    this.solicitudService.tieneSolicitudPendienteSuscripcion(subId).subscribe({
+      next: (tienePendiente) => {
+        this.tieneSolicitudPendiente.set(tienePendiente);
+      },
+      error: () => {
+        this.tieneSolicitudPendiente.set(false);
+      },
+    });
   }
 
   protected readonly tituloSuscripcion = computed(() =>
@@ -113,7 +155,7 @@ export class SuscripcionDetalleComponent implements OnInit {
     if (!sub) {
       return {
         credenciales: { usuario: '', contrasena: '' },
-        pago: { montoRetenido: 0, estado: 'pendiente', fechaLiberacion: '' },
+        pago: { montoRetenido: 0, estado: 'PENDIENTE', fechaLiberacion: '' },
         solicitudes: [],
       };
     }
@@ -131,13 +173,10 @@ export class SuscripcionDetalleComponent implements OnInit {
   });
 
   protected onAceptarSolicitud(request: JoinRequest): void {
-    const subId = this.suscripcion()?.id;
-    if (!subId) return;
-
-    this.suscripcionService.aceptarSolicitud(subId, request.id).subscribe({
+    this.suscripcionService.aceptarSolicitud(request.id).subscribe({
       next: () => {
         this.toastService.success('Solicitud aceptada');
-        this.recargarDatos(subId);
+        this.recargarDatos();
       },
       error: () => {
         this.toastService.error('Error al aceptar la solicitud');
@@ -146,13 +185,10 @@ export class SuscripcionDetalleComponent implements OnInit {
   }
 
   protected onRechazarSolicitud(request: JoinRequest): void {
-    const subId = this.suscripcion()?.id;
-    if (!subId) return;
-
-    this.suscripcionService.rechazarSolicitud(subId, request.id).subscribe({
+    this.suscripcionService.rechazarSolicitud(request.id).subscribe({
       next: () => {
         this.toastService.success('Solicitud rechazada');
-        this.recargarDatos(subId);
+        this.recargarDatos();
       },
       error: () => {
         this.toastService.error('Error al rechazar la solicitud');
@@ -160,10 +196,13 @@ export class SuscripcionDetalleComponent implements OnInit {
     });
   }
 
-  private recargarDatos(id: number): void {
+  private recargarDatos(): void {
+    const subId = this.suscripcion()?.id ?? Number(this.id());
+    if (!subId || isNaN(subId)) return;
+
     this.isLoading.set(true);
 
-    this.suscripcionService.getSuscripcionById(id).subscribe({
+    this.suscripcionService.getSuscripcionById(subId).subscribe({
       next: (data) => {
         this.suscripcion.set(data);
         this.isLoading.set(false);
@@ -175,10 +214,27 @@ export class SuscripcionDetalleComponent implements OnInit {
     });
   }
 
+  protected onSolicitarPlaza(): void {
+    const subId = this.suscripcion()?.id;
+    if (!subId) return;
+
+    this.isLoading.set(true);
+
+    this.solicitudService.solicitarPlazaSuscripcion({ idSuscripcion: subId }).subscribe({
+      next: () => {
+        this.toastService.success('Solicitud enviada correctamente. El anfitrión la revisará pronto.');
+        this.tieneSolicitudPendiente.set(true);
+        this.recargarDatos();
+      },
+      error: (err) => {
+        const mensaje = err.error?.message || 'Error al enviar la solicitud';
+        this.toastService.error(mensaje);
+        this.isLoading.set(false);
+      },
+    });
+  }
+
   protected onReintentar(): void {
-    const subId = Number(this.id());
-    if (subId && !isNaN(subId)) {
-      this.recargarDatos(subId);
-    }
+    this.recargarDatos();
   }
 }

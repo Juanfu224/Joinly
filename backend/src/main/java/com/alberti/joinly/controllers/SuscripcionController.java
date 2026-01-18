@@ -10,6 +10,7 @@ import com.alberti.joinly.repositories.CredencialRepository;
 import com.alberti.joinly.repositories.SolicitudRepository;
 import com.alberti.joinly.security.CurrentUser;
 import com.alberti.joinly.security.UserPrincipal;
+import com.alberti.joinly.services.CredencialService;
 import com.alberti.joinly.services.SuscripcionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -42,6 +43,7 @@ public class SuscripcionController {
     private final SuscripcionService suscripcionService;
     private final CredencialRepository credencialRepository;
     private final SolicitudRepository solicitudRepository;
+    private final CredencialService credencialService;
 
     @PostMapping
     @Operation(
@@ -86,7 +88,9 @@ public class SuscripcionController {
                         request.numPlazasTotal(),
                         request.fechaInicio(),
                         request.periodicidad(),
-                        request.anfitrionOcupaPlaza())
+                        request.anfitrionOcupaPlaza(),
+                        request.credencialUsuario(),
+                        request.credencialPassword())
                 : suscripcionService.crearSuscripcionPorNombre(
                         request.idUnidad(),
                         currentUser.getId(),
@@ -95,7 +99,9 @@ public class SuscripcionController {
                         request.numPlazasTotal(),
                         request.fechaInicio(),
                         request.periodicidad(),
-                        request.anfitrionOcupaPlaza());
+                        request.anfitrionOcupaPlaza(),
+                        request.credencialUsuario(),
+                        request.credencialPassword());
 
         var plazasDisponibles = suscripcionService.contarPlazasDisponibles(suscripcion.getId());
         var plazasOcupadas = suscripcionService.contarPlazasOcupadas(suscripcion.getId());
@@ -123,9 +129,20 @@ public class SuscripcionController {
         var plazasOcupadas = suscripcionService.contarPlazasOcupadas(id);
         var plazasOcupadasList = suscripcionService.listarPlazasOcupadasDeSuscripcion(id);
         
-        // Obtener credenciales visibles para miembros
+        // Obtener credenciales visibles para miembros y desencriptarlas
         var credenciales = credencialRepository.findCredencialesVisiblesPorSuscripcion(id);
-        var credencial = credenciales.isEmpty() ? null : credenciales.get(0);
+        
+        String usuarioDesencriptado = null;
+        String contrasenaDesencriptada = null;
+        
+        for (var cred : credenciales) {
+            String valorDesencriptado = credencialService.desencriptarValor(cred);
+            if (cred.getTipo().name().equals("USUARIO")) {
+                usuarioDesencriptado = valorDesencriptado;
+            } else if (cred.getTipo().name().equals("PASSWORD")) {
+                contrasenaDesencriptada = valorDesencriptado;
+            }
+        }
         
         // Obtener solicitudes pendientes
         var solicitudes = solicitudRepository.findSolicitudesPendientesSuscripcion(id);
@@ -134,7 +151,8 @@ public class SuscripcionController {
                 suscripcion, 
                 plazasDisponibles, 
                 plazasOcupadas, 
-                credencial,
+                usuarioDesencriptado,
+                contrasenaDesencriptada,
                 plazasOcupadasList,
                 solicitudes
         ));

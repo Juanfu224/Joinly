@@ -62,8 +62,7 @@ public class SuscripcionService {
     private final UnidadFamiliarRepository unidadFamiliarRepository;
     private final MiembroUnidadRepository miembroUnidadRepository;
     private final UsuarioRepository usuarioRepository;
-    private final CredencialRepository credencialRepository;
-    private final SolicitudRepository solicitudRepository;
+    private final CredencialService credencialService;
 
     /**
      * Busca una suscripción por su ID.
@@ -178,6 +177,8 @@ public class SuscripcionService {
      * @param fechaInicio        Fecha de inicio de la suscripción
      * @param periodicidad       Ciclo de renovación (MENSUAL, TRIMESTRAL, SEMESTRAL, ANUAL)
      * @param anfitrionOcupaPlaza Si true, la plaza 1 se asigna automáticamente al anfitrión
+     * @param credencialUsuario  Usuario de acceso al servicio (opcional)
+     * @param credencialPassword Contraseña de acceso al servicio (opcional)
      * @return La suscripción creada con todas sus plazas
      * @throws ResourceNotFoundException si la unidad, anfitrión o servicio no existen
      * @throws UnauthorizedException si el anfitrión no es miembro activo
@@ -193,7 +194,9 @@ public class SuscripcionService {
             short numPlazasTotal,
             LocalDate fechaInicio,
             Periodicidad periodicidad,
-            boolean anfitrionOcupaPlaza
+            boolean anfitrionOcupaPlaza,
+            String credencialUsuario,
+            String credencialPassword
     ) {
         log.info("Creando suscripción: unidad={}, anfitrion={}, servicio={}, plazas={}",
                 idUnidad, idAnfitrion, idServicio, numPlazasTotal);
@@ -261,6 +264,33 @@ public class SuscripcionService {
         // REGLA: Si anfitrion_ocupa_plaza = true, generar Plaza automáticamente con estado OCUPADA
         crearPlazas(suscripcionGuardada, anfitrion, numPlazasTotal, anfitrionOcupaPlaza);
 
+        // Guardar credenciales si se proporcionaron
+        if (credencialUsuario != null && !credencialUsuario.isBlank() &&
+            credencialPassword != null && !credencialPassword.isBlank()) {
+            
+            log.info("Guardando credenciales para suscripción {}", suscripcionGuardada.getId());
+            
+            // Crear credencial para usuario
+            var requestUsuario = new com.alberti.joinly.dto.credencial.CredencialRequest(
+                    com.alberti.joinly.entities.enums.TipoCredencial.USUARIO,
+                    "Usuario",
+                    credencialUsuario,
+                    null,
+                    true
+            );
+            credencialService.crearCredencial(suscripcionGuardada.getId(), idAnfitrion, requestUsuario);
+            
+            // Crear credencial para contraseña
+            var requestPassword = new com.alberti.joinly.dto.credencial.CredencialRequest(
+                    com.alberti.joinly.entities.enums.TipoCredencial.PASSWORD,
+                    "Contraseña",
+                    credencialPassword,
+                    null,
+                    true
+            );
+            credencialService.crearCredencial(suscripcionGuardada.getId(), idAnfitrion, requestPassword);
+        }
+
         return suscripcionGuardada;
     }
 
@@ -285,6 +315,8 @@ public class SuscripcionService {
      * @param fechaInicio        Fecha de inicio de la suscripción
      * @param periodicidad       Ciclo de renovación
      * @param anfitrionOcupaPlaza Si true, la plaza 1 se asigna al anfitrión
+     * @param credencialUsuario  Usuario de acceso al servicio (opcional)
+     * @param credencialPassword Contraseña de acceso al servicio (opcional)
      * @return La suscripción creada con todas sus plazas
      * @throws ResourceNotFoundException si la unidad o anfitrión no existen
      * @throws UnauthorizedException si el anfitrión no es miembro activo
@@ -300,7 +332,9 @@ public class SuscripcionService {
             short numPlazasTotal,
             LocalDate fechaInicio,
             Periodicidad periodicidad,
-            boolean anfitrionOcupaPlaza
+            boolean anfitrionOcupaPlaza,
+            String credencialUsuario,
+            String credencialPassword
     ) {
         log.info("Creando suscripción por nombre: unidad={}, anfitrion={}, servicio='{}', plazas={}",
                 idUnidad, idAnfitrion, nombreServicio, numPlazasTotal);
@@ -317,7 +351,9 @@ public class SuscripcionService {
                 numPlazasTotal,
                 fechaInicio,
                 periodicidad,
-                anfitrionOcupaPlaza
+                anfitrionOcupaPlaza,
+                credencialUsuario,
+                credencialPassword
         );
     }
 

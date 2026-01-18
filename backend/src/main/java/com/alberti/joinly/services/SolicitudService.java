@@ -106,9 +106,18 @@ public class SolicitudService {
      * Lista las solicitudes pendientes de un grupo familiar.
      *
      * @param idUnidad ID de la unidad familiar
+     * @param idUsuario ID del usuario que solicita la lista (debe ser admin del grupo)
      * @return Lista de solicitudes pendientes ordenadas por fecha
      */
-    public List<Solicitud> listarSolicitudesPendientesGrupo(Long idUnidad) {
+    public List<Solicitud> listarSolicitudesPendientesGrupo(Long idUnidad, Long idUsuario) {
+        // Verificar que el usuario es administrador del grupo
+        var unidad = unidadFamiliarRepository.findWithAdministradorById(idUnidad)
+                .orElseThrow(() -> new ResourceNotFoundException("Unidad familiar", "id", idUnidad));
+        
+        if (!unidad.getAdministrador().getId().equals(idUsuario)) {
+            throw new UnauthorizedException("Solo el administrador puede ver las solicitudes pendientes del grupo");
+        }
+        
         return solicitudRepository.findSolicitudesPendientesGrupo(idUnidad);
     }
 
@@ -188,7 +197,9 @@ public class SolicitudService {
         log.info("Solicitud de unión a grupo creada: id={}, usuario={}, grupo={}",
                 solicitudGuardada.getId(), idSolicitante, unidad.getId());
 
-        return solicitudGuardada;
+        // Recargar la solicitud con todas las relaciones para evitar LazyInitializationException
+        return solicitudRepository.findByIdCompleto(solicitudGuardada.getId())
+                .orElse(solicitudGuardada);
     }
 
     /**
@@ -264,7 +275,9 @@ public class SolicitudService {
         log.info("Solicitud de plaza creada: id={}, usuario={}, suscripcion={}",
                 solicitudGuardada.getId(), idSolicitante, idSuscripcion);
 
-        return solicitudGuardada;
+        // Recargar la solicitud con todas las relaciones para evitar LazyInitializationException
+        return solicitudRepository.findByIdCompleto(solicitudGuardada.getId())
+                .orElse(solicitudGuardada);
     }
 
     /**

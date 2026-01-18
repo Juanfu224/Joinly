@@ -5,7 +5,6 @@ import com.alberti.joinly.entities.enums.EstadoPago;
 import com.alberti.joinly.entities.enums.EstadoSuscripcion;
 import com.alberti.joinly.entities.enums.Periodicidad;
 import com.alberti.joinly.entities.grupo.Solicitud;
-import com.alberti.joinly.entities.suscripcion.Credencial;
 import com.alberti.joinly.entities.suscripcion.Plaza;
 import com.alberti.joinly.entities.suscripcion.Suscripcion;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -87,16 +86,11 @@ public record SuscripcionDetalleResponse(
             @Schema(description = "Contraseña de acceso")
             String contrasena) {
 
-        public static CredencialesDTO fromEntity(Credencial credencial) {
-            if (credencial == null) {
+        public static CredencialesDTO fromDesencriptadas(String usuario, String contrasena) {
+            if (usuario == null && contrasena == null) {
                 return null;
             }
-            // Las credenciales están encriptadas, se desencriptarán en el servicio
-            // Por ahora devolvemos la etiqueta y el valor encriptado
-            return new CredencialesDTO(
-                    credencial.getEtiqueta(),
-                    credencial.getValorEncriptado()
-            );
+            return new CredencialesDTO(usuario, contrasena);
         }
     }
 
@@ -166,7 +160,8 @@ public record SuscripcionDetalleResponse(
             Suscripcion suscripcion,
             long plazasDisponibles,
             long plazasOcupadas,
-            Credencial credencial,
+            String usuarioDesencriptado,
+            String contrasenaDesencriptada,
             List<Plaza> plazasOcupadasList,
             List<Solicitud> solicitudes) {
 
@@ -174,9 +169,10 @@ public record SuscripcionDetalleResponse(
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
 
         // Construir información de pago (simulado por ahora)
+        // El estado por defecto es PENDIENTE hasta que se implemente el sistema de pagos real
         PagoDTO pago = new PagoDTO(
                 suscripcion.getPrecioPorPlaza(),
-                EstadoPago.RETENIDO,
+                EstadoPago.PENDIENTE,
                 suscripcion.getFechaRenovacion().format(formatter)
         );
 
@@ -208,7 +204,7 @@ public record SuscripcionDetalleResponse(
                 suscripcion.getPeriodicidad(),
                 suscripcion.getRenovacionAutomatica(),
                 suscripcion.getEstado(),
-                CredencialesDTO.fromEntity(credencial),
+                CredencialesDTO.fromDesencriptadas(usuarioDesencriptado, contrasenaDesencriptada),
                 pago,
                 miembros,
                 solicitudesDTO

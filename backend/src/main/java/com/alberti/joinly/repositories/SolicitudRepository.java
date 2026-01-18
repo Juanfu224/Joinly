@@ -58,6 +58,9 @@ public interface SolicitudRepository extends JpaRepository<Solicitud, Long> {
     @Query("""
         SELECT s FROM Solicitud s
         JOIN FETCH s.solicitante
+        LEFT JOIN FETCH s.unidad
+        LEFT JOIN FETCH s.suscripcion su
+        LEFT JOIN FETCH su.servicio
         WHERE s.unidad.id = :idUnidad AND s.estado = 'PENDIENTE'
         ORDER BY s.fechaSolicitud ASC
         """)
@@ -66,6 +69,9 @@ public interface SolicitudRepository extends JpaRepository<Solicitud, Long> {
     @Query("""
         SELECT s FROM Solicitud s
         JOIN FETCH s.solicitante
+        LEFT JOIN FETCH s.unidad
+        LEFT JOIN FETCH s.suscripcion su
+        LEFT JOIN FETCH su.servicio
         WHERE s.suscripcion.id = :idSuscripcion AND s.estado = 'PENDIENTE'
         ORDER BY s.fechaSolicitud ASC
         """)
@@ -77,4 +83,19 @@ public interface SolicitudRepository extends JpaRepository<Solicitud, Long> {
         WHERE s.id = :id
         """)
     Optional<Solicitud> findByIdConSolicitante(@Param("id") Long id);
+
+    /**
+     * Busca una solicitud por ID cargando todas sus relaciones (solicitante, unidad, suscripcion, aprobador)
+     * Para evitar LazyInitializationException al serializar
+     */
+    @Query("""
+        SELECT s FROM Solicitud s
+        JOIN FETCH s.solicitante
+        LEFT JOIN FETCH s.unidad
+        LEFT JOIN FETCH s.suscripcion su
+        LEFT JOIN FETCH su.servicio
+        LEFT JOIN FETCH s.aprobador
+        WHERE s.id = :id
+        """)
+    Optional<Solicitud> findByIdCompleto(@Param("id") Long id);
 }

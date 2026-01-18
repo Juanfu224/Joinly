@@ -18,6 +18,22 @@
           <h1 class="p-suscripcion-detalle__title">{{ tituloSuscripcion() }}</h1>
           <p class="p-suscripcion-detalle__description">{{ descripcionSuscripcion() }}</p>
         </div>
+        @if (puedeSolicitarPlaza()) {
+          <div class="p-suscripcion-detalle__actions">
+            <app-button
+              variant="primary"
+              leftIcon="add"
+              (click)="onSolicitarPlaza()">
+              Solicitar plaza
+            </app-button>
+          </div>
+        }
+        @if (tieneSolicitudPendiente() && !esMiembro()) {
+          <div class="p-suscripcion-detalle__pending-notice">
+            <app-icon name="clock" size="sm" />
+            <span>Tienes una solicitud pendiente de aprobación</span>
+          </div>
+        }
       </header>
 
       <!-- Stat Cards -->
@@ -39,6 +55,7 @@
       <!-- Info Card -->
       <app-subscription-info-card
         [info]="infoData()"
+        [isAdmin]="esAnfitrion()"
         (acceptRequest)="onAceptarSolicitud($event)"
         (rejectRequest)="onRechazarSolicitud($event)"
         class="p-suscripcion-detalle__info" />

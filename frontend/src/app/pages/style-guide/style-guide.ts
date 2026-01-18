@@ -463,7 +463,7 @@ export class StyleGuideComponent {
     },
     pago: {
       montoRetenido: 0.75,
-      estado: 'retenido',
+      estado: 'RETENIDO',
       fechaLiberacion: '2025-01-01',
     },
     solicitudes: [
@@ -699,7 +699,7 @@ export class StyleGuideComponent {
   protected onNewSubscriptionSubmit(data: {
     nombre: string;
     precioTotal: number;
-    periodicidad: 'MENSUAL' | 'ANUAL';
+    periodicidad: 'MENSUAL' | 'TRIMESTRAL' | 'ANUAL';
     plazas: number;
     credencialUsuario?: string;
     credencialPassword?: string;

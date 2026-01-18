@@ -1,0 +1,158 @@
+@use '../../../../styles/01-tools/mixins' as *;
+
+// ==========================================================================
+// COMPONENTE: SOLICITUD-CARD (Tarjeta de Solicitud)
+// ==========================================================================
+// Tarjeta que muestra información de una solicitud de unión a grupo o suscripción
+// Diseño consistente con otras cards: sombras, espaciado y tipografía
+
+:host {
+  display: block;
+}
+
+.c-solicitud-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-3);
+  background-color: var(--bg-secondary);
+  border-radius: var(--radio-grande);
+  padding: var(--espaciado-3) var(--espaciado-4);
+  min-block-size: 140px;
+  inline-size: 100%;
+  box-shadow: var(--sombra-1), var(--sombra-3);
+  transition:
+    transform var(--duracion-base) var(--transicion-estandar),
+    box-shadow var(--duracion-base) var(--transicion-estandar);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sombra-3), var(--sombra-4);
+  }
+
+  // ==========================================================================
+  // ELEMENTO: Header (Tipo + Estado)
+  // ==========================================================================
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--espaciado-2);
+  }
+
+  &__tipo {
+    display: flex;
+    align-items: center;
+    gap: var(--espaciado-2);
+  }
+
+  &__tipo-texto {
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-texto-pequeno);
+    font-weight: var(--peso-fuente-regular);
+    line-height: 1.33;
+    color: var(--text-secondary);
+  }
+
+  // Badge de estado con colores según el estado
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--espaciado-1) var(--espaciado-2);
+    border-radius: var(--radio-pequeno);
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-texto-pequeno);
+    font-weight: var(--peso-fuente-semi-negrita);
+    line-height: 1.33;
+
+    &--pendiente {
+      background-color: var(--color-advertencia-fondo);
+      color: var(--color-advertencia);
+    }
+
+    &--aprobada {
+      background-color: var(--color-exito-fondo);
+      color: var(--color-exito);
+    }
+
+    &--rechazada {
+      background-color: var(--color-error-fondo);
+      color: var(--color-error);
+    }
+
+    &--cancelada {
+      background-color: var(--bg-terciary);
+      color: var(--text-tertiary);
+    }
+  }
+
+  // ==========================================================================
+  // ELEMENTO: Content (Destino y mensaje)
+  // ==========================================================================
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaciado-1);
+    flex: 1;
+  }
+
+  &__nombre {
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-h4);
+    font-weight: var(--peso-fuente-semi-negrita);
+    line-height: var(--altura-linea-h4);
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  &__fecha {
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-texto-pequeno);
+    font-weight: var(--peso-fuente-regular);
+    line-height: 1.33;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  &__mensaje {
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-texto-normal);
+    font-weight: var(--peso-fuente-regular);
+    line-height: var(--altura-linea-normal);
+    color: var(--text-secondary);
+    margin: 0;
+    font-style: italic;
+    padding: var(--espaciado-2);
+    background-color: var(--bg-terciary);
+    border-radius: var(--radio-pequeno);
+    border-left: 3px solid var(--color-principal);
+  }
+
+  &__motivo-rechazo {
+    font-family: var(--font-primaria);
+    font-size: var(--tamano-texto-pequeno);
+    font-weight: var(--peso-fuente-regular);
+    line-height: 1.33;
+    color: var(--color-error);
+    margin: 0;
+    padding: var(--espaciado-2);
+    background-color: var(--color-error-fondo);
+    border-radius: var(--radio-pequeno);
+
+    strong {
+      font-weight: var(--peso-fuente-semi-negrita);
+    }
+  }
+
+  // ==========================================================================
+  // ELEMENTO: Footer (Acciones)
+  // ==========================================================================
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--espaciado-2);
+  }
+}
