@@ -137,7 +137,8 @@ export const ICON_PATHS = {
   `,
   'coin': `
     <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
-    <path d="M12 6v12m-3-9h4.5a1.5 1.5 0 1 1 0 3H9m0 3h4.5a1.5 1.5 0 1 1 0 3H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M12 6v12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M15 9.5c0-1.1-.9-2-2-2h-2c-1.1 0-2 .9-2 2s.9 2 2 2h2c1.1 0 2 .9 2 2s-.9 2-2 2h-2c-1.1 0-2-.9-2-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
   `,
 
   // ========== Medios ==========

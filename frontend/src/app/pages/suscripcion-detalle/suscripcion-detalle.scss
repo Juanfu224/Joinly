@@ -12,13 +12,18 @@
 // BLOQUE: .p-suscripcion-detalle
 // ---------------------------------------------------------------------------
 .p-suscripcion-detalle {
-  // El padding lo maneja .l-contenedor
+  // Sin padding superior, el header maneja el espaciado
+  padding-block-end: 0;
+
   // ---------------------------------------------------------------------------
   // ELEMENTO: Header
   // ---------------------------------------------------------------------------
   &__header {
-    margin-bottom: var(--espaciado-6);
-    padding-block: var(--espaciado-6);
+    margin-block: var(--espaciado-4);
+
+    @include responder-a('tablet') {
+      margin-block: var(--espaciado-6);
+    }
   }
 
   &__title {

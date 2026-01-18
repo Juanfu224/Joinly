@@ -1,8 +1,8 @@
-<main class="p-suscripcion-detalle">
+<section class="p-suscripcion-detalle">
   <div class="l-contenedor">
     <!-- Estado de error -->
     @if (error()) {
-      <section class="p-suscripcion-detalle__error" aria-label="Error al cargar">
+      <div class="p-suscripcion-detalle__error" role="alert" aria-label="Error al cargar">
         <div class="p-suscripcion-detalle__error-content">
           <app-icon name="alert-triangle" size="lg" />
           <p class="p-suscripcion-detalle__error-message">{{ error() }}</p>
@@ -10,7 +10,7 @@
             Reintentar
           </app-button>
         </div>
-      </section>
+      </div>
     } @else if (suscripcion()) {
       <!-- Header -->
       <header class="p-suscripcion-detalle__header">
@@ -44,4 +44,4 @@
         class="p-suscripcion-detalle__info" />
     }
   </div>
-</main>
+</section>

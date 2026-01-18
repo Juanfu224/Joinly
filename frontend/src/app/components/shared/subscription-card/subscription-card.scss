@@ -71,9 +71,13 @@
 
   &__precio {
     position: absolute;
-    inset: 65% 83.01% 20% 4.46%;
+    top: 65%;
+    left: 4.46%;
+    right: auto;
+    bottom: auto;
     @include texto-regular;
     margin: 0;
+    white-space: nowrap;
   }
 
   &__renovacion {

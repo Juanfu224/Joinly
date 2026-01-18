@@ -23,12 +23,8 @@
 // CONTENEDOR PRINCIPAL
 // ---------------------------------------------------------------------------
 .p-grupo-detalle {
-  padding-block-start: var(--espaciado-2);
-  padding-block-end: var(--espaciado-6);
-
-  @include responder-a('tablet') {
-    padding-block-end: var(--espaciado-8);
-  }
+  // Sin padding superior, el header maneja el espaciado
+  padding-block-end: 0;
 }
 
 // ---------------------------------------------------------------------------
@@ -129,7 +125,7 @@
 
 .p-grupo-detalle__suscripciones-grid {
   display: grid;
-  gap: var(--espaciado-4);
+  gap: var(--espaciado-3);
 
   @include responder-a('tablet') {
     grid-template-columns: repeat(2, 1fr);
@@ -141,6 +137,10 @@
 
   @include responder-a('escritorio-grande') {
     grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (min-width: 1800px) {
+    grid-template-columns: repeat(5, 1fr);
   }
 }
 

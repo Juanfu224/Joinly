@@ -29,16 +29,10 @@
   // Fondo base de la aplicación según Figma
   background-color: var(--color-superficie-base);
 
-  // Padding vertical responsivo (Mobile First)
-  padding-block: var(--espaciado-4);
+  // Padding horizontal solo, el vertical lo manejan las páginas individuales
+  padding-block-end: var(--espaciado-6);
 
-  // Tablet: más respiro vertical
   @include responder-a('tablet') {
-    padding-block: var(--espaciado-5);
-  }
-
-  // Escritorio: máximo espacio vertical
-  @include responder-a('escritorio') {
-    padding-block: var(--espaciado-6);
+    padding-block-end: var(--espaciado-8);
   }
 }
