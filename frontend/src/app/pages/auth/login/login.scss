@@ -5,7 +5,7 @@
 // PAGE: LOGIN
 // ==========================================================================
 // Página de autenticación con formulario centrado.
-// Fondo morado claro según diseño Figma.
+// Fondo morado claro según diseño Figma (se adapta a modo oscuro).
 
 :host {
   display: block;
@@ -16,7 +16,7 @@
   @include centrar-flex;
   min-block-size: 100vh;
   padding: var(--espaciado-4);
-  background: var(--color-fondo-claro-morado);
+  background: var(--color-superficie-morada);
 
   @include responder-a('tablet') {
     padding: var(--espaciado-6);

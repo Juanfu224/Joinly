@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   ElementRef,
   HostListener,
   OnDestroy,
@@ -14,6 +15,8 @@ import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { ThemeToggleComponent, IconComponent, LogoComponent, AvatarComponent } from '../../components/shared';
 import { AuthService } from '../../services/auth';
+import { ThemeService } from '../../services/theme';
+import type { LogoVariant } from '../../components/shared/logo/logo';
 
 /**
  * Componente de cabecera principal de la aplicación.
@@ -46,6 +49,7 @@ import { AuthService } from '../../services/auth';
 export class HeaderComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
+  private readonly themeService = inject(ThemeService);
   private navigationSubscription?: Subscription;
 
   /**
@@ -63,6 +67,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
    * Estado de autenticación
    */
   protected readonly isAuthenticated = this.authService.isAuthenticated;
+
+  /**
+   * Variante del logo computada según el tema actual
+   * En modo oscuro, usa 'claro-naranja' para mejor contraste
+   */
+  protected readonly logoVariant = computed<LogoVariant>(() => {
+    const isDark = this.themeService.currentTheme() === 'dark';
+    return isDark ? 'claro-naranja' : 'naranja';
+  });
 
   /**
    * Referencia al contenedor del menú móvil para gestión de clicks fuera.

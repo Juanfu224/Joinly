@@ -50,11 +50,11 @@
     @include formulario-link;
 
     &--morado {
-      color: var(--color-morado-principal);
+      color: var(--color-principal);
     }
 
     &--naranja {
-      color: var(--color-naranja-principal);
+      color: var(--color-acento);
     }
   }
 }

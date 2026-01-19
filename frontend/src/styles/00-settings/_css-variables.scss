@@ -231,6 +231,11 @@
   // --- COLORES PRIMITIVOS OSCUROS ---
   --color-blanco: #fefefe; // Mantener blanco puro para contraste
 
+  // --- FONDOS PRIMITIVOS (override para dark mode) ---
+  --color-fondo-claro: #0f172a; // slate-900 - Fondo principal oscuro
+  --color-fondo-claro-secundario: #1e293b; // slate-800 - Fondo secundario
+  --color-fondo-claro-normal: #f8fafc; // Texto claro para footer
+
   // --- SUPERFICIES ---
   // Superficies con ligero tinte de color para mantener jerarquía visual
   --color-superficie-base: #0f172a; // slate-900 - Base oscura
@@ -272,6 +277,10 @@
   // --- COLORES DE TEXTO BASE (aliases) ---
   --color-texto-base: var(--text-secondary);
   --color-texto-fuerte: var(--text-primary);
+
+  // --- COLORES DE TEXTO PRIMITIVOS (override para dark mode) ---
+  --color-texto-oscuro: #f8fafc; // slate-50 - Texto principal claro
+  --color-texto-normal: #cbd5e1; // slate-300 - Texto secundario
 
   // --- COLORES DE ESTADO ---
   // Se mantienen vibrantes para visibilidad

@@ -20,7 +20,7 @@
 .p-home {
   display: flex;
   flex-direction: column;
-  background-color: var(--color-fondo-claro);
+  background-color: var(--bg-primary);
 }
 
 // ---------------------------------------------------------------------------
@@ -55,7 +55,7 @@
   font-size: var(--tamano-texto-3xl);
   font-weight: var(--peso-fuente-negrita);
   line-height: var(--altura-linea-ajustada);
-  color: var(--color-texto-oscuro);
+  color: var(--text-primary);
   margin: 0;
   max-inline-size: 18ch;
 
@@ -74,7 +74,7 @@
   }
 
   &--gradiente {
-    background: linear-gradient(90deg, var(--color-naranja-principal) 50%, #5c2c0b 100%);
+    background: linear-gradient(90deg, var(--color-naranja-principal) 0%, var(--color-acento-oscuro) 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -84,7 +84,7 @@
 .p-home__hero-descripcion {
   font-size: var(--tamano-texto-normal);
   line-height: var(--altura-linea-body-large);
-  color: var(--color-texto-normal);
+  color: var(--text-secondary);
   margin: 0;
   max-inline-size: 55ch;
 
@@ -113,7 +113,7 @@
 // ---------------------------------------------------------------------------
 .p-home__features {
   padding-block: var(--espaciado-8);
-  background-color: var(--color-fondo-claro-secundario);
+  background-color: var(--bg-primary);
 
   @include responder-a('tablet') {
     padding-block: var(--espaciado-10);

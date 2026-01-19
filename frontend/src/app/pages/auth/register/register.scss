@@ -5,7 +5,7 @@
 // PAGE: REGISTER
 // ==========================================================================
 // Página de registro con formulario centrado.
-// Fondo naranja claro según diseño Figma.
+// Fondo naranja claro según diseño Figma (se adapta a modo oscuro).
 
 :host {
   display: block;
@@ -16,7 +16,7 @@
   @include centrar-flex;
   min-block-size: 100vh;
   padding: var(--espaciado-4);
-  background: var(--color-fondo-claro-naranja);
+  background: var(--color-superficie-calida);
 
   @include responder-a('tablet') {
     padding: var(--espaciado-6);

@@ -2,7 +2,7 @@
   <div class="c-header__contenedor l-contenedor">
     <!-- Logotipo con enlace a inicio -->
     <a routerLink="/" class="c-header__logo" aria-label="Joinly, ir a la página de inicio">
-      <app-logo variant="naranja" size="md" />
+      <app-logo [variant]="logoVariant()" size="md" />
     </a>
 
     <!-- Botón menú hamburguesa (solo móvil/tablet) -->
