@@ -6,20 +6,18 @@ export interface ToastMessage {
   readonly id: number;
   readonly type: ToastType;
   readonly message: string;
-  readonly duration: number;
   readonly closing?: boolean;
-  readonly paused?: boolean;
 }
 
 /**
  * Servicio centralizado para gestionar notificaciones toast.
- * Soporta múltiples toasts, auto-cierre configurable y pausa en hover.
+ * Soporta múltiples toasts con auto-cierre de 3 segundos.
  */
 @Injectable({
   providedIn: 'root',
 })
 export class ToastService {
-  private static readonly DEFAULT_DURATION = 5000;
+  private static readonly DEFAULT_DURATION = 3000;
   private static readonly ANIMATION_DURATION = 300;
   private static readonly MAX_VISIBLE_TOASTS = 5;
 
@@ -34,7 +32,6 @@ export class ToastService {
       id: ++this.toastId,
       type,
       message,
-      duration,
     };
 
     // Añadir toast y limitar cantidad visible
@@ -50,7 +47,7 @@ export class ToastService {
       return updated;
     });
 
-    // Programar auto-cierre si tiene duración
+    // Programar auto-cierre
     if (duration > 0) {
       this.scheduleClose(toast.id, duration);
     }
@@ -72,28 +69,7 @@ export class ToastService {
     this.show('info', message, duration);
   }
 
-  pause(id: number): void {
-    const timeout = this.timeouts.get(id);
-    if (timeout) {
-      clearTimeout(timeout);
-      this.timeouts.delete(id);
-      this.toasts.update((toasts) =>
-        toasts.map((t) => (t.id === id ? { ...t, paused: true } : t))
-      );
-    }
-  }
-
-  resume(id: number): void {
-    const toast = this.toasts().find((t) => t.id === id);
-    if (toast?.paused && toast.duration > 0) {
-      this.toasts.update((toasts) =>
-        toasts.map((t) => (t.id === id ? { ...t, paused: false } : t))
-      );
-      this.scheduleClose(id, toast.duration);
-    }
-  }
-
-  close(id: number): void {
+  private close(id: number): void {
     const timeout = this.timeouts.get(id);
     if (timeout) {
       clearTimeout(timeout);

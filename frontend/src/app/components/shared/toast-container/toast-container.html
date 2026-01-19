@@ -4,9 +4,6 @@
       [type]="toast.type"
       [message]="toast.message"
       [closing]="toast.closing ?? false"
-      (closed)="onClose(toast.id)"
-      (mouseEntered)="onPause(toast.id)"
-      (mouseLeft)="onResume(toast.id)"
     />
   }
 </div>

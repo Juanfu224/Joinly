@@ -27,22 +27,4 @@
   > * {
     pointer-events: auto;
   }
-
-  // ==========================================================================
-  // RESPONSIVE (Mobile First)
-  // ==========================================================================
-
-  @include responder-a('tablet') {
-    max-inline-size: 24rem;
-    min-inline-size: 16rem;
-    inset-inline: auto;
-    inset-inline-end: var(--espaciado-2);
-    align-items: flex-end;
-  }
-
-  @include responder-a('mobile-small') {
-    inset-inline: var(--espaciado-2);
-    inset-block-start: calc(var(--header-height) + var(--espaciado-2));
-    gap: var(--espaciado-2);
-  }
 }

@@ -3,7 +3,6 @@ import {
   Component,
   computed,
   input,
-  output,
 } from '@angular/core';
 import { IconComponent } from '../icon/icon';
 import { type IconName } from '../icon/icon-paths';
@@ -22,10 +21,6 @@ export class ToastComponent {
   message = input.required<string>();
   closing = input(false);
 
-  closed = output<void>();
-  mouseEntered = output<void>();
-  mouseLeft = output<void>();
-
   private readonly iconMap: Record<ToastType, IconName> = {
     success: 'circle-check',
     error: 'circle-x',
@@ -40,16 +35,4 @@ export class ToastComponent {
   });
 
   protected icon = computed<IconName>(() => this.iconMap[this.type()]);
-
-  onClose(): void {
-    this.closed.emit();
-  }
-
-  onMouseEnter(): void {
-    this.mouseEntered.emit();
-  }
-
-  onMouseLeave(): void {
-    this.mouseLeft.emit();
-  }
 }

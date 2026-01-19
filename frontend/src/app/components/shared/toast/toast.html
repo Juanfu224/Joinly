@@ -3,17 +3,7 @@
   role="status"
   aria-live="polite"
   aria-atomic="true"
-  (mouseenter)="onMouseEnter()"
-  (mouseleave)="onMouseLeave()"
 >
   <app-icon [name]="icon()" size="sm" customClass="c-toast__icon" />
   <p class="c-toast__message">{{ message() }}</p>
-  <button
-    class="c-toast__close"
-    type="button"
-    aria-label="Cerrar notificación"
-    (click)="onClose()"
-  >
-    <app-icon name="close" size="sm" customClass="c-toast__close-icon" />
-  </button>
 </div>
