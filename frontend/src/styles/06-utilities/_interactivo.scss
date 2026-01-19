@@ -17,6 +17,7 @@
 .u-btn-wrapper {
   display: block;
   inline-size: 100%;
+  min-block-size: 0; // Prevenir colapso de altura en flex containers
   padding: 0;
   text-align: inherit;
   

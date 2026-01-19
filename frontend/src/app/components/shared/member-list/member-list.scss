@@ -1,17 +1,24 @@
 // ==========================================================================
 // COMPONENTE: MEMBER-LIST (.c-member-list)
 // ==========================================================================
-// Sección que muestra una lista de miembros con encabezado y contador.
-// Diseño basado en Figma: sección con sombras, bordes y espaciado consistentes.
-// Sigue metodología BEM y arquitectura ITCSS del proyecto.
+// Seccion que muestra una lista de miembros con encabezado y contador.
+// Implementa Container Queries para adaptar el grid de miembros.
+//
+// CONTAINER QUERIES:
+// - Base: 1 columna
+// - >= 400px: 2 columnas
+// - >= 600px: 3 columnas
+// - >= 800px: 4 columnas
 
 @use '../../../../styles/01-tools/mixins' as *;
 
 // ---------------------------------------------------------------------------
-// HOST: Encapsulación del componente Angular
+// HOST: Encapsulacion del componente Angular
 // ---------------------------------------------------------------------------
 :host {
   display: block;
+  container-type: inline-size;
+  container-name: member-list;
 }
 
 // ---------------------------------------------------------------------------
@@ -24,10 +31,7 @@
   padding: var(--espaciado-3);
   background-color: var(--bg-secondary);
   border-radius: var(--radio-grande);
-  // Combinación de sombra 1 + sombra 3 según Figma
-  box-shadow: 
-    0 2px 6px 0 rgba(20, 20, 43, 0.06),
-    0 8px 28px 0 rgba(20, 20, 43, 0.1);
+  box-shadow: var(--sombra-1), var(--sombra-3);
 
   // ---------------------------------------------------------------------------
   // ELEMENTO: Encabezado
@@ -39,7 +43,7 @@
   }
 
   // ---------------------------------------------------------------------------
-  // ELEMENTO: Título - Estilo H4 según Figma (20px, semi-bold)
+  // ELEMENTO: Titulo - Estilo H4 segun Figma (20px, semi-bold)
   // ---------------------------------------------------------------------------
   &__titulo {
     @include heading-4;
@@ -57,16 +61,31 @@
   }
 
   // ---------------------------------------------------------------------------
-  // ELEMENTO: Grid de tarjetas
+  // ELEMENTO: Grid de tarjetas con Container Queries
   // ---------------------------------------------------------------------------
   &__grid {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: var(--espaciado-2);
+
+    // Container Query: >= 400px - 2 columnas
+    @container member-list (min-width: 25rem) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    // Container Query: >= 600px - 3 columnas
+    @container member-list (min-width: 37.5rem) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    // Container Query: >= 800px - 4 columnas
+    @container member-list (min-width: 50rem) {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 
   // ---------------------------------------------------------------------------
-  // ELEMENTO: Mensaje vacío
+  // ELEMENTO: Mensaje vacio
   // ---------------------------------------------------------------------------
   &__empty {
     @include texto-regular;

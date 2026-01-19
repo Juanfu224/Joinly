@@ -3,16 +3,23 @@
 // ==========================================================================
 // COMPONENTE: GROUP-CARD (Tarjeta de Grupo)
 // ==========================================================================
-// Tarjeta que muestra información resumida de un grupo familiar
-// Diseño basado en Figma: sombras, espaciado y tipografía consistentes
-// Clickeable para navegar al detalle del grupo
+// Tarjeta que muestra informacion resumida de un grupo familiar.
+// Implementa Container Queries para adaptarse al contenedor padre.
+// Clickeable para navegar al detalle del grupo.
+//
+// CONTAINER QUERIES:
+// - Base (< 280px): Layout compacto
+// - >= 280px: Layout estandar con espaciado aumentado
+// - >= 360px: Layout amplio con tipografia mayor
 
 :host {
   display: block;
   cursor: pointer;
   outline: none;
+  container-type: inline-size;
+  container-name: group-card;
 
-  // Focus visible para accesibilidad (navegación por teclado)
+  // Focus visible para accesibilidad (navegacion por teclado)
   &:focus-visible .c-group-card {
     outline: 2px solid var(--color-principal);
     outline-offset: 2px;
@@ -22,20 +29,31 @@
 .c-group-card {
   display: flex;
   flex-direction: column;
-  gap: var(--espaciado-2);
+  gap: var(--espaciado-1);
   background-color: var(--bg-secondary);
   border-radius: var(--radio-grande);
-  padding: var(--espaciado-3) var(--espaciado-4);
-  min-block-size: 160px;
+  padding: var(--espaciado-2) var(--espaciado-3);
+  min-block-size: 140px;
   inline-size: 100%;
-  // Sombra combinada según diseño Figma (sombra 1 + sombra 3)
   box-shadow: var(--sombra-1), var(--sombra-3);
 
-  // Transición suave
-  transition: 
+  transition:
     transform var(--duracion-base) var(--transicion-estandar),
     box-shadow var(--duracion-base) var(--transicion-estandar),
     outline var(--duracion-rapida) var(--transicion-estandar);
+
+  // Container Query: Contenedor mediano (>= 280px)
+  @container group-card (min-width: 17.5rem) {
+    gap: var(--espaciado-2);
+    padding: var(--espaciado-3) var(--espaciado-4);
+    min-block-size: 160px;
+  }
+
+  // Container Query: Contenedor amplio (>= 360px)
+  @container group-card (min-width: 22.5rem) {
+    gap: var(--espaciado-3);
+    padding: var(--espaciado-4);
+  }
 
   // Estado hover
   &:hover {
@@ -63,11 +81,16 @@
   &__nombre {
     flex: 1;
     font-family: var(--font-primaria);
-    font-size: var(--tamano-h4);
+    font-size: var(--tamano-texto-grande);
     font-weight: var(--peso-fuente-semi-negrita);
-    line-height: var(--altura-linea-h4);
+    line-height: var(--altura-linea-compacta);
     color: var(--text-primary);
     margin: 0;
+
+    @container group-card (min-width: 17.5rem) {
+      font-size: var(--tamano-h4);
+      line-height: var(--altura-linea-h4);
+    }
   }
 
   &__miembros {
@@ -79,10 +102,14 @@
 
   &__miembros-count {
     font-family: var(--font-primaria);
-    font-size: var(--tamano-texto-grande);
+    font-size: var(--tamano-texto-normal);
     font-weight: var(--peso-fuente-regular);
     line-height: 1.6;
     color: var(--text-primary);
+
+    @container group-card (min-width: 17.5rem) {
+      font-size: var(--tamano-texto-grande);
+    }
   }
 
   // ==========================================================================
@@ -98,24 +125,32 @@
 
   &__label {
     font-family: var(--font-primaria);
-    font-size: var(--tamano-texto-normal);
+    font-size: var(--tamano-texto-pequeno);
     font-weight: var(--peso-fuente-regular);
     line-height: var(--altura-linea-normal);
     color: var(--text-secondary);
     margin: 0;
+
+    @container group-card (min-width: 17.5rem) {
+      font-size: var(--tamano-texto-normal);
+    }
   }
 
   &__suscripciones {
     font-family: var(--font-primaria);
-    font-size: var(--tamano-texto-pequeno);
+    font-size: var(--tamano-caption);
     font-weight: var(--peso-fuente-regular);
     line-height: 1.33;
     color: var(--text-secondary);
     margin: 0;
+
+    @container group-card (min-width: 17.5rem) {
+      font-size: var(--tamano-texto-pequeno);
+    }
   }
 
   // ==========================================================================
-  // ELEMENTO: Footer (Botón de acción)
+  // ELEMENTO: Footer (Boton de accion)
   // ==========================================================================
 
   &__footer {

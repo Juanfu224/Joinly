@@ -1,16 +1,24 @@
-/**
- * Cómo Funciona Page
- * Arquitectura: BEM + ITCSS
- * Estrategia: Mobile-First
- */
+// ==========================================================================
+// PAGE: COMO FUNCIONA
+// ==========================================================================
+// Pagina explicativa de como funciona Joinly.
+// Arquitectura: BEM + ITCSS
+// Estrategia: Mobile-First
+
+@use '../../../styles/00-settings/variables' as *;
+@use '../../../styles/01-tools/mixins' as *;
+
+:host {
+  display: block;
+}
 
 .p-como-funciona {
-  max-width: 56rem;
-  margin: 0 auto;
-  padding: var(--space-6) var(--space-4);
+  max-inline-size: 56rem;
+  margin-inline: auto;
+  padding: var(--espaciado-6) var(--espaciado-4);
 
-  @media (width >= 768px) {
-    padding: var(--space-8) var(--space-6);
+  @include responder-a('tablet') {
+    padding: var(--espaciado-8) var(--espaciado-6);
   }
 
   // =========================================================================
@@ -19,25 +27,25 @@
 
   &__hero {
     text-align: center;
-    margin-bottom: var(--space-8);
+    margin-block-end: var(--espaciado-8);
   }
 
   &__titulo {
-    font-size: var(--font-size-2xl);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary);
-    margin-bottom: var(--space-3);
+    font-size: var(--tamano-texto-2xl);
+    font-weight: var(--peso-fuente-negrita);
+    color: var(--text-primary);
+    margin-block-end: var(--espaciado-3);
 
-    @media (width >= 768px) {
-      font-size: var(--font-size-3xl);
+    @include responder-a('tablet') {
+      font-size: var(--tamano-texto-3xl);
     }
   }
 
   &__subtitulo {
-    font-size: var(--font-size-lg);
-    color: var(--color-text-secondary);
-    max-width: 32rem;
-    margin: 0 auto;
+    font-size: var(--tamano-texto-grande);
+    color: var(--text-secondary);
+    max-inline-size: 32rem;
+    margin-inline: auto;
   }
 
   // =========================================================================
@@ -47,23 +55,27 @@
   &__pasos {
     display: flex;
     flex-direction: column;
-    gap: var(--space-6);
-    margin-bottom: var(--space-8);
+    gap: var(--espaciado-6);
+    margin-block-end: var(--espaciado-8);
   }
 
   &__paso {
     display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: var(--space-4);
+    grid-template-columns: auto 1fr;
+    gap: var(--espaciado-4);
     align-items: flex-start;
-    padding: var(--space-4);
-    background-color: var(--color-surface-secondary);
-    border-radius: var(--radius-xl);
-    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    padding: var(--espaciado-4);
+    background-color: var(--bg-secondary);
+    border-radius: var(--radio-grande);
+    @include transicion(transform, box-shadow);
+
+    @include responder-a('movil') {
+      grid-template-columns: auto 1fr auto;
+    }
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
+      box-shadow: var(--sombra-3);
     }
   }
 
@@ -71,13 +83,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-white);
-    background-color: var(--color-primary-500);
-    border-radius: var(--radius-full);
+    inline-size: 2.5rem;
+    block-size: 2.5rem;
+    font-size: var(--tamano-texto-grande);
+    font-weight: var(--peso-fuente-negrita);
+    color: var(--color-blanco);
+    background-color: var(--color-principal);
+    border-radius: var(--radio-completo);
   }
 
   &__paso-contenido {
@@ -85,28 +97,28 @@
   }
 
   &__paso-titulo {
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-text-primary);
-    margin-bottom: var(--space-1);
+    font-size: var(--tamano-texto-grande);
+    font-weight: var(--peso-fuente-semi-negrita);
+    color: var(--text-primary);
+    margin-block-end: var(--espaciado-1);
   }
 
   &__paso-descripcion {
-    font-size: var(--font-size-base);
-    color: var(--color-text-secondary);
-    line-height: var(--line-height-relaxed);
+    font-size: var(--tamano-texto-normal);
+    color: var(--text-secondary);
+    line-height: var(--altura-linea-relajada);
   }
 
   &__paso-icono {
     display: none;
-    color: var(--color-primary-400);
+    color: var(--color-principal);
 
-    @media (width >= 640px) {
+    @include responder-a('movil') {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 3rem;
-      height: 3rem;
+      inline-size: 3rem;
+      block-size: 3rem;
     }
   }
 
@@ -116,25 +128,25 @@
 
   &__cta {
     text-align: center;
-    padding: var(--space-6);
-    background-color: var(--color-primary-50);
-    border-radius: var(--radius-xl);
+    padding: var(--espaciado-6);
+    background-color: var(--color-superficie-morada);
+    border-radius: var(--radio-grande);
   }
 
   &__cta-titulo {
-    font-size: var(--font-size-xl);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-text-primary);
-    margin-bottom: var(--space-4);
+    font-size: var(--tamano-texto-xl);
+    font-weight: var(--peso-fuente-semi-negrita);
+    color: var(--text-primary);
+    margin-block-end: var(--espaciado-4);
   }
 
   &__cta-acciones {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
+    gap: var(--espaciado-3);
     justify-content: center;
 
-    @media (width >= 640px) {
+    @include responder-a('movil') {
       flex-direction: row;
     }
   }

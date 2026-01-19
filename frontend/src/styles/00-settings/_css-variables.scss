@@ -286,10 +286,17 @@
 // ==========================================================================
 
 :root {
-  --grid-item-min-width-sm: 15rem;
-  --grid-item-min-width-md: 17.5rem;
-  --grid-item-min-width-lg: 20rem;
-  --grid-item-min-width-xl: 25rem;
+  // Tamaños mínimos de items para grids auto-fit
+  --grid-item-pequeno: 15rem; // 240px
+  --grid-item-mediano: 17.5rem; // 280px
+  --grid-item-grande: 20rem; // 320px
+  --grid-item-enorme: 25rem; // 400px
+
+  // Alias en inglés para compatibilidad
+  --grid-item-min-width-sm: var(--grid-item-pequeno);
+  --grid-item-min-width-md: var(--grid-item-mediano);
+  --grid-item-min-width-lg: var(--grid-item-grande);
+  --grid-item-min-width-xl: var(--grid-item-enorme);
 }
 
 // ==========================================================================
@@ -379,4 +386,78 @@
 
 :root {
   --header-height: 5.5rem;
+}
+
+// ==========================================================================
+// ALIAS DE COMPATIBILIDAD
+// ==========================================================================
+// Variables alternativas para mantener compatibilidad con diferentes
+// convenciones de nomenclatura en el proyecto.
+
+:root {
+  // --- ESPACIADO (alias --space-*) ---
+  --space-1: var(--espaciado-1);
+  --space-2: var(--espaciado-2);
+  --space-3: var(--espaciado-3);
+  --space-4: var(--espaciado-4);
+  --space-5: var(--espaciado-5);
+  --space-6: var(--espaciado-6);
+  --space-8: var(--espaciado-8);
+  --space-10: var(--espaciado-10);
+  --space-12: var(--espaciado-12);
+  --space-16: var(--espaciado-16);
+  --space-20: 10rem;
+
+  // --- TIPOGRAFIA (alias --font-size-*) ---
+  --font-size-xs: var(--tamano-caption);
+  --font-size-sm: var(--tamano-texto-pequeno);
+  --font-size-base: var(--tamano-texto-normal);
+  --font-size-lg: var(--tamano-texto-grande);
+  --font-size-xl: var(--tamano-texto-xl);
+  --font-size-2xl: var(--tamano-texto-2xl);
+  --font-size-3xl: var(--tamano-texto-3xl);
+  --font-size-4xl: var(--tamano-texto-4xl);
+
+  // --- PESOS DE FUENTE (alias --font-weight-*) ---
+  --font-weight-light: var(--peso-fuente-ligero);
+  --font-weight-normal: var(--peso-fuente-regular);
+  --font-weight-medium: var(--peso-fuente-medio);
+  --font-weight-semibold: var(--peso-fuente-semi-negrita);
+  --font-weight-bold: var(--peso-fuente-negrita);
+
+  // --- ALTURAS DE LINEA (alias --line-height-*) ---
+  --line-height-tight: var(--altura-linea-compacta);
+  --line-height-normal: var(--altura-linea-normal);
+  --line-height-relaxed: var(--altura-linea-relajada);
+
+  // --- COLORES (alias para compatibilidad) ---
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--color-gris-oscuro);
+  --color-surface-primary: var(--bg-primary);
+  --color-surface-secondary: var(--bg-secondary);
+  --color-surface-elevated: var(--bg-tertiary);
+  --color-border-primary: var(--border-color);
+  --color-border-default: var(--color-borde-base);
+  --color-primary-50: var(--color-fondo-claro-morado);
+  --color-primary-400: var(--color-morado-principal);
+  --color-primary-500: var(--color-morado-principal);
+  --color-primary-600: var(--color-morado-oscuro);
+  --color-white: var(--color-blanco);
+
+  // --- BORDES (alias --radius-*) ---
+  --radius-sm: var(--radio-pequeno);
+  --radius-md: var(--radio-medio);
+  --radius-lg: var(--radio-grande);
+  --radius-xl: var(--radio-grande);
+  --radius-full: var(--radio-completo);
+
+  // --- SOMBRAS (alias --shadow-*) ---
+  --shadow-sm: var(--sombra-1);
+  --shadow-md: var(--sombra-3);
+  --shadow-lg: var(--sombra-4);
+
+  // --- TRANSICIONES (alias --transition-*) ---
+  --transition-fast: var(--duracion-rapida) var(--transicion-estandar);
+  --transition-base: var(--duracion-base) var(--transicion-estandar);
 }

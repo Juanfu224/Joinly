@@ -73,6 +73,8 @@
 
   @include responder-a('tablet') {
     flex-direction: row;
+    // Alinear stretch para que ambos botones tengan la misma altura
+    align-items: stretch;
     gap: var(--espaciado-4);
     margin-block-end: var(--espaciado-8);
   }
