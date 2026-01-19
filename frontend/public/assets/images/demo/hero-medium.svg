@@ -1,0 +1,22 @@
+<svg width="800" height="450" viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#f8f5f2"/>
+  
+  <!-- Patrón decorativo -->
+  <circle cx="120" cy="135" r="64" fill="#7c3aed" opacity="0.2"/>
+  <circle cx="680" cy="315" r="80" fill="#f97316" opacity="0.15"/>
+  
+  <!-- Elemento central -->
+  <rect x="240" y="157.5" width="320" height="135" rx="16" fill="#7c3aed" opacity="0.9"/>
+  
+  <!-- Líneas decorativas -->
+  <rect x="280" y="189" width="240" height="13.5" rx="4" fill="white" opacity="0.9"/>
+  <rect x="280" y="216" width="160" height="9" rx="4" fill="white" opacity="0.6"/>
+  <rect x="280" y="238.5" width="200" height="9" rx="4" fill="white" opacity="0.6"/>
+  
+  <!-- Icono/Logo simplificado -->
+  <g transform="translate(368, 337.5)">
+    <circle r="12" fill="#f97316"/>
+    <circle cx="32" r="9.6" fill="#7c3aed" opacity="0.6"/>
+    <circle cx="16" cy="28.000000000000004" r="8" fill="#f97316" opacity="0.4"/>
+  </g>
+</svg>

@@ -1,0 +1,90 @@
+@if (usePicture()) {
+  <!-- Art direction: mobile y desktop diferentes -->
+  <picture>
+    @if (mobileSource(); as mobile) {
+      <!-- Mobile AVIF -->
+      <source
+        [srcset]="generateSrcset(mobile.src, 'avif')"
+        [sizes]="sizesAttribute()"
+        type="image/avif"
+        media="(max-width: 768px)"
+      />
+      <!-- Mobile WebP -->
+      <source
+        [srcset]="generateSrcset(mobile.src, 'webp')"
+        [sizes]="sizesAttribute()"
+        type="image/webp"
+        media="(max-width: 768px)"
+      />
+      <!-- Mobile JPG -->
+      <source
+        [srcset]="generateSrcset(mobile.src, 'jpg')"
+        [sizes]="sizesAttribute()"
+        type="image/jpeg"
+        media="(max-width: 768px)"
+      />
+    }
+
+    <!-- Desktop AVIF -->
+    <source
+      [srcset]="generateSrcset(imageSource().src, 'avif')"
+      [sizes]="sizesAttribute()"
+      type="image/avif"
+      media="(min-width: 769px)"
+    />
+    <!-- Desktop WebP -->
+    <source
+      [srcset]="generateSrcset(imageSource().src, 'webp')"
+      [sizes]="sizesAttribute()"
+      type="image/webp"
+      media="(min-width: 769px)"
+    />
+    <!-- Desktop JPG -->
+    <source
+      [srcset]="generateSrcset(imageSource().src, 'jpg')"
+      [sizes]="sizesAttribute()"
+      type="image/jpeg"
+      media="(min-width: 769px)"
+    />
+
+    <!-- Fallback -->
+    <img
+      [src]="imageSource().src + '-medium.jpg'"
+      [alt]="imageSource().alt"
+      [loading]="lazy() ? 'lazy' : 'eager'"
+      [style]="aspectRatioStyle()"
+      [class]="imageClasses()"
+    />
+  </picture>
+} @else {
+  <!-- Misma imagen en todos los tamaños -->
+  <picture>
+    <!-- AVIF -->
+    <source
+      [srcset]="generateSrcset(imageSource().src, 'avif')"
+      [sizes]="sizesAttribute()"
+      type="image/avif"
+    />
+    <!-- WebP -->
+    <source
+      [srcset]="generateSrcset(imageSource().src, 'webp')"
+      [sizes]="sizesAttribute()"
+      type="image/webp"
+    />
+    <!-- JPG -->
+    <source
+      [srcset]="generateSrcset(imageSource().src, 'jpg')"
+      [sizes]="sizesAttribute()"
+      type="image/jpeg"
+    />
+
+    <!-- Fallback -->
+    <img
+      [src]="imageSource().src + '-medium.jpg'"
+      [alt]="imageSource().alt"
+      [loading]="lazy() ? 'lazy' : 'eager'"
+      [style]="aspectRatioStyle()"
+      [class]="imageClasses()"
+    />
+  </picture>
+}

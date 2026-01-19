@@ -103,3 +103,4 @@ export { FormatCodigoPipe } from './invite-modal/format-codigo.pipe';
 export { SolicitudCardComponent } from './solicitud-card/solicitud-card';
 export { PendingRequestsCardComponent } from './pending-requests-card/pending-requests-card';
 export { NotFoundComponent } from './not-found';
+export { FeatureImageComponent } from './feature-image/feature-image';

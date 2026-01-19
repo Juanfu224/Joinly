@@ -1,0 +1,294 @@
+// ==========================================================================
+// ANIMACIONES Y MICRO-INTERACCIONES
+// ==========================================================================
+// Solo animar transform y opacity (GPU-accelerated)
+// Duración 150ms - 500ms
+
+// ---------------------------------------------------------------------------
+// 1. SKELETON LOADING (Shimmer Effect)
+// ---------------------------------------------------------------------------
+
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.u-skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--bg-tertiary);
+  border-radius: var(--radio-medio);
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.15),
+      transparent
+    );
+    animation: skeleton-shimmer 1.5s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  &--text {
+    height: 1rem;
+    width: 100%;
+    border-radius: var(--radio-pequeno);
+  }
+
+  &--heading {
+    height: 2rem;
+    width: 70%;
+  }
+
+  &--avatar {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+  }
+
+  &--card {
+    width: 100%;
+    height: 12rem;
+    border-radius: var(--radio-grande);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 2. BOUNCE (Micro-interacción de éxito)
+// ---------------------------------------------------------------------------
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: scale(1) translateY(0);
+  }
+  25% {
+    transform: scale(1.1) translateY(-4px);
+  }
+  50% {
+    transform: scale(0.95) translateY(0);
+  }
+  75% {
+    transform: scale(1.02) translateY(-2px);
+  }
+}
+
+.u-animate-bounce {
+  animation: bounce 500ms ease-out;
+  will-change: transform;
+}
+
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.u-animate-bounce-in {
+  animation: bounce-in 400ms ease-out;
+  will-change: transform, opacity;
+}
+
+// ---------------------------------------------------------------------------
+// 3. SLIDE-IN (Entrada de elementos)
+// ---------------------------------------------------------------------------
+
+@keyframes slide-in-bottom {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-left {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-right {
+  0% {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-top {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.u-slide-in-bottom {
+  animation: slide-in-bottom var(--duracion-base) ease-out;
+  will-change: transform, opacity;
+}
+
+.u-slide-in-left {
+  animation: slide-in-left var(--duracion-base) ease-out;
+  will-change: transform, opacity;
+}
+
+.u-slide-in-right {
+  animation: slide-in-right var(--duracion-base) ease-out;
+  will-change: transform, opacity;
+}
+
+.u-slide-in-top {
+  animation: slide-in-top var(--duracion-base) ease-out;
+  will-change: transform, opacity;
+}
+
+// Stagger para listas
+@for $i from 1 through 10 {
+  .u-slide-in-bottom:nth-child(#{$i}) {
+    animation-delay: calc(#{$i} * 50ms);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 4. FADE-IN-SCALE (Aparición con zoom)
+// ---------------------------------------------------------------------------
+
+@keyframes fade-in-scale {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fade-out-scale {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+.u-fade-in-scale {
+  animation: fade-in-scale var(--duracion-rapida) ease-out;
+  will-change: transform, opacity;
+}
+
+.u-fade-out-scale {
+  animation: fade-out-scale var(--duracion-rapida) ease-in;
+  will-change: transform, opacity;
+}
+
+// ---------------------------------------------------------------------------
+// 5. PULSE (Indicador de atención)
+// ---------------------------------------------------------------------------
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.05);
+  }
+}
+
+.u-pulse {
+  animation: pulse 2s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 currentColor;
+    opacity: 1;
+  }
+  100% {
+    box-shadow: 0 0 0 10px currentColor;
+    opacity: 0;
+  }
+}
+
+.u-pulse-ring {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    animation: pulse-ring 1.5s ease-out infinite;
+    pointer-events: none;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 6. SHAKE (Feedback de error)
+// ---------------------------------------------------------------------------
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-8px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(8px);
+  }
+}
+
+.u-shake {
+  animation: shake 400ms ease-in-out;
+  will-change: transform;
+}

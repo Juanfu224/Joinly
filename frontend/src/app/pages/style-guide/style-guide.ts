@@ -37,6 +37,7 @@ import {
   type JoinRequest,
   type MemberData,
 } from '../../components/shared';
+import { FeatureImageComponent } from '../../components/shared/feature-image/feature-image';
 import type { GrupoCardData } from '../../models/grupo.model';
 import type { SuscripcionCardData } from '../../models/suscripcion.model';
 import { ModalService } from '../../services/modal';
@@ -93,6 +94,7 @@ import { ThemeService, type Theme } from '../../services/theme';
     SubscriptionInfoCardComponent,
     MemberCardComponent,
     MemberListComponent,
+    FeatureImageComponent,
   ],
   templateUrl: './style-guide.html',
   styleUrl: './style-guide.scss',

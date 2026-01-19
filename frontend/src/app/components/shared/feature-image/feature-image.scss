@@ -1,0 +1,49 @@
+@use '../../../../styles/01-tools/mixins' as *;
+
+:host {
+  display: block;
+  container-type: inline-size;
+  container-name: feature-image;
+}
+
+.c-feature-image {
+  &__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: var(--radio-medio);
+    @include transicion((opacity), var(--duracion-rapida));
+
+    &--hero {
+      border-radius: var(--radio-grande);
+      box-shadow: var(--sombra-2);
+
+      @container feature-image (min-width: 48rem) {
+        box-shadow: var(--sombra-3);
+      }
+    }
+
+    &--feature {
+      aspect-ratio: 16 / 9;
+
+      @container feature-image (max-width: 48rem) {
+        aspect-ratio: 4 / 3;
+      }
+    }
+
+    &--thumbnail {
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+}
+
+.c-feature-image__img[loading='lazy'] {
+  background-color: var(--bg-tertiary);
+
+  &:not([src]) {
+    opacity: 0;
+  }
+}

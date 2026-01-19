@@ -1,12 +1,15 @@
 {
   "name": "joinly",
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "optimize:icons": "node scripts/optimize-icons.js",
+    "generate:images": "node scripts/generate-demo-images.js"
   },
   "prettier": {
     "printWidth": 100,
@@ -37,6 +40,7 @@
     "@angular/cli": "^21.0.1",
     "@angular/compiler-cli": "^21.0.0",
     "jsdom": "^27.1.0",
+    "svgo": "^4.0.0",
     "typescript": "~5.9.2",
     "vite-tsconfig-paths": "^6.0.4",
     "vitest": "^4.0.8"

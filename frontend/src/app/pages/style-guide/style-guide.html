@@ -1325,5 +1325,170 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
         </div>
       </div>
     </section>
+
+    <!-- =================================================================== -->
+    <!-- SECCIÓN 7: OPTIMIZACIÓN MULTIMEDIA -->
+    <!-- =================================================================== -->
+    <section class="l-section">
+      <div class="p-style-guide__seccion-header">
+        <h2 class="p-style-guide__seccion-titulo">7. Optimización Multimedia</h2>
+        <p class="p-style-guide__seccion-descripcion">
+          Demostraciones de imágenes responsive con múltiples formatos (AVIF, WebP, JPG) y animaciones CSS optimizadas.
+        </p>
+      </div>
+
+      <!-- 7.1 Nota sobre imágenes demo -->
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">7.1 Componente FeatureImage</h3>
+        <p class="u-texto-regular">
+          El componente <code>FeatureImageComponent</code> implementa imágenes responsive con:
+        </p>
+        <ul class="u-texto-regular" style="margin-left: 1.5rem;">
+          <li><code>srcset</code> y <code>sizes</code> para diferentes tamaños de pantalla</li>
+          <li>Múltiples formatos de imagen (AVIF, WebP, JPG) con fallbacks automáticos</li>
+          <li>Art direction para mobile vs desktop con <code>&lt;picture&gt;</code></li>
+          <li>Lazy loading nativo</li>
+          <li>Aspect ratio personalizable</li>
+        </ul>
+        <p class="u-texto-regular" style="margin-top: 1rem;">
+          <strong>Nota:</strong> Para ver las imágenes demo, necesitas generar las imágenes usando el script del plan
+          con sharp-cli y colocarlas en <code>public/assets/images/demo/</code>.
+        </p>
+
+        <!-- Ejemplo de uso del componente (comentado para cuando existan las imágenes) -->
+        <!--
+        <div style="margin-top: 1rem;">
+          <h4 class="u-heading-4">Hero Image</h4>
+          <app-feature-image
+            [imageSource]="{
+              src: '/assets/images/demo/hero',
+              alt: 'Imagen hero de ejemplo',
+              aspectRatio: '16 / 9'
+            }"
+            type="hero"
+          />
+        </div>
+        -->
+      </div>
+
+      <!-- 7.2 Animaciones CSS -->
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">7.2 Animaciones CSS Optimizadas</h3>
+        <p class="u-texto-regular">
+          Solo se animan propiedades <code>transform</code> y <code>opacity</code> (GPU-accelerated).
+        </p>
+      </div>
+
+      <!-- 7.2.1 Skeleton Loading -->
+      <div class="p-style-guide__demo">
+        <h4 class="p-style-guide__demo-subtitulo">7.2.1 Skeleton Loading (Shimmer)</h4>
+        <p class="u-texto-regular">Para estados de carga de contenido:</p>
+        <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+          <div class="u-skeleton u-skeleton--card"></div>
+          <div class="u-skeleton u-skeleton--heading"></div>
+          <div class="u-skeleton u-skeleton--text"></div>
+          <div class="u-skeleton u-skeleton--text" style="width: 80%;"></div>
+          <div style="display: flex; gap: 1rem; align-items: center;">
+            <div class="u-skeleton u-skeleton--avatar"></div>
+            <div style="flex: 1;">
+              <div class="u-skeleton u-skeleton--text" style="margin-bottom: 0.5rem;"></div>
+              <div class="u-skeleton u-skeleton--text" style="width: 60%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7.2.2 Bounce -->
+      <div class="p-style-guide__demo">
+        <h4 class="p-style-guide__demo-subtitulo">7.2.2 Bounce (Éxito/Confirmación)</h4>
+        <p class="u-texto-regular">Para feedback positivo en acciones:</p>
+        <div style="margin-top: 1rem; display: flex; gap: 1rem;">
+          <app-button variant="primary" size="md" cssClass="u-animate-bounce">
+            Botón con Bounce
+          </app-button>
+          <app-button variant="primary" size="md" cssClass="u-animate-bounce-in">
+            Bounce In
+          </app-button>
+        </div>
+      </div>
+
+      <!-- 7.2.3 Slide-in -->
+      <div class="p-style-guide__demo">
+        <h4 class="p-style-guide__demo-subtitulo">7.2.3 Slide-in (Entrada de elementos)</h4>
+        <p class="u-texto-regular">Para revelar elementos con stagger automático en listas:</p>
+        <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+          <li class="u-slide-in-bottom" style="padding: 0.75rem; margin-bottom: 0.5rem; background: var(--bg-secondary); border-radius: var(--radio-medio);">
+            <app-icon name="check" size="sm" /> Item con slide-in desde abajo 1
+          </li>
+          <li class="u-slide-in-bottom" style="padding: 0.75rem; margin-bottom: 0.5rem; background: var(--bg-secondary); border-radius: var(--radio-medio);">
+            <app-icon name="check" size="sm" /> Item con slide-in desde abajo 2
+          </li>
+          <li class="u-slide-in-bottom" style="padding: 0.75rem; margin-bottom: 0.5rem; background: var(--bg-secondary); border-radius: var(--radio-medio);">
+            <app-icon name="check" size="sm" /> Item con slide-in desde abajo 3
+          </li>
+        </ul>
+        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+          <div class="u-slide-in-left" style="padding: 1rem; background: var(--bg-secondary); border-radius: var(--radio-medio);">
+            Desde izquierda
+          </div>
+          <div class="u-slide-in-right" style="padding: 1rem; background: var(--bg-secondary); border-radius: var(--radio-medio);">
+            Desde derecha
+          </div>
+          <div class="u-slide-in-top" style="padding: 1rem; background: var(--bg-secondary); border-radius: var(--radio-medio);">
+            Desde arriba
+          </div>
+        </div>
+      </div>
+
+      <!-- 7.2.4 Fade-in-scale -->
+      <div class="p-style-guide__demo">
+        <h4 class="p-style-guide__demo-subtitulo">7.2.4 Fade-in-scale (Modales/Tooltips)</h4>
+        <p class="u-texto-regular">Para apariciones suaves de elementos emergentes:</p>
+        <div style="margin-top: 1rem; display: flex; gap: 1rem;">
+          <div class="u-fade-in-scale" style="padding: 1.5rem; background: var(--bg-secondary); border-radius: var(--radio-grande); box-shadow: var(--sombra-2);">
+            Contenido con fade-in-scale
+          </div>
+        </div>
+      </div>
+
+      <!-- 7.2.5 Pulse -->
+      <div class="p-style-guide__demo">
+        <h4 class="p-style-guide__demo-subtitulo">7.2.5 Pulse (Indicadores de atención)</h4>
+        <p class="u-texto-regular">Para notificaciones o elementos que requieren atención:</p>
+        <div style="margin-top: 1rem; display: flex; gap: 1rem; align-items: center;">
+          <app-button variant="primary" size="md" cssClass="u-pulse">
+            <app-icon name="bell" size="sm" />
+            Notificaciones (3)
+          </app-button>
+          <span class="u-pulse" style="padding: 0.5rem 1rem; background: var(--color-primary); color: white; border-radius: var(--radio-medio);">
+            ¡Nueva actualización!
+          </span>
+        </div>
+      </div>
+
+      <!-- 7.2.6 Shake -->
+      <div class="p-style-guide__demo">
+        <h4 class="p-style-guide__demo-subtitulo">7.2.6 Shake (Feedback de error)</h4>
+        <p class="u-texto-regular">Para indicar errores de validación:</p>
+        <div style="margin-top: 1rem;">
+          <app-button variant="secondary" size="md" cssClass="u-shake">
+            Botón con error
+          </app-button>
+        </div>
+      </div>
+
+      <!-- 7.3 Información técnica -->
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">7.3 Principios de Optimización</h3>
+        <ul class="u-texto-regular" style="margin-left: 1.5rem;">
+          <li><strong>GPU-accelerated:</strong> Solo se animan <code>transform</code> y <code>opacity</code></li>
+          <li><strong>Duraciones óptimas:</strong> 150ms - 500ms para mejor UX</li>
+          <li><strong>Will-change:</strong> Usado apropiadamente para preparar animaciones</li>
+          <li><strong>Responsive:</strong> Imágenes optimizadas por tamaño de pantalla</li>
+          <li><strong>Formatos modernos:</strong> AVIF (mejor compresión) con fallbacks</li>
+          <li><strong>Lazy loading:</strong> Carga diferida de imágenes fuera del viewport</li>
+        </ul>
+      </div>
+    </section>
   </div>
 </main>
