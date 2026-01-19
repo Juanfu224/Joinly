@@ -7,7 +7,9 @@ import {
   OnInit,
   viewChild,
   inject,
+  computed,
 } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ModalService } from '../../../services/modal';
 import { ButtonComponent, IconComponent } from '../index';
 
@@ -62,12 +64,21 @@ import { ButtonComponent, IconComponent } from '../index';
 })
 export class ModalComponent implements OnInit, OnDestroy {
   protected readonly modalService = inject(ModalService);
+  private readonly sanitizer = inject(DomSanitizer);
 
   /**
    * Referencia al contenedor del contenido del modal
    * Usado para gestión de foco y focus trap
    */
   protected readonly modalContent = viewChild<ElementRef>('modalContent');
+
+  /**
+   * Contenido HTML sanitizado del modal
+   */
+  protected readonly sanitizedContent = computed<SafeHtml>(() => {
+    const content = this.modalService.config()?.content ?? '';
+    return this.sanitizer.bypassSecurityTrustHtml(content);
+  });
 
   /**
    * Elementos focusables dentro del modal (calculados dinámicamente)

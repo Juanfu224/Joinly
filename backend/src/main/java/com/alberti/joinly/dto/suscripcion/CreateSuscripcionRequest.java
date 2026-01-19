@@ -46,7 +46,6 @@ public record CreateSuscripcionRequest(
         Short numPlazasTotal,
         
         @NotNull(message = "La fecha de inicio es obligatoria")
-        @FutureOrPresent(message = "La fecha de inicio no puede ser pasada")
         @Schema(description = "Fecha de inicio de la suscripción", example = "2025-01-15")
         LocalDate fechaInicio,
         

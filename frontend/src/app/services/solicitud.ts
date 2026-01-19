@@ -74,6 +74,7 @@ export class SolicitudService {
   }
 
   rechazarSolicitud(id: number, motivo?: string): Observable<SolicitudResponse> {
-    return this.api.post<SolicitudResponse>(`solicitudes/${id}/rechazar`, { motivo });
+    const body = motivo ? { motivoRechazo: motivo } : {};
+    return this.api.post<SolicitudResponse>(`solicitudes/${id}/rechazar`, body);
   }
 }

@@ -308,7 +308,7 @@ public class SolicitudService {
     public Solicitud aprobarSolicitud(Long idSolicitud, Long idAprobador) {
         log.info("Aprobando solicitud: id={}, aprobador={}", idSolicitud, idAprobador);
 
-        var solicitud = solicitudRepository.findByIdConSolicitante(idSolicitud)
+        var solicitud = solicitudRepository.findByIdCompleto(idSolicitud)
                 .orElseThrow(() -> new ResourceNotFoundException("Solicitud", "id", idSolicitud));
 
         if (solicitud.getEstado() != EstadoSolicitud.PENDIENTE) {
@@ -441,7 +441,7 @@ public class SolicitudService {
     public Solicitud rechazarSolicitud(Long idSolicitud, Long idAprobador, String motivoRechazo) {
         log.info("Rechazando solicitud: id={}, aprobador={}", idSolicitud, idAprobador);
 
-        var solicitud = solicitudRepository.findById(idSolicitud)
+        var solicitud = solicitudRepository.findByIdCompleto(idSolicitud)
                 .orElseThrow(() -> new ResourceNotFoundException("Solicitud", "id", idSolicitud));
 
         if (solicitud.getEstado() != EstadoSolicitud.PENDIENTE) {

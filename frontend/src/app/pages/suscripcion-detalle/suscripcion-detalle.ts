@@ -13,7 +13,7 @@ import {
 } from '../../components/shared';
 import type { SuscripcionDetalle } from '../../models';
 import { type ResolvedData } from '../../resolvers';
-import { SuscripcionService, ToastService, AuthService, SolicitudService } from '../../services';
+import { SuscripcionService, ToastService, AuthService, SolicitudService, ModalService } from '../../services';
 
 @Component({
   selector: 'app-suscripcion-detalle',
@@ -35,6 +35,7 @@ export class SuscripcionDetalleComponent implements OnInit {
   private readonly solicitudService = inject(SolicitudService);
   private readonly toastService = inject(ToastService);
   private readonly authService = inject(AuthService);
+  private readonly modalService = inject(ModalService);
 
   readonly id = input.required<string>();
   readonly grupoId = input.required<string>();
@@ -173,25 +174,41 @@ export class SuscripcionDetalleComponent implements OnInit {
   });
 
   protected onAceptarSolicitud(request: JoinRequest): void {
-    this.suscripcionService.aceptarSolicitud(request.id).subscribe({
-      next: () => {
-        this.toastService.success('Solicitud aceptada');
-        this.recargarDatos();
-      },
-      error: () => {
-        this.toastService.error('Error al aceptar la solicitud');
+    this.modalService.open({
+      title: '¿Aceptar solicitud?',
+      content: `¿Estás seguro de que quieres aceptar la solicitud de <strong>${request.nombreUsuario}</strong> para unirse a esta suscripción?`,
+      confirmText: 'Aceptar',
+      cancelText: 'Cancelar',
+      onConfirm: () => {
+        this.suscripcionService.aceptarSolicitud(request.id).subscribe({
+          next: () => {
+            this.toastService.success('Solicitud aceptada');
+            this.recargarDatos();
+          },
+          error: () => {
+            // El errorInterceptor ya muestra el mensaje de error
+          },
+        });
       },
     });
   }
 
   protected onRechazarSolicitud(request: JoinRequest): void {
-    this.suscripcionService.rechazarSolicitud(request.id).subscribe({
-      next: () => {
-        this.toastService.success('Solicitud rechazada');
-        this.recargarDatos();
-      },
-      error: () => {
-        this.toastService.error('Error al rechazar la solicitud');
+    this.modalService.open({
+      title: '¿Rechazar solicitud?',
+      content: `¿Estás seguro de que quieres rechazar la solicitud de <strong>${request.nombreUsuario}</strong>? Esta acción no se puede deshacer.`,
+      confirmText: 'Rechazar',
+      cancelText: 'Cancelar',
+      onConfirm: () => {
+        this.suscripcionService.rechazarSolicitud(request.id).subscribe({
+          next: () => {
+            this.toastService.success('Solicitud rechazada');
+            this.recargarDatos();
+          },
+          error: () => {
+            // El errorInterceptor ya muestra el mensaje de error
+          },
+        });
       },
     });
   }
@@ -208,7 +225,7 @@ export class SuscripcionDetalleComponent implements OnInit {
         this.isLoading.set(false);
       },
       error: () => {
-        this.toastService.error('Error al recargar los datos');
+        // El errorInterceptor ya muestra el mensaje de error
         this.isLoading.set(false);
       },
     });

@@ -8,6 +8,7 @@ import {
   CreateSuscripcionRequest,
   SuscripcionResponse,
   SuscripcionDetalle,
+  SolicitudResponse,
 } from '../models';
 import { ApiService } from '../core/services/api.service';
 
@@ -33,12 +34,12 @@ export class SuscripcionService {
     return this.api.get<SuscripcionDetalle>(`suscripciones/${id}`);
   }
 
-  aceptarSolicitud(idSolicitud: number): Observable<void> {
-    return this.api.post<void>(`solicitudes/${idSolicitud}/aprobar`, {});
+  aceptarSolicitud(idSolicitud: number): Observable<SolicitudResponse> {
+    return this.api.post<SolicitudResponse>(`solicitudes/${idSolicitud}/aprobar`, {});
   }
 
-  rechazarSolicitud(idSolicitud: number, motivo?: string): Observable<void> {
+  rechazarSolicitud(idSolicitud: number, motivo?: string): Observable<SolicitudResponse> {
     const body = motivo ? { motivoRechazo: motivo } : {};
-    return this.api.post<void>(`solicitudes/${idSolicitud}/rechazar`, body);
+    return this.api.post<SolicitudResponse>(`solicitudes/${idSolicitud}/rechazar`, body);
   }
 }

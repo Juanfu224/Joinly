@@ -39,8 +39,7 @@
       }
 
       <!-- Contenido del modal -->
-      <div id="modal-content" class="c-modal__texto">
-        {{ modalService.config()!.content }}
+      <div id="modal-content" class="c-modal__texto" [innerHTML]="sanitizedContent()">
       </div>
 
       <!-- Acciones (botones) -->

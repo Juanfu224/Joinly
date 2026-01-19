@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { RegisterFormComponent } from '../../../components/shared';
 import { AuthService } from '../../../services/auth';
@@ -32,6 +32,8 @@ export class RegisterComponent {
   private readonly authService = inject(AuthService);
   private readonly alertService = inject(AlertService);
   private readonly router = inject(Router);
+  
+  protected readonly registerForm = viewChild.required<RegisterFormComponent>(RegisterFormComponent);
 
   /**
    * Maneja el submit del formulario de registro.
@@ -56,8 +58,8 @@ export class RegisterComponent {
         this.router.navigate(['/dashboard'], { replaceUrl: true });
       },
       error: (error) => {
-        // Mostrar error en formulario
         const message = error.message || 'Error al crear la cuenta. Intenta de nuevo.';
+        this.registerForm().setError(message);
         this.alertService.error(message);
       },
     });

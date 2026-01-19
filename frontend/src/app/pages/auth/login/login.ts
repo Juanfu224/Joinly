@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, viewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LoginFormComponent } from '../../../components/shared';
 import { AuthService } from '../../../services/auth';
@@ -33,6 +33,8 @@ export class LoginComponent {
   private readonly alertService = inject(AlertService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  
+  protected readonly loginForm = viewChild.required<LoginFormComponent>(LoginFormComponent);
 
   /**
    * Maneja el submit del formulario de login.
@@ -46,8 +48,8 @@ export class LoginComponent {
         this.router.navigate([returnUrl], { replaceUrl: true });
       },
       error: (error) => {
-        // Mostrar error en formulario
         const message = error.message || 'Error al iniciar sesión. Verifica tus credenciales.';
+        this.loginForm().setError(message);
         this.alertService.error(message);
       },
     });

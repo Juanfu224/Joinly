@@ -86,14 +86,16 @@ public interface SolicitudRepository extends JpaRepository<Solicitud, Long> {
 
     /**
      * Busca una solicitud por ID cargando todas sus relaciones (solicitante, unidad, suscripcion, aprobador)
-     * Para evitar LazyInitializationException al serializar
+     * Para evitar LazyInitializationException al serializar y en operaciones de aprobación/rechazo
      */
     @Query("""
         SELECT s FROM Solicitud s
         JOIN FETCH s.solicitante
-        LEFT JOIN FETCH s.unidad
+        LEFT JOIN FETCH s.unidad u
+        LEFT JOIN FETCH u.administrador
         LEFT JOIN FETCH s.suscripcion su
         LEFT JOIN FETCH su.servicio
+        LEFT JOIN FETCH su.anfitrion
         LEFT JOIN FETCH s.aprobador
         WHERE s.id = :id
         """)

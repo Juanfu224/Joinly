@@ -202,7 +202,7 @@ export class GrupoDetalleComponent implements OnInit {
       error: () => {
         this.error.set('No se pudo cargar el grupo. Intenta de nuevo.');
         this.isLoading.set(false);
-        this.toastService.error('Error al cargar el grupo');
+        // El errorInterceptor ya muestra el mensaje de error
       },
     });
   }
@@ -230,17 +230,25 @@ export class GrupoDetalleComponent implements OnInit {
    * Maneja la aceptación de una solicitud
    */
   protected onAceptarSolicitud(solicitud: SolicitudResponse): void {
-    this.solicitudService.aprobarSolicitud(solicitud.id).subscribe({
-      next: () => {
-        this.toastService.show('success', `Solicitud de ${solicitud.solicitante.nombreCompleto} aceptada`);
-        // Recargar datos para mostrar el nuevo miembro
-        const grupoId = Number(this.id());
-        if (grupoId && !isNaN(grupoId)) {
-          this.recargarDatos(grupoId);
-        }
-      },
-      error: () => {
-        this.toastService.error('Error al aceptar la solicitud');
+    this.modalService.open({
+      title: '¿Aceptar solicitud?',
+      content: `¿Estás seguro de que quieres aceptar la solicitud de <strong>${solicitud.solicitante.nombreCompleto}</strong> para unirse al grupo?`,
+      confirmText: 'Aceptar',
+      cancelText: 'Cancelar',
+      onConfirm: () => {
+        this.solicitudService.aprobarSolicitud(solicitud.id).subscribe({
+          next: () => {
+            this.toastService.show('success', `Solicitud de ${solicitud.solicitante.nombreCompleto} aceptada`);
+            // Recargar datos para mostrar el nuevo miembro
+            const grupoId = Number(this.id());
+            if (grupoId && !isNaN(grupoId)) {
+              this.recargarDatos(grupoId);
+            }
+          },
+          error: () => {
+            // El errorInterceptor ya muestra el mensaje de error
+          },
+        });
       },
     });
   }
@@ -249,16 +257,24 @@ export class GrupoDetalleComponent implements OnInit {
    * Maneja el rechazo de una solicitud
    */
   protected onRechazarSolicitud(solicitud: SolicitudResponse): void {
-    this.solicitudService.rechazarSolicitud(solicitud.id).subscribe({
-      next: () => {
-        this.toastService.show('info', `Solicitud de ${solicitud.solicitante.nombreCompleto} rechazada`);
-        // Eliminar la solicitud de la lista
-        this.solicitudesPendientes.update(solicitudes => 
-          solicitudes.filter(s => s.id !== solicitud.id)
-        );
-      },
-      error: () => {
-        this.toastService.error('Error al rechazar la solicitud');
+    this.modalService.open({
+      title: '¿Rechazar solicitud?',
+      content: `¿Estás seguro de que quieres rechazar la solicitud de <strong>${solicitud.solicitante.nombreCompleto}</strong>? Esta acción no se puede deshacer.`,
+      confirmText: 'Rechazar',
+      cancelText: 'Cancelar',
+      onConfirm: () => {
+        this.solicitudService.rechazarSolicitud(solicitud.id).subscribe({
+          next: () => {
+            this.toastService.show('info', `Solicitud de ${solicitud.solicitante.nombreCompleto} rechazada`);
+            // Eliminar la solicitud de la lista
+            this.solicitudesPendientes.update(solicitudes => 
+              solicitudes.filter(s => s.id !== solicitud.id)
+            );
+          },
+          error: () => {
+            // El errorInterceptor ya muestra el mensaje de error
+          },
+        });
       },
     });
   }
