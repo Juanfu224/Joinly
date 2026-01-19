@@ -2,16 +2,20 @@
 // COMPONENTE: MEMBER-CARD (.c-member-card)
 // ==========================================================================
 // Tarjeta individual de miembro que muestra avatar, nombre, email y rol.
-// Diseño basado en Figma: fondo morado claro, badge azul con sombra.
-// Sigue metodología BEM y arquitectura ITCSS del proyecto.
+// Diseno basado en Figma: fondo morado claro, badge azul con sombra.
+// Container Queries: adapta layout basado en ancho del contenedor.
+// Soporte: Chrome 105+, Firefox 110+, Safari 16+ (2022-2023)
+// Sigue metodologia BEM y arquitectura ITCSS del proyecto.
 
 @use '../../../../styles/01-tools/mixins' as *;
 
 // ---------------------------------------------------------------------------
-// HOST: Encapsulación del componente Angular
+// HOST: Encapsulacion del componente Angular con Container Query
 // ---------------------------------------------------------------------------
 :host {
   display: block;
+  container-type: inline-size;
+  container-name: member-card;
 }
 
 // ---------------------------------------------------------------------------
@@ -24,10 +28,16 @@
   padding: var(--espaciado-2);
   background-color: var(--color-superficie-morada);
   border-radius: var(--radio-medio);
-  min-inline-size: 14rem;
+  min-inline-size: 0;
+
+  // Contenedor mediano (>= 14rem / 224px) - padding ampliado
+  @container member-card (min-width: 14rem) {
+    gap: var(--espaciado-3);
+    padding: var(--espaciado-2) var(--espaciado-3);
+  }
 
   // ---------------------------------------------------------------------------
-  // ELEMENTO: Información del usuario
+  // ELEMENTO: Informacion del usuario
   // ---------------------------------------------------------------------------
   &__info {
     display: flex;
@@ -45,6 +55,11 @@
     color: var(--color-texto-fuerte);
     margin: 0;
     @include truncar-texto;
+
+    // Contenedor pequeno - texto mas compacto
+    @container member-card (max-width: 12rem) {
+      font-size: var(--tamano-texto-pequeno);
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -54,6 +69,11 @@
     @include caption;
     margin: 0;
     @include truncar-texto;
+
+    // Contenedor muy pequeno - ocultar email
+    @container member-card (max-width: 10rem) {
+      display: none;
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -71,7 +91,7 @@
     flex-shrink: 0;
 
     // ---------------------------------------------------------------------------
-    // MODIFICADOR: Admin (azul) - Visible según diseño Figma
+    // MODIFICADOR: Admin (azul) - Visible segun diseno Figma
     // ---------------------------------------------------------------------------
     &--admin {
       background-color: var(--color-azul);
@@ -80,7 +100,7 @@
     }
 
     // ---------------------------------------------------------------------------
-    // MODIFICADOR: Miembro - Oculto según diseño Figma
+    // MODIFICADOR: Miembro - Oculto segun diseno Figma
     // Solo el admin muestra badge
     // ---------------------------------------------------------------------------
     &--member {

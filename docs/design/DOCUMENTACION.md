@@ -40,6 +40,13 @@ Plataforma de gestión de suscripciones compartidas desarrollada con Angular 21,
   - [5.2 Manipulación del DOM](#52-manipulación-del-dom)
   - [5.3 Gestión de Eventos del Usuario](#53-gestión-de-eventos-del-usuario)
   - [5.4 Patrones de Eventos en el Proyecto](#54-patrones-de-eventos-en-el-proyecto)
+- [6. Responsive Design](#6-responsive-design)
+  - [6.1 Breakpoints Definidos](#61-breakpoints-definidos)
+  - [6.2 Estrategia Responsive: Mobile-First](#62-estrategia-responsive-mobile-first)
+  - [6.3 Container Queries](#63-container-queries)
+  - [6.4 Adaptaciones Principales](#64-adaptaciones-principales)
+  - [6.5 Paginas Implementadas](#65-paginas-implementadas)
+  - [6.6 Testing Responsive](#66-testing-responsive)
 - [Recursos Adicionales](#recursos-adicionales)
 
 ---
@@ -5645,6 +5652,222 @@ handleKeydown(event?: Event): void {
   this.toggle();
 }
 ```
+
+---
+
+## 6. Responsive Design
+
+Esta seccion documenta la estrategia responsive implementada en Joinly, incluyendo breakpoints, Container Queries y adaptaciones para todos los dispositivos.
+
+### 6.1 Breakpoints Definidos
+
+Los breakpoints estan definidos en `src/styles/00-settings/_variables.scss`:
+
+| Breakpoint | Valor | Dispositivo | Justificacion |
+|------------|-------|-------------|---------------|
+| `$bp-mobile-small` | 20rem (320px) | Movil muy pequeno | iPhone SE, dispositivos compactos |
+| `$bp-movil` | 40rem (640px) | Movil grande | Smartphones modernos en vertical |
+| `$bp-tablet` | 48rem (768px) | Tablet vertical | iPad, tablets Android |
+| `$bp-desktop` | 64rem (1024px) | Desktop / Tablet horizontal | Laptops, tablets en horizontal |
+| `$bp-big-desktop` | 80rem (1280px) | Desktop grande | Monitores de escritorio |
+
+```scss
+// Definicion en _variables.scss
+$bp-mobile-small: 20rem; // 320px
+$bp-movil: 40rem;        // 640px
+$bp-tablet: 48rem;       // 768px
+$bp-desktop: 64rem;      // 1024px
+$bp-big-desktop: 80rem;  // 1280px
+```
+
+### 6.2 Estrategia Responsive: Mobile-First
+
+Se utiliza la estrategia **Mobile-First** por las siguientes razones:
+
+1. **Priorizacion del contenido**: Obliga a definir que es esencial para la experiencia del usuario
+2. **Progresion natural**: Los estilos base cubren el caso mas restrictivo, luego se expanden
+3. **Mejor rendimiento**: Los dispositivos moviles cargan solo los estilos necesarios
+4. **Mayor compatibilidad**: Funciona incluso si las media queries fallan
+
+El mixin `responder-a()` implementa esta estrategia usando `min-width`:
+
+```scss
+// Definicion en _mixins.scss
+@mixin responder-a($punto-ruptura) {
+  @if $punto-ruptura == 'mobile-small' {
+    @media (min-width: $bp-mobile-small) { @content; }
+  } @else if $punto-ruptura == 'movil' {
+    @media (min-width: $bp-movil) { @content; }
+  } @else if $punto-ruptura == 'tablet' {
+    @media (min-width: $bp-tablet) { @content; }
+  } @else if $punto-ruptura == 'escritorio' {
+    @media (min-width: $bp-desktop) { @content; }
+  } @else if $punto-ruptura == 'escritorio-grande' {
+    @media (min-width: $bp-big-desktop) { @content; }
+  }
+}
+```
+
+**Ejemplo de uso en un componente:**
+
+```scss
+.p-dashboard__grid {
+  display: grid;
+  gap: var(--espaciado-4);
+
+  // Base: 1 columna (mobile)
+  // No se necesita definir grid-template-columns: 1fr
+
+  @include responder-a('tablet') {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--espaciado-5);
+  }
+
+  @include responder-a('escritorio-grande') {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+```
+
+### 6.3 Container Queries
+
+Container Queries permiten que los componentes se adapten al tamano de su contenedor en lugar del viewport, haciendolos verdaderamente reutilizables.
+
+#### Componentes con Container Queries
+
+| Componente | Container Name | Breakpoints | Adaptaciones |
+|------------|---------------|-------------|--------------|
+| `card` (feature) | `card` | 18.75rem, 25rem | Padding, gap, tipografia |
+| `group-card` | `group-card` | 18rem | Padding, altura minima |
+| `member-card` | `member-card` | 10rem, 12rem, 14rem | Gap, padding, ocultar email |
+| `member-list` | `member-list` | 28rem, 48rem, 64rem | Grid de 1-4 columnas |
+| `subscription-card` | `subscription-card` | 16rem, 20rem | Padding, gap, altura |
+| `subscription-stat-card` | `stat-card` | 14rem, 18rem | Layout vertical/horizontal, tamano icono |
+| `subscription-info-card` | `subscription-info` | 37.5rem | Padding de tabs |
+| `pending-requests-card` | `pending-requests` | 28rem | Layout vertical/horizontal, padding |
+
+**Ejemplo de implementacion (subscription-card):**
+
+```scss
+// Host define el contenedor
+:host {
+  display: block;
+  container-type: inline-size;
+  container-name: subscription-card;
+}
+
+.c-subscription-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-2);
+  padding: var(--espaciado-3);
+  min-block-size: 140px;
+
+  // Contenedor mediano (>= 256px)
+  @container subscription-card (min-width: 16rem) {
+    padding: var(--espaciado-4);
+    gap: var(--espaciado-3);
+  }
+
+  // Contenedor amplio (>= 320px)
+  @container subscription-card (min-width: 20rem) {
+    min-block-size: 160px;
+  }
+
+  &__nombre {
+    @include heading-4;
+    @include truncar-texto(2);
+
+    // Texto compacto en contenedores pequenos
+    @container subscription-card (max-width: 16rem) {
+      font-size: var(--tamano-texto-grande);
+    }
+  }
+}
+```
+
+**Ejemplo de member-card con adaptaciones extremas:**
+
+```scss
+:host {
+  display: block;
+  container-type: inline-size;
+  container-name: member-card;
+}
+
+.c-member-card {
+  &__email {
+    @include caption;
+    @include truncar-texto;
+
+    // Ocultar email en contenedores muy pequenos
+    @container member-card (max-width: 10rem) {
+      display: none;
+    }
+  }
+}
+```
+
+### 6.4 Adaptaciones Principales
+
+| Elemento | Mobile (320-767px) | Tablet (768-1023px) | Desktop (1024px+) |
+|----------|-------------------|---------------------|-------------------|
+| **Header** | Menu hamburguesa, logo compacto | Menu hamburguesa | Navegacion inline completa |
+| **Footer** | 1 columna, nav apilado | 2 columnas (marca + nav) | Layout completo con espaciado amplio |
+| **Home Hero** | Titulo 3xl, descripcion normal | Titulo 5xl, descripcion grande | Titulo h1, padding amplio |
+| **Features Grid** | 1 columna | 2 columnas | 3 columnas |
+| **Dashboard Grid** | 1 columna | 2 columnas | 3 columnas |
+| **Subscription Stats** | 1 columna, layout vertical | 3 columnas, layout horizontal | 3 columnas con padding amplio |
+| **Member List Grid** | 1 columna | 2-3 columnas | 4 columnas |
+| **Forms** | Full width, padding compacto | Centrado, max-width 40rem | Centrado con mas padding |
+| **Como Funciona** | Pasos apilados, iconos ocultos | Iconos visibles, mas espacio | Padding y gaps amplios |
+| **FAQ** | Texto compacto, padding reducido | Texto normal | Layout completo |
+
+### 6.5 Paginas Implementadas
+
+| Pagina | Ruta | Descripcion | Tecnicas Responsive |
+|--------|------|-------------|---------------------|
+| Home | `/` | Landing page con hero y features | Grid auto-fit, tipografia fluida |
+| Dashboard | `/dashboard` | Lista de grupos del usuario | Grid responsive, skeletons |
+| Login | `/login` | Formulario de autenticacion | Centrado flex, max-width |
+| Register | `/register` | Formulario de registro | Centrado flex, max-width |
+| Grupo Detalle | `/grupos/:id` | Detalle de unidad familiar | Container Queries en listas |
+| Suscripcion Detalle | `/suscripciones/:id` | Detalle de suscripcion | Stats grid, Container Queries |
+| Crear Grupo | `/crear-grupo` | Formulario crear grupo | Centrado flex, max-width |
+| Unirse Grupo | `/unirse-grupo` | Formulario unirse a grupo | Centrado flex, max-width |
+| Crear Suscripcion | `/crear-suscripcion` | Formulario crear suscripcion | Centrado flex, max-width |
+| Como Funciona | `/como-funciona` | Explicacion del servicio | Grid adaptativo, iconos responsive |
+| FAQ | `/faq` | Preguntas frecuentes | Accordion, navegacion por anclas |
+| Perfil Usuario | `/usuario/perfil` | Perfil del usuario | Layout con sidebar responsive |
+| Terminos | `/legal/terminos` | Terminos de servicio | Contenido de lectura, max-width |
+| Privacidad | `/legal/privacidad` | Politica de privacidad | Contenido de lectura, max-width |
+
+### 6.6 Testing Responsive
+
+#### Viewports Verificados
+
+| Viewport | Ancho | Dispositivo Representativo |
+|----------|-------|---------------------------|
+| Mobile pequeno | 320px | iPhone SE, dispositivos compactos |
+| Mobile estandar | 375px | iPhone 12/13/14, Android modernos |
+| Tablet | 768px | iPad vertical, tablets Android |
+| Desktop pequeno | 1024px | iPad horizontal, laptops pequenos |
+| Desktop estandar | 1280px | Laptops, monitores externos |
+
+#### Herramientas de Testing
+
+1. **Chrome DevTools**: Device Mode con presets y dimensiones personalizadas
+2. **Firefox Developer Tools**: Responsive Design Mode para verificar compatibilidad
+
+#### Checklist de Verificacion
+
+- [ ] Navegacion funcional en todos los viewports
+- [ ] Texto legible sin zoom horizontal
+- [ ] Botones con area tactil minima de 44px (WCAG 2.1)
+- [ ] Formularios usables en movil
+- [ ] Imagenes y tarjetas se adaptan correctamente
+- [ ] No hay overflow horizontal
+- [ ] Modales centrados y con scroll si es necesario
 
 ---
 

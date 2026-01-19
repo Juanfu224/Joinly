@@ -8,6 +8,8 @@
 
 :host {
   display: block;
+  container-type: inline-size;
+  container-name: pending-requests;
 }
 
 .c-pending-requests {
@@ -22,9 +24,13 @@
 // ELEMENTO: Header
 // ---------------------------------------------------------------------------
 .c-pending-requests__header {
-  padding: var(--espaciado-4);
+  padding: var(--espaciado-3);
   background-color: var(--color-superficie-morada);
   border-bottom: 1px solid var(--color-borde-suave);
+
+  @container pending-requests (min-width: 28rem) {
+    padding: var(--espaciado-4);
+  }
 }
 
 .c-pending-requests__header-content {
@@ -60,7 +66,11 @@
 // ELEMENTO: Content
 // ---------------------------------------------------------------------------
 .c-pending-requests__content {
-  padding: var(--espaciado-4);
+  padding: var(--espaciado-3);
+
+  @container pending-requests (min-width: 28rem) {
+    padding: var(--espaciado-4);
+  }
 }
 
 .c-pending-requests__list {
@@ -93,8 +103,8 @@
     border-color: var(--color-borde-fuerte);
   }
 
-  // En pantallas medianas y grandes, layout horizontal
-  @media (min-width: 37.5rem) {
+  // En contenedores medianos y grandes, layout horizontal
+  @container pending-requests (min-width: 28rem) {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;

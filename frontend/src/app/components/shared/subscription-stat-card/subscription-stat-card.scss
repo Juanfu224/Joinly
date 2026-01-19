@@ -1,17 +1,21 @@
 // ==========================================================================
 // COMPONENTE: SUBSCRIPTION STAT CARD (.c-subscription-stat-card)
 // ==========================================================================
-// Tarjeta de estadística de suscripción (Renovación, Plazas, Aporte).
-// Diseño basado en Figma: node-id 1251-1942, 1251-1944, 1251-2015
-// Sigue metodología BEM y arquitectura ITCSS del proyecto.
+// Tarjeta de estadistica de suscripcion (Renovacion, Plazas, Aporte).
+// Diseno basado en Figma: node-id 1251-1942, 1251-1944, 1251-2015
+// Container Queries: adapta layout basado en ancho del contenedor.
+// Soporte: Chrome 105+, Firefox 110+, Safari 16+ (2022-2023)
+// Sigue metodologia BEM y arquitectura ITCSS del proyecto.
 
 @use '../../../../styles/01-tools/mixins' as *;
 
 // ---------------------------------------------------------------------------
-// HOST: Encapsulación del componente Angular
+// HOST: Encapsulacion del componente Angular con Container Query
 // ---------------------------------------------------------------------------
 :host {
   display: block;
+  container-type: inline-size;
+  container-name: stat-card;
 }
 
 // ---------------------------------------------------------------------------
@@ -20,15 +24,29 @@
 .c-subscription-stat-card {
   background-color: var(--bg-secondary);
   border-radius: var(--radio-grande);
-  padding: var(--espaciado-5);
+  padding: var(--espaciado-3);
   display: flex;
-  align-items: center;
-  gap: var(--espaciado-4);
-  min-height: 120px;
-  // Combinación de sombra 1 + sombra 3 según Figma (consistente con member-list)
-  box-shadow:
-    0 2px 6px 0 rgba(20, 20, 43, 0.06),
-    0 8px 28px 0 rgba(20, 20, 43, 0.1);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--espaciado-2);
+  min-height: 100px;
+  box-shadow: var(--sombra-1), var(--sombra-3);
+
+  // Contenedor mediano (>= 14rem / 224px) - layout horizontal
+  @container stat-card (min-width: 14rem) {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--espaciado-3);
+    padding: var(--espaciado-4);
+    min-height: 100px;
+  }
+
+  // Contenedor amplio (>= 18rem / 288px) - mas espacio
+  @container stat-card (min-width: 18rem) {
+    padding: var(--espaciado-5);
+    gap: var(--espaciado-4);
+    min-height: 120px;
+  }
 
   // ---------------------------------------------------------------------------
   // ELEMENTO: Wrapper del icono
@@ -37,10 +55,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     border-radius: var(--radio-medio);
     flex-shrink: 0;
+
+    // Contenedor amplio - icono mas grande
+    @container stat-card (min-width: 18rem) {
+      width: 48px;
+      height: 48px;
+    }
   }
 
   &__icon {
@@ -50,19 +74,16 @@
   // ---------------------------------------------------------------------------
   // MODIFICADORES: Variantes de color
   // ---------------------------------------------------------------------------
-  // Variante Naranja (Renovación)
   &--naranja &__icon-wrapper {
     background-color: var(--color-naranja-principal);
     box-shadow: var(--sombra-naranja);
   }
 
-  // Variante Morado (Plazas)
   &--morado &__icon-wrapper {
     background-color: var(--color-morado-principal);
     box-shadow: var(--sombra-morado);
   }
 
-  // Variante Amarillo (Aporte)
   &--amarillo &__icon-wrapper {
     background-color: var(--color-amarillo);
     box-shadow: var(--sombra-amarillo);
@@ -76,18 +97,31 @@
     flex-direction: column;
     gap: var(--espaciado-1);
     flex: 1;
+    min-inline-size: 0;
   }
 
   &__title {
-    @include texto-grande;
+    @include texto-regular;
     font-weight: var(--peso-fuente-semi-negrita);
     color: var(--text-primary);
     margin: 0;
+
+    // Contenedor amplio - texto mas grande
+    @container stat-card (min-width: 18rem) {
+      @include texto-grande;
+      font-weight: var(--peso-fuente-semi-negrita);
+    }
   }
 
   &__value {
-    @include texto-grande;
+    @include texto-regular;
     color: var(--text-secondary);
     margin: 0;
+    @include truncar-texto;
+
+    // Contenedor amplio - texto mas grande
+    @container stat-card (min-width: 18rem) {
+      @include texto-grande;
+    }
   }
 }

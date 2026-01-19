@@ -1,15 +1,22 @@
-/**
- * NotFound Component - Página 404
- * Arquitectura: BEM + ITCSS
- * Estrategia: Mobile-First
- */
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as *;
+
+// ==========================================================================
+// COMPONENTE: NOT-FOUND (Pagina 404)
+// ==========================================================================
+// Arquitectura: BEM + ITCSS
+// Estrategia: Mobile-First
+
+:host {
+  display: block;
+}
 
 .c-not-found {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 60vh;
-  padding: var(--space-6) var(--space-4);
+  padding: var(--espaciado-6) var(--espaciado-4);
   text-align: center;
 
   // =========================================================================
@@ -23,15 +30,15 @@
 
   &__ilustracion {
     position: relative;
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--espaciado-6);
   }
 
   &__codigo {
     display: block;
     font-size: clamp(6rem, 20vw, 10rem);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--peso-fuente-negrita);
     line-height: 1;
-    color: var(--color-primary-100);
+    color: var(--color-superficie-morada);
     letter-spacing: -0.02em;
     user-select: none;
   }
@@ -46,62 +53,55 @@
     justify-content: center;
     width: 4rem;
     height: 4rem;
-    background-color: var(--color-surface-elevated);
-    border-radius: var(--radius-full);
-    box-shadow: var(--shadow-lg);
-    color: var(--color-primary-500);
+    background-color: var(--bg-tertiary);
+    border-radius: var(--radio-circular);
+    box-shadow: var(--sombra-4);
+    color: var(--color-principal);
   }
 
   &__titulo {
-    margin-bottom: var(--space-3);
-    font-size: var(--font-size-2xl);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-text-primary);
-    line-height: var(--line-height-tight);
+    @include heading-3;
+    margin-bottom: var(--espaciado-3);
 
-    @media (width >= 768px) {
-      font-size: var(--font-size-3xl);
+    @include responder-a('tablet') {
+      @include heading-2;
     }
   }
 
   &__descripcion {
-    margin-bottom: var(--space-6);
-    font-size: var(--font-size-base);
-    color: var(--color-text-secondary);
-    line-height: var(--line-height-relaxed);
+    @include texto-regular;
+    color: var(--text-secondary);
+    margin-bottom: var(--espaciado-6);
+    line-height: var(--altura-linea-relajada);
   }
 
   &__acciones {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
-    margin-bottom: var(--space-6);
+    gap: var(--espaciado-3);
+    margin-bottom: var(--espaciado-6);
 
-    @media (width >= 640px) {
+    @include responder-a('movil') {
       flex-direction: row;
       justify-content: center;
     }
   }
 
   &__ayuda {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-tertiary);
+    @include texto-pequeno;
+    color: var(--text-secondary);
   }
 
   &__enlace {
-    color: var(--color-primary-500);
+    color: var(--color-principal);
     text-decoration: underline;
     text-underline-offset: 2px;
-    transition: color var(--transition-fast);
+    @include transicion(color);
 
     &:hover {
-      color: var(--color-primary-600);
+      color: var(--color-principal-oscuro);
     }
 
-    &:focus-visible {
-      outline: 2px solid var(--color-primary-500);
-      outline-offset: 2px;
-      border-radius: var(--radius-sm);
-    }
+    @include foco-visible;
   }
 }

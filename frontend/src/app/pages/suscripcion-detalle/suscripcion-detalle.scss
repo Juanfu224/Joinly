@@ -1,9 +1,10 @@
 // ==========================================================================
-// PÁGINA: SUSCRIPCIÓN DETALLE (.p-suscripcion-detalle)
+// PAGINA: SUSCRIPCION DETALLE (.p-suscripcion-detalle)
 // ==========================================================================
-// Página de detalle de una suscripción compartida.
-// Muestra información completa: estadísticas, miembros, credenciales y solicitudes.
-// Diseño basado en Figma: node-id 1130-2408
+// Pagina de detalle de una suscripcion compartida.
+// Muestra informacion completa: estadisticas, miembros, credenciales y solicitudes.
+// Diseno basado en Figma: node-id 1130-2408
+// Estrategia: Mobile-First
 
 @use '../../../styles/00-settings/variables' as *;
 @use '../../../styles/01-tools/mixins' as *;
@@ -12,8 +13,11 @@
 // BLOQUE: .p-suscripcion-detalle
 // ---------------------------------------------------------------------------
 .p-suscripcion-detalle {
-  // Sin padding superior, el header maneja el espaciado
-  padding-block-end: 0;
+  padding-block-end: var(--espaciado-6);
+
+  @include responder-a('tablet') {
+    padding-block-end: var(--espaciado-8);
+  }
 
   // ---------------------------------------------------------------------------
   // ELEMENTO: Header
@@ -24,6 +28,10 @@
     @include responder-a('tablet') {
       margin-block: var(--espaciado-6);
     }
+  }
+
+  &__header-content {
+    margin-block-end: var(--espaciado-3);
   }
 
   &__title {
@@ -38,7 +46,11 @@
   }
 
   &__actions {
-    margin-block-start: var(--espaciado-4);
+    margin-block-start: var(--espaciado-3);
+
+    @include responder-a('tablet') {
+      margin-block-start: var(--espaciado-4);
+    }
   }
 
   &__pending-notice {
@@ -47,7 +59,7 @@
     gap: var(--espaciado-2);
     margin-block-start: var(--espaciado-3);
     padding: var(--espaciado-3);
-    background-color: var(--color-advertencia-fondo);
+    background-color: color-mix(in srgb, var(--color-advertencia) 15%, transparent);
     border-radius: var(--radio-mediano);
     color: var(--color-advertencia);
     font-family: var(--font-primaria);
@@ -57,28 +69,36 @@
   }
 
   // ---------------------------------------------------------------------------
-  // ELEMENTO: Grid de tarjetas de estadísticas
+  // ELEMENTO: Grid de tarjetas de estadisticas
   // ---------------------------------------------------------------------------
   &__stats {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--espaciado-5);
+    gap: var(--espaciado-3);
     margin-bottom: var(--espaciado-6);
 
+    // 2 columnas en mobile grande
+    @include responder-a('movil') {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--espaciado-4);
+    }
+
+    // 3 columnas en tablet+
     @include responder-a('tablet') {
       grid-template-columns: repeat(3, 1fr);
+      gap: var(--espaciado-5);
     }
   }
 
   // ---------------------------------------------------------------------------
-  // ELEMENTO: Sección de miembros
+  // ELEMENTO: Seccion de miembros
   // ---------------------------------------------------------------------------
   &__members {
     margin-bottom: var(--espaciado-6);
   }
 
   // ---------------------------------------------------------------------------
-  // ELEMENTO: Card de información
+  // ELEMENTO: Card de informacion
   // ---------------------------------------------------------------------------
   &__info {
     margin-bottom: var(--espaciado-6);
@@ -91,8 +111,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 400px;
-    padding: var(--espaciado-8);
+    min-height: 300px;
+    padding: var(--espaciado-4);
+
+    @include responder-a('tablet') {
+      min-height: 400px;
+      padding: var(--espaciado-8);
+    }
   }
 
   &__error-content {
@@ -100,8 +125,12 @@
     flex-direction: column;
     align-items: center;
     gap: var(--espaciado-4);
-    max-width: 600px;
+    max-width: 100%;
     text-align: center;
+
+    @include responder-a('tablet') {
+      max-width: 600px;
+    }
   }
 
   &__error-message {

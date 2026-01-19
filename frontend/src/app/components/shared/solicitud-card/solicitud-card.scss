@@ -47,42 +47,37 @@
   }
 
   &__tipo-texto {
-    font-family: var(--font-primaria);
-    font-size: var(--tamano-texto-pequeno);
-    font-weight: var(--peso-fuente-regular);
-    line-height: 1.33;
+    @include texto-pequeno;
     color: var(--text-secondary);
   }
 
-  // Badge de estado con colores según el estado
+  // Badge de estado con colores segun el estado
   &__badge {
     display: inline-flex;
     align-items: center;
     padding: var(--espaciado-1) var(--espaciado-2);
     border-radius: var(--radio-pequeno);
-    font-family: var(--font-primaria);
-    font-size: var(--tamano-texto-pequeno);
+    @include caption;
     font-weight: var(--peso-fuente-semi-negrita);
-    line-height: 1.33;
 
     &--pendiente {
-      background-color: var(--color-advertencia-fondo);
+      background-color: color-mix(in srgb, var(--color-advertencia) 15%, transparent);
       color: var(--color-advertencia);
     }
 
     &--aprobada {
-      background-color: var(--color-exito-fondo);
+      background-color: color-mix(in srgb, var(--color-exito) 15%, transparent);
       color: var(--color-exito);
     }
 
     &--rechazada {
-      background-color: var(--color-error-fondo);
+      background-color: color-mix(in srgb, var(--color-error) 15%, transparent);
       color: var(--color-error);
     }
 
     &--cancelada {
-      background-color: var(--bg-terciary);
-      color: var(--text-tertiary);
+      background-color: var(--bg-tertiary);
+      color: var(--text-secondary);
     }
   }
 
@@ -98,46 +93,33 @@
   }
 
   &__nombre {
-    font-family: var(--font-primaria);
-    font-size: var(--tamano-h4);
-    font-weight: var(--peso-fuente-semi-negrita);
-    line-height: var(--altura-linea-h4);
-    color: var(--text-primary);
+    @include heading-4;
     margin: 0;
   }
 
   &__fecha {
-    font-family: var(--font-primaria);
-    font-size: var(--tamano-texto-pequeno);
-    font-weight: var(--peso-fuente-regular);
-    line-height: 1.33;
+    @include texto-pequeno;
     color: var(--text-secondary);
     margin: 0;
   }
 
   &__mensaje {
-    font-family: var(--font-primaria);
-    font-size: var(--tamano-texto-normal);
-    font-weight: var(--peso-fuente-regular);
-    line-height: var(--altura-linea-normal);
+    @include texto-regular;
     color: var(--text-secondary);
     margin: 0;
     font-style: italic;
     padding: var(--espaciado-2);
-    background-color: var(--bg-terciary);
+    background-color: var(--bg-tertiary);
     border-radius: var(--radio-pequeno);
     border-left: 3px solid var(--color-principal);
   }
 
   &__motivo-rechazo {
-    font-family: var(--font-primaria);
-    font-size: var(--tamano-texto-pequeno);
-    font-weight: var(--peso-fuente-regular);
-    line-height: 1.33;
+    @include texto-pequeno;
     color: var(--color-error);
     margin: 0;
     padding: var(--espaciado-2);
-    background-color: var(--color-error-fondo);
+    background-color: color-mix(in srgb, var(--color-error) 15%, transparent);
     border-radius: var(--radio-pequeno);
 
     strong {

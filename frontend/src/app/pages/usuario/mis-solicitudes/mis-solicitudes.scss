@@ -8,8 +8,13 @@
 .p-mis-solicitudes {
   display: flex;
   flex-direction: column;
-  gap: var(--espaciado-4);
-  padding: var(--espaciado-4);
+  gap: var(--espaciado-3);
+  padding: var(--espaciado-3);
+
+  @include responder-a('movil') {
+    gap: var(--espaciado-4);
+    padding: var(--espaciado-4);
+  }
 
   @include responder-a('tablet') {
     padding: var(--espaciado-6);
@@ -27,11 +32,16 @@
 
   &__title {
     font-family: var(--font-primaria);
-    font-size: var(--tamano-h2);
+    font-size: var(--tamano-h3);
     font-weight: var(--peso-fuente-negrita);
-    line-height: var(--altura-linea-h2);
+    line-height: var(--altura-linea-h3);
     color: var(--text-primary);
     margin: 0;
+
+    @include responder-a('movil') {
+      font-size: var(--tamano-h2);
+      line-height: var(--altura-linea-h2);
+    }
 
     @include responder-a('tablet') {
       font-size: var(--tamano-h1);
@@ -41,11 +51,15 @@
 
   &__description {
     font-family: var(--font-primaria);
-    font-size: var(--tamano-texto-normal);
+    font-size: var(--tamano-texto-pequeno);
     font-weight: var(--peso-fuente-regular);
     line-height: var(--altura-linea-normal);
     color: var(--text-secondary);
     margin: 0;
+
+    @include responder-a('movil') {
+      font-size: var(--tamano-texto-normal);
+    }
   }
 
   // ==========================================================================
@@ -54,8 +68,12 @@
 
   &__filters {
     display: flex;
-    gap: var(--espaciado-3);
+    gap: var(--espaciado-2);
     flex-wrap: wrap;
+
+    @include responder-a('movil') {
+      gap: var(--espaciado-3);
+    }
   }
 
   &__filter-group {
@@ -70,7 +88,7 @@
     border-radius: var(--radio-mediano);
     background-color: var(--bg-secondary);
     font-family: var(--font-primaria);
-    font-size: var(--tamano-texto-normal);
+    font-size: var(--tamano-texto-pequeno);
     font-weight: var(--peso-fuente-regular);
     color: var(--text-secondary);
     cursor: pointer;
@@ -79,8 +97,12 @@
       border-color var(--duracion-base) var(--transicion-estandar),
       color var(--duracion-base) var(--transicion-estandar);
 
+    @include responder-a('movil') {
+      font-size: var(--tamano-texto-normal);
+    }
+
     &:hover {
-      background-color: var(--bg-terciary);
+      background-color: var(--bg-tertiary);
       border-color: var(--color-principal);
     }
 
