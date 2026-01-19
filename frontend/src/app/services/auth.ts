@@ -86,6 +86,7 @@ export class AuthService {
       id: response.id,
       nombre: response.nombre,
       email: response.email,
+      temaPreferido: response.temaPreferido,
     };
   }
 

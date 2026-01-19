@@ -8,25 +8,30 @@ export type Theme = 'light' | 'dark';
 
 /**
  * Servicio para gestionar el tema de la aplicación (claro/oscuro).
- * 
+ *
  * Proporciona funcionalidad para:
  * - Detectar la preferencia de tema del sistema operativo
  * - Cambiar entre tema claro y oscuro
  * - Persistir la preferencia del usuario en localStorage
  * - Reaccionar automáticamente a cambios en la preferencia del sistema
- * 
+ *
+ * Prioridad de temas:
+ * 1. Tema guardado en localStorage
+ * 2. Preferencia del sistema (prefers-color-scheme)
+ * 3. Tema claro por defecto
+ *
  * @usageNotes
  * ```typescript
  * // En app.ts (inicialización)
  * constructor() {
  *   this.themeService.initialize();
  * }
- * 
+ *
  * // En componente
  * toggleTheme() {
  *   this.themeService.toggleTheme();
  * }
- * 
+ *
  * // Leer tema actual
  * const currentTheme = this.themeService.currentTheme();
  * ```
@@ -95,7 +100,7 @@ export class ThemeService implements OnDestroy {
 
   /**
    * Establece un tema específico.
-   * 
+   *
    * @param theme - El tema a aplicar ('light' o 'dark')
    */
   setTheme(theme: Theme): void {

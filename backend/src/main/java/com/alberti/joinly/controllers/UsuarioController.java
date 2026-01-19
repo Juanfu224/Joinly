@@ -40,7 +40,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Actualizar perfil")
+    @Operation(summary = "Actualizar perfil completo")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Perfil actualizado exitosamente"),
             @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos"),
@@ -54,7 +54,30 @@ public class UsuarioController {
                 id,
                 request.nombre(),
                 request.telefono(),
-                request.avatar());
+                request.avatar(),
+                request.temaPreferido());
+
+        return ResponseEntity.ok(UsuarioResponse.fromEntity(usuario));
+    }
+
+    @PatchMapping("/{id}")
+    @Operation(summary = "Actualizar perfil parcialmente",
+            description = "Actualiza solo los campos proporcionados. Útil para cambiar preferencias como el tema.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Perfil actualizado exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    public ResponseEntity<UsuarioResponse> patchPerfil(
+            @Parameter(description = "ID del usuario") @PathVariable Long id,
+            @Valid @RequestBody UpdatePerfilRequest request) {
+
+        var usuario = usuarioService.actualizarPerfil(
+                id,
+                request.nombre(),
+                request.telefono(),
+                request.avatar(),
+                request.temaPreferido());
 
         return ResponseEntity.ok(UsuarioResponse.fromEntity(usuario));
     }

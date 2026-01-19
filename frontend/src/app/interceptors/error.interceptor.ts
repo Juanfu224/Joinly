@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+import { HttpErrorResponse, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 
@@ -23,8 +23,8 @@ function isSilentErrorUrl(url: string): boolean {
 /**
  * Verifica si el request tiene el header para saltar el manejo global de errores.
  */
-function hasSkipErrorHandlingHeader(error: HttpErrorResponse): boolean {
-  return error.headers?.has('X-Skip-Error-Handling') ?? false;
+function hasSkipErrorHandlingHeader(req: HttpRequest<unknown>): boolean {
+  return req.headers.has('X-Skip-Error-Handling');
 }
 
 /**
@@ -61,7 +61,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       // Verificar si este error debe manejarse globalmente
       const shouldShowToast =
         !isSilentErrorUrl(error.url ?? '') &&
-        !hasSkipErrorHandlingHeader(error);
+        !hasSkipErrorHandlingHeader(req);
 
       if (shouldShowToast) {
         const message = getErrorMessage(error);

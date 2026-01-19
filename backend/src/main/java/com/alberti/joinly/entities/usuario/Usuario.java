@@ -87,6 +87,10 @@ public class Usuario extends BaseEntity {
     @Column(name = "telefono", length = 20)
     private String telefono;
 
+    @Size(max = 10)
+    @Column(name = "tema_preferido", length = 10)
+    private String temaPreferido;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false, length = 20)
     @Builder.Default

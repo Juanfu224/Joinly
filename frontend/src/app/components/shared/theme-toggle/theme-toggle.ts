@@ -4,18 +4,19 @@ import { IconComponent } from '../icon/icon';
 
 /**
  * Componente para alternar entre tema claro y oscuro.
- * 
+ *
  * Proporciona un botón accesible que:
  * - Muestra el icono de sol (tema claro) o luna (tema oscuro)
  * - Cambia el tema al hacer clic
+ * - Guarda preferencia en localStorage
  * - Incluye atributos ARIA para accesibilidad
  * - Se integra con ThemeService usando signals
- * 
+ *
  * @usageNotes
  * ```html
  * <app-theme-toggle />
  * ```
- * 
+ *
  * @remarks
  * - Usa ChangeDetectionStrategy.OnPush para optimización
  * - El icono cambia reactivamente gracias a signals
@@ -40,7 +41,7 @@ export class ThemeToggleComponent {
 
   /**
    * Alterna entre tema claro y oscuro.
-   * Delegado al ThemeService.
+   * La preferencia se guarda automáticamente en localStorage.
    */
   protected toggleTheme(): void {
     this.themeService.toggleTheme();

@@ -20,6 +20,7 @@ export interface AuthResponse {
   id: number;
   nombre: string;
   email: string;
+  temaPreferido?: 'light' | 'dark';
   accessToken: string;
   refreshToken: string;
   tokenType: string;
@@ -32,6 +33,7 @@ export interface User {
   nombre: string;
   email: string;
   emailVerificado?: boolean;
+  temaPreferido?: 'light' | 'dark';
 }
 
 // TOKEN MANAGEMENT

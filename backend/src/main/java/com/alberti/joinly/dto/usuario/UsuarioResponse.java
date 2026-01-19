@@ -13,6 +13,7 @@ public record UsuarioResponse(
         Boolean emailVerificado,
         String avatar,
         String telefono,
+        String temaPreferido,
         EstadoUsuario estado,
         LocalDateTime fechaUltimoAcceso
 ) {
@@ -25,6 +26,7 @@ public record UsuarioResponse(
                 usuario.getEmailVerificado(),
                 usuario.getAvatar(),
                 usuario.getTelefono(),
+                usuario.getTemaPreferido(),
                 usuario.getEstado(),
                 usuario.getFechaUltimoAcceso()
         );

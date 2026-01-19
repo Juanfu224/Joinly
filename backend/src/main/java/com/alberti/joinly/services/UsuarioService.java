@@ -60,7 +60,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public Usuario actualizarPerfil(Long idUsuario, String nombre, String telefono, String avatar) {
+    public Usuario actualizarPerfil(Long idUsuario, String nombre, String telefono, String avatar, String temaPreferido) {
         var usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + idUsuario));
 
@@ -72,6 +72,14 @@ public class UsuarioService {
         }
         if (avatar != null) {
             usuario.setAvatar(avatar);
+        }
+        if (temaPreferido != null) {
+            if (!temaPreferido.matches("^(light|dark)$")) {
+                throw new IllegalArgumentException(
+                        "Tema inválido. Valores permitidos: 'light', 'dark'"
+                );
+            }
+            usuario.setTemaPreferido(temaPreferido);
         }
 
         return usuarioRepository.save(usuario);
