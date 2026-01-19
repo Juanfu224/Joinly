@@ -1,20 +1,19 @@
+@use '../../../styles/00-settings/variables' as *;
+@use '../../../styles/01-tools/mixins' as *;
+
 // ==========================================================================
 // PAGE: LEGAL (Terminos, Privacidad, Cookies)
 // ==========================================================================
-// Paginas legales con contenido de texto.
 // Arquitectura: BEM + ITCSS
 // Estrategia: Mobile-First
-
-@use '../../../styles/00-settings/variables' as *;
-@use '../../../styles/01-tools/mixins' as *;
 
 :host {
   display: block;
 }
 
 .p-legal {
-  max-inline-size: 48rem;
-  margin-inline: auto;
+  max-width: 48rem;
+  margin: 0 auto;
   padding: var(--espaciado-6) var(--espaciado-4);
 
   @include responder-a('tablet') {
@@ -26,25 +25,23 @@
   // =========================================================================
 
   &__header {
-    margin-block-end: var(--espaciado-6);
-    padding-block-end: var(--espaciado-4);
-    border-block-end: 1px solid var(--border-color);
+    margin-bottom: var(--espaciado-6);
+    padding-bottom: var(--espaciado-4);
+    border-bottom: 1px solid var(--border-color);
   }
 
   &__titulo {
-    font-size: var(--tamano-texto-2xl);
-    font-weight: var(--peso-fuente-negrita);
-    color: var(--text-primary);
-    margin-block-end: var(--espaciado-2);
+    @include heading-3;
+    margin-bottom: var(--espaciado-2);
 
     @include responder-a('tablet') {
-      font-size: var(--tamano-texto-3xl);
+      @include heading-2;
     }
   }
 
   &__fecha {
     font-size: var(--tamano-texto-pequeno);
-    color: var(--color-gris-oscuro);
+    color: var(--text-secondary);
   }
 
   // =========================================================================
@@ -62,33 +59,34 @@
       font-size: var(--tamano-texto-grande);
       font-weight: var(--peso-fuente-semi-negrita);
       color: var(--text-primary);
-      margin-block-end: var(--espaciado-3);
+      margin-bottom: var(--espaciado-3);
     }
 
     p {
       font-size: var(--tamano-texto-normal);
       color: var(--text-secondary);
       line-height: var(--altura-linea-relajada);
-      margin-block-end: var(--espaciado-3);
+      margin-bottom: var(--espaciado-3);
     }
 
     ul {
       list-style: disc;
-      padding-inline-start: var(--espaciado-6);
-      margin-block-end: var(--espaciado-3);
+      padding-left: var(--espaciado-6);
+      margin-bottom: var(--espaciado-3);
     }
 
     li {
       font-size: var(--tamano-texto-normal);
       color: var(--text-secondary);
       line-height: var(--altura-linea-relajada);
-      margin-block-end: var(--espaciado-1);
+      margin-bottom: var(--espaciado-1);
     }
 
     a {
       color: var(--color-principal);
       text-decoration: underline;
       text-underline-offset: 2px;
+      @include transicion(color);
 
       &:hover {
         color: var(--color-principal-oscuro);

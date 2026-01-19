@@ -2,18 +2,14 @@
 // COMPONENTE: MEMBER-LIST (.c-member-list)
 // ==========================================================================
 // Seccion que muestra una lista de miembros con encabezado y contador.
-// Implementa Container Queries para adaptar el grid de miembros.
-//
-// CONTAINER QUERIES:
-// - Base: 1 columna
-// - >= 400px: 2 columnas
-// - >= 600px: 3 columnas
-// - >= 800px: 4 columnas
+// Diseno basado en Figma: seccion con sombras, bordes y espaciado consistentes.
+// Implementa Container Queries para adaptacion independiente del viewport.
+// Sigue metodologia BEM y arquitectura ITCSS del proyecto.
 
 @use '../../../../styles/01-tools/mixins' as *;
 
 // ---------------------------------------------------------------------------
-// HOST: Encapsulacion del componente Angular
+// HOST: Encapsulacion del componente Angular con Container Query
 // ---------------------------------------------------------------------------
 :host {
   display: block;
@@ -32,6 +28,12 @@
   background-color: var(--bg-secondary);
   border-radius: var(--radio-grande);
   box-shadow: var(--sombra-1), var(--sombra-3);
+
+  // Contenedor mediano (>= 32rem / 512px)
+  @container member-list (min-width: 32rem) {
+    padding: var(--espaciado-4);
+    gap: var(--espaciado-4);
+  }
 
   // ---------------------------------------------------------------------------
   // ELEMENTO: Encabezado
@@ -68,18 +70,19 @@
     grid-template-columns: 1fr;
     gap: var(--espaciado-2);
 
-    // Container Query: >= 400px - 2 columnas
-    @container member-list (min-width: 25rem) {
+    // Contenedor mediano (>= 28rem / 448px) - 2 columnas
+    @container member-list (min-width: 28rem) {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    // Container Query: >= 600px - 3 columnas
-    @container member-list (min-width: 37.5rem) {
+    // Contenedor amplio (>= 48rem / 768px) - 3 columnas
+    @container member-list (min-width: 48rem) {
       grid-template-columns: repeat(3, 1fr);
+      gap: var(--espaciado-3);
     }
 
-    // Container Query: >= 800px - 4 columnas
-    @container member-list (min-width: 50rem) {
+    // Contenedor muy amplio (>= 64rem / 1024px) - 4 columnas
+    @container member-list (min-width: 64rem) {
       grid-template-columns: repeat(4, 1fr);
     }
   }

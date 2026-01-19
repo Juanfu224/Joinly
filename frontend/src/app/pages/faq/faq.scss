@@ -1,23 +1,23 @@
+@use '../../../styles/00-settings/variables' as *;
+@use '../../../styles/01-tools/mixins' as *;
+
 // ==========================================================================
-// PAGE: FAQ
+// PAGE: FAQ (Preguntas Frecuentes)
 // ==========================================================================
-// Pagina de preguntas frecuentes con navegacion por fragments.
 // Arquitectura: BEM + ITCSS
 // Estrategia: Mobile-First
 //
 // Navegacion con Fragments:
+// Incluye navegacion rapida a secciones y scroll suave.
 // IDs de seccion: #primeros-pasos, #suscripciones, #pagos-seguridad
-
-@use '../../../styles/00-settings/variables' as *;
-@use '../../../styles/01-tools/mixins' as *;
 
 :host {
   display: block;
 }
 
 .p-faq {
-  max-inline-size: 48rem;
-  margin-inline: auto;
+  max-width: 48rem;
+  margin: 0 auto;
   padding: var(--espaciado-6) var(--espaciado-4);
   scroll-behavior: smooth;
 
@@ -31,22 +31,20 @@
 
   &__hero {
     text-align: center;
-    margin-block-end: var(--espaciado-6);
+    margin-bottom: var(--espaciado-6);
   }
 
   &__titulo {
-    font-size: var(--tamano-texto-2xl);
-    font-weight: var(--peso-fuente-negrita);
-    color: var(--text-primary);
-    margin-block-end: var(--espaciado-3);
+    @include heading-3;
+    margin-bottom: var(--espaciado-3);
 
     @include responder-a('tablet') {
-      font-size: var(--tamano-texto-3xl);
+      @include heading-2;
     }
   }
 
   &__subtitulo {
-    font-size: var(--tamano-texto-grande);
+    @include texto-grande;
     color: var(--text-secondary);
   }
 
@@ -55,9 +53,9 @@
   // =========================================================================
 
   &__nav {
-    margin-block-end: var(--espaciado-6);
+    margin-bottom: var(--espaciado-6);
     padding: var(--espaciado-4);
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-primary);
     border-radius: var(--radio-grande);
   }
 
@@ -79,12 +77,14 @@
     font-size: var(--tamano-texto-pequeno);
     font-weight: var(--peso-fuente-medio);
     color: var(--text-secondary);
-    background: var(--bg-primary);
+    background: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: var(--radio-medio);
     cursor: pointer;
-    min-block-size: var(--tamano-minimo-tactil);
     @include transicion(all);
+
+    // Touch target WCAG 2.1 AA (44px minimo)
+    min-height: var(--tamano-minimo-tactil);
 
     &:hover {
       color: var(--color-principal-oscuro);
@@ -103,11 +103,12 @@
     display: flex;
     flex-direction: column;
     gap: var(--espaciado-8);
-    margin-block-end: var(--espaciado-8);
+    margin-bottom: var(--espaciado-8);
   }
 
   &__categoria {
-    scroll-margin-block-start: 5rem;
+    // Offset para compensar header fijo al hacer scroll a anchor
+    scroll-margin-top: var(--espaciado-10);
   }
 
   &__categoria-titulo {
@@ -117,7 +118,7 @@
     font-size: var(--tamano-texto-grande);
     font-weight: var(--peso-fuente-semi-negrita);
     color: var(--text-primary);
-    margin-block-end: var(--espaciado-4);
+    margin-bottom: var(--espaciado-4);
   }
 
   &__lista {
@@ -127,13 +128,13 @@
   }
 
   &__item {
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-primary);
     border-radius: var(--radio-grande);
     overflow: hidden;
   }
 
   &__pregunta {
-    inline-size: 100%;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -142,7 +143,7 @@
     font-size: var(--tamano-texto-normal);
     font-weight: var(--peso-fuente-medio);
     color: var(--text-primary);
-    text-align: start;
+    text-align: left;
     background: none;
     border: none;
     cursor: pointer;
@@ -161,7 +162,7 @@
 
   &__respuesta {
     padding: 0 var(--espaciado-4) var(--espaciado-4);
-    animation: fadeIn 0.2s ease-out;
+    animation: fadeIn var(--duracion-rapida) ease-out;
 
     p {
       font-size: var(--tamano-texto-normal);
@@ -177,7 +178,7 @@
   &__footer {
     text-align: center;
     padding: var(--espaciado-6);
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-primary);
     border-radius: var(--radio-grande);
   }
 
@@ -185,13 +186,13 @@
     font-size: var(--tamano-texto-grande);
     font-weight: var(--peso-fuente-semi-negrita);
     color: var(--text-primary);
-    margin-block-end: var(--espaciado-2);
+    margin-bottom: var(--espaciado-2);
   }
 
   &__footer-descripcion {
     font-size: var(--tamano-texto-normal);
     color: var(--text-secondary);
-    margin-block-end: var(--espaciado-4);
+    margin-bottom: var(--espaciado-4);
   }
 }
 
