@@ -106,12 +106,49 @@
   }
 
   // ==========================================================================
-  // ELEMENTO: Footer (boton)
+  // ELEMENTO: Footer (boton + badge)
   // ==========================================================================
   &__footer {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     margin-block-start: auto;
+  }
+
+  // ==========================================================================
+  // ELEMENTO: Badge de estado
+  // ==========================================================================
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--espaciado-1);
+    height: 2rem; // 32px - mismo que botón sm
+    padding: 0 var(--espaciado-2); // 16px - mismo que botón sm
+    border-radius: var(--radio-medio); // 8px - mismo que botones
+    font-family: var(--font-primaria);
+    font-size: 0.75rem; // 12px - mismo que botón sm
+    font-weight: var(--peso-fuente-semi-negrita); // 600
+    line-height: 1rem; // 16px
+    user-select: none;
+    transition: background-color var(--duracion-base) ease-out,
+                color var(--duracion-base) ease-out;
+
+    &--completa {
+      background-color: color-mix(in srgb, var(--color-error) 10%, transparent);
+      color: var(--color-error);
+      border: 1px solid color-mix(in srgb, var(--color-error) 30%, transparent);
+    }
+  }
+
+  // ==========================================================================
+  // MODIFICADOR: Tarjeta completa (sin plazas disponibles)
+  // ==========================================================================
+  &--completa {
+    opacity: 0.9;
+    
+    &:hover {
+      opacity: 1;
+    }
   }
 }

@@ -28,6 +28,12 @@
             </app-button>
           </div>
         }
+        @if (estaCompleta() && !esMiembro() && !esAnfitrion()) {
+          <div class="p-suscripcion-detalle__complete-notice">
+            <app-icon name="users" size="sm" />
+            <span>Esta suscripción está completa</span>
+          </div>
+        }
         @if (tieneSolicitudPendiente() && !esMiembro()) {
           <div class="p-suscripcion-detalle__pending-notice">
             <app-icon name="clock" size="sm" />
@@ -52,13 +58,15 @@
         [titulo]="'Miembros'"
         class="p-suscripcion-detalle__members" />
 
-      <!-- Info Card -->
-      <app-subscription-info-card
-        [info]="infoData()"
-        [isAdmin]="esAnfitrion()"
-        (acceptRequest)="onAceptarSolicitud($event)"
-        (rejectRequest)="onRechazarSolicitud($event)"
-        class="p-suscripcion-detalle__info" />
+      <!-- Info Card - Solo visible para miembros de la suscripción -->
+      @if (esMiembro() || esAnfitrion()) {
+        <app-subscription-info-card
+          [info]="infoData()"
+          [isAdmin]="esAnfitrion()"
+          (acceptRequest)="onAceptarSolicitud($event)"
+          (rejectRequest)="onRechazarSolicitud($event)"
+          class="p-suscripcion-detalle__info" />
+      }
     }
   </div>
 </section>

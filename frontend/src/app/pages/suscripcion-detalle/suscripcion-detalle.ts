@@ -59,6 +59,13 @@ export class SuscripcionDetalleComponent implements OnInit {
     return sub.miembros.some(m => m.usuario.id === currentUser.id);
   });
 
+  /** Indica si la suscripción está completa (sin plazas disponibles) */
+  protected readonly estaCompleta = computed(() => {
+    const sub = this.suscripcion();
+    if (!sub) return false;
+    return sub.plazasDisponibles === 0;
+  });
+
   protected readonly puedeSolicitarPlaza = computed(() => {
     const sub = this.suscripcion();
     if (!sub) return false;

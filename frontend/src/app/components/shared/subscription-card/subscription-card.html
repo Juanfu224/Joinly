@@ -1,5 +1,6 @@
 <article
   class="c-subscription-card"
+  [class.c-subscription-card--completa]="estaCompleta()"
   role="button"
   tabindex="0"
   (click)="handleViewDetails()"
@@ -10,18 +11,22 @@
     <h3 class="c-subscription-card__nombre">{{ suscripcion().nombreServicio }}</h3>
     <div class="c-subscription-card__plazas">
       <app-icon name="users" size="sm" />
-      <span class="c-subscription-card__plazas-count">{{ suscripcion().plazasOcupadas }}</span>
+      <span class="c-subscription-card__plazas-count">{{ suscripcion().plazasOcupadas }}/{{ suscripcion().numPlazasTotal }}</span>
     </div>
   </header>
 
   <!-- Content: precio + renovacion -->
   <div class="c-subscription-card__content">
-    <p class="c-subscription-card__precio">{{ precioFormateado() }}/mes</p>
+    <p class="c-subscription-card__precio">{{ precioFormateado() }}€/{{ periodicidadTexto() }}</p>
     <p class="c-subscription-card__renovacion">Renueva el {{ fechaFormateada() }}</p>
   </div>
 
-  <!-- Footer: boton -->
+  <!-- Footer: boton + badge completo -->
   <footer class="c-subscription-card__footer">
-    <app-button variant="purple" size="sm">Disponible</app-button>
+    @if (estaCompleta()) {
+      <span class="c-subscription-card__badge c-subscription-card__badge--completa">Completo</span>
+    } @else {
+      <app-button variant="purple" size="sm">Disponible</app-button>
+    }
   </footer>
 </article>

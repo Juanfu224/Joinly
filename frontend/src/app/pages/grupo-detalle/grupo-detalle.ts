@@ -169,6 +169,7 @@ export class GrupoDetalleComponent implements OnInit {
       plazasOcupadas: s.plazasOcupadas,
       numPlazasTotal: s.numPlazasTotal,
       estado: s.estado,
+      periodicidad: s.periodicidad,
     }))
   );
 

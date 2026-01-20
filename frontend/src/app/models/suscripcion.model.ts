@@ -60,6 +60,7 @@ export interface SuscripcionCardData {
   plazasOcupadas: number;
   numPlazasTotal: number;
   estado: EstadoSuscripcion;
+  periodicidad: Periodicidad;
 }
 export interface CreateSuscripcionRequest {
   idUnidad: number;

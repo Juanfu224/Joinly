@@ -433,15 +433,17 @@ export class StyleGuideComponent {
       plazasOcupadas: 2,
       numPlazasTotal: 4,
       estado: 'ACTIVA',
+      periodicidad: 'MENSUAL',
     },
     {
       id: 2,
       nombreServicio: 'Spotify Family',
       precioPorPlaza: 2.99,
       fechaRenovacion: '2026-01-20',
-      plazasOcupadas: 5,
+      plazasOcupadas: 6,
       numPlazasTotal: 6,
       estado: 'ACTIVA',
+      periodicidad: 'TRIMESTRAL',
     },
     {
       id: 3,
@@ -451,6 +453,7 @@ export class StyleGuideComponent {
       plazasOcupadas: 1,
       numPlazasTotal: 4,
       estado: 'ACTIVA',
+      periodicidad: 'ANUAL',
     },
   ];
 

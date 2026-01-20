@@ -164,17 +164,29 @@ public record SuscripcionDetalleResponse(
             String contrasenaDesencriptada,
             List<Plaza> plazasOcupadasList,
             List<Solicitud> solicitudes) {
+        return fromEntity(suscripcion, plazasDisponibles, plazasOcupadas, 
+                usuarioDesencriptado, contrasenaDesencriptada, plazasOcupadasList, solicitudes, true);
+    }
+
+    public static SuscripcionDetalleResponse fromEntity(
+            Suscripcion suscripcion,
+            long plazasDisponibles,
+            long plazasOcupadas,
+            String usuarioDesencriptado,
+            String contrasenaDesencriptada,
+            List<Plaza> plazasOcupadasList,
+            List<Solicitud> solicitudes,
+            boolean esMiembro) {
 
         // Formatear fechas
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
 
-        // Construir información de pago (simulado por ahora)
-        // El estado por defecto es PENDIENTE hasta que se implemente el sistema de pagos real
-        PagoDTO pago = new PagoDTO(
+        // Construir información de pago solo si es miembro
+        PagoDTO pago = esMiembro ? new PagoDTO(
                 suscripcion.getPrecioPorPlaza(),
                 EstadoPago.PENDIENTE,
                 suscripcion.getFechaRenovacion().format(formatter)
-        );
+        ) : null;
 
         // Convertir plazas ocupadas a miembros
         List<MiembroDTO> miembros = plazasOcupadasList.stream()
@@ -204,7 +216,7 @@ public record SuscripcionDetalleResponse(
                 suscripcion.getPeriodicidad(),
                 suscripcion.getRenovacionAutomatica(),
                 suscripcion.getEstado(),
-                CredencialesDTO.fromDesencriptadas(usuarioDesencriptado, contrasenaDesencriptada),
+                esMiembro ? CredencialesDTO.fromDesencriptadas(usuarioDesencriptado, contrasenaDesencriptada) : null,
                 pago,
                 miembros,
                 solicitudesDTO

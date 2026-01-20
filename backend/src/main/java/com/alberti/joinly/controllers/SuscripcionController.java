@@ -113,13 +113,14 @@ public class SuscripcionController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Obtener detalle completo de suscripción por ID",
-            description = "Devuelve toda la información de la suscripción incluyendo miembros, solicitudes y credenciales")
+            description = "Devuelve toda la información de la suscripción incluyendo miembros, solicitudes y credenciales (solo para miembros)")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Suscripción encontrada"),
             @ApiResponse(responseCode = "404", description = "Suscripción no encontrada")
     })
     public ResponseEntity<SuscripcionDetalleResponse> getSuscripcion(
-            @Parameter(description = "ID de la suscripción") @PathVariable Long id) {
+            @Parameter(description = "ID de la suscripción") @PathVariable Long id,
+            @CurrentUser UserPrincipal currentUser) {
 
         var suscripcion = suscripcionService.buscarPorIdConPlazas(id)
                 .orElseThrow(() -> new IllegalArgumentException("Suscripción no encontrada con ID: " + id));
@@ -129,23 +130,32 @@ public class SuscripcionController {
         var plazasOcupadas = suscripcionService.contarPlazasOcupadas(id);
         var plazasOcupadasList = suscripcionService.listarPlazasOcupadasDeSuscripcion(id);
         
-        // Obtener credenciales visibles para miembros y desencriptarlas
-        var credenciales = credencialRepository.findCredencialesVisiblesPorSuscripcion(id);
+        // Verificar si el usuario actual es miembro de la suscripción
+        boolean esMiembro = plazasOcupadasList.stream()
+                .anyMatch(plaza -> plaza.getUsuario() != null && 
+                         plaza.getUsuario().getId().equals(currentUser.getId()));
         
         String usuarioDesencriptado = null;
         String contrasenaDesencriptada = null;
         
-        for (var cred : credenciales) {
-            String valorDesencriptado = credencialService.desencriptarValor(cred);
-            if (cred.getTipo().name().equals("USUARIO")) {
-                usuarioDesencriptado = valorDesencriptado;
-            } else if (cred.getTipo().name().equals("PASSWORD")) {
-                contrasenaDesencriptada = valorDesencriptado;
+        // Solo mostrar credenciales si es miembro de la suscripción
+        if (esMiembro) {
+            var credenciales = credencialRepository.findCredencialesVisiblesPorSuscripcion(id);
+            
+            for (var cred : credenciales) {
+                String valorDesencriptado = credencialService.desencriptarValor(cred);
+                if (cred.getTipo().name().equals("USUARIO")) {
+                    usuarioDesencriptado = valorDesencriptado;
+                } else if (cred.getTipo().name().equals("PASSWORD")) {
+                    contrasenaDesencriptada = valorDesencriptado;
+                }
             }
         }
         
-        // Obtener solicitudes pendientes
-        var solicitudes = solicitudRepository.findSolicitudesPendientesSuscripcion(id);
+        // Obtener solicitudes pendientes (solo si es anfitrión)
+        var solicitudes = suscripcion.getAnfitrion().getId().equals(currentUser.getId())
+                ? solicitudRepository.findSolicitudesPendientesSuscripcion(id)
+                : java.util.List.<com.alberti.joinly.entities.grupo.Solicitud>of();
 
         return ResponseEntity.ok(SuscripcionDetalleResponse.fromEntity(
                 suscripcion, 
@@ -154,7 +164,8 @@ public class SuscripcionController {
                 usuarioDesencriptado,
                 contrasenaDesencriptada,
                 plazasOcupadasList,
-                solicitudes
+                solicitudes,
+                esMiembro
         ));
     }
 

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { IconComponent } from '../icon/icon';
 import { ButtonComponent } from '../button/button';
-import type { SuscripcionCardData } from '../../../models/suscripcion.model';
+import type { SuscripcionCardData, Periodicidad } from '../../../models/suscripcion.model';
 
 @Component({
   selector: 'app-subscription-card',
@@ -14,6 +14,22 @@ import type { SuscripcionCardData } from '../../../models/suscripcion.model';
 export class SubscriptionCardComponent {
   readonly suscripcion = input.required<SuscripcionCardData>();
   readonly viewDetails = output<void>();
+
+  /** Calcula si la suscripción está completa (sin plazas disponibles) */
+  protected readonly estaCompleta = computed(() => {
+    const sub = this.suscripcion();
+    return sub.plazasOcupadas >= sub.numPlazasTotal;
+  });
+
+  /** Formatea la periodicidad para mostrar en la UI */
+  protected readonly periodicidadTexto = computed(() => {
+    const periodicidadMap: Record<Periodicidad, string> = {
+      MENSUAL: 'mes',
+      TRIMESTRAL: 'trimestre',
+      ANUAL: 'año',
+    };
+    return periodicidadMap[this.suscripcion().periodicidad] ?? 'mes';
+  });
 
   protected readonly fechaFormateada = computed(() => {
     const fecha = new Date(this.suscripcion().fechaRenovacion);
