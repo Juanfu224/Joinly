@@ -1,10 +1,12 @@
 <!-- Header de navegación principal -->
 <app-header />
 
-<!-- Breadcrumbs dinámicos -->
-<div class="l-contenedor">
-  <app-breadcrumbs />
-</div>
+<!-- Breadcrumbs dinámicos (solo si existen) -->
+@if (breadcrumbService.breadcrumbs().length > 0) {
+  <div class="l-contenedor">
+    <app-breadcrumbs />
+  </div>
+}
 
 <!-- Contenido principal con router-outlet -->
 <main class="l-main" id="contenido-principal">

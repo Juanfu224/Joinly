@@ -57,6 +57,7 @@ export class FormCardComponent {
     // En modo oscuro, usar las variantes claras
     if (baseVariant === 'naranja') return 'claro-naranja';
     if (baseVariant === 'morado') return 'claro-morado';
+    if (baseVariant === 'azul') return 'claro-azul';
     
     return baseVariant;
   });

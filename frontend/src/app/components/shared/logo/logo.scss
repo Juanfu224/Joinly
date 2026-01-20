@@ -151,6 +151,15 @@
   --logo-accent-color: var(--color-azul);
 }
 
+// --- Claro Azul (para fondos oscuros) ---
+:host(.c-logo--claro-azul) {
+  --logo-color-fijo: #e5e7eb;
+  --logo-color-medio: #9ca3af;
+  --logo-color-acento: var(--color-azul);
+  --logo-text-color: #e5e7eb;
+  --logo-accent-color: var(--color-azul);
+}
+
 // --- Amarillo (para fondos claros) ---
 :host(.c-logo--amarillo) {
   --logo-color-fijo: #1e293b;

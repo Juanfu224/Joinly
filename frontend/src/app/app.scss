@@ -27,10 +27,11 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  // Breadcrumbs globales: espaciado vertical reducido
+  // Breadcrumbs globales: espaciado vertical reducido y fondo transparente
   > .l-contenedor:has(app-breadcrumbs) {
     padding-block-start: var(--espaciado-4);
     padding-block-end: 0;
+    background-color: transparent;
   }
 }
 

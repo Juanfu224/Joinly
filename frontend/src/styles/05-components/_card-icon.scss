@@ -13,7 +13,7 @@
 //
 // @example Tamaño pequeño para tarjetas de acción
 // <div class="c-card-icon c-card-icon--naranja c-card-icon--sm">
-//   <app-icon name="add" size="md" />
+//   <app-icon name="add" size="xl" />
 // </div>
 
 .c-card-icon {
@@ -63,14 +63,14 @@
   // ==========================================================================
 
   &--sm {
-    inline-size: 2rem; // 32px para tarjetas de acción
-    block-size: 2rem;
+    inline-size: 3rem; // 48px para tarjetas de acción (mayor que antes)
+    block-size: 3rem;
     padding: var(--espaciado-1);
 
     svg,
     app-icon {
-      inline-size: 1.5rem; // 24px
-      block-size: 1.5rem;
+      inline-size: 2rem; // 32px - iconos más grandes
+      block-size: 2rem;
     }
   }
 

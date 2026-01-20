@@ -61,7 +61,6 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/crear-grupo').then((m) => m.CrearGrupoComponent),
     title: 'Crear Unidad Familiar - Joinly',
-    data: { breadcrumb: 'Crear Grupo' },
   },
   {
     path: 'unirse-grupo',
@@ -69,7 +68,6 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/unirse-grupo').then((m) => m.UnirseGrupoComponent),
     title: 'Unirse a Grupo - Joinly',
-    data: { breadcrumb: 'Unirse a Grupo' },
   },
   {
     path: 'grupos/:id',

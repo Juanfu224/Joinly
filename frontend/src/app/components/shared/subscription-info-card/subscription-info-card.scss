@@ -47,7 +47,7 @@
   // Reset de botón
   appearance: none;
   background: none;
-  border: 1px solid var(--color-borde-fuerte);
+  border: 1px solid var(--border-color);
   border-bottom: none;
   cursor: pointer;
 
@@ -94,7 +94,7 @@
 // ---------------------------------------------------------------------------
 .c-subscription-info__divider {
   border: none;
-  border-top: 1px solid var(--color-borde-fuerte);
+  border-top: 1px solid var(--border-color);
   margin: 0 var(--espaciado-4);
 }
 
@@ -234,7 +234,7 @@
   // Estado pendiente (amarillo/advertencia)
   &--PENDIENTE {
     background-color: var(--color-advertencia);
-    color: var(--text-primary);
+    color: #1e293b; // Color oscuro fijo para contraste con fondo amarillo
   }
 
   // Estado fallido (rojo)
@@ -273,7 +273,7 @@
   // Estado disputado (naranja advertencia)
   &--DISPUTADO {
     background-color: var(--color-advertencia);
-    color: var(--text-primary);
+    color: #1e293b; // Color oscuro fijo para contraste con fondo amarillo
   }
 }
 

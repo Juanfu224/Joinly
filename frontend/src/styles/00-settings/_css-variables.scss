@@ -54,6 +54,7 @@
   --bg-primary: #{$color-fondo-claro};
   --bg-secondary: #{$color-blanco};
   --bg-tertiary: #{$color-gris-medio}; // Gris claro para skeletons y placeholders
+  --bg-card: #{$color-blanco}; // Fondo de tarjetas anidadas (mismo que secondary en light)
 
   // Texto
   --text-primary: #{$color-texto-oscuro};
@@ -220,6 +221,7 @@
   --bg-primary: #0f172a; // slate-900 - Fondo principal oscuro
   --bg-secondary: #1e293b; // slate-800 - Fondo secundario ligeramente más claro
   --bg-tertiary: #334155; // slate-700 - Skeletons y placeholders en dark mode
+  --bg-card: #283548; // Entre slate-800 y slate-700 - Tarjetas anidadas con sutil contraste
 
   // --- TEXTO ---
   --text-primary: #f8fafc; // slate-50 - Texto principal claro
@@ -243,10 +245,14 @@
   --color-superficie-blanca-alt: #1e293b; // slate-800 - Alternativa
   --color-superficie-footer: #020617; // slate-950 - Footer más oscuro
 
-  // Superficies con tintes de color (más sutiles en dark mode)
-  --color-superficie-calida: #1e1410; // Tinte naranja muy sutil
-  --color-superficie-morada: #1a1625; // Tinte morado muy sutil
-  --color-superficie-azul: #0f1729; // Tinte azul muy sutil
+  // Superficies con tintes de color (ajustadas para contraste en dark mode)
+  --color-superficie-calida: #251a14; // Tinte naranja sutil con buen contraste
+  --color-superficie-morada: #2a2438; // Tinte morado más claro para contraste con bg-secondary
+  --color-superficie-azul: #172033; // Tinte azul sutil con buen contraste
+
+  // Fondos de página con tinte de color (crear/unirse grupo)
+  --color-fondo-claro-naranja: #1a1410; // Fondo naranja oscuro sutil
+  --color-fondo-claro-azul: #0f1520; // Fondo azul oscuro sutil
 
   // --- COLORES DE ACENTO (más brillantes para dark mode) ---
   // Los colores de acento se mantienen vibrantes para garantizar contraste
@@ -281,6 +287,10 @@
   // --- COLORES DE TEXTO PRIMITIVOS (override para dark mode) ---
   --color-texto-oscuro: #f8fafc; // slate-50 - Texto principal claro
   --color-texto-normal: #cbd5e1; // slate-300 - Texto secundario
+
+  // --- GRISES (override para dark mode) ---
+  --color-gris-medio: #475569; // slate-600 - Para bordes sutiles
+  --color-gris-oscuro: #94a3b8; // slate-400 - Para bordes visibles
 
   // --- COLORES DE ESTADO ---
   // Se mantienen vibrantes para visibilidad

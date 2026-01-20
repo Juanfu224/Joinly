@@ -17,10 +17,8 @@
   z-index: var(--z-fixed);
   background-color: var(--bg-secondary);
   box-shadow: var(--sombra-2);
-  border-bottom: 1px solid var(--border-color);
   transition: background-color var(--duracion-base),
-    box-shadow var(--duracion-base),
-    border-color var(--duracion-base);
+    box-shadow var(--duracion-base);
 
   &__contenedor {
     display: flex;

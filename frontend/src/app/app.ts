@@ -12,10 +12,11 @@ import { HeaderComponent } from './layout/header/header';
 import { FooterComponent } from './layout/footer/footer';
 import { ThemeService } from './services/theme';
 import { LoadingService } from './services/loading';
+import { BreadcrumbService } from './services';
 
 /**
  * Componente raíz de la aplicación Joinly.
- * Estructura: header, breadcrumbs, main (router-outlet), footer.
+ * Estructura: header, breadcrumbs (condicional), main (router-outlet), footer.
  */
 @Component({
   selector: 'app-root',
@@ -38,6 +39,7 @@ import { LoadingService } from './services/loading';
 export class App {
   private readonly themeService = inject(ThemeService);
   protected readonly loadingService = inject(LoadingService);
+  protected readonly breadcrumbService = inject(BreadcrumbService);
 
   constructor() {
     this.themeService.initialize();
