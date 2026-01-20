@@ -100,11 +100,12 @@
     }
 
     // ---------------------------------------------------------------------------
-    // MODIFICADOR: Miembro - Oculto segun diseno Figma
-    // Solo el admin muestra badge
+    // MODIFICADOR: Miembro (gris) - Badge para usuarios no admin
     // ---------------------------------------------------------------------------
     &--member {
-      display: none;
+      background-color: var(--color-gris-oscuro);
+      color: var(--color-blanco);
+      box-shadow: var(--sombra-gris);
     }
   }
 }

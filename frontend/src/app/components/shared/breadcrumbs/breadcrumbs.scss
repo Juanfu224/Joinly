@@ -49,7 +49,7 @@
     font-size: var(--tamano-texto-regular);
     font-weight: var(--peso-fuente-regular);
     line-height: var(--altura-linea-body-regular);
-    color: var(--color-morado-oscuro);
+    color: var(--color-texto-base);
     list-style: none;
   }
 
@@ -61,7 +61,7 @@
   }
 
   &__link {
-    color: var(--color-morado-oscuro);
+    color: var(--color-principal);
     text-decoration: none;
     transition: opacity var(--duracion-rapida) var(--transicion-salida);
 
@@ -73,7 +73,7 @@
 
     // Estado: Foco (navegación con teclado)
     &:focus-visible {
-      outline: var(--borde-medio) solid var(--color-morado-oscuro);
+      outline: var(--borde-medio) solid var(--color-principal);
       outline-offset: var(--radio-pequeno);
       border-radius: var(--radio-pequeno);
     }
@@ -81,12 +81,12 @@
 
   // Elemento actual (no navegable)
   &__current {
-    color: var(--color-morado-oscuro);
+    color: var(--color-texto-base);
   }
 
   // Separador visual entre elementos
   &__separator {
-    color: var(--color-morado-oscuro);
+    color: var(--color-texto-base);
     user-select: none; // No seleccionable con el ratón
     pointer-events: none; // No recibe eventos de click
   }

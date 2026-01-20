@@ -90,13 +90,6 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/crear-suscripcion').then((m) => m.CrearSuscripcionComponent),
     title: 'Nueva Suscripción - Joinly',
-    data: {
-      breadcrumbParent: {
-        label: 'Grupo',
-        url: (params: Record<string, string>) => `/grupos/${params['id']}`,
-      },
-      breadcrumb: 'Nueva Suscripción',
-    },
   },
   {
     path: 'grupos/:grupoId/suscripciones/:id',

@@ -4,7 +4,7 @@
 // PAGE: CREAR SUSCRIPCIÓN
 // ==========================================================================
 // Página para crear suscripción con formulario centrado.
-// Fondo azul claro según diseño Figma.
+// Fondo morado claro que se adapta al modo oscuro.
 
 :host {
   display: block;
@@ -15,7 +15,7 @@
   @include centrar-flex;
   min-block-size: 100vh;
   padding: var(--espaciado-4);
-  background: var(--color-superficie-azul);
+  background: var(--color-superficie-morada);
 
   @include responder-a('tablet') {
     padding: var(--espaciado-6);

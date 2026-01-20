@@ -39,7 +39,7 @@
   @include responder-a('tablet') {
     flex-direction: row;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: flex-end;
     margin-block: var(--espaciado-6);
   }
 }
@@ -107,7 +107,7 @@
   @include responder-a('tablet') {
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
   }
 }
 

@@ -358,6 +358,8 @@
     0 10px 15px -3px #{color.adjust($color-azul, $alpha: -0.7)};
   --sombra-morado: 0 4px 6px -4px #{color.adjust($color-morado-principal, $alpha: -0.7)},
     0 10px 15px -3px #{color.adjust($color-morado-principal, $alpha: -0.7)};
+  --sombra-gris: 0 4px 6px -4px #{color.adjust($color-gris-oscuro, $alpha: -0.7)},
+    0 10px 15px -3px #{color.adjust($color-gris-oscuro, $alpha: -0.7)};
 }
 
 // ==========================================================================
