@@ -771,4 +771,21 @@ export class StyleGuideComponent {
   protected handleRejectRequest(request: JoinRequest): void {
     console.log('[StyleGuide] Rechazar solicitud:', request);
   }
+
+  // =========================================================================
+  // MÉTODOS DE DEMOSTRACIÓN - ANIMACIONES
+  // =========================================================================
+
+  /**
+   * Reinicia una animación removiendo y volviendo a añadir la clase.
+   * @param event - Evento del click
+   * @param animationClass - Clase de animación a reiniciar
+   */
+  protected restartAnimation(event: Event, animationClass: string): void {
+    const element = event.target as HTMLElement;
+    element.classList.remove(animationClass);
+    // Forzar reflow para reiniciar la animación
+    void element.offsetWidth;
+    element.classList.add(animationClass);
+  }
 }
