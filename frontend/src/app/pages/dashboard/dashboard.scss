@@ -24,7 +24,6 @@
 // CONTENEDOR PRINCIPAL
 // ---------------------------------------------------------------------------
 .p-dashboard {
-  padding-block-start: var(--espaciado-2);
   padding-block-end: var(--espaciado-4);
 
   @include responder-a('tablet') {
@@ -40,24 +39,24 @@
 // HEADER DE PÁGINA
 // ---------------------------------------------------------------------------
 .p-dashboard__header {
-  margin-block: var(--espaciado-4) var(--espaciado-4);
+  margin-block: var(--espaciado-4);
 
   @include responder-a('tablet') {
-    margin-block: var(--espaciado-6) var(--espaciado-6);
+    margin-block: var(--espaciado-6);
   }
 }
 
+.p-dashboard__header-content {
+  // Contenedor del título y subtítulo del header
+}
+
 .p-dashboard__titulo {
-  font-size: var(--tamano-h2);
-  font-weight: var(--peso-fuente-negrita);
-  line-height: var(--altura-linea-h2);
-  color: var(--text-primary);
-  margin: 0 0 var(--espaciado-1) 0;
+  @include heading-2;
+  margin: 0 0 var(--espaciado-2) 0;
 }
 
 .p-dashboard__subtitulo {
-  font-size: var(--tamano-texto-grande);
-  line-height: var(--altura-linea-body-large);
+  @include texto-grande;
   color: var(--text-secondary);
   margin: 0;
 }

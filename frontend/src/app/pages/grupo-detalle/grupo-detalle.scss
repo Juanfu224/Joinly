@@ -53,16 +53,12 @@
 }
 
 .p-grupo-detalle__titulo {
-  font-size: var(--tamano-h2);
-  font-weight: var(--peso-fuente-negrita);
-  line-height: var(--altura-linea-h2);
-  color: var(--text-primary);
-  margin: 0 0 var(--espaciado-1) 0;
+  @include heading-2;
+  margin: 0 0 var(--espaciado-2) 0;
 }
 
 .p-grupo-detalle__subtitulo {
-  font-size: var(--tamano-texto-grande);
-  line-height: var(--altura-linea-body-large);
+  @include texto-grande;
   color: var(--text-secondary);
   margin: 0;
 }
