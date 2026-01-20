@@ -437,7 +437,7 @@ class SolicitudServiceTest {
         @DisplayName("Debe aprobar solicitud de grupo exitosamente")
         void debeAprobarSolicitudGrupoExitosamente() {
             // Given
-            given(solicitudRepository.findByIdConSolicitante(100L))
+            given(solicitudRepository.findByIdCompleto(100L))
                     .willReturn(Optional.of(solicitudGrupoPendiente));
             given(usuarioRepository.findById(2L)).willReturn(Optional.of(usuarioAdministrador));
             given(unidadFamiliarRepository.contarMiembrosActivos(10L)).willReturn(3L);
@@ -467,7 +467,7 @@ class SolicitudServiceTest {
         @DisplayName("Debe aprobar solicitud de suscripción y asignar plaza")
         void debeAprobarSolicitudSuscripcionYAsignarPlaza() {
             // Given
-            given(solicitudRepository.findByIdConSolicitante(101L))
+            given(solicitudRepository.findByIdCompleto(101L))
                     .willReturn(Optional.of(solicitudSuscripcionPendiente));
             given(usuarioRepository.findById(3L)).willReturn(Optional.of(usuarioAnfitrion));
             given(plazaRepository.findPlazasDisponiblesOrdenadas(20L))
@@ -495,7 +495,7 @@ class SolicitudServiceTest {
         @DisplayName("Debe lanzar UnauthorizedException cuando no es administrador del grupo")
         void debeLanzarExcepcionCuandoNoEsAdministrador() {
             // Given
-            given(solicitudRepository.findByIdConSolicitante(100L))
+            given(solicitudRepository.findByIdCompleto(100L))
                     .willReturn(Optional.of(solicitudGrupoPendiente));
 
             // When/Then - Usuario 999 intenta aprobar pero no es el administrador (ID 2)
@@ -508,7 +508,7 @@ class SolicitudServiceTest {
         @DisplayName("Debe lanzar UnauthorizedException cuando no es anfitrión de la suscripción")
         void debeLanzarExcepcionCuandoNoEsAnfitrion() {
             // Given
-            given(solicitudRepository.findByIdConSolicitante(101L))
+            given(solicitudRepository.findByIdCompleto(101L))
                     .willReturn(Optional.of(solicitudSuscripcionPendiente));
 
             // When/Then - Usuario 999 intenta aprobar pero no es el anfitrión (ID 3)
@@ -522,7 +522,7 @@ class SolicitudServiceTest {
         void debeLanzarExcepcionCuandoSolicitudNoEstaPendiente() {
             // Given
             solicitudGrupoPendiente.setEstado(EstadoSolicitud.APROBADA);
-            given(solicitudRepository.findByIdConSolicitante(100L))
+            given(solicitudRepository.findByIdCompleto(100L))
                     .willReturn(Optional.of(solicitudGrupoPendiente));
 
             // When/Then
@@ -535,7 +535,7 @@ class SolicitudServiceTest {
         @DisplayName("Debe lanzar LimiteAlcanzadoException si grupo se llenó durante la aprobación")
         void debeLanzarExcepcionSiGrupoSeLenoEnAprobacion() {
             // Given
-            given(solicitudRepository.findByIdConSolicitante(100L))
+            given(solicitudRepository.findByIdCompleto(100L))
                     .willReturn(Optional.of(solicitudGrupoPendiente));
             given(usuarioRepository.findById(2L)).willReturn(Optional.of(usuarioAdministrador));
             given(unidadFamiliarRepository.contarMiembrosActivos(10L)).willReturn(10L); // Lleno
@@ -549,7 +549,7 @@ class SolicitudServiceTest {
         @DisplayName("Debe lanzar NoPlazasDisponiblesException si no hay plazas al aprobar")
         void debeLanzarExcepcionSiNoHayPlazasAlAprobar() {
             // Given
-            given(solicitudRepository.findByIdConSolicitante(101L))
+            given(solicitudRepository.findByIdCompleto(101L))
                     .willReturn(Optional.of(solicitudSuscripcionPendiente));
             given(usuarioRepository.findById(3L)).willReturn(Optional.of(usuarioAnfitrion));
             given(plazaRepository.findPlazasDisponiblesOrdenadas(20L)).willReturn(List.of());
@@ -584,7 +584,7 @@ class SolicitudServiceTest {
         @DisplayName("Debe rechazar solicitud exitosamente con motivo")
         void debeRechazarSolicitudExitosamente() {
             // Given
-            given(solicitudRepository.findById(100L)).willReturn(Optional.of(solicitudPendiente));
+            given(solicitudRepository.findByIdCompleto(100L)).willReturn(Optional.of(solicitudPendiente));
             given(usuarioRepository.findById(2L)).willReturn(Optional.of(usuarioAdministrador));
             given(solicitudRepository.save(any(Solicitud.class))).willAnswer(inv -> inv.getArgument(0));
 
