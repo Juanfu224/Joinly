@@ -1401,12 +1401,22 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
       <!-- 7.2.2 Bounce -->
       <div class="p-style-guide__demo">
         <h4 class="p-style-guide__demo-subtitulo">7.2.2 Bounce (Éxito/Confirmación)</h4>
-        <p class="u-texto-regular">Para feedback positivo en acciones:</p>
+        <p class="u-texto-regular">Para feedback positivo en acciones (haz clic para ver la animación):</p>
         <div style="margin-top: 1rem; display: flex; gap: 1rem;">
-          <app-button variant="primary" size="md" cssClass="u-animate-bounce">
+          <app-button
+            variant="primary"
+            size="md"
+            cssClass="u-animate-bounce"
+            (click)="restartAnimation($event, 'u-animate-bounce')"
+          >
             Botón con Bounce
           </app-button>
-          <app-button variant="primary" size="md" cssClass="u-animate-bounce-in">
+          <app-button
+            variant="primary"
+            size="md"
+            cssClass="u-animate-bounce-in"
+            (click)="restartAnimation($event, 'u-animate-bounce-in')"
+          >
             Bounce In
           </app-button>
         </div>
@@ -1469,9 +1479,14 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
       <!-- 7.2.6 Shake -->
       <div class="p-style-guide__demo">
         <h4 class="p-style-guide__demo-subtitulo">7.2.6 Shake (Feedback de error)</h4>
-        <p class="u-texto-regular">Para indicar errores de validación:</p>
+        <p class="u-texto-regular">Para indicar errores de validación (haz clic para ver la animación):</p>
         <div style="margin-top: 1rem;">
-          <app-button variant="secondary" size="md" cssClass="u-shake">
+          <app-button
+            variant="secondary"
+            size="md"
+            cssClass="u-shake"
+            (click)="restartAnimation($event, 'u-shake')"
+          >
             Botón con error
           </app-button>
         </div>

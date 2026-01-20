@@ -20,11 +20,13 @@ async function optimizeIconPaths() {
   let optimizedContent = content;
   let totalSavings = 0;
   let iconsOptimized = 0;
+  let totalIcons = 0;
 
   const iconRegex = /'([^']+)':\s*`([^`]+)`/g;
 
   for (const match of content.matchAll(iconRegex)) {
-    const [, iconName, svgPath] = match;
+    totalIcons++;
+    const [fullMatch, iconName, svgPath] = match;
     const fullSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">${svgPath.trim()}</svg>`;
 
     try {
@@ -33,7 +35,8 @@ async function optimizeIconPaths() {
 
       const savings = svgPath.length - optimizedPath.length;
       if (savings > 0) {
-        optimizedContent = optimizedContent.replace(`\`${svgPath}\``, `\`${optimizedPath}\``);
+        // Reemplazo específico usando el match completo para evitar reemplazos duplicados
+        optimizedContent = optimizedContent.replace(fullMatch, `'${iconName}': \`${optimizedPath}\``);
         totalSavings += savings;
         iconsOptimized++;
         console.log(`✓ ${iconName}: ${svgPath.length}B → ${optimizedPath.length}B (-${savings}B)`);
@@ -44,7 +47,7 @@ async function optimizeIconPaths() {
   }
 
   await fs.writeFile(ICON_PATHS_FILE, optimizedContent, 'utf-8');
-  console.log(`\n✓ Optimizados: ${iconsOptimized}/159 iconos`);
+  console.log(`\n✓ Optimizados: ${iconsOptimized}/${totalIcons} iconos`);
   console.log(`✓ Ahorrado: ${(totalSavings / 1024).toFixed(2)} KB`);
 }
 
