@@ -339,10 +339,13 @@
   gap: var(--espaciado-2);
   margin-block-start: var(--espaciado-2);
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
+  width: 100%;
 
   @include responder-a('tablet') {
     flex-direction: row;
+    align-items: center;
+    justify-content: center;
   }
 
   app-button {

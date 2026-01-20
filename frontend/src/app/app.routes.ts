@@ -77,6 +77,10 @@ export const routes: Routes = [
       import('./pages/grupo-detalle').then((m) => m.GrupoDetalleComponent),
     title: 'Detalle del Grupo - Joinly',
     data: {
+      breadcrumbParent: {
+        label: 'Mis Grupos',
+        url: '/dashboard',
+      },
       breadcrumb: (data: Data) => {
         const resolved = data['grupoData'] as ResolvedData<GrupoDetalleData> | undefined;
         return resolved?.data?.grupo?.nombre ?? 'Grupo';
@@ -87,9 +91,26 @@ export const routes: Routes = [
     path: 'grupos/:id/crear-suscripcion',
     canActivate: [authGuard],
     canDeactivate: [pendingChangesGuard],
+    resolve: { grupoData: grupoDetalleResolver },
     loadComponent: () =>
       import('./pages/crear-suscripcion').then((m) => m.CrearSuscripcionComponent),
     title: 'Nueva Suscripción - Joinly',
+    data: {
+      breadcrumbParent: [
+        {
+          label: 'Mis Grupos',
+          url: '/dashboard',
+        },
+        {
+          label: (data: Data) => {
+            const resolved = data['grupoData'] as ResolvedData<GrupoDetalleData> | undefined;
+            return resolved?.data?.grupo?.nombre ?? 'Grupo';
+          },
+          url: (params: Record<string, string>) => `/grupos/${params['id']}`,
+        },
+      ],
+      breadcrumb: 'Nueva Suscripción',
+    },
   },
   {
     path: 'grupos/:grupoId/suscripciones/:id',
@@ -99,13 +120,19 @@ export const routes: Routes = [
       import('./pages/suscripcion-detalle').then((m) => m.SuscripcionDetalleComponent),
     title: 'Detalle de Suscripción - Joinly',
     data: {
-      breadcrumbParent: {
-        label: (data: Data) => {
-          const resolved = data['suscripcionData'] as ResolvedData<SuscripcionDetalle> | undefined;
-          return resolved?.data?.nombreUnidad ?? 'Grupo';
+      breadcrumbParent: [
+        {
+          label: 'Mis Grupos',
+          url: '/dashboard',
         },
-        url: (params: Record<string, string>) => `/grupos/${params['grupoId']}`,
-      },
+        {
+          label: (data: Data) => {
+            const resolved = data['suscripcionData'] as ResolvedData<SuscripcionDetalle> | undefined;
+            return resolved?.data?.nombreUnidad ?? 'Grupo';
+          },
+          url: (params: Record<string, string>) => `/grupos/${params['grupoId']}`,
+        },
+      ],
       breadcrumb: (data: Data) => {
         const resolved = data['suscripcionData'] as ResolvedData<SuscripcionDetalle> | undefined;
         return resolved?.data?.servicio.nombre ?? 'Suscripción';

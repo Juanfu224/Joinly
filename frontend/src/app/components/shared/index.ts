@@ -3,8 +3,6 @@
 // ==========================================================================
 // Exportaciones centralizadas para facilitar las importaciones
 
-export { AlertComponent } from './alert/alert';
-export { AlertContainerComponent } from './alert-container/alert-container';
 export { AvatarComponent } from './avatar/avatar';
 export { ButtonComponent } from './button/button';
 export { CardComponent } from './card/card';

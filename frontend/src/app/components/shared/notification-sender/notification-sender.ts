@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommunicationService } from '@services/communication';
-import { AlertService } from '@services/alert';
+import { ToastService } from '@services/toast';
 import { ButtonComponent } from '../button/button';
 import { generateUUID } from '../../../utils/uuid';
 
@@ -8,7 +8,7 @@ import { generateUUID } from '../../../utils/uuid';
  * Componente emisor de ejemplo para demostrar comunicación entre hermanos.
  *
  * Muestra cómo:
- * - Usar AlertService para notificaciones visuales (toasts)
+ * - Usar ToastService para notificaciones visuales (toasts)
  * - Usar CommunicationService para estado compartido (usuario, filtros)
  * - Emitir eventos one-time entre componentes
  *
@@ -30,39 +30,39 @@ import { generateUUID } from '../../../utils/uuid';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotificationSenderComponent {
-  private readonly alertService = inject(AlertService);
+  private readonly toastService = inject(ToastService);
   private readonly commService = inject(CommunicationService);
 
   // ========================================================================
-  // ALERTAS VISUALES (usando AlertService)
+  // ALERTAS VISUALES (usando ToastService)
   // ========================================================================
 
   /**
    * Envía una alerta de éxito (toast visual).
    */
   protected sendSuccessAlert(): void {
-    this.alertService.success('¡Operación completada exitosamente!');
+    this.toastService.success('¡Operación completada exitosamente!');
   }
 
   /**
    * Envía una alerta de error (toast visual).
    */
   protected sendErrorAlert(): void {
-    this.alertService.error('Ha ocurrido un error en el proceso.');
+    this.toastService.error('Ha ocurrido un error en el proceso.');
   }
 
   /**
    * Envía una alerta informativa (toast visual).
    */
   protected sendInfoAlert(): void {
-    this.alertService.info('Nueva información disponible.');
+    this.toastService.info('Nueva información disponible.');
   }
 
   /**
    * Envía una alerta de advertencia (toast visual).
    */
   protected sendWarningAlert(): void {
-    this.alertService.warning('Advertencia: revisa los datos ingresados.');
+    this.toastService.warning('Advertencia: revisa los datos ingresados.');
   }
 
   // ========================================================================
@@ -85,7 +85,7 @@ export class NotificationSenderComponent {
       category: 'streaming',
     });
 
-    this.alertService.info('Filtros actualizados: Netflix en categoría streaming');
+    this.toastService.info('Filtros actualizados: Netflix en categoría streaming');
   }
 
   /**
@@ -94,7 +94,7 @@ export class NotificationSenderComponent {
   protected clearSharedFilters(): void {
     this.commService.clearFilters();
     this.commService.emitEvent('filters-cleared', null);
-    this.alertService.warning('Filtros limpiados');
+    this.toastService.warning('Filtros limpiados');
   }
 
   // ========================================================================
@@ -113,7 +113,7 @@ export class NotificationSenderComponent {
     });
 
     this.commService.emitEvent('user-logged-in', { name: 'Juan Pérez' });
-    this.alertService.success('¡Bienvenido, Juan Pérez!');
+    this.toastService.success('¡Bienvenido, Juan Pérez!');
   }
 
   /**
@@ -122,6 +122,6 @@ export class NotificationSenderComponent {
   protected simulateLogout(): void {
     this.commService.clearUserState();
     this.commService.emitEvent('user-logged-out', null);
-    this.alertService.info('Sesión cerrada correctamente');
+    this.toastService.info('Sesión cerrada correctamente');
   }
 }

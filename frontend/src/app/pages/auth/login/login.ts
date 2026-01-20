@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, viewChild } from '@angular/
 import { Router, ActivatedRoute } from '@angular/router';
 import { LoginFormComponent } from '../../../components/shared';
 import { AuthService } from '../../../services/auth';
-import { AlertService } from '../../../services/alert';
+import { ToastService } from '../../../services/toast';
 
 /**
  * Página Login - Autenticación de usuario.
@@ -30,7 +30,7 @@ import { AlertService } from '../../../services/alert';
 })
 export class LoginComponent {
   private readonly authService = inject(AuthService);
-  private readonly alertService = inject(AlertService);
+  private readonly toastService = inject(ToastService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   
@@ -43,14 +43,14 @@ export class LoginComponent {
   protected onLoginSubmit(data: { email: string; password: string }): void {
     this.authService.login(data).subscribe({
       next: (user) => {
-        this.alertService.success(`¡Bienvenido, ${user.nombre}!`);
+        this.toastService.success(`¡Bienvenido, ${user.nombre}!`);
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
         this.router.navigate([returnUrl], { replaceUrl: true });
       },
       error: (error) => {
         const message = error.message || 'Error al iniciar sesión. Verifica tus credenciales.';
         this.loginForm().setError(message);
-        this.alertService.error(message);
+        this.toastService.error(message);
       },
     });
   }

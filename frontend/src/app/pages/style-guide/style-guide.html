@@ -738,60 +738,41 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
     <!-- ===================================================================
          SECCIÓN: ALERTAS
          =================================================================== -->
-    <section class="p-style-guide__seccion" aria-labelledby="titulo-alertas">
+    <section class="p-style-guide__seccion" aria-labelledby="titulo-toasts">
       <div class="p-style-guide__seccion-encabezado">
-        <h2 id="titulo-alertas" class="p-style-guide__subtitulo">Alertas</h2>
+        <h2 id="titulo-toasts" class="p-style-guide__subtitulo">Toasts</h2>
         <p class="p-style-guide__nota">
-          Componentes de feedback para informar al usuario. Uso: mensajes de éxito, error,
-          advertencia e información.
+          Componentes de notificación para informar al usuario. Uso: mensajes de éxito, error,
+          advertencia e información. Se muestran temporalmente en la esquina superior derecha.
         </p>
       </div>
 
       <div class="p-style-guide__demo">
-        <div class="p-style-guide__grupo-alertas">
-          @if (showAlertSuccess()) {
-          <app-alert
-            type="success"
-            message="¡Operación completada con éxito! Tu suscripción ha sido actualizada."
-            [closeable]="true"
-            (closed)="closeAlert('success')"
-          />
-          } @if (showAlertError()) {
-          <app-alert
-            type="error"
-            message="Ha ocurrido un error al procesar tu solicitud. Por favor, inténtalo de nuevo."
-            [closeable]="true"
-            (closed)="closeAlert('error')"
-          />
-          } @if (showAlertWarning()) {
-          <app-alert
-            type="warning"
-            message="Tu suscripción expira en 3 días. Renueva ahora para no perder el acceso."
-            [closeable]="true"
-            (closed)="closeAlert('warning')"
-          />
-          } @if (showAlertInfo()) {
-          <app-alert
-            type="info"
-            message="Se ha enviado un código de verificación a tu correo electrónico."
-            [closeable]="true"
-            (closed)="closeAlert('info')"
-          />
-          } @if (!showAlertSuccess() || !showAlertError() || !showAlertWarning() ||
-          !showAlertInfo()) {
-          <app-button variant="ghost" size="sm" (click)="resetAlerts()">
-            Restaurar alertas cerradas
+        <h3 class="p-style-guide__demo-titulo">Tipos de toast</h3>
+        <div class="p-style-guide__grupo-botones">
+          <app-button variant="primary" size="md" (click)="showSuccessToast()">
+            Toast de éxito
           </app-button>
-          }
+          <app-button variant="secondary" size="md" (click)="showErrorToast()">
+            Toast de error
+          </app-button>
+          <app-button variant="blue" size="md" (click)="showWarningToast()">
+            Toast de advertencia
+          </app-button>
+          <app-button variant="purple" size="md" (click)="showInfoToast()">
+            Toast informativo
+          </app-button>
         </div>
       </div>
 
-      <!-- Alertas sin botón de cerrar -->
+      <!-- Ejemplo visual de toasts -->
       <div class="p-style-guide__demo">
-        <h3 class="p-style-guide__demo-titulo">Sin botón de cerrar</h3>
+        <h3 class="p-style-guide__demo-titulo">Ejemplo visual</h3>
         <div class="p-style-guide__grupo-alertas">
-          <app-alert type="success" message="Alerta de éxito persistente." />
-          <app-alert type="info" message="Alerta informativa persistente." />
+          <app-toast type="success" message="Alerta de éxito" />
+          <app-toast type="error" message="Alerta de error" />
+          <app-toast type="warning" message="Alerta de advertencia" />
+          <app-toast type="info" message="Alerta informativa" />
         </div>
       </div>
     </section>

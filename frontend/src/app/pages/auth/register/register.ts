@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, viewChild } from '@angular/
 import { Router } from '@angular/router';
 import { RegisterFormComponent } from '../../../components/shared';
 import { AuthService } from '../../../services/auth';
-import { AlertService } from '../../../services/alert';
+import { ToastService } from '../../../services/toast';
 
 /**
  * Página Register - Registro de nuevo usuario.
@@ -30,7 +30,7 @@ import { AlertService } from '../../../services/alert';
 })
 export class RegisterComponent {
   private readonly authService = inject(AuthService);
-  private readonly alertService = inject(AlertService);
+  private readonly toastService = inject(ToastService);
   private readonly router = inject(Router);
   
   protected readonly registerForm = viewChild.required<RegisterFormComponent>(RegisterFormComponent);
@@ -54,13 +54,13 @@ export class RegisterComponent {
 
     this.authService.register(registerData).subscribe({
       next: (user) => {
-        this.alertService.success(`¡Cuenta creada! Bienvenido, ${user.nombre}!`);
+        this.toastService.success(`¡Cuenta creada! Bienvenido, ${user.nombre}!`);
         this.router.navigate(['/dashboard'], { replaceUrl: true });
       },
       error: (error) => {
         const message = error.message || 'Error al crear la cuenta. Intenta de nuevo.';
         this.registerForm().setError(message);
-        this.alertService.error(message);
+        this.toastService.error(message);
       },
     });
   }

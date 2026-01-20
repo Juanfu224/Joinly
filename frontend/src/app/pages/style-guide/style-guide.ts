@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, signal, inject } from '@angular/cor
 import {
   CardComponent,
   ButtonComponent,
-  AlertComponent,
   AvatarComponent,
   IconComponent,
   LogoComponent,
@@ -30,6 +29,7 @@ import {
   SubscriptionInfoCardComponent,
   MemberCardComponent,
   MemberListComponent,
+  ToastComponent,
   type SelectOption,
   type RadioOption,
   type BreadcrumbItem,
@@ -37,11 +37,11 @@ import {
   type JoinRequest,
   type MemberData,
 } from '../../components/shared';
-import { FeatureImageComponent } from '../../components/shared/feature-image/feature-image';
 import type { GrupoCardData } from '../../models/grupo.model';
 import type { SuscripcionCardData } from '../../models/suscripcion.model';
 import { ModalService } from '../../services/modal';
 import { ThemeService, type Theme } from '../../services/theme';
+import { ToastService } from '../../services/toast';
 
 /**
  * Componente Style Guide - Guía visual del sistema de diseño.
@@ -66,7 +66,6 @@ import { ThemeService, type Theme } from '../../services/theme';
   imports: [
     CardComponent,
     ButtonComponent,
-    AlertComponent,
     AvatarComponent,
     IconComponent,
     LogoComponent,
@@ -94,7 +93,7 @@ import { ThemeService, type Theme } from '../../services/theme';
     SubscriptionInfoCardComponent,
     MemberCardComponent,
     MemberListComponent,
-    FeatureImageComponent,
+    ToastComponent,
   ],
   templateUrl: './style-guide.html',
   styleUrl: './style-guide.scss',
@@ -103,6 +102,7 @@ import { ThemeService, type Theme } from '../../services/theme';
 export class StyleGuideComponent {
   protected readonly modalService = inject(ModalService);
   protected readonly themeService = inject(ThemeService);
+  protected readonly toastService = inject(ToastService);
 
   // =========================================================================
   // DATOS DE EJEMPLO PARA COMPONENTES
@@ -525,27 +525,6 @@ export class StyleGuideComponent {
   // =========================================================================
 
   /**
-   * Controla la visibilidad de la alerta de éxito.
-   * Se oculta cuando el usuario hace clic en el botón de cerrar.
-   */
-  protected readonly showAlertSuccess = signal(true);
-
-  /**
-   * Controla la visibilidad de la alerta de error.
-   */
-  protected readonly showAlertError = signal(true);
-
-  /**
-   * Controla la visibilidad de la alerta de advertencia.
-   */
-  protected readonly showAlertWarning = signal(true);
-
-  /**
-   * Controla la visibilidad de la alerta informativa.
-   */
-  protected readonly showAlertInfo = signal(true);
-
-  /**
    * Signal computed para el tema actual.
    * Expone el tema del servicio para uso en el template.
    */
@@ -554,40 +533,35 @@ export class StyleGuideComponent {
   }
 
   // =========================================================================
-  // MÉTODOS PÚBLICOS
+  // MÉTODOS PÚBLICOS - TOASTS
   // =========================================================================
 
   /**
-   * Cierra una alerta específica actualizando su signal correspondiente.
-   *
-   * @param type - Tipo de alerta a cerrar
+   * Muestra un toast de éxito.
    */
-  protected closeAlert(type: 'success' | 'error' | 'warning' | 'info'): void {
-    switch (type) {
-      case 'success':
-        this.showAlertSuccess.set(false);
-        break;
-      case 'error':
-        this.showAlertError.set(false);
-        break;
-      case 'warning':
-        this.showAlertWarning.set(false);
-        break;
-      case 'info':
-        this.showAlertInfo.set(false);
-        break;
-    }
+  protected showSuccessToast(): void {
+    this.toastService.success('¡Operación completada con éxito! Tu suscripción ha sido actualizada.');
   }
 
   /**
-   * Restaura todas las alertas a su estado visible inicial.
-   * Útil para reiniciar la demo después de cerrar alertas.
+   * Muestra un toast de error.
    */
-  protected resetAlerts(): void {
-    this.showAlertSuccess.set(true);
-    this.showAlertError.set(true);
-    this.showAlertWarning.set(true);
-    this.showAlertInfo.set(true);
+  protected showErrorToast(): void {
+    this.toastService.error('Ha ocurrido un error al procesar tu solicitud. Por favor, inténtalo de nuevo.');
+  }
+
+  /**
+   * Muestra un toast de advertencia.
+   */
+  protected showWarningToast(): void {
+    this.toastService.warning('Tu suscripción expira en 3 días. Renueva ahora para no perder el acceso.');
+  }
+
+  /**
+   * Muestra un toast informativo.
+   */
+  protected showInfoToast(): void {
+    this.toastService.info('Se ha enviado un código de verificación a tu correo electrónico.');
   }
 
   // =========================================================================

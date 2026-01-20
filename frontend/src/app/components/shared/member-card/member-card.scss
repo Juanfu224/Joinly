@@ -28,7 +28,7 @@
   padding: var(--espaciado-2);
   background-color: var(--color-superficie-morada);
   border-radius: var(--radio-medio);
-  min-inline-size: 0;
+  inline-size: 100%;
 
   // Contenedor mediano (>= 14rem / 224px) - padding ampliado
   @container member-card (min-width: 14rem) {
@@ -54,12 +54,8 @@
     @include texto-regular;
     color: var(--color-texto-fuerte);
     margin: 0;
-    @include truncar-texto;
-
-    // Contenedor pequeno - texto mas compacto
-    @container member-card (max-width: 12rem) {
-      font-size: var(--tamano-texto-pequeno);
-    }
+    overflow-wrap: anywhere;
+    hyphens: auto;
   }
 
   // ---------------------------------------------------------------------------
@@ -68,12 +64,9 @@
   &__email {
     @include caption;
     margin: 0;
-    @include truncar-texto;
-
-    // Contenedor muy pequeno - ocultar email
-    @container member-card (max-width: 10rem) {
-      display: none;
-    }
+    overflow-wrap: break-word;
+    line-height: var(--altura-linea-caption);
+    max-inline-size: 100%;
   }
 
   // ---------------------------------------------------------------------------

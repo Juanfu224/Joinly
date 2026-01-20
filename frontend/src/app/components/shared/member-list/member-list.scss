@@ -68,22 +68,17 @@
   &__grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--espaciado-2);
+    gap: var(--espaciado-3);
 
-    // Contenedor mediano (>= 28rem / 448px) - 2 columnas
-    @container member-list (min-width: 28rem) {
-      grid-template-columns: repeat(2, 1fr);
+    // Contenedor mediano (>= 32rem / 512px) - 2 columnas mínimo
+    @container member-list (min-width: 32rem) {
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
     }
 
-    // Contenedor amplio (>= 48rem / 768px) - 3 columnas
+    // Contenedor amplio (>= 48rem / 768px) - gap mayor y ancho mínimo aumentado
     @container member-list (min-width: 48rem) {
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--espaciado-3);
-    }
-
-    // Contenedor muy amplio (>= 64rem / 1024px) - 4 columnas
-    @container member-list (min-width: 64rem) {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+      gap: var(--espaciado-4);
     }
   }
 

@@ -25,7 +25,7 @@ export interface BreadcrumbParent {
  *
  * Construye automáticamente la ruta de migas a partir de `data.breadcrumb` en las rutas.
  * Soporta strings estáticos y funciones para datos dinámicos de resolvers.
- * Soporta breadcrumbs padres para rutas no anidadas.
+ * Soporta breadcrumbs padres (uno o varios) para rutas no anidadas.
  */
 @Injectable({ providedIn: 'root' })
 export class BreadcrumbService {
@@ -64,16 +64,19 @@ export class BreadcrumbService {
       // Acumular parámetros de todas las rutas
       allParams = { ...allParams, ...childRoute.snapshot.params };
 
-      // Breadcrumb padre (para rutas no anidadas como suscripción → grupo)
-      const parentConfig = childRoute.snapshot.data['breadcrumbParent'] as BreadcrumbParent | undefined;
+      // Breadcrumb padres (soporta uno o varios)
+      const parentConfig = childRoute.snapshot.data['breadcrumbParent'] as BreadcrumbParent | BreadcrumbParent[] | undefined;
       if (parentConfig) {
-        const parentLabel = typeof parentConfig.label === 'function' 
-          ? parentConfig.label(childRoute.snapshot.data, allParams) 
-          : parentConfig.label;
-        const parentUrl = typeof parentConfig.url === 'function'
-          ? parentConfig.url(allParams)
-          : parentConfig.url;
-        breadcrumbs.push({ label: parentLabel, url: parentUrl });
+        const parents = Array.isArray(parentConfig) ? parentConfig : [parentConfig];
+        for (const parent of parents) {
+          const parentLabel = typeof parent.label === 'function' 
+            ? parent.label(childRoute.snapshot.data, allParams) 
+            : parent.label;
+          const parentUrl = typeof parent.url === 'function'
+            ? parent.url(allParams)
+            : parent.url;
+          breadcrumbs.push({ label: parentLabel, url: parentUrl });
+        }
       }
 
       const config = childRoute.snapshot.data['breadcrumb'] as BreadcrumbResolver | undefined;

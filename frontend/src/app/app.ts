@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {
-  AlertContainerComponent,
   ModalComponent,
   ToastContainerComponent,
   SpinnerOverlayComponent,
@@ -25,7 +24,6 @@ import { BreadcrumbService } from './services';
     RouterOutlet,
     HeaderComponent,
     FooterComponent,
-    AlertContainerComponent,
     ModalComponent,
     InviteModalComponent,
     ToastContainerComponent,

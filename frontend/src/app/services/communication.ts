@@ -41,7 +41,7 @@ export interface AppEvent<T = unknown> {
  * - Singleton: providedIn 'root' garantiza una única instancia
  *
  * @usageNotes
- * **Para notificaciones visuales (toasts), usa AlertService en su lugar.**
+ * **Para notificaciones visuales (toasts), usa ToastService en su lugar.**
  *
  * **Estado de Usuario:**
  * ```typescript
