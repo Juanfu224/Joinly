@@ -1,24 +1,24 @@
-<article class="p-notificaciones">
+<article class="p-notificaciones" aria-labelledby="notif-titulo">
   <header class="p-notificaciones__header">
-    <h1 class="p-notificaciones__titulo">Notificaciones</h1>
+    <h1 id="notif-titulo" class="p-notificaciones__titulo">Notificaciones</h1>
     <p class="p-notificaciones__descripcion">
       Configura qué notificaciones quieres recibir por correo electrónico
     </p>
   </header>
 
-  <form [formGroup]="preferencesForm" (ngSubmit)="onSave()">
+  <form [formGroup]="preferencesForm" (ngSubmit)="onSave()" aria-label="Preferencias de notificaciones">
     <app-card class="p-notificaciones__seccion">
       <header class="p-notificaciones__seccion-header">
         <div class="p-notificaciones__seccion-info">
           <h2 class="p-notificaciones__subtitulo">
-            <app-icon name="email" size="sm" />
+            <app-icon name="email" size="sm" aria-hidden="true" />
             Notificaciones por email
           </h2>
           <p class="p-notificaciones__seccion-descripcion">
             Elige qué tipo de correos quieres recibir de Joinly
           </p>
         </div>
-        <div class="p-notificaciones__quick-actions">
+        <div class="p-notificaciones__quick-actions" role="group" aria-label="Acciones rápidas">
           <app-button type="button" variant="ghost" size="sm" (click)="onToggleAll(true)">
             Activar todas
           </app-button>
@@ -28,36 +28,34 @@
         </div>
       </header>
 
-      <div class="p-notificaciones__opciones">
+      <fieldset class="p-notificaciones__opciones">
+        <legend class="u-sr-only">Tipos de notificaciones</legend>
         @for (option of notificationOptions; track option.key) {
-          <div class="p-notificaciones__opcion">
-            <div class="p-notificaciones__opcion-icon">
+          <label class="p-notificaciones__opcion">
+            <span class="p-notificaciones__opcion-icon" aria-hidden="true">
               <app-icon [name]="option.icon" size="md" />
-            </div>
-            <div class="p-notificaciones__opcion-info">
+            </span>
+            <span class="p-notificaciones__opcion-info">
               <span class="p-notificaciones__opcion-titulo">{{ option.title }}</span>
               <span class="p-notificaciones__opcion-descripcion">{{ option.description }}</span>
-            </div>
-            <app-form-checkbox 
-              [formControlName]="option.key" 
-              [label]="''" 
-            />
-          </div>
+            </span>
+            <app-form-checkbox [formControlName]="option.key" [label]="''" />
+          </label>
         }
-      </div>
+      </fieldset>
     </app-card>
 
-    <app-card class="p-notificaciones__info-card">
-      <div class="p-notificaciones__info-content">
-        <app-icon name="info" size="md" />
+    <app-card class="p-notificaciones__info-card" [fondoGris]="true">
+      <aside class="p-notificaciones__info-content" aria-labelledby="info-notif">
+        <app-icon name="info" size="md" aria-hidden="true" />
         <div>
-          <p class="p-notificaciones__info-titulo">Sobre las notificaciones</p>
+          <p id="info-notif" class="p-notificaciones__info-titulo">Sobre las notificaciones</p>
           <p class="p-notificaciones__info-texto">
             Las notificaciones críticas de seguridad (como cambios de contraseña o accesos sospechosos) 
             siempre se enviarán independientemente de tu configuración.
           </p>
         </div>
-      </div>
+      </aside>
     </app-card>
 
     <footer class="p-notificaciones__footer">
@@ -69,10 +67,9 @@
       <app-button 
         type="submit" 
         variant="primary" 
+        leftIcon="check"
         [disabled]="!canSave()" 
-        [loading]="isSaving()"
-      >
-        <app-icon name="check" size="sm" />
+        [loading]="isSaving()">
         Guardar preferencias
       </app-button>
     </footer>

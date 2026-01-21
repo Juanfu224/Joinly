@@ -1,110 +1,81 @@
-import { ChangeDetectionStrategy, Component, inject, signal, computed, OnInit, DestroyRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { debounceTime, map, startWith } from 'rxjs';
 import {
-  CardComponent,
-  ButtonComponent,
-  IconComponent,
   AvatarComponent,
+  ButtonComponent,
+  CardComponent,
   FormInputComponent,
+  IconComponent,
   SpinnerOverlayComponent,
 } from '../../../components/shared';
-import { AuthService, UsuarioService, ToastService } from '../../../services';
+import { AuthService, ToastService, UsuarioService } from '../../../services';
 
 /**
  * Página de perfil de usuario.
- *
  * Muestra y permite editar la información personal del usuario.
- * Incluye estadísticas de cuenta y opciones de personalización.
  *
- * @usageNotes
- * Ruta: /usuario/perfil
+ * @route /usuario/perfil
  */
 @Component({
   selector: 'app-perfil',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    CardComponent,
-    ButtonComponent,
-    IconComponent,
     AvatarComponent,
+    ButtonComponent,
+    CardComponent,
     FormInputComponent,
+    IconComponent,
     SpinnerOverlayComponent,
   ],
   templateUrl: './perfil.html',
   styleUrl: './perfil.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PerfilComponent implements OnInit {
-  private readonly authService = inject(AuthService);
-  private readonly usuarioService = inject(UsuarioService);
-  private readonly toastService = inject(ToastService);
-  private readonly fb = inject(FormBuilder);
-  private readonly destroyRef = inject(DestroyRef);
+export class PerfilComponent {
+  readonly #authService = inject(AuthService);
+  readonly #usuarioService = inject(UsuarioService);
+  readonly #toastService = inject(ToastService);
+  readonly #fb = inject(FormBuilder);
 
-  protected readonly usuario = this.authService.currentUser;
+  protected readonly usuario = this.#authService.currentUser;
   protected readonly isEditing = signal(false);
   protected readonly isSaving = signal(false);
-  protected readonly fechaRegistro = signal<string | null>(null);
-  protected readonly isFormDirty = signal(false);
-  protected readonly isFormValid = signal(false);
 
-  protected readonly perfilForm = this.fb.nonNullable.group({
+  protected readonly perfilForm = this.#fb.nonNullable.group({
     nombre: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
     telefono: ['', [Validators.pattern(/^[+]?[\d\s()-]{6,20}$/)]],
   });
 
-  protected readonly canSubmit = computed(
-    () => this.isFormValid() && this.isFormDirty() && !this.isSaving()
+  /** Signal reactivo para el estado del formulario usando toSignal */
+  readonly #formState = toSignal(
+    this.perfilForm.statusChanges.pipe(
+      startWith(this.perfilForm.status),
+      debounceTime(50),
+      map(() => ({
+        valid: this.perfilForm.valid,
+        dirty: this.perfilForm.dirty,
+      }))
+    ),
+    { initialValue: { valid: false, dirty: false } }
   );
 
-  protected readonly iniciales = computed(() => {
-    const nombre = this.usuario()?.nombre ?? '';
-    return nombre
-      .split(' ')
-      .slice(0, 2)
-      .map(n => n.charAt(0).toUpperCase())
-      .join('');
-  });
-
-  ngOnInit(): void {
-    this.fechaRegistro.set(new Date().toISOString());
-    this.setupFormTracking();
-  }
-
-  /**
-   * Configura el tracking reactivo del estado del formulario.
-   * Sincroniza el estado de FormGroup con signals para que computed() funcione.
-   */
-  private setupFormTracking(): void {
-    this.perfilForm.statusChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.isFormValid.set(this.perfilForm.valid);
-        this.isFormDirty.set(this.perfilForm.dirty);
-      });
-
-    this.perfilForm.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.isFormDirty.set(this.perfilForm.dirty);
-      });
-  }
+  protected readonly canSubmit = computed(
+    () => this.#formState().valid && this.#formState().dirty && !this.isSaving()
+  );
 
   protected onEdit(): void {
     const user = this.usuario();
-    if (user) {
-      this.perfilForm.patchValue({
-        nombre: user.nombre,
-        telefono: '',
-      });
-      // Resetear estado después de patchValue
-      this.perfilForm.markAsPristine();
-      this.isFormDirty.set(false);
-      this.isFormValid.set(this.perfilForm.valid);
-      this.isEditing.set(true);
-    }
+    if (!user) return;
+
+    this.perfilForm.patchValue({
+      nombre: user.nombre,
+      telefono: user.telefono ?? '',
+    });
+    this.perfilForm.markAsPristine();
+    this.isEditing.set(true);
   }
 
   protected onSave(): void {
@@ -115,23 +86,22 @@ export class PerfilComponent implements OnInit {
 
     this.isSaving.set(true);
 
-    const formValue = this.perfilForm.getRawValue();
+    const { nombre, telefono } = this.perfilForm.getRawValue();
     const updateData = {
-      nombre: formValue.nombre.trim(),
-      telefono: formValue.telefono?.trim() || undefined,
+      nombre: nombre.trim(),
+      telefono: telefono?.trim() || undefined,
       temaPreferido: user.temaPreferido,
     };
 
-    this.usuarioService.actualizarPerfil(user.id, updateData).subscribe({
+    this.#usuarioService.actualizarPerfil(user.id, updateData).subscribe({
       next: (updatedUser) => {
-        this.authService.updateUser(updatedUser);
-        this.toastService.success('Perfil actualizado exitosamente');
+        this.#authService.updateUser(updatedUser);
+        this.#toastService.success('Perfil actualizado exitosamente');
         this.isEditing.set(false);
         this.isSaving.set(false);
       },
       error: (error) => {
-        console.error('Error actualizando perfil:', error);
-        this.toastService.error(error.message || 'Error al actualizar el perfil');
+        this.#toastService.error(error.message || 'Error al actualizar el perfil');
         this.isSaving.set(false);
       },
     });
@@ -139,9 +109,6 @@ export class PerfilComponent implements OnInit {
 
   protected onCancel(): void {
     this.perfilForm.reset();
-    this.perfilForm.markAsPristine();
-    this.isFormDirty.set(false);
-    this.isFormValid.set(false);
     this.isEditing.set(false);
   }
 }

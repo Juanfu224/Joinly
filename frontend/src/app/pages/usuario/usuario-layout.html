@@ -1,15 +1,16 @@
-<section class="p-usuario-layout">
+<article class="p-usuario-layout" aria-labelledby="usuario-title">
+  <h1 id="usuario-title" class="u-sr-only">Mi cuenta</h1>
+  
   <div class="p-usuario-layout__contenido">
     <!-- Navegación lateral/tabs -->
-    <nav class="p-usuario-layout__nav" aria-label="Navegación de cuenta">
+    <nav class="p-usuario-layout__nav" aria-label="Secciones de mi cuenta">
       <ul class="p-usuario-layout__lista" role="list">
         <li>
           <a 
             routerLink="perfil" 
             routerLinkActive="p-usuario-layout__enlace--activo"
-            class="p-usuario-layout__enlace"
-            aria-label="Ver mi perfil">
-            <app-icon name="user" size="sm" />
+            class="p-usuario-layout__enlace">
+            <app-icon name="user" size="sm" aria-hidden="true" />
             <span>Mi perfil</span>
           </a>
         </li>
@@ -17,9 +18,8 @@
           <a 
             routerLink="configuracion" 
             routerLinkActive="p-usuario-layout__enlace--activo"
-            class="p-usuario-layout__enlace"
-            aria-label="Configuración de la cuenta">
-            <app-icon name="settings" size="sm" />
+            class="p-usuario-layout__enlace">
+            <app-icon name="settings" size="sm" aria-hidden="true" />
             <span>Configuración</span>
           </a>
         </li>
@@ -27,9 +27,8 @@
           <a
             routerLink="notificaciones"
             routerLinkActive="p-usuario-layout__enlace--activo"
-            class="p-usuario-layout__enlace"
-            aria-label="Gestionar notificaciones">
-            <app-icon name="bell" size="sm" />
+            class="p-usuario-layout__enlace">
+            <app-icon name="bell" size="sm" aria-hidden="true" />
             <span>Notificaciones</span>
           </a>
         </li>
@@ -37,9 +36,8 @@
           <a
             routerLink="solicitudes"
             routerLinkActive="p-usuario-layout__enlace--activo"
-            class="p-usuario-layout__enlace"
-            aria-label="Ver mis solicitudes">
-            <app-icon name="file-text" size="sm" />
+            class="p-usuario-layout__enlace">
+            <app-icon name="file-text" size="sm" aria-hidden="true" />
             <span>Mis Solicitudes</span>
           </a>
         </li>
@@ -51,4 +49,4 @@
       <router-outlet />
     </main>
   </div>
-</section>
+</article>

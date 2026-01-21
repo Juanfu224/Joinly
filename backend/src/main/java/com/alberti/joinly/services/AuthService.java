@@ -104,6 +104,9 @@ public class AuthService {
                 .email(usuarioGuardado.getEmail())
                 .temaPreferido(usuarioGuardado.getTemaPreferido())
                 .emailVerificado(usuarioGuardado.getEmailVerificado())
+                .telefono(usuarioGuardado.getTelefono())
+                .fechaRegistro(usuarioGuardado.getFechaRegistro())
+                .fechaUltimoAcceso(usuarioGuardado.getFechaUltimoAcceso())
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .tokenType("Bearer")
@@ -144,8 +147,13 @@ public class AuthService {
             // Obtener el UserPrincipal autenticado
             var userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
+            // Cargar usuario completo para obtener todos los campos
+            var usuario = usuarioRepository.findById(userPrincipal.getId())
+                    .orElseThrow(() -> new UnauthorizedException("Usuario no encontrado"));
+
             // Actualizar último acceso
-            actualizarUltimoAcceso(userPrincipal.getId());
+            usuario.setFechaUltimoAcceso(LocalDateTime.now());
+            usuarioRepository.save(usuario);
 
             // Generar tokens
             var accessToken = jwtService.generateAccessToken(userPrincipal);
@@ -154,11 +162,14 @@ public class AuthService {
             log.info("Login exitoso para usuario: {} (ID: {})", userPrincipal.getEmail(), userPrincipal.getId());
 
             return AuthResponse.builder()
-                    .id(userPrincipal.getId())
-                    .nombre(userPrincipal.getNombre())
-                    .email(userPrincipal.getEmail())
-                    .temaPreferido(userPrincipal.getTemaPreferido())
-                    .emailVerificado(userPrincipal.getEmailVerificado())
+                    .id(usuario.getId())
+                    .nombre(usuario.getNombre())
+                    .email(usuario.getEmail())
+                    .temaPreferido(usuario.getTemaPreferido())
+                    .emailVerificado(usuario.getEmailVerificado())
+                    .telefono(usuario.getTelefono())
+                    .fechaRegistro(usuario.getFechaRegistro())
+                    .fechaUltimoAcceso(usuario.getFechaUltimoAcceso())
                     .accessToken(accessToken)
                     .refreshToken(refreshToken)
                     .tokenType("Bearer")
@@ -241,24 +252,15 @@ public class AuthService {
                 .email(usuario.getEmail())
                 .temaPreferido(usuario.getTemaPreferido())
                 .emailVerificado(usuario.getEmailVerificado())
+                .telefono(usuario.getTelefono())
+                .fechaRegistro(usuario.getFechaRegistro())
+                .fechaUltimoAcceso(usuario.getFechaUltimoAcceso())
                 .accessToken(newAccessToken)
                 .refreshToken(newRefreshToken)
                 .tokenType("Bearer")
                 .expiresIn(jwtService.getRemainingValidity(newAccessToken))
                 .mensaje("Tokens renovados exitosamente")
                 .build();
-    }
-
-    /**
-     * Actualiza la fecha de último acceso del usuario.
-     *
-     * @param userId ID del usuario
-     */
-    private void actualizarUltimoAcceso(Long userId) {
-        usuarioRepository.findById(userId).ifPresent(usuario -> {
-            usuario.setFechaUltimoAcceso(LocalDateTime.now());
-            usuarioRepository.save(usuario);
-        });
     }
 
     /**

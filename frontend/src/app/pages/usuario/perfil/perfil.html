@@ -1,136 +1,117 @@
-<article class="p-perfil">
+<article class="p-perfil" aria-labelledby="perfil-titulo">
   <header class="p-perfil__header">
-    <h1 class="p-perfil__titulo">Mi perfil</h1>
+    <h1 id="perfil-titulo" class="p-perfil__titulo">Mi perfil</h1>
     <p class="p-perfil__descripcion">Gestiona tu información personal y preferencias de cuenta</p>
   </header>
 
-  <app-card class="p-perfil__card">
-    <div class="p-perfil__avatar-section">
-      <div class="p-perfil__avatar-wrapper">
-        <app-avatar
-          [name]="usuario()?.nombre ?? 'Usuario'"
-          size="xl" />
-      </div>
-      <div class="p-perfil__avatar-info">
-        <h2 class="p-perfil__nombre">{{ usuario()?.nombre ?? 'Usuario' }}</h2>
-        <p class="p-perfil__email">
-          <app-icon name="email" size="sm" />
-          {{ usuario()?.email ?? 'email@ejemplo.com' }}
-        </p>
-        @if (usuario()?.emailVerificado) {
-          <span class="p-perfil__badge p-perfil__badge--verificado">
-            <app-icon name="check" size="sm" />
-            Email verificado
-          </span>
-        }
-      </div>
-    </div>
-
-    <hr class="p-perfil__separador" />
-
-    @if (!isEditing()) {
-      <section class="p-perfil__seccion">
-        <h3 class="p-perfil__seccion-titulo">
-          <app-icon name="user" size="sm" />
-          Información personal
-        </h3>
-        <dl class="p-perfil__datos">
-          <div class="p-perfil__campo">
-            <dt class="p-perfil__etiqueta">Nombre completo</dt>
-            <dd class="p-perfil__valor">{{ usuario()?.nombre ?? 'No especificado' }}</dd>
+  @if (!isEditing()) {
+    <app-card class="p-perfil__card">
+      <div class="p-perfil__content">
+        <!-- Hero Section -->
+        <section class="p-perfil__hero" aria-label="Información del usuario">
+          <figure class="p-perfil__avatar-wrapper">
+            <app-avatar [name]="usuario()?.nombre ?? 'Usuario'" size="xl" />
+          </figure>
+          <div class="p-perfil__hero-info">
+            <h2 class="p-perfil__nombre">{{ usuario()?.nombre ?? 'Usuario' }}</h2>
+            <p class="p-perfil__email">{{ usuario()?.email ?? 'email@ejemplo.com' }}</p>
+            @if (usuario()?.emailVerificado) {
+              <span class="p-perfil__badge p-perfil__badge--verificado">
+                <app-icon name="check" size="sm" aria-hidden="true" />
+                Verificado
+              </span>
+            }
           </div>
-
-          <div class="p-perfil__campo">
-            <dt class="p-perfil__etiqueta">Correo electrónico</dt>
-            <dd class="p-perfil__valor">{{ usuario()?.email ?? 'No especificado' }}</dd>
-          </div>
-
-          <div class="p-perfil__campo">
-            <dt class="p-perfil__etiqueta">Teléfono</dt>
-            <dd class="p-perfil__valor">No especificado</dd>
-          </div>
-        </dl>
-      </section>
-
-      <section class="p-perfil__seccion">
-        <h3 class="p-perfil__seccion-titulo">
-          <app-icon name="settings" size="sm" />
-          Preferencias
-        </h3>
-        <dl class="p-perfil__datos">
-          <div class="p-perfil__campo">
-            <dt class="p-perfil__etiqueta">Tema de la aplicación</dt>
-            <dd class="p-perfil__valor">
-              {{ usuario()?.temaPreferido === 'dark' ? 'Modo oscuro' : 'Modo claro' }}
-            </dd>
-          </div>
-        </dl>
-      </section>
-
-      <footer class="p-perfil__acciones">
-        <app-button variant="primary" (click)="onEdit()">
-          <app-icon name="edit" size="sm" />
-          Editar perfil
-        </app-button>
-      </footer>
-    } @else {
-      <form [formGroup]="perfilForm" (ngSubmit)="onSave()" class="p-perfil__form">
-        <section class="p-perfil__seccion">
-          <h3 class="p-perfil__seccion-titulo">
-            <app-icon name="user" size="sm" />
-            Editar información
-          </h3>
-          <div class="p-perfil__form-fields">
-            <app-form-input
-              formControlName="nombre"
-              label="Nombre completo"
-              type="text"
-              placeholder="Ingresa tu nombre completo"
-              [required]="true"
-              helperText="Entre 2 y 100 caracteres"
-            />
-
-            <app-form-input
-              formControlName="telefono"
-              label="Teléfono"
-              type="tel"
-              placeholder="+34 612 345 678"
-              helperText="Opcional - Formato internacional recomendado"
-            />
-
-            <div class="p-perfil__campo p-perfil__campo--readonly">
-              <label class="p-perfil__etiqueta">Correo electrónico</label>
-              <div class="p-perfil__valor p-perfil__valor--readonly">
-                <app-icon name="lock" size="sm" />
-                {{ usuario()?.email ?? 'No especificado' }}
-              </div>
-              <p class="p-perfil__ayuda">El correo electrónico no se puede cambiar por seguridad</p>
-            </div>
+          <div class="p-perfil__hero-actions">
+            <app-button variant="primary" leftIcon="edit" (click)="onEdit()">
+              Editar perfil
+            </app-button>
           </div>
         </section>
 
-        <footer class="p-perfil__acciones p-perfil__acciones--edit">
+        <!-- Información Personal -->
+        <section class="p-perfil__section" aria-labelledby="info-titulo">
+          <header class="p-perfil__section-header">
+            <app-icon name="user" size="sm" aria-hidden="true" />
+            <h3 id="info-titulo" class="p-perfil__section-titulo">Información personal</h3>
+          </header>
+          <dl class="p-perfil__data-grid">
+            <div class="p-perfil__data-item">
+              <dt>Nombre completo</dt>
+              <dd>{{ usuario()?.nombre ?? 'No especificado' }}</dd>
+            </div>
+            <div class="p-perfil__data-item">
+              <dt>Correo electrónico</dt>
+              <dd>{{ usuario()?.email ?? 'No especificado' }}</dd>
+            </div>
+            <div class="p-perfil__data-item">
+              <dt>Teléfono</dt>
+              <dd>{{ usuario()?.telefono || 'No especificado' }}</dd>
+            </div>
+          </dl>
+        </section>
+      </div>
+    </app-card>
+  } @else {
+    <!-- Vista de edición -->
+    <app-card class="p-perfil__card">
+      <header class="p-perfil__edit-header">
+        <h2 class="p-perfil__edit-titulo">Editar información</h2>
+      </header>
+
+      <form 
+        [formGroup]="perfilForm" 
+        (ngSubmit)="onSave()" 
+        class="p-perfil__form"
+        aria-label="Formulario de edición de perfil">
+        <div class="p-perfil__form-fields">
+          <app-form-input
+            formControlName="nombre"
+            label="Nombre completo"
+            type="text"
+            placeholder="Ingresa tu nombre completo"
+            [required]="true"
+            helperText="Entre 2 y 100 caracteres"
+            autocomplete="name" />
+
+          <app-form-input
+            formControlName="telefono"
+            label="Teléfono"
+            type="tel"
+            placeholder="+34 612 345 678"
+            helperText="Opcional - Formato internacional"
+            autocomplete="tel" />
+
+          <div class="p-perfil__campo-readonly">
+            <label class="p-perfil__etiqueta">Correo electrónico</label>
+            <output class="p-perfil__valor-readonly">
+              <app-icon name="lock" size="sm" aria-hidden="true" />
+              {{ usuario()?.email ?? 'No especificado' }}
+            </output>
+            <p class="p-perfil__ayuda">El correo no se puede cambiar</p>
+          </div>
+        </div>
+
+        <footer class="p-perfil__form-actions">
           <app-button
             type="button"
             variant="ghost"
             (click)="onCancel()"
-            [disabled]="isSaving()"
-          >
+            [disabled]="isSaving()">
             Cancelar
           </app-button>
           <app-button
             type="submit"
             variant="primary"
+            leftIcon="check"
             [disabled]="!canSubmit()"
-            [loading]="isSaving()"
-          >
-            <app-icon name="check" size="sm" />
+            [loading]="isSaving()">
             Guardar cambios
           </app-button>
         </footer>
       </form>
-    }
-  </app-card>
+    </app-card>
+  }
 
   @if (isSaving()) {
     <app-spinner-overlay />

@@ -1,124 +1,128 @@
-<article class="p-configuracion">
+<article class="p-configuracion" aria-labelledby="config-titulo">
   <header class="p-configuracion__header">
-    <h1 class="p-configuracion__titulo">Configuración</h1>
+    <h1 id="config-titulo" class="p-configuracion__titulo">Configuración</h1>
     <p class="p-configuracion__descripcion">Gestiona la seguridad y preferencias de tu cuenta</p>
   </header>
 
   <!-- Sección: Apariencia -->
   <app-card class="p-configuracion__seccion">
-    <h2 class="p-configuracion__subtitulo">
-      <app-icon name="sun" size="sm" />
-      Apariencia
-    </h2>
+    <section aria-labelledby="apariencia-titulo">
+      <h2 id="apariencia-titulo" class="p-configuracion__subtitulo">
+        <app-icon name="sun" size="sm" aria-hidden="true" />
+        Apariencia
+      </h2>
 
-    <div class="p-configuracion__opcion">
-      <div class="p-configuracion__opcion-info">
-        <span class="p-configuracion__opcion-titulo">Tema de la aplicación</span>
-        <span class="p-configuracion__opcion-descripcion">
-          Actualmente usando: {{ currentTheme() === 'dark' ? 'Modo oscuro' : 'Modo claro' }}
-        </span>
+      <div class="p-configuracion__opcion">
+        <div class="p-configuracion__opcion-info">
+          <span class="p-configuracion__opcion-titulo">Tema de la aplicación</span>
+          <span class="p-configuracion__opcion-descripcion">
+            Actualmente usando: {{ currentTheme() === 'dark' ? 'Modo oscuro' : 'Modo claro' }}
+          </span>
+        </div>
+        <app-button 
+          variant="secondary" 
+          [leftIcon]="currentTheme() === 'dark' ? 'sun' : 'moon'"
+          (click)="onToggleTheme()">
+          Cambiar a modo {{ currentTheme() === 'dark' ? 'claro' : 'oscuro' }}
+        </app-button>
       </div>
-      <app-button variant="secondary" (click)="onToggleTheme()">
-        @if (currentTheme() === 'dark') {
-          <app-icon name="sun" size="sm" />
-          Cambiar a modo claro
-        } @else {
-          <app-icon name="moon" size="sm" />
-          Cambiar a modo oscuro
-        }
-      </app-button>
-    </div>
+    </section>
   </app-card>
 
   <!-- Sección: Seguridad -->
   <app-card class="p-configuracion__seccion">
-    <h2 class="p-configuracion__subtitulo">
-      <app-icon name="lock" size="sm" />
-      Seguridad
-    </h2>
+    <section aria-labelledby="seguridad-titulo">
+      <h2 id="seguridad-titulo" class="p-configuracion__subtitulo">
+        <app-icon name="lock" size="sm" aria-hidden="true" />
+        Seguridad
+      </h2>
 
-    @if (!isChangingPassword()) {
-      <div class="p-configuracion__opcion">
-        <div class="p-configuracion__opcion-info">
-          <span class="p-configuracion__opcion-titulo">Contraseña</span>
-          <span class="p-configuracion__opcion-descripcion">
-            Cambia tu contraseña periódicamente para mayor seguridad
-          </span>
-        </div>
-        <app-button variant="secondary" (click)="onTogglePasswordChange()">
-          <app-icon name="lock" size="sm" />
-          Cambiar contraseña
-        </app-button>
-      </div>
-    } @else {
-      <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()" class="p-configuracion__password-form">
-        <app-form-input
-          formControlName="contrasenaActual"
-          label="Contraseña actual"
-          type="password"
-          placeholder="Ingresa tu contraseña actual"
-          [required]="true"
-        />
-
-        <app-form-input
-          formControlName="nuevaContrasena"
-          label="Nueva contraseña"
-          type="password"
-          placeholder="Mínimo 8 caracteres"
-          [required]="true"
-          helperText="La contraseña debe tener al menos 8 caracteres"
-        />
-
-        <app-form-input
-          formControlName="confirmarContrasena"
-          label="Confirmar nueva contraseña"
-          type="password"
-          placeholder="Repite la nueva contraseña"
-          [required]="true"
-          [errorMessage]="passwordErrors() ?? ''"
-        />
-
-        <footer class="p-configuracion__password-acciones">
-          <app-button type="button" variant="ghost" (click)="onTogglePasswordChange()">
-            Cancelar
-          </app-button>
-          <app-button 
-            type="submit" 
-            variant="primary" 
-            [disabled]="!canSubmitPassword()" 
-            [loading]="isSaving()"
-          >
-            <app-icon name="check" size="sm" />
+      @if (!isChangingPassword()) {
+        <div class="p-configuracion__opcion">
+          <div class="p-configuracion__opcion-info">
+            <span class="p-configuracion__opcion-titulo">Contraseña</span>
+            <span class="p-configuracion__opcion-descripcion">
+              Cambia tu contraseña periódicamente para mayor seguridad
+            </span>
+          </div>
+          <app-button variant="secondary" leftIcon="lock" (click)="onTogglePasswordChange()">
             Cambiar contraseña
           </app-button>
-        </footer>
-      </form>
-    }
+        </div>
+      } @else {
+        <form 
+          [formGroup]="passwordForm" 
+          (ngSubmit)="onChangePassword()" 
+          class="p-configuracion__password-form"
+          aria-label="Formulario de cambio de contraseña">
+          <app-form-input
+            formControlName="contrasenaActual"
+            label="Contraseña actual"
+            type="password"
+            placeholder="Ingresa tu contraseña actual"
+            [required]="true"
+            autocomplete="current-password" />
+
+          <app-form-input
+            formControlName="nuevaContrasena"
+            label="Nueva contraseña"
+            type="password"
+            placeholder="Mínimo 8 caracteres"
+            [required]="true"
+            helperText="La contraseña debe tener al menos 8 caracteres"
+            autocomplete="new-password" />
+
+          <app-form-input
+            formControlName="confirmarContrasena"
+            label="Confirmar nueva contraseña"
+            type="password"
+            placeholder="Repite la nueva contraseña"
+            [required]="true"
+            [errorMessage]="passwordErrors() ?? ''"
+            autocomplete="new-password" />
+
+          <footer class="p-configuracion__password-acciones">
+            <app-button type="button" variant="ghost" (click)="onTogglePasswordChange()">
+              Cancelar
+            </app-button>
+            <app-button 
+              type="submit" 
+              variant="primary" 
+              leftIcon="check"
+              [disabled]="!canSubmitPassword()" 
+              [loading]="isSaving()">
+              Cambiar contraseña
+            </app-button>
+          </footer>
+        </form>
+      }
+    </section>
   </app-card>
 
   <!-- Sección: Zona de peligro -->
   <app-card class="p-configuracion__seccion p-configuracion__seccion--peligro">
-    <h2 class="p-configuracion__subtitulo p-configuracion__subtitulo--peligro">
-      <app-icon name="alert-triangle" size="sm" />
-      Zona de peligro
-    </h2>
+    <section aria-labelledby="peligro-titulo">
+      <h2 id="peligro-titulo" class="p-configuracion__subtitulo p-configuracion__subtitulo--peligro">
+        <app-icon name="alert-triangle" size="sm" aria-hidden="true" />
+        Zona de peligro
+      </h2>
 
-    <div class="p-configuracion__opcion p-configuracion__opcion--vertical">
-      <div class="p-configuracion__opcion-info">
-        <span class="p-configuracion__opcion-titulo">Eliminar cuenta permanentemente</span>
-        <span class="p-configuracion__opcion-descripcion">
-          Esta acción es irreversible. Se eliminarán todos tus datos, grupos y suscripciones asociadas.
-        </span>
+      <div class="p-configuracion__opcion p-configuracion__opcion--vertical">
+        <div class="p-configuracion__opcion-info">
+          <span class="p-configuracion__opcion-titulo">Eliminar cuenta permanentemente</span>
+          <span class="p-configuracion__opcion-descripcion">
+            Esta acción es irreversible. Se eliminarán todos tus datos, grupos y suscripciones asociadas.
+          </span>
+        </div>
+        <app-button 
+          variant="secondary" 
+          leftIcon="circle-x"
+          class="p-configuracion__btn-peligro" 
+          (click)="onOpenDeleteModal()">
+          Eliminar mi cuenta
+        </app-button>
       </div>
-      <app-button 
-        variant="secondary" 
-        class="p-configuracion__btn-peligro" 
-        (click)="onOpenDeleteModal()"
-      >
-        <app-icon name="circle-x" size="sm" />
-        Eliminar mi cuenta
-      </app-button>
-    </div>
+    </section>
   </app-card>
 
   @if (isSaving()) {

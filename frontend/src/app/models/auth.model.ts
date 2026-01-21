@@ -22,6 +22,9 @@ export interface AuthResponse {
   email: string;
   temaPreferido?: 'light' | 'dark';
   emailVerificado?: boolean;
+  telefono?: string;
+  fechaRegistro?: string;
+  fechaUltimoAcceso?: string;
   accessToken: string;
   refreshToken: string;
   tokenType: string;
@@ -35,6 +38,10 @@ export interface User {
   email: string;
   emailVerificado?: boolean;
   temaPreferido?: 'light' | 'dark';
+  telefono?: string;
+  avatar?: string;
+  fechaRegistro?: string;
+  fechaUltimoAcceso?: string;
 }
 
 // TOKEN MANAGEMENT
