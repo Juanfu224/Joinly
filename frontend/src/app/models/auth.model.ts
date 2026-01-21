@@ -21,6 +21,7 @@ export interface AuthResponse {
   nombre: string;
   email: string;
   temaPreferido?: 'light' | 'dark';
+  emailVerificado?: boolean;
   accessToken: string;
   refreshToken: string;
   tokenType: string;

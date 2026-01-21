@@ -1,67 +1,84 @@
 <article class="p-notificaciones">
   <header class="p-notificaciones__header">
     <h1 class="p-notificaciones__titulo">Notificaciones</h1>
-    <p class="p-notificaciones__descripcion">Configura cómo quieres recibir las notificaciones</p>
+    <p class="p-notificaciones__descripcion">
+      Configura qué notificaciones quieres recibir por correo electrónico
+    </p>
   </header>
 
-  <!-- Notificaciones por email -->
-  <app-card class="p-notificaciones__seccion">
-    <h2 class="p-notificaciones__subtitulo">
-      <app-icon name="email" size="sm" />
-      Notificaciones por email
-    </h2>
-    
-    <div class="p-notificaciones__opciones">
-      <div class="p-notificaciones__opcion">
-        <div class="p-notificaciones__opcion-info">
-          <span class="p-notificaciones__opcion-titulo">Nuevas solicitudes</span>
-          <span class="p-notificaciones__opcion-descripcion">
-            Cuando alguien solicita unirse a tu grupo o suscripción
-          </span>
+  <form [formGroup]="preferencesForm" (ngSubmit)="onSave()">
+    <app-card class="p-notificaciones__seccion">
+      <header class="p-notificaciones__seccion-header">
+        <div class="p-notificaciones__seccion-info">
+          <h2 class="p-notificaciones__subtitulo">
+            <app-icon name="email" size="sm" />
+            Notificaciones por email
+          </h2>
+          <p class="p-notificaciones__seccion-descripcion">
+            Elige qué tipo de correos quieres recibir de Joinly
+          </p>
         </div>
-        <app-form-checkbox label="" />
-      </div>
-
-      <div class="p-notificaciones__opcion">
-        <div class="p-notificaciones__opcion-info">
-          <span class="p-notificaciones__opcion-titulo">Pagos recibidos</span>
-          <span class="p-notificaciones__opcion-descripcion">
-            Cuando recibes un pago de algún miembro
-          </span>
+        <div class="p-notificaciones__quick-actions">
+          <app-button type="button" variant="ghost" size="sm" (click)="onToggleAll(true)">
+            Activar todas
+          </app-button>
+          <app-button type="button" variant="ghost" size="sm" (click)="onToggleAll(false)">
+            Desactivar todas
+          </app-button>
         </div>
-        <app-form-checkbox label="" />
-      </div>
+      </header>
 
-      <div class="p-notificaciones__opcion">
-        <div class="p-notificaciones__opcion-info">
-          <span class="p-notificaciones__opcion-titulo">Recordatorios de pago</span>
-          <span class="p-notificaciones__opcion-descripcion">
-            Antes de que venza una suscripción
-          </span>
+      <div class="p-notificaciones__opciones">
+        @for (option of notificationOptions; track option.key) {
+          <div class="p-notificaciones__opcion">
+            <div class="p-notificaciones__opcion-icon">
+              <app-icon [name]="option.icon" size="md" />
+            </div>
+            <div class="p-notificaciones__opcion-info">
+              <span class="p-notificaciones__opcion-titulo">{{ option.title }}</span>
+              <span class="p-notificaciones__opcion-descripcion">{{ option.description }}</span>
+            </div>
+            <app-form-checkbox 
+              [formControlName]="option.key" 
+              [label]="''" 
+            />
+          </div>
+        }
+      </div>
+    </app-card>
+
+    <app-card class="p-notificaciones__info-card">
+      <div class="p-notificaciones__info-content">
+        <app-icon name="info" size="md" />
+        <div>
+          <p class="p-notificaciones__info-titulo">Sobre las notificaciones</p>
+          <p class="p-notificaciones__info-texto">
+            Las notificaciones críticas de seguridad (como cambios de contraseña o accesos sospechosos) 
+            siempre se enviarán independientemente de tu configuración.
+          </p>
         </div>
-        <app-form-checkbox label="" />
       </div>
+    </app-card>
 
-      <div class="p-notificaciones__opcion">
-        <div class="p-notificaciones__opcion-info">
-          <span class="p-notificaciones__opcion-titulo">Novedades y actualizaciones</span>
-          <span class="p-notificaciones__opcion-descripcion">
-            Nuevas funcionalidades y mejoras de Joinly
-          </span>
-        </div>
-        <app-form-checkbox label="" />
-      </div>
-    </div>
-  </app-card>
-
-  <!-- Acciones -->
-  <footer class="p-notificaciones__footer">
-    <app-button variant="primary" (click)="onSave()" [disabled]="isSaving()">
-      @if (isSaving()) {
-        Guardando...
-      } @else {
-        Guardar preferencias
+    <footer class="p-notificaciones__footer">
+      @if (hasChanges()) {
+        <app-button type="button" variant="ghost" (click)="onReset()" [disabled]="isSaving()">
+          Descartar cambios
+        </app-button>
       }
-    </app-button>
-  </footer>
+      <app-button 
+        type="submit" 
+        variant="primary" 
+        [disabled]="!canSave()" 
+        [loading]="isSaving()"
+      >
+        <app-icon name="check" size="sm" />
+        Guardar preferencias
+      </app-button>
+    </footer>
+  </form>
+
+  @if (isLoading() || isSaving()) {
+    <app-spinner-overlay />
+  }
 </article>

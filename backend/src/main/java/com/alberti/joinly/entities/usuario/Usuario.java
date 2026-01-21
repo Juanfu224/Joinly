@@ -91,6 +91,26 @@ public class Usuario extends BaseEntity {
     @Column(name = "tema_preferido", length = 10)
     private String temaPreferido;
 
+    // ==================== PREFERENCIAS DE NOTIFICACIONES ====================
+
+    @Column(name = "notif_solicitudes", nullable = false)
+    @Builder.Default
+    private Boolean notifSolicitudes = true;
+
+    @Column(name = "notif_pagos", nullable = false)
+    @Builder.Default
+    private Boolean notifPagos = true;
+
+    @Column(name = "notif_recordatorios", nullable = false)
+    @Builder.Default
+    private Boolean notifRecordatorios = true;
+
+    @Column(name = "notif_novedades", nullable = false)
+    @Builder.Default
+    private Boolean notifNovedades = false;
+
+    // ==================== ESTADO Y ROL ====================
+
     @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false, length = 20)
     @Builder.Default

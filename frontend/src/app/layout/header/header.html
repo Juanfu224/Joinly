@@ -42,7 +42,7 @@
           Grupos
         </a>
         
-        <button 
+        <button
           type="button"
           class="c-header__notificaciones"
           disabled
@@ -51,18 +51,12 @@
         >
           <app-icon name="bell" size="md" />
         </button>
-        
-        <button 
-          type="button"
-          class="c-header__avatar-btn"
-          (click)="onLogout()"
-          aria-label="Menú de usuario, cerrar sesión"
-        >
-          <app-avatar 
-            [name]="currentUser()?.nombre || 'Usuario'" 
-            size="lg" 
-          />
-        </button>
+
+        <app-user-dropdown
+          [userName]="currentUser()?.nombre || 'Usuario'"
+          [userEmail]="currentUser()?.email"
+          (logout)="onLogout()"
+        />
       }
     </nav>
   </div>

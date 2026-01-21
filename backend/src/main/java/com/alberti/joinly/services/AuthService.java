@@ -1,6 +1,7 @@
 package com.alberti.joinly.services;
 
 import com.alberti.joinly.dto.auth.AuthResponse;
+import com.alberti.joinly.dto.auth.CambiarContrasenaRequest;
 import com.alberti.joinly.dto.auth.LoginRequest;
 import com.alberti.joinly.dto.auth.RefreshTokenRequest;
 import com.alberti.joinly.dto.auth.RegisterRequest;
@@ -8,6 +9,7 @@ import com.alberti.joinly.entities.enums.EstadoUsuario;
 import com.alberti.joinly.entities.usuario.Usuario;
 import com.alberti.joinly.exceptions.BusinessException;
 import com.alberti.joinly.exceptions.DuplicateResourceException;
+import com.alberti.joinly.exceptions.ResourceNotFoundException;
 import com.alberti.joinly.exceptions.UnauthorizedException;
 import com.alberti.joinly.repositories.UsuarioRepository;
 import com.alberti.joinly.security.JwtService;
@@ -100,6 +102,8 @@ public class AuthService {
                 .id(usuarioGuardado.getId())
                 .nombre(usuarioGuardado.getNombre())
                 .email(usuarioGuardado.getEmail())
+                .temaPreferido(usuarioGuardado.getTemaPreferido())
+                .emailVerificado(usuarioGuardado.getEmailVerificado())
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .tokenType("Bearer")
@@ -153,6 +157,8 @@ public class AuthService {
                     .id(userPrincipal.getId())
                     .nombre(userPrincipal.getNombre())
                     .email(userPrincipal.getEmail())
+                    .temaPreferido(userPrincipal.getTemaPreferido())
+                    .emailVerificado(userPrincipal.getEmailVerificado())
                     .accessToken(accessToken)
                     .refreshToken(refreshToken)
                     .tokenType("Bearer")
@@ -233,6 +239,8 @@ public class AuthService {
                 .id(usuario.getId())
                 .nombre(usuario.getNombre())
                 .email(usuario.getEmail())
+                .temaPreferido(usuario.getTemaPreferido())
+                .emailVerificado(usuario.getEmailVerificado())
                 .accessToken(newAccessToken)
                 .refreshToken(newRefreshToken)
                 .tokenType("Bearer")
@@ -272,5 +280,51 @@ public class AuthService {
             log.debug("Error validando token: {}", e.getMessage());
             return false;
         }
+    }
+
+    /**
+     * Cambia la contraseña del usuario autenticado.
+     * <p>
+     * Validaciones realizadas:
+     * <ul>
+     *   <li>El usuario debe existir y estar activo</li>
+     *   <li>La contraseña actual debe ser correcta</li>
+     *   <li>La nueva contraseña debe cumplir los requisitos de seguridad</li>
+     * </ul>
+     *
+     * @param userId ID del usuario autenticado
+     * @param request DTO con la contraseña actual y la nueva
+     * @throws ResourceNotFoundException Si el usuario no existe
+     * @throws UnauthorizedException Si la contraseña actual es incorrecta
+     * @throws BusinessException Si la cuenta no está activa
+     */
+    @Transactional
+    public void cambiarContrasena(Long userId, CambiarContrasenaRequest request) {
+        log.info("Solicitud de cambio de contraseña para usuario ID: {}", userId);
+
+        // Buscar usuario
+        var usuario = usuarioRepository.findById(userId)
+                .orElseThrow(() -> {
+                    log.warn("Usuario no encontrado para cambio de contraseña: {}", userId);
+                    return new ResourceNotFoundException("Usuario no encontrado");
+                });
+
+        // Verificar estado de la cuenta
+        if (usuario.getEstado() != EstadoUsuario.ACTIVO) {
+            log.warn("Intento de cambio de contraseña para cuenta no activa: {}", userId);
+            throw new BusinessException("Tu cuenta no está activa. Contacta con soporte.");
+        }
+
+        // Verificar que la contraseña actual sea correcta
+        if (!passwordEncoder.matches(request.getContrasenaActual(), usuario.getPassword())) {
+            log.warn("Contraseña actual incorrecta para usuario: {}", userId);
+            throw new UnauthorizedException("La contraseña actual es incorrecta");
+        }
+
+        // Actualizar contraseña
+        usuario.setPassword(passwordEncoder.encode(request.getNuevaContrasena()));
+        usuarioRepository.save(usuario);
+
+        log.info("Contraseña cambiada exitosamente para usuario: {} (ID: {})", usuario.getEmail(), userId);
     }
 }

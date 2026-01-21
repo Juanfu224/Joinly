@@ -1,4 +1,10 @@
 <article [class]="cardClasses()">
+  <!-- Contenido libre (variante content o contenido sin slots) -->
+  <div class="c-card__body">
+    <ng-content />
+  </div>
+
+  <!-- Slots específicos para variantes estructuradas (feature, list, etc.) -->
   <div class="c-card__icon">
     <ng-content select="[slot='icon']" />
   </div>

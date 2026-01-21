@@ -1,5 +1,5 @@
 import { Routes, Data } from '@angular/router';
-import { authGuard, pendingChangesGuard } from './guards';
+import { authGuard, pendingChangesGuard, homeGuard } from './guards';
 import { dashboardResolver, grupoDetalleResolver, suscripcionDetalleResolver } from './resolvers';
 import type { ResolvedData, GrupoDetalleData } from './resolvers';
 import type { SuscripcionDetalle } from './models';
@@ -17,6 +17,7 @@ export const routes: Routes = [
   // Rutas públicas (sin breadcrumbs)
   {
     path: '',
+    canActivate: [homeGuard],
     loadComponent: () => import('./pages/home').then((m) => m.HomeComponent),
     title: 'Joinly - Comparte suscripciones con tu familia',
   },

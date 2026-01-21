@@ -61,7 +61,7 @@
   // ESTADO: HOVER
   // ==========================================================================
 
-  &:not(&--no-hover):not(&--list):hover {
+  &:not(&--no-hover):not(&--list):not(&--content):hover {
     box-shadow: var(--sombra-3);
     transform: translateY(-2px);
     cursor: pointer;
@@ -84,6 +84,30 @@
   }
 
   // ==========================================================================
+  // VARIANTE: CONTENT (contenedor de contenido libre)
+  // ==========================================================================
+  // Tarjeta simple para contenido libre sin estructura de slots
+
+  &--content {
+    flex-direction: column;
+    cursor: default;
+
+    // Ocultar slots no utilizados
+    .c-card__icon,
+    .c-card__contenido,
+    .c-card__badge,
+    .c-card__accion {
+      display: none;
+    }
+
+    // El body contiene todo el contenido libre
+    .c-card__body {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  // ==========================================================================
   // VARIANTE: FEATURE (con Container Queries)
   // ==========================================================================
   // Adaptaciones basadas en ancho del contenedor, no del viewport
@@ -92,6 +116,11 @@
     flex-direction: column;
     // Combinación de Sombra 1 + Sombra 3 según diseño de Figma
     box-shadow: var(--sombra-1), var(--sombra-3);
+
+    // Ocultar body en variantes con slots
+    .c-card__body {
+      display: none;
+    }
 
     // Base: Mobile pequeño (< 18.75rem / 300px)
     gap: var(--espaciado-2);
@@ -153,6 +182,11 @@
     padding: var(--espaciado-4);
     block-size: 10rem; // 160px - altura ajustada para acomodar texto con wrap
     overflow: hidden; // Prevenir desbordamiento del contenido
+
+    // Ocultar body en variantes con slots
+    .c-card__body {
+      display: none;
+    }
 
     .c-card__contenido {
       gap: var(--espaciado-1);
@@ -226,6 +260,11 @@
     // Base: Mobile - layout vertical apilado
     flex-direction: column;
     align-items: flex-start;
+
+    // Ocultar body en variantes con slots
+    .c-card__body {
+      display: none;
+    }
 
     .c-card__contenido {
       gap: var(--espaciado-1);

@@ -1,7 +1,9 @@
 package com.alberti.joinly.services;
 
+import com.alberti.joinly.dto.usuario.PreferenciasNotificacionDTO;
 import com.alberti.joinly.entities.enums.EstadoUsuario;
 import com.alberti.joinly.entities.usuario.Usuario;
+import com.alberti.joinly.exceptions.ResourceNotFoundException;
 import com.alberti.joinly.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -113,5 +115,52 @@ public class UsuarioService {
 
     public boolean existeEmail(String email) {
         return usuarioRepository.existsByEmail(email);
+    }
+
+    /**
+     * Obtiene las preferencias de notificación del usuario.
+     *
+     * @param idUsuario ID del usuario
+     * @return DTO con las preferencias de notificación
+     * @throws ResourceNotFoundException Si el usuario no existe
+     */
+    public PreferenciasNotificacionDTO obtenerPreferenciasNotificacion(Long idUsuario) {
+        var usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con ID: " + idUsuario));
+
+        return PreferenciasNotificacionDTO.builder()
+                .notifSolicitudes(usuario.getNotifSolicitudes())
+                .notifPagos(usuario.getNotifPagos())
+                .notifRecordatorios(usuario.getNotifRecordatorios())
+                .notifNovedades(usuario.getNotifNovedades())
+                .build();
+    }
+
+    /**
+     * Actualiza las preferencias de notificación del usuario.
+     *
+     * @param idUsuario ID del usuario
+     * @param preferencias DTO con las nuevas preferencias
+     * @return DTO con las preferencias actualizadas
+     * @throws ResourceNotFoundException Si el usuario no existe
+     */
+    @Transactional
+    public PreferenciasNotificacionDTO actualizarPreferenciasNotificacion(Long idUsuario, PreferenciasNotificacionDTO preferencias) {
+        var usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con ID: " + idUsuario));
+
+        usuario.setNotifSolicitudes(preferencias.getNotifSolicitudes());
+        usuario.setNotifPagos(preferencias.getNotifPagos());
+        usuario.setNotifRecordatorios(preferencias.getNotifRecordatorios());
+        usuario.setNotifNovedades(preferencias.getNotifNovedades());
+
+        usuarioRepository.save(usuario);
+
+        return PreferenciasNotificacionDTO.builder()
+                .notifSolicitudes(usuario.getNotifSolicitudes())
+                .notifPagos(usuario.getNotifPagos())
+                .notifRecordatorios(usuario.getNotifRecordatorios())
+                .notifNovedades(usuario.getNotifNovedades())
+                .build();
     }
 }

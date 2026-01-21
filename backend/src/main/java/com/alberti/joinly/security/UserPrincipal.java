@@ -29,6 +29,7 @@ public class UserPrincipal implements UserDetails {
     private final String password;
     private final String nombre;
     private final boolean emailVerificado;
+    private final String temaPreferido;
     private final RolUsuario rol;
     private final boolean activo;
     private final Collection<? extends GrantedAuthority> authorities;
@@ -38,13 +39,14 @@ public class UserPrincipal implements UserDetails {
      * Usar el método factory {@link #fromUsuario(Usuario)} para crear instancias.
      */
     private UserPrincipal(Long id, String email, String password, String nombre,
-                          boolean emailVerificado, RolUsuario rol, boolean activo,
+                          boolean emailVerificado, String temaPreferido, RolUsuario rol, boolean activo,
                           Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.nombre = nombre;
         this.emailVerificado = emailVerificado;
+        this.temaPreferido = temaPreferido;
         this.rol = rol;
         this.activo = activo;
         this.authorities = authorities;
@@ -90,6 +92,7 @@ public class UserPrincipal implements UserDetails {
                 usuario.getPassword(),
                 usuario.getNombre(),
                 Boolean.TRUE.equals(usuario.getEmailVerificado()),
+                usuario.getTemaPreferido(),
                 rol,
                 usuario.getEstado() == com.alberti.joinly.entities.enums.EstadoUsuario.ACTIVO,
                 authorities

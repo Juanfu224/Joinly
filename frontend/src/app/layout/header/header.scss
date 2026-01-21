@@ -270,27 +270,3 @@
     cursor: not-allowed;
   }
 }
-
-// Botón con avatar
-.c-header__avatar-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  background-color: transparent;
-  border: 2px solid transparent;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: border-color var(--duracion-base),
-    transform var(--duracion-base);
-  @include foco-visible;
-
-  &:hover {
-    border-color: var(--color-acento);
-    transform: scale(1.05);
-  }
-
-  &:active {
-    transform: scale(0.98);
-  }
-}

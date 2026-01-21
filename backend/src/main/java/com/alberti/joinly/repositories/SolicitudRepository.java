@@ -23,6 +23,7 @@ public interface SolicitudRepository extends JpaRepository<Solicitud, Long> {
     /**
      * Busca solicitudes de un usuario con filtros opcionales de estado y rango de fechas.
      * Soporta paginación y ordenación dinámica.
+     * Usa JOIN FETCH para evitar N+1 queries al serializar las entidades relacionadas.
      * 
      * @param idSolicitante ID del usuario solicitante
      * @param estado Estado de la solicitud (puede ser null para todos los estados)
@@ -31,8 +32,21 @@ public interface SolicitudRepository extends JpaRepository<Solicitud, Long> {
      * @param pageable Configuración de paginación y ordenación
      * @return Página de solicitudes que cumplen los criterios
      */
-    @Query("""
+    @Query(value = """
         SELECT s FROM Solicitud s
+        JOIN FETCH s.solicitante
+        LEFT JOIN FETCH s.unidad u
+        LEFT JOIN FETCH u.administrador
+        LEFT JOIN FETCH s.suscripcion su
+        LEFT JOIN FETCH su.servicio
+        LEFT JOIN FETCH s.aprobador
+        WHERE s.solicitante.id = :idSolicitante
+        AND (:estado IS NULL OR s.estado = :estado)
+        AND (:fechaDesde IS NULL OR CAST(s.fechaSolicitud AS LocalDate) >= :fechaDesde)
+        AND (:fechaHasta IS NULL OR CAST(s.fechaSolicitud AS LocalDate) <= :fechaHasta)
+        """,
+        countQuery = """
+        SELECT COUNT(s) FROM Solicitud s
         WHERE s.solicitante.id = :idSolicitante
         AND (:estado IS NULL OR s.estado = :estado)
         AND (:fechaDesde IS NULL OR CAST(s.fechaSolicitud AS LocalDate) >= :fechaDesde)

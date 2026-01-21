@@ -3,7 +3,6 @@ import {
   Component,
   computed,
   ElementRef,
-  HostListener,
   OnDestroy,
   OnInit,
   signal,
@@ -14,6 +13,7 @@ import { Router, RouterLink, RouterLinkActive, NavigationStart } from '@angular/
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { ThemeToggleComponent, IconComponent, LogoComponent, AvatarComponent } from '../../components/shared';
+import { UserDropdownComponent } from '../../components/shared/user-dropdown';
 import { AuthService } from '../../services/auth';
 import { ThemeService } from '../../services/theme';
 import type { LogoVariant } from '../../components/shared/logo/logo';
@@ -41,10 +41,15 @@ import type { LogoVariant } from '../../components/shared/logo/logo';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, ThemeToggleComponent, IconComponent, LogoComponent, AvatarComponent],
+  imports: [RouterLink, RouterLinkActive, ThemeToggleComponent, IconComponent, LogoComponent, AvatarComponent, UserDropdownComponent],
   templateUrl: './header.html',
   styleUrl: './header.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '(document:keydown.escape)': 'handleEscapeKey()',
+    '(document:click)': 'handleClickOutside($event)',
+    '(window:resize)': 'handleResize()',
+  },
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
@@ -129,7 +134,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
    * Cierra el menú al presionar la tecla ESC.
    * Solo actúa si el menú está abierto.
    */
-  @HostListener('document:keydown.escape')
   protected handleEscapeKey(): void {
     this.closeMenu();
   }
@@ -140,7 +144,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
    *
    * @param event - Evento de click del documento
    */
-  @HostListener('document:click', ['$event'])
   protected handleClickOutside(event: MouseEvent): void {
     if (!this.menuOpen()) {
       return;
@@ -166,7 +169,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
    * Cierra el menú al cambiar el tamaño de la ventana a desktop.
    * Previene que el menú quede abierto al rotar o cambiar de móvil a desktop.
    */
-  @HostListener('window:resize')
   protected handleResize(): void {
     // Cerrar solo si estamos en tamaño desktop (>= 1024px)
     if (window.innerWidth >= 1024 && this.menuOpen()) {

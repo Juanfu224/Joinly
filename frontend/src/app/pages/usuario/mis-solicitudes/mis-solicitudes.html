@@ -1,86 +1,147 @@
 <div class="p-mis-solicitudes">
   <header class="p-mis-solicitudes__header">
-    <h1 class="p-mis-solicitudes__title">Mis Solicitudes</h1>
-    <p class="p-mis-solicitudes__description">
-      Gestiona tus solicitudes de unión a grupos y suscripciones
-    </p>
+    <div class="p-mis-solicitudes__header-content">
+      <h1 class="p-mis-solicitudes__title">Mis Solicitudes</h1>
+      <p class="p-mis-solicitudes__description">
+        Gestiona tus solicitudes de unión a grupos y suscripciones
+      </p>
+    </div>
+    <button
+      type="button"
+      class="p-mis-solicitudes__refresh-btn"
+      (click)="onRefresh()"
+      [disabled]="isLoading()">
+      <app-icon name="sync" size="sm" />
+      <span>Actualizar</span>
+    </button>
   </header>
 
+  <!-- Estadísticas -->
+  @if (haySolicitudes()) {
+    <section class="p-mis-solicitudes__stats">
+      @for (stat of estadisticas; track stat.estado) {
+        <div class="p-mis-solicitudes__stat-card p-mis-solicitudes__stat-card--{{ stat.colorClass }}">
+          <div class="p-mis-solicitudes__stat-icon">
+            <app-icon [name]="stat.icon" size="sm" />
+          </div>
+          <div class="p-mis-solicitudes__stat-info">
+            <span class="p-mis-solicitudes__stat-value">{{ getContador(stat.estado) }}</span>
+            <span class="p-mis-solicitudes__stat-label">{{ stat.label }}</span>
+          </div>
+        </div>
+      }
+    </section>
+  }
+
+  <!-- Filtros -->
   <section class="p-mis-solicitudes__filters">
+    <div class="p-mis-solicitudes__filter-label">
+      <app-icon name="filter" size="sm" />
+      <span>Filtrar por estado:</span>
+    </div>
     <div class="p-mis-solicitudes__filter-group">
-      <button
-        type="button"
-        class="p-mis-solicitudes__filter-btn"
-        [class.p-mis-solicitudes__filter-btn--active]="filtroEstado() === undefined"
-        (click)="onFiltroChange('TODAS')">
-        Todas
-      </button>
-      <button
-        type="button"
-        class="p-mis-solicitudes__filter-btn"
-        [class.p-mis-solicitudes__filter-btn--active]="filtroEstado() === 'PENDIENTE'"
-        (click)="onFiltroChange('PENDIENTE')">
-        Pendientes
-      </button>
-      <button
-        type="button"
-        class="p-mis-solicitudes__filter-btn"
-        [class.p-mis-solicitudes__filter-btn--active]="filtroEstado() === 'APROBADA'"
-        (click)="onFiltroChange('APROBADA')">
-        Aprobadas
-      </button>
-      <button
-        type="button"
-        class="p-mis-solicitudes__filter-btn"
-        [class.p-mis-solicitudes__filter-btn--active]="filtroEstado() === 'RECHAZADA'"
-        (click)="onFiltroChange('RECHAZADA')">
-        Rechazadas
-      </button>
+      @for (filtro of filtroOptions; track filtro.value) {
+        <button
+          type="button"
+          class="p-mis-solicitudes__filter-btn"
+          [class.p-mis-solicitudes__filter-btn--active]="
+            (filtro.value === 'TODAS' && filtroEstado() === undefined) ||
+            filtroEstado() === filtro.value
+          "
+          (click)="onFiltroChange(filtro.value)">
+          <app-icon [name]="filtro.icon" size="xs" />
+          <span>{{ filtro.label }}</span>
+          @if (filtro.value !== 'TODAS') {
+            <span class="p-mis-solicitudes__filter-count">
+              {{ getContador(filtro.value) }}
+            </span>
+          }
+        </button>
+      }
     </div>
   </section>
 
+  <!-- Contenido principal -->
   <app-tabs class="p-mis-solicitudes__tabs">
-    <app-tab title="Grupos">
+    <app-tab title="Grupos ({{ contadoresGrupos().total }})">
       @if (haySolicitudesGrupos()) {
         <div class="p-mis-solicitudes__grid">
           @for (solicitud of solicitudesGrupos(); track solicitud.id) {
             <app-solicitud-card
               [solicitud]="solicitud"
-              (cancel)="onCancelarSolicitud(solicitud.id)" />
+              (cancel)="onRequestCancel(solicitud)" />
           }
         </div>
       } @else {
-        <app-card class="p-mis-solicitudes__empty">
+        <div class="p-mis-solicitudes__empty">
+          <div class="p-mis-solicitudes__empty-icon">
+            <app-icon name="users" size="xl" />
+          </div>
+          <h3 class="p-mis-solicitudes__empty-title">
+            @if (filtroEstado()) {
+              Sin resultados
+            } @else {
+              No hay solicitudes de grupos
+            }
+          </h3>
           <p class="p-mis-solicitudes__empty-text">
             @if (filtroEstado()) {
-              No tienes solicitudes de grupos con el estado seleccionado
+              No tienes solicitudes de grupos con el estado "{{ filtroEstado()?.toLowerCase() }}"
             } @else {
-              No has enviado ninguna solicitud de unión a grupos
+              Aún no has enviado ninguna solicitud para unirte a un grupo familiar.
+              Usa un código de invitación para solicitar unirte a uno.
             }
           </p>
-        </app-card>
+          @if (filtroEstado()) {
+            <button
+              type="button"
+              class="p-mis-solicitudes__empty-action"
+              (click)="onFiltroChange('TODAS')">
+              Ver todas las solicitudes
+            </button>
+          }
+        </div>
       }
     </app-tab>
 
-    <app-tab title="Suscripciones">
+    <app-tab title="Suscripciones ({{ contadoresSuscripciones().total }})">
       @if (haySolicitudesSuscripciones()) {
         <div class="p-mis-solicitudes__grid">
           @for (solicitud of solicitudesSuscripciones(); track solicitud.id) {
             <app-solicitud-card
               [solicitud]="solicitud"
-              (cancel)="onCancelarSolicitud(solicitud.id)" />
+              (cancel)="onRequestCancel(solicitud)" />
           }
         </div>
       } @else {
-        <app-card class="p-mis-solicitudes__empty">
+        <div class="p-mis-solicitudes__empty">
+          <div class="p-mis-solicitudes__empty-icon">
+            <app-icon name="star" size="xl" />
+          </div>
+          <h3 class="p-mis-solicitudes__empty-title">
+            @if (filtroEstado()) {
+              Sin resultados
+            } @else {
+              No hay solicitudes de suscripciones
+            }
+          </h3>
           <p class="p-mis-solicitudes__empty-text">
             @if (filtroEstado()) {
-              No tienes solicitudes de suscripciones con el estado seleccionado
+              No tienes solicitudes de suscripciones con el estado "{{ filtroEstado()?.toLowerCase() }}"
             } @else {
-              No has enviado ninguna solicitud de unión a suscripciones
+              Aún no has solicitado unirte a ninguna suscripción compartida.
+              Explora las suscripciones disponibles en tu grupo.
             }
           </p>
-        </app-card>
+          @if (filtroEstado()) {
+            <button
+              type="button"
+              class="p-mis-solicitudes__empty-action"
+              (click)="onFiltroChange('TODAS')">
+              Ver todas las solicitudes
+            </button>
+          }
+        </div>
       }
     </app-tab>
   </app-tabs>

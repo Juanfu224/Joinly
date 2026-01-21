@@ -44,3 +44,9 @@ export {
   errorResourceState,
   successResourceState,
 } from './resource-state.model';
+
+export {
+  type UpdatePerfilRequest,
+  type CambiarContrasenaRequest,
+  type PreferenciasNotificacion,
+} from './usuario.model';

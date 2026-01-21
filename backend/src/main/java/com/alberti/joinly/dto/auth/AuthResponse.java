@@ -10,14 +10,16 @@ import lombok.Builder;
  * Contiene los tokens JWT y la información básica del usuario autenticado.
  * Los campos nulos se excluyen de la serialización JSON.
  *
- * @param id           ID único del usuario
- * @param nombre       Nombre del usuario
- * @param email        Email del usuario
- * @param accessToken  Token JWT de acceso (corta duración)
- * @param refreshToken Token JWT de refresco (larga duración)
- * @param tokenType    Tipo de token (siempre "Bearer")
- * @param expiresIn    Segundos hasta la expiración del access token
- * @param mensaje      Mensaje descriptivo de la operación
+ * @param id             ID único del usuario
+ * @param nombre         Nombre del usuario
+ * @param email          Email del usuario
+ * @param temaPreferido  Tema preferido del usuario ('light' o 'dark')
+ * @param emailVerificado Indica si el email ha sido verificado
+ * @param accessToken    Token JWT de acceso (corta duración)
+ * @param refreshToken   Token JWT de refresco (larga duración)
+ * @param tokenType      Tipo de token (siempre "Bearer")
+ * @param expiresIn      Segundos hasta la expiración del access token
+ * @param mensaje        Mensaje descriptivo de la operación
  */
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -31,6 +33,12 @@ public record AuthResponse(
 
         @Schema(description = "Email del usuario", example = "juan@example.com")
         String email,
+
+        @Schema(description = "Tema preferido del usuario", example = "light")
+        String temaPreferido,
+
+        @Schema(description = "Indica si el email ha sido verificado", example = "false")
+        Boolean emailVerificado,
 
         @Schema(description = "Token JWT de acceso", example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
         String accessToken,

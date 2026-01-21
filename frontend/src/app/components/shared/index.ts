@@ -102,3 +102,4 @@ export { SolicitudCardComponent } from './solicitud-card/solicitud-card';
 export { PendingRequestsCardComponent } from './pending-requests-card/pending-requests-card';
 export { NotFoundComponent } from './not-found';
 export { FeatureImageComponent } from './feature-image/feature-image';
+export { UserDropdownComponent } from './user-dropdown/user-dropdown';

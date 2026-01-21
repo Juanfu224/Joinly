@@ -1,10 +1,12 @@
 package com.alberti.joinly.controllers;
 
 import com.alberti.joinly.dto.auth.AuthResponse;
+import com.alberti.joinly.dto.auth.CambiarContrasenaRequest;
 import com.alberti.joinly.dto.auth.EmailAvailabilityResponse;
 import com.alberti.joinly.dto.auth.LoginRequest;
 import com.alberti.joinly.dto.auth.RefreshTokenRequest;
 import com.alberti.joinly.dto.auth.RegisterRequest;
+import com.alberti.joinly.security.UserPrincipal;
 import com.alberti.joinly.services.AuthService;
 import com.alberti.joinly.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,12 +15,14 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -268,5 +272,49 @@ public class AuthController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    /**
+     * Cambia la contraseña del usuario autenticado.
+     * <p>
+     * Requiere autenticación y validación de la contraseña actual antes de
+     * permitir el cambio. La nueva contraseña debe cumplir los requisitos
+     * de seguridad (mínimo 8 caracteres).
+     *
+     * @param currentUser Usuario autenticado (inyectado automáticamente)
+     * @param request DTO con la contraseña actual y la nueva
+     * @return 204 No Content si el cambio fue exitoso
+     */
+    @PostMapping("/cambiar-contrasena")
+    @Operation(
+            summary = "Cambiar contraseña",
+            description = "Permite al usuario autenticado cambiar su contraseña",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Contraseña cambiada exitosamente"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Datos de entrada inválidos"
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Usuario no autenticado o contraseña actual incorrecta"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Cuenta deshabilitada"
+            )
+    })
+    public ResponseEntity<Void> cambiarContrasena(
+            @AuthenticationPrincipal UserPrincipal currentUser,
+            @Valid @RequestBody CambiarContrasenaRequest request
+    ) {
+        log.info("Solicitud de cambio de contraseña para usuario ID: {}", currentUser.getId());
+        authService.cambiarContrasena(currentUser.getId(), request);
+        return ResponseEntity.noContent().build();
     }
 }

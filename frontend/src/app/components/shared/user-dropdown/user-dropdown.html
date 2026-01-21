@@ -1,0 +1,67 @@
+<div class="c-user-dropdown">
+  <button
+    type="button"
+    class="c-user-dropdown__trigger"
+    [attr.aria-expanded]="isOpen()"
+    aria-haspopup="true"
+    aria-label="Menú de usuario"
+    (click)="toggle()"
+  >
+    <app-avatar [name]="userName()" size="lg" />
+  </button>
+
+  @if (isOpen()) {
+    <div class="c-user-dropdown__menu" role="menu">
+      <div class="c-user-dropdown__header">
+        <app-avatar [name]="userName()" size="md" />
+        <div class="c-user-dropdown__user-info">
+          <span class="c-user-dropdown__user-name">{{ userName() }}</span>
+          @if (userEmail()) {
+            <span class="c-user-dropdown__user-email">{{ userEmail() }}</span>
+          }
+        </div>
+      </div>
+
+      <hr class="c-user-dropdown__divider" />
+
+      <nav>
+        <ul class="c-user-dropdown__list">
+          <li>
+            <a
+              routerLink="/usuario/perfil"
+              class="c-user-dropdown__item"
+              role="menuitem"
+              (click)="close()"
+            >
+              <app-icon name="user" size="sm" />
+              <span>Mi perfil</span>
+            </a>
+          </li>
+          <li>
+            <a
+              routerLink="/usuario/configuracion"
+              class="c-user-dropdown__item"
+              role="menuitem"
+              (click)="close()"
+            >
+              <app-icon name="settings" size="sm" />
+              <span>Configuración</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <hr class="c-user-dropdown__divider" />
+
+      <button
+        type="button"
+        class="c-user-dropdown__item c-user-dropdown__item--logout"
+        role="menuitem"
+        (click)="onLogout()"
+      >
+        <app-icon name="log-out" size="sm" />
+        <span>Cerrar sesión</span>
+      </button>
+    </div>
+  }
+</div>

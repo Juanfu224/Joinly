@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
-type CardVariant = 'feature' | 'action' | 'info' | 'list';
+type CardVariant = 'feature' | 'action' | 'info' | 'list' | 'content';
 
 /**
  * Componente de tarjeta reutilizable con múltiples variantes.
@@ -68,8 +68,9 @@ export class CardComponent {
    * - action: Card horizontal con icono y texto (acciones rápidas)
    * - info: Card horizontal compacta con icono, título y valor
    * - list: Card de lista con título, metadata, badge y botón
+   * - content: Card contenedor para contenido libre sin slots
    */
-  variant = input<CardVariant>('feature');
+  variant = input<CardVariant>('content');
 
   /**
    * Desactiva el efecto hover (útil para cards no interactivas)

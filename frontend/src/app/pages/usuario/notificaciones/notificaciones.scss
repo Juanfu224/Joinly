@@ -51,8 +51,37 @@
     max-width: 100%;
 
     @include responder-a('tablet') {
-      max-width: 36rem;
+      max-width: 42rem;
     }
+  }
+
+  &__seccion-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaciado-3);
+    margin-bottom: var(--espaciado-4);
+
+    @include responder-a('tablet') {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+  }
+
+  &__seccion-info {
+    flex: 1;
+  }
+
+  &__seccion-descripcion {
+    font-size: var(--tamano-texto-pequeno);
+    color: var(--text-secondary);
+    margin: var(--espaciado-1) 0 0;
+  }
+
+  &__quick-actions {
+    display: flex;
+    gap: var(--espaciado-2);
+    flex-shrink: 0;
   }
 
   &__subtitulo {
@@ -62,46 +91,59 @@
     font-size: var(--tamano-texto-normal);
     font-weight: var(--peso-fuente-semi-negrita);
     color: var(--text-primary);
-    margin-bottom: var(--espaciado-3);
+    margin: 0;
 
     @include responder-a('tablet') {
       font-size: var(--tamano-texto-grande);
-      margin-bottom: var(--espaciado-4);
     }
   }
 
   &__opciones {
     display: flex;
     flex-direction: column;
-    gap: var(--espaciado-3);
-
-    @include responder-a('tablet') {
-      gap: var(--espaciado-4);
-    }
+    gap: var(--espaciado-1);
   }
 
   &__opcion {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: var(--espaciado-3);
+    padding: var(--espaciado-3);
+    border-radius: var(--radio-medio);
+    @include transicion(background-color);
 
-    @include responder-a('movil') {
-      flex-direction: row;
-      justify-content: space-between;
-      gap: var(--espaciado-4);
+    &:hover {
+      background-color: var(--bg-secondary);
     }
+
+    @include responder-a('tablet') {
+      padding: var(--espaciado-4);
+    }
+  }
+
+  &__opcion-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: var(--color-superficie-morada);
+    border-radius: var(--radio-medio);
+    color: var(--color-principal);
   }
 
   &__opcion-info {
     display: flex;
     flex-direction: column;
     gap: var(--espaciado-1);
+    flex: 1;
+    min-width: 0;
   }
 
   &__opcion-titulo {
     font-size: var(--tamano-texto-pequeno);
-    font-weight: var(--peso-fuente-medio);
+    font-weight: var(--peso-fuente-semi-negrita);
     color: var(--text-primary);
 
     @include responder-a('movil') {
@@ -112,6 +154,40 @@
   &__opcion-descripcion {
     font-size: var(--tamano-caption);
     color: var(--text-secondary);
+    line-height: var(--altura-linea-normal);
+
+    @include responder-a('movil') {
+      font-size: var(--tamano-texto-pequeno);
+    }
+  }
+
+  &__info-card {
+    max-width: 100%;
+    background-color: var(--bg-secondary);
+
+    @include responder-a('tablet') {
+      max-width: 42rem;
+    }
+  }
+
+  &__info-content {
+    display: flex;
+    gap: var(--espaciado-3);
+    color: var(--text-secondary);
+  }
+
+  &__info-titulo {
+    font-size: var(--tamano-texto-pequeno);
+    font-weight: var(--peso-fuente-semi-negrita);
+    color: var(--text-primary);
+    margin: 0 0 var(--espaciado-1);
+  }
+
+  &__info-texto {
+    font-size: var(--tamano-caption);
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: var(--altura-linea-normal);
 
     @include responder-a('movil') {
       font-size: var(--tamano-texto-pequeno);
@@ -119,10 +195,19 @@
   }
 
   &__footer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaciado-2);
     max-width: 100%;
 
+    @include responder-a('movil') {
+      flex-direction: row;
+      justify-content: flex-end;
+      gap: var(--espaciado-3);
+    }
+
     @include responder-a('tablet') {
-      max-width: 36rem;
+      max-width: 42rem;
     }
   }
 }
