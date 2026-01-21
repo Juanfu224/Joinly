@@ -106,12 +106,12 @@ public class GlobalExceptionHandler {
         
         log.warn("Acceso no autorizado: {}", ex.getMessage());
         var response = new ApiErrorResponse(
-                HttpStatus.FORBIDDEN.value(),
-                "Forbidden",
+                HttpStatus.UNAUTHORIZED.value(),
+                "Unauthorized",
                 ex.getMessage(),
                 request.getRequestURI()
         );
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
     @ExceptionHandler(DuplicateResourceException.class)

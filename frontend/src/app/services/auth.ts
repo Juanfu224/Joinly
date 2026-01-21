@@ -112,14 +112,16 @@ export class AuthService {
           message = 'Datos de registro inválidos';
           break;
         case 401:
+          message = 'Email o contraseña incorrectos. Por favor, verifica tus credenciales.';
+          break;
         case 403:
-          message = 'Credenciales incorrectas';
+          message = 'No tienes permisos para realizar esta acción.';
           break;
         case 409:
           message = 'Este email ya está registrado';
           break;
         case 422:
-          message = 'Cuenta deshabilitada';
+          message = 'Tu cuenta está deshabilitada o bloqueada. Contacta con soporte.';
           break;
         case 500:
           message = 'Error interno del servidor';

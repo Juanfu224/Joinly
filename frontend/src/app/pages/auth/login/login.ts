@@ -50,7 +50,7 @@ export class LoginComponent {
       error: (error) => {
         const message = error.message || 'Error al iniciar sesión. Verifica tus credenciales.';
         this.loginForm().setError(message);
-        this.toastService.error(message);
+        // No llamamos a toastService.error() aquí porque el errorInterceptor ya muestra el toast automáticamente
       },
     });
   }

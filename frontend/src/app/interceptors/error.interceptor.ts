@@ -90,7 +90,7 @@ function getErrorMessage(error: HttpErrorResponse): string {
     case 400:
       return 'Datos inválidos. Revisa la información e intenta nuevamente.';
     case 401:
-      return 'Sesión expirada. Por favor, inicia sesión nuevamente.';
+      return 'Email o contraseña incorrectos. Por favor, verifica tus credenciales.';
     case 403:
       return 'No tienes permisos para realizar esta acción.';
     case 404:

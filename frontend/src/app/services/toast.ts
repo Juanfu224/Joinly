@@ -11,7 +11,7 @@ export interface ToastMessage {
 
 /**
  * Servicio centralizado para gestionar notificaciones toast.
- * Soporta múltiples toasts con auto-cierre de 3 segundos.
+ * Soporta múltiples toasts con auto-cierre de 5 segundos.
  */
 @Injectable({
   providedIn: 'root',
