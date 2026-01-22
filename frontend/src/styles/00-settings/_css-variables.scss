@@ -58,7 +58,7 @@
 
   // Texto
   --text-primary: #{$color-texto-oscuro};
-  --text-secondary: #{$color-texto-normal};
+  --text-secondary: #475569;
 
   // Bordes
   --border-color: #{$color-gris-medio};
@@ -116,7 +116,7 @@
 
 :root {
   // --- FAMILIA DE FUENTE ---
-  --font-primaria: 'Inter', sans-serif;
+  --font-primaria: 'Inter', 'Inter-fallback', sans-serif;
 
   // --- PESOS DE FUENTE ---
   --peso-fuente-ligero: 300;
@@ -231,7 +231,7 @@
 
   // --- TEXTO ---
   --text-primary: #f8fafc; // slate-50 - Texto principal claro
-  --text-secondary: #cbd5e1; // slate-300 - Texto secundario (menor contraste)
+  --text-secondary: #e2e8f0; // slate-200 - Texto secundario con mejor contraste
 
   // --- BORDES ---
   --border-color: #334155; // slate-700 - Bordes sutiles en tema oscuro

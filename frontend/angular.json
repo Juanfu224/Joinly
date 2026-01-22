@@ -36,16 +36,32 @@
           },
             "configurations": {
             "production": {
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                },
+                "fonts": {
+                  "inline": false
+                }
+              },
+              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "650kB",
-                  "maximumError": "750kB"
+                  "maximumWarning": "500kB",
+                  "maximumError": "600kB"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "8kB",
                   "maximumError": "10kB"
+                },
+                {
+                  "type": "all",
+                  "maximumWarning": "2MB",
+                  "maximumError": "2.5MB"
                 }
               ],
               "outputHashing": "all"
