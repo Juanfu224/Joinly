@@ -74,8 +74,6 @@ export class NotificationReceiverComponent {
    */
   private setupEventListener(): void {
     this.commService.events$.pipe(takeUntilDestroyed()).subscribe((event: AppEvent) => {
-      console.log('📨 Evento recibido:', event);
-
       // Agregar al historial (mantener últimos 10)
       this.eventHistory.update((history) => {
         const newHistory = [event, ...history];
