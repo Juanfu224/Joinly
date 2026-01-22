@@ -94,6 +94,15 @@
     }
   }
 
+  @media (forced-colors: active) {
+    &--primario {
+      forced-color-adjust: none;
+      background-color: ButtonText;
+      color: Canvas;
+      border: 2px solid ButtonText;
+    }
+  }
+
   &--block {
     inline-size: 100%;
   }

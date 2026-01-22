@@ -49,6 +49,34 @@ export class FeatureImageComponent {
     return ratio ? { 'aspect-ratio': ratio } : {};
   });
 
+  readonly imageWidth = computed(() => {
+    const type = this.type();
+    switch (type) {
+      case 'hero':
+        return 1200;
+      case 'feature':
+        return 800;
+      case 'thumbnail':
+        return 400;
+      default:
+        return 800;
+    }
+  });
+
+  readonly imageHeight = computed(() => {
+    const type = this.type();
+    switch (type) {
+      case 'hero':
+        return 675;
+      case 'feature':
+        return 450;
+      case 'thumbnail':
+        return 400;
+      default:
+        return 450;
+    }
+  });
+
   readonly usePicture = computed(() => {
     return this.artDirection() === 'different' && this.mobileSource() !== null;
   });

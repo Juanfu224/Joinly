@@ -5,6 +5,9 @@
       [alt]="alt()"
       class="c-avatar__imagen"
       loading="lazy"
+      [attr.width]="avatarSize()"
+      [attr.height]="avatarSize()"
+      decoding="async"
     />
   } @else {
     <span class="c-avatar__iniciales" aria-label="Iniciales de {{ name() || 'usuario' }}">

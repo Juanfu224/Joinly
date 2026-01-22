@@ -4,6 +4,27 @@
 // Clases utilitarias para elementos interactivos.
 
 // ---------------------------------------------------------------------------
+// Elemento visualmente oculto pero accesible para lectores de pantalla
+// ---------------------------------------------------------------------------
+// WCAG 2.1 SC 1.3.1: Ocultar contenido visualmente pero mantenerlo accesible
+//
+// Ejemplo:
+// <h2 class="visually-hidden">Sección de características</h2>
+
+.visually-hidden {
+  position: absolute;
+  inset: 0;
+  block-size: 1px;
+  inline-size: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  padding: 0;
+  margin: -1px;
+}
+
+// ---------------------------------------------------------------------------
 // Botón wrapper transparente
 // ---------------------------------------------------------------------------
 // Útil para envolver componentes en botones manteniendo accesibilidad.
@@ -20,7 +41,7 @@
   min-block-size: 0; // Prevenir colapso de altura en flex containers
   padding: 0;
   text-align: inherit;
-  
+
   // Focus visible heredado del componente hijo
   &:focus-visible {
     outline: none;

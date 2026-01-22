@@ -40,12 +40,12 @@
       media="(min-width: 769px)"
     />
     <!-- Desktop JPG -->
-    <source
-      [srcset]="generateSrcset(imageSource().src, 'jpg')"
-      [sizes]="sizesAttribute()"
-      type="image/jpeg"
-      media="(min-width: 769px)"
-    />
+      <source
+        [srcset]="generateSrcset(imageSource().src, 'jpg')"
+        [sizes]="sizesAttribute()"
+        type="image/jpeg"
+        media="(max-width: 768px)"
+      />
 
     <!-- Fallback -->
     <img
@@ -54,6 +54,9 @@
       [loading]="lazy() ? 'lazy' : 'eager'"
       [style]="aspectRatioStyle()"
       [class]="imageClasses()"
+      [attr.width]="imageWidth()"
+      [attr.height]="imageHeight()"
+      decoding="async"
     />
   </picture>
 } @else {
@@ -72,11 +75,11 @@
       type="image/webp"
     />
     <!-- JPG -->
-    <source
-      [srcset]="generateSrcset(imageSource().src, 'jpg')"
-      [sizes]="sizesAttribute()"
-      type="image/jpeg"
-    />
+      <source
+        [srcset]="generateSrcset(imageSource().src, 'jpg')"
+        [sizes]="sizesAttribute()"
+        type="image/jpeg"
+      />
 
     <!-- Fallback -->
     <img
@@ -85,6 +88,9 @@
       [loading]="lazy() ? 'lazy' : 'eager'"
       [style]="aspectRatioStyle()"
       [class]="imageClasses()"
+      [attr.width]="imageWidth()"
+      [attr.height]="imageHeight()"
+      decoding="async"
     />
   </picture>
 }

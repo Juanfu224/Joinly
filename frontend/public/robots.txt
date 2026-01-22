@@ -1,0 +1,13 @@
+# robots.txt para Joinly
+# Última actualización: 22 de enero de 2026
+
+User-agent: *
+Allow: /
+
+# Rutas privadas que no deben indexarse
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /auth/
+
+# Sitemap
+Sitemap: https://joinly.studio/sitemap.xml

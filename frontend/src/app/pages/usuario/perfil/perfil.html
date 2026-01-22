@@ -69,7 +69,7 @@
         <div class="p-perfil__avatar-upload">
           <div class="p-perfil__avatar-current">
             @if (avatarPreview()) {
-              <img [src]="avatarPreview()!" alt="Preview" class="p-perfil__avatar-preview" />
+              <img [src]="avatarPreview()!" alt="Preview" class="p-perfil__avatar-preview" width="128" height="128" decoding="async" />
             } @else {
               <app-avatar
                 [src]="usuario()?.avatar ?? ''"

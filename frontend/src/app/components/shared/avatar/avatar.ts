@@ -65,4 +65,23 @@ export class AvatarComponent {
 
   /** Determina si se muestra imagen o iniciales */
   readonly showImage = computed(() => !!this.src());
+
+  /** Tamaño en píxeles según el tipo */
+  readonly avatarSize = computed(() => {
+    const size = this.size();
+    switch (size) {
+      case 'xs':
+        return 24;
+      case 'sm':
+        return 32;
+      case 'md':
+        return 40;
+      case 'lg':
+        return 48;
+      case 'xl':
+        return 64;
+      default:
+        return 40;
+    }
+  });
 }

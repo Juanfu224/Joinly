@@ -131,6 +131,14 @@
   &:hover {
     color: var(--color-fondo-claro-normal);
   }
+
+  @media (prefers-color-scheme: dark) {
+    color: #cbd5e1; // slate-300 - Mejor contraste en dark mode
+
+    &:hover {
+      color: var(--color-fondo-claro-normal);
+    }
+  }
 }
 
 // ==========================================================================

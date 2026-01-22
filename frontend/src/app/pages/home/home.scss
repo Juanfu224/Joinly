@@ -28,13 +28,16 @@
 // ---------------------------------------------------------------------------
 .p-home__hero {
   padding-block: var(--espaciado-2) var(--espaciado-10);
+  min-block-size: 60vh;
 
   @include responder-a('tablet') {
     padding-block: var(--espaciado-2) var(--espaciado-12);
+    min-block-size: 50vh;
   }
 
   @include responder-a('escritorio') {
     padding-block: var(--espaciado-2) var(--espaciado-16);
+    min-block-size: 40vh;
   }
 }
 

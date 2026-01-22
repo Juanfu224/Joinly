@@ -10,10 +10,53 @@
       href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="preload"
+      href="https://fonts.gstatic.com/s/inter/v19/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hjp-Ek-_EeA.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://joinly.studio/" />
+    <meta property="og:title" content="Joinly - Comparte suscripciones con tu familia" />
+    <meta property="og:description" content="Joinly te permite compartir suscripciones de streaming, música y más con tu familia. Ahorra dinero gestionando tus suscripciones familiares de forma sencilla." />
+    <meta property="og:image" content="https://joinly.studio/assets/images/og-image.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://joinly.studio/" />
+    <meta name="twitter:title" content="Joinly - Comparte suscripciones con tu familia" />
+    <meta name="twitter:description" content="Joinly te permite compartir suscripciones de streaming, música y más con tu familia. Ahorra dinero gestionando tus suscripciones familiares de forma sencilla." />
+    <meta name="twitter:image" content="https://joinly.studio/assets/images/og-image.png" />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Joinly",
+      "description": "Plataforma para compartir suscripciones de streaming, música y más con tu familia de forma segura y sencilla.",
+      "url": "https://joinly.studio",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "Joinly"
+      }
+    }
+    </script>
   </head>
   <body>
     <app-root></app-root>
