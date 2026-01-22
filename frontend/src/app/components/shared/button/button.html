@@ -1,4 +1,9 @@
-<button [class]="buttonClasses()" [type]="type()" [disabled]="isDisabled()">
+<button 
+  [class]="buttonClasses()" 
+  [type]="type()" 
+  [disabled]="isDisabled()"
+  [attr.aria-label]="ariaLabel()"
+>
   <!-- Spinner de carga (reemplaza icono izquierdo) -->
   @if (loading()) {
     <span class="c-button__spinner" aria-hidden="true"></span>

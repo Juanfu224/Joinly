@@ -7,6 +7,18 @@
 @use '../styles/01-tools/mixins' as *;
 
 // ---------------------------------------------------------------------------
+// FOOTER: Reserva de espacio para evitar CLS (Cumulative Layout Shift)
+// ---------------------------------------------------------------------------
+// El footer causa un CLS de 0.677 si no reservamos su espacio.
+// Usamos content-visibility para optimizar renderizado y contain-intrinsic-size
+// para indicar al navegador el tamaño esperado antes de renderizar.
+app-footer {
+  display: block;
+  content-visibility: auto;
+  contain-intrinsic-block-size: auto 590px; // Altura medida del footer
+}
+
+// ---------------------------------------------------------------------------
 // HOST: app-root
 // ---------------------------------------------------------------------------
 :host {

@@ -118,9 +118,10 @@
   // ==========================================================================
 
   // Naranja (Primary) - acción principal
+  // WCAG AA: Usamos texto oscuro sobre naranja para contraste 7+:1
   &--primary {
     background-color: var(--color-naranja-principal);
-    color: var(--color-blanco);
+    color: var(--color-texto-sobre-acento);
     box-shadow: var(--sombra-naranja);
 
     &:hover:not(:disabled) {
@@ -172,9 +173,10 @@
   }
 
   // Amarillo (Yellow) - advertencia
+  // WCAG AA: Usamos texto oscuro sobre amarillo para contraste 7+:1
   &--yellow {
     background-color: var(--color-amarillo);
-    color: var(--color-blanco);
+    color: var(--color-texto-sobre-acento);
     box-shadow: var(--sombra-amarillo);
 
     &:hover:not(:disabled) {

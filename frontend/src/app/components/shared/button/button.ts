@@ -79,6 +79,9 @@ export class ButtonComponent {
   /** Icono a la derecha del texto */
   rightIcon = input<IconName | undefined>(undefined);
 
+  /** Etiqueta accesible para lectores de pantalla (aria-label) */
+  ariaLabel = input<string | undefined>(undefined);
+
   /** Clases CSS computadas */
   buttonClasses = computed(() => {
     const classes = [

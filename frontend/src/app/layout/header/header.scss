@@ -84,7 +84,8 @@
   }
 
   &--primario {
-    color: var(--color-blanco);
+    // WCAG AA: Texto oscuro sobre naranja para contraste 7+:1
+    color: var(--color-texto-sobre-acento);
     background-color: var(--color-acento);
     border: var(--borde-delgado) solid transparent;
     box-shadow: var(--sombra-naranja);

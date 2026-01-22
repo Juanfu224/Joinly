@@ -102,6 +102,12 @@
 
   // Sombras
   --color-base-sombra: #{$color-base-sombra};
+
+  // Accesibilidad - Contraste WCAG AA
+  // Texto oscuro para usar sobre fondos de acento (naranja, amarillo)
+  --color-texto-sobre-acento: #1a202c;
+  // Color de enlaces del footer con contraste suficiente (4.5:1 mínimo)
+  --color-enlace-footer: #475569; // slate-600
 }
 
 // ==========================================================================
@@ -291,6 +297,12 @@
   // --- GRISES (override para dark mode) ---
   --color-gris-medio: #475569; // slate-600 - Para bordes sutiles
   --color-gris-oscuro: #94a3b8; // slate-400 - Para bordes visibles
+
+  // --- ACCESIBILIDAD DARK MODE ---
+  // Mantener texto oscuro en botones de acento (el fondo naranja/amarillo es brillante)
+  --color-texto-sobre-acento: #1a202c;
+  // Enlaces del footer en dark mode - buen contraste sobre fondo oscuro
+  --color-enlace-footer: #94a3b8; // slate-400 - contraste 4.5+:1 sobre slate-950
 
   // --- COLORES DE ESTADO ---
   // Se mantienen vibrantes para visibilidad

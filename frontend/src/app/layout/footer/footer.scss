@@ -122,22 +122,15 @@
   padding-inline: 0.25rem;
   font-size: var(--tamano-texto-grande);
   line-height: var(--altura-linea-relajada);
-  color: var(--color-gris-oscuro); // Mejor contraste en dark mode
+  // WCAG AA: Color con contraste 4.5+:1 sobre fondo claro del footer
+  color: var(--color-enlace-footer);
   text-decoration: none;
   border-radius: var(--radio-pequeno);
   transition: color var(--duracion-rapida) var(--transicion-estandar);
   @include foco-visible;
 
   &:hover {
-    color: var(--color-fondo-claro-normal);
-  }
-
-  @media (prefers-color-scheme: dark) {
-    color: #cbd5e1; // slate-300 - Mejor contraste en dark mode
-
-    &:hover {
-      color: var(--color-fondo-claro-normal);
-    }
+    color: var(--color-texto-oscuro);
   }
 }
 
