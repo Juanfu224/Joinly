@@ -221,3 +221,5 @@ echo -e "  🔐 SSL:  ./scripts/init-ssl.sh"
 echo ""
 
 [ "$LOGS" = true ] && docker compose -f "$COMPOSE_FILE" logs -f
+
+exit 0
