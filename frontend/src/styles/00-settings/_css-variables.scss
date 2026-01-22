@@ -107,7 +107,9 @@
   // Texto oscuro para usar sobre fondos de acento (naranja, amarillo)
   --color-texto-sobre-acento: #1a202c;
   // Color de enlaces del footer con contraste suficiente (4.5:1 mínimo)
-  --color-enlace-footer: #475569; // slate-600
+  // El footer siempre tiene fondo oscuro (#1e293b), necesita texto claro
+  // #cbd5e1 (slate-300) sobre #1e293b = 7.52:1 ✓ WCAG AAA
+  --color-enlace-footer: #cbd5e1; // slate-300
 }
 
 // ==========================================================================
@@ -301,8 +303,9 @@
   // --- ACCESIBILIDAD DARK MODE ---
   // Mantener texto oscuro en botones de acento (el fondo naranja/amarillo es brillante)
   --color-texto-sobre-acento: #1a202c;
-  // Enlaces del footer en dark mode - buen contraste sobre fondo oscuro
-  --color-enlace-footer: #94a3b8; // slate-400 - contraste 4.5+:1 sobre slate-950
+  // Enlaces del footer en dark mode - WCAG AA contraste 4.5+:1 sobre slate-800 (#1e293b)
+  // #cbd5e1 (slate-300) sobre #1e293b = 7.52:1 ✓
+  --color-enlace-footer: #cbd5e1; // slate-300 - contraste 7.52:1 sobre slate-800
 
   // --- COLORES DE ESTADO ---
   // Se mantienen vibrantes para visibilidad

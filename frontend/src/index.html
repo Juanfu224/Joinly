@@ -8,11 +8,12 @@
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
     <meta name="color-scheme" content="light dark" />
 
+    <!-- Critical CSS inline para evitar FOUC y mejorar FCP -->
     <style>
+      /* Fallback font para evitar FOIT */
       @font-face {
         font-family: 'Inter-fallback';
         size-adjust: 100%;
@@ -21,17 +22,45 @@
         descent-override: 27%;
         line-gap-override: 0%;
       }
+      
+      /* Critical app-root styles para evitar CLS */
+      app-root {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        min-height: 100dvh;
+      }
+      
+      /* Reserva espacio para header */
+      app-root > app-header {
+        display: block;
+        min-height: 5.5rem;
+      }
+      
+      /* Reserva espacio para footer */
+      app-root > app-footer {
+        display: block;
+        min-height: 380px;
+      }
     </style>
 
-    <!-- Preconnect para Google Fonts -->
+    <!-- Preconnect para Google Fonts (crítico para rendimiento) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Google Fonts con font-display: optional para no-críticos -->
+    <!-- Google Fonts con font-display: swap para FCP más rápido -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=optional"
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />

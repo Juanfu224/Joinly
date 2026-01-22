@@ -67,7 +67,8 @@
 .c-footer__descripcion {
   font-size: var(--tamano-texto-grande);
   line-height: var(--altura-linea-relajada);
-  color: var(--color-gris-oscuro); // Mejor contraste en dark mode
+  // WCAG AA: Usa el mismo color que los enlaces del footer para coherencia y contraste
+  color: var(--color-enlace-footer);
   margin: 0;
 }
 
@@ -159,7 +160,8 @@
 .c-footer__copyright {
   font-size: var(--tamano-texto-grande);
   line-height: var(--altura-linea-relajada);
-  color: var(--color-gris-oscuro); // Mejor contraste en dark mode
+  // WCAG AA: Usa el mismo color que los enlaces del footer para coherencia y contraste
+  color: var(--color-enlace-footer);
   text-align: center;
   margin: 0;
 }

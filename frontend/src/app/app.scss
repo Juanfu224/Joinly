@@ -9,13 +9,24 @@
 // ---------------------------------------------------------------------------
 // FOOTER: Reserva de espacio para evitar CLS (Cumulative Layout Shift)
 // ---------------------------------------------------------------------------
-// El footer causa un CLS de 0.677 si no reservamos su espacio.
-// Usamos content-visibility para optimizar renderizado y contain-intrinsic-size
-// para indicar al navegador el tamaño esperado antes de renderizar.
+// El footer causa un CLS significativo si no reservamos su espacio.
+// Estrategia:
+// 1. min-height reserva espacio mínimo garantizado
+// 2. contain-intrinsic-block-size indica tamaño esperado para content-visibility
+// 3. content-visibility: auto optimiza renderizado fuera del viewport
 app-footer {
   display: block;
+  // Altura mínima garantizada para evitar colapso durante carga
+  min-block-size: 450px;
+  // Optimización de renderizado con tamaño intrínseco
   content-visibility: auto;
-  contain-intrinsic-block-size: auto 590px; // Altura medida del footer
+  contain-intrinsic-block-size: auto 500px; // Altura aproximada del footer
+  
+  // Responsive: ajustar altura mínima en desktop donde el footer es más compacto
+  @include responder-a('tablet') {
+    min-block-size: 380px;
+    contain-intrinsic-block-size: auto 400px;
+  }
 }
 
 // ---------------------------------------------------------------------------
