@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IconComponent, ButtonComponent } from '../../components/shared';
+import { IconComponent, ButtonComponent, FeatureImageComponent } from '../../components/shared';
 
 /**
  * Página "Cómo funciona" - Explica el funcionamiento de Joinly.
@@ -11,7 +11,7 @@ import { IconComponent, ButtonComponent } from '../../components/shared';
 @Component({
   selector: 'app-como-funciona',
   standalone: true,
-  imports: [RouterLink, IconComponent, ButtonComponent],
+  imports: [RouterLink, IconComponent, ButtonComponent, FeatureImageComponent],
   templateUrl: './como-funciona.html',
   styleUrl: './como-funciona.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -86,6 +86,18 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform var(--duracion-rapida) var(--transicion-estandar),
+              box-shadow var(--duracion-rapida) var(--transicion-estandar);
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: var(--sombra-2);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-principal);
+    outline-offset: 2px;
+  }
 }
 
 // ---------------------------------------------------------------------------

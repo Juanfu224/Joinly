@@ -1,9 +1,18 @@
 <main class="p-home">
   <!-- ===================================================================
        HERO SECTION - Propuesta de valor según diseño Figma
-       =================================================================== -->
+        =================================================================== -->
   <section class="p-home__hero">
     <div class="l-contenedor">
+      <app-feature-image
+        [imageSource]="{
+          src: '/assets/images/demo/hero',
+          alt: 'Comparte suscripciones con Joinly',
+          aspectRatio: '16 / 9'
+        }"
+        type="hero"
+        [lazy]="false"
+      />
       <!-- Contenido Hero centrado -->
       <div class="p-home__hero-content">
         <h1 class="p-home__hero-titulo">

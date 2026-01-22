@@ -17,8 +17,15 @@
           Regístrate en segundos con tu email. Es gratis y no necesitas tarjeta de crédito.
         </p>
       </div>
-      <div class="p-como-funciona__paso-icono">
-        <app-icon name="user" size="lg" />
+      <div class="p-como-funciona__paso-imagen">
+        <app-feature-image
+          [imageSource]="{
+            src: '/assets/images/demo/step-1',
+            alt: 'Paso 1: Crea tu cuenta',
+            aspectRatio: '1 / 1'
+          }"
+          type="thumbnail"
+        />
       </div>
     </div>
 
@@ -30,8 +37,15 @@
           Forma tu unidad familiar o únete a una existente con un código de invitación de 12 dígitos.
         </p>
       </div>
-      <div class="p-como-funciona__paso-icono">
-        <app-icon name="users" size="lg" />
+      <div class="p-como-funciona__paso-imagen">
+        <app-feature-image
+          [imageSource]="{
+            src: '/assets/images/demo/step-2',
+            alt: 'Paso 2: Crea o únete a un grupo',
+            aspectRatio: '1 / 1'
+          }"
+          type="thumbnail"
+        />
       </div>
     </div>
 

@@ -5848,6 +5848,9 @@ Container Queries permiten que los componentes se adapten al tamano de su conten
 | Como Funciona | `/como-funciona` | Explicacion del servicio | Grid adaptativo, iconos responsive |
 | FAQ | `/faq` | Preguntas frecuentes | Accordion, navegacion por anclas |
 | Perfil Usuario | `/usuario/perfil` | Perfil del usuario | Layout con sidebar responsive |
+| Notificaciones | `/usuario/notificaciones` | Gestion de notificaciones | Grid responsive, opciones interactivas |
+| Configuracion | `/usuario/configuracion` | Configuracion de cuenta | Formularios responsive, opciones de cuenta |
+| Mis Solicitudes | `/usuario/mis-solicitudes` | Gestion de solicitudes | Grid responsive, filtros y tabs |
 | Terminos | `/legal/terminos` | Terminos de servicio | Contenido de lectura, max-width |
 | Privacidad | `/legal/privacidad` | Politica de privacidad | Contenido de lectura, max-width |
 
@@ -5870,13 +5873,41 @@ Container Queries permiten que los componentes se adapten al tamano de su conten
 
 #### Checklist de Verificacion
 
-- [ ] Navegacion funcional en todos los viewports
-- [ ] Texto legible sin zoom horizontal
-- [ ] Botones con area tactil minima de 44px (WCAG 2.1)
-- [ ] Formularios usables en movil
-- [ ] Imagenes y tarjetas se adaptan correctamente
-- [ ] No hay overflow horizontal
-- [ ] Modales centrados y con scroll si es necesario
+- [x] Navegacion funcional en todos los viewports
+- [x] Texto legible sin zoom horizontal
+- [x] Botones con area tactil minima de 44px (WCAG 2.1)
+- [x] Formularios usables en movil
+- [x] Imagenes y tarjetas se adaptan correctamente
+- [x] No hay overflow horizontal
+- [x] Modales centrados y con scroll si es necesario
+
+#### Procedimiento de Testing
+
+**Testing en Chrome DevTools:**
+
+1. Abrir DevTools (F12)
+2. Activar Device Mode (Ctrl+Shift+M / Cmd+Shift+M)
+3. Verificar cada viewport:
+   - Seleccionar dispositivo preset o dimensiones personalizadas
+   - Navegar a todas las paginas de la aplicacion
+   - Verificar funcionalidad de navegacion, formularios y componentes interactivos
+   - Comprobar que no haya overflow horizontal
+   - Validar legibilidad del texto sin necesidad de zoom
+
+**Testing en Firefox Developer Tools:**
+
+1. Abrir Developer Tools (F12)
+2. Activar Responsive Design Mode (Ctrl+Shift+M / Cmd+Shift+M)
+3. Repetir el proceso de verificacion de Chrome
+4. Especialmente verificar compatibilidad de Container Queries (requiere Firefox 110+)
+
+**Pruebas de Accesibilidad:**
+
+- Verificar areas tactiles minimas de 44px en elementos interactivos
+- Comprobar navegacion por teclado en todos los viewports
+- Validar contraste de colores WCAG 2.1 AA
+- Verificar que los labels de formulario esten asociados correctamente
+- Probar focus visible en todos los elementos interactivos
 
 ---
 
@@ -5957,7 +5988,7 @@ npm install -D svgo
 npm run optimize:icons
 ```
 
-**Resultado:** 159 iconos optimizados, reducción del 25% (60 KB → 45 KB)
+**Resultado:** 26/159 iconos optimizados, ahorro de 0.17 KB (210 líneas → ~180 líneas, -14%)
 
 #### Script de generación de imágenes demo
 
@@ -5966,21 +5997,56 @@ npm run optimize:icons
 npm run generate:images
 ```
 
+#### Script de conversión a AVIF/WebP/JPG
+
+```bash
+# Convierte 18 SVGs a 3 formatos x 3 tamaños (54 imágenes totales)
+npm run convert:demo-images
+```
+
+**Resultado:** 54 imágenes generadas (18 base × 3 tamaños × 3 formatos)
+- Formatos: AVIF, WebP, JPG
+- Tamaños: small (400px), medium (800px), large (1200px)
+- Todas las imágenes < 20KB
+
+#### Script de optimización de PNGs
+
+```bash
+# Optimiza PNGs de documentación
+npm run optimize:images
+```
+
+**Resultado:** 3 PNGs de documentación optimizadas (ahorro de 480.29 KB)
+- jerarquia-botones.png: 207.26 KB → 52.57 KB (-74.6%)
+- proximidad-tarjetas.png: 224.14 KB → 67.93 KB (-69.7%)
+- repeticion-design-tokens.png: 250.07 KB → 80.69 KB (-67.7%)
+
 ### 7.3 Resultados de Optimización
 
 #### Tabla de Imágenes Optimizadas
 
 | Archivo | Tamaño Original | Tamaño Optimizado | Reducción |
 |---------|-----------------|-------------------|-----------|
-| hero-large.jpg | 320 KB | 95 KB | 70% |
-| hero-medium.webp | 180 KB | 52 KB | 71% |
-| hero-small.avif | 90 KB | 18 KB | 80% |
-| feature-share-large.jpg | 280 KB | 85 KB | 70% |
-| feature-save-medium.webp | 160 KB | 48 KB | 70% |
-| feature-manage-small.avif | 80 KB | 15 KB | 81% |
-| favicon.svg | 0.48 KB | 0.48 KB | 0% (ya optimizado) |
-| icon-paths.ts (159 SVG) | 60 KB | 45 KB | 25% |
-| **TOTAL** | **1,170 KB** | **358 KB** | **69%** |
+| hero-large.avif | 1KB (SVG) | 2.73 KB | N/A* |
+| hero-large.webp | 1KB (SVG) | 4.79 KB | N/A* |
+| hero-large.jpg | 1KB (SVG) | 14.97 KB | N/A* |
+| feature-save-medium.avif | 1KB (SVG) | 2.01 KB | N/A* |
+| feature-save-medium.webp | 1KB (SVG) | 2.75 KB | N/A* |
+| feature-save-medium.jpg | 1KB (SVG) | 8.46 KB | N/A* |
+| jerarquia-botones.png | 207.26 KB | 52.57 KB | 74.6% |
+| proximidad-tarjetas.png | 224.14 KB | 67.93 KB | 69.7% |
+| repeticion-design-tokens.png | 250.07 KB | 80.69 KB | 67.7% |
+| contraste-estados.png | 179.37 KB | 179.37 KB | 0% |
+| icon-paths.ts | 210 líneas | ~180 líneas | 14% |
+
+\* Las imágenes de demo son SVGs placeholder convertidos a formatos rasterizados para producción.
+
+**Total imágenes demo**: 54 archivos
+- Todas < 200KB (máximo: 17.92 KB)
+- Total peso aproximado: ~350 KB
+
+**Total PNGs optimizados**: 3 imágenes
+- Ahorro total: 480.29 KB
 
 **Todas las imágenes < 200KB** ✅
 
@@ -6110,6 +6176,10 @@ El elemento `<picture>` permite servir diferentes imágenes según el dispositiv
   [alt]="imageSource().alt"
   [loading]="lazy() ? 'lazy' : 'eager'"
   [style]="aspectRatioStyle()"
+  [class]="imageClasses()"
+  [attr.width]="imageWidth()"
+  [attr.height]="imageHeight()"
+  decoding="async"
 />
 ```
 
@@ -6118,6 +6188,13 @@ El elemento `<picture>` permite servir diferentes imágenes según el dispositiv
 ```typescript
 // En feature-image.ts
 readonly lazy = input<boolean>(true); // Por defecto lazy loading activado
+
+// Uso con eager loading (imágenes hero/LCP)
+<app-feature-image
+  [imageSource]="{ src: '/assets/images/demo/hero', alt: '...' }"
+  type="hero"
+  [lazy]="false"
+/>
 ```
 
 **Beneficios medidos:**
@@ -6153,11 +6230,15 @@ Las propiedades `transform` y `opacity` son las únicas que pueden ser acelerada
 | **bounce-in** | 400ms | transform, opacity | Aparición con énfasis | `_animaciones.scss` |
 | **slide-in-bottom** | 300ms | transform, opacity | Entrada de elementos | `_animaciones.scss` |
 | **slide-in-left/right** | 300ms | transform, opacity | Entrada lateral | `_animaciones.scss` |
+| **slide-in-top** | 300ms | transform, opacity | Entrada superior | `_animaciones.scss` |
 | **fade-in-scale** | 150ms | transform, opacity | Modales, tooltips | `_animaciones.scss` |
+| **fade-out-scale** | 150ms | transform, opacity | Salida de modales | `_animaciones.scss` |
 | **pulse** | 2s | transform, opacity | Badges, notificaciones | `_animaciones.scss` |
+| **pulse-ring** | 1.5s | box-shadow, opacity | Indicador de atención | `_animaciones.scss` |
 | **shake** | 400ms | transform | Error, validación fallida | `_animaciones.scss` |
 | **toastIn/Out** | 300ms | transform, opacity | Notificaciones toast | `toast.scss` |
 | **spinner-rotate** | 1.4s | transform | Loading spinner | `spinner-overlay.scss` |
+| **spinner-dash** | 1.4s | stroke-dasharray, stroke-dashoffset | Trazo del spinner | `spinner-overlay.scss` |
 
 #### 1. Loading Spinner (Estados de carga)
 
@@ -6283,6 +6364,46 @@ Las propiedades `transform` y `opacity` son las únicas que pueden ser acelerada
 }
 ```
 
+7. **Avatar (`avatar.scss`)**
+```scss
+.c-avatar__imagen {
+  transition: transform var(--duracion-rapida) var(--transicion-estandar),
+              box-shadow var(--duracion-rapida) var(--transicion-estandar);
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: var(--sombra-2);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-principal);
+    outline-offset: 2px;
+  }
+}
+```
+
+8. **Feature Image (`feature-image.scss`)**
+```scss
+.c-feature-image__img {
+  transition: transform var(--duracion-rapida) var(--transicion-estandar),
+              box-shadow var(--duracion-rapida) var(--transicion-estandar),
+              opacity var(--duracion-rapida) var(--transicion-estandar);
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  &--hero:hover {
+    transform: scale(1.01);
+    box-shadow: var(--sombra-4);
+  }
+
+  &--thumbnail:hover {
+    transform: scale(1.05);
+  }
+}
+```
+
 #### 3. Micro-interacciones
 
 **Bounce (Éxito/Confirmación):**
@@ -6362,6 +6483,74 @@ Las propiedades `transform` y `opacity` son las únicas que pueden ser acelerada
 }
 ```
 
+**Pulse Ring (Indicador de atención):**
+
+```scss
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 currentColor;
+    opacity: 1;
+  }
+  100% {
+    box-shadow: 0 0 0 10px currentColor;
+    opacity: 0;
+  }
+}
+
+.u-pulse-ring {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    animation: pulse-ring 1.5s ease-out infinite;
+    pointer-events: none;
+  }
+}
+```
+
+**Slide-in Top (Entrada superior):**
+
+```scss
+@keyframes slide-in-top {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.u-slide-in-top {
+  animation: slide-in-top var(--duracion-base) ease-out;
+  will-change: transform, opacity;
+}
+```
+
+**Fade-out Scale (Salida con zoom):**
+
+```scss
+@keyframes fade-out-scale {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+.u-fade-out-scale {
+  animation: fade-out-scale var(--duracion-rapida) ease-in;
+  will-change: transform, opacity;
+}
+```
+
 #### Ejemplos de Uso en el Proyecto
 
 **Skeleton Loading:**
@@ -6371,21 +6560,44 @@ Las propiedades `transform` y `opacity` son las únicas que pueden ser acelerada
 <div class="u-skeleton u-skeleton--text"></div>
 ```
 
-**Bounce en acción exitosa:**
-```typescript
-// Después de guardar correctamente
-element.classList.add('u-animate-bounce');
-setTimeout(() => element.classList.remove('u-animate-bounce'), 500);
+**FeatureImage con lazy loading (home.html):**
+```html
+<!-- Hero con eager loading (LCP) -->
+<app-feature-image
+  [imageSource]="{
+    src: '/assets/images/demo/hero',
+    alt: 'Comparte suscripciones con Joinly',
+    aspectRatio: '16 / 9'
+  }"
+  type="hero"
+  [lazy]="false"
+/>
 ```
 
-**Lista con slide-in escalonado:**
+**FeatureImage con lazy loading (como-funciona.html):**
 ```html
-<ul>
-  @for (item of items(); track item.id) {
-    <li class="u-slide-in-bottom">{{ item.name }}</li>
-  }
-</ul>
-<!-- El stagger se aplica automáticamente con nth-child -->
+<!-- Thumbnail con lazy loading -->
+<app-feature-image
+  [imageSource]="{
+    src: '/assets/images/demo/step-1',
+    alt: 'Paso 1: Crea tu cuenta',
+    aspectRatio: '1 / 1'
+  }"
+  type="thumbnail"
+/>
+```
+
+**Avatar con lazy loading (avatar.html):**
+```html
+<img
+  [src]="src()"
+  [alt]="alt()"
+  class="c-avatar__imagen"
+  loading="lazy"
+  [attr.width]="avatarSize()"
+  [attr.height]="avatarSize()"
+  decoding="async"
+/>
 ```
 
 ### 7.6 FeatureImageComponent
@@ -6448,16 +6660,32 @@ setTimeout(() => element.classList.remove('u-animate-bounce'), 500);
 **Soporte:**
 
 - Chrome 85+: AVIF
+- Firefox 93+: AVIF
 - Safari 16+: AVIF
 - Safari 14-15: WebP
-- IE 11: JPG (fallback)
+- Chrome 23+, Firefox 65+: WebP
+- Todos los navegadores: JPG (fallback)
 
 **Optimizaciones SVG Logradas:**
 
-- 159 iconos optimizados automáticamente
-- Reducción del 25% en tamaño de archivo (60 KB → 45 KB)
+- 26/159 iconos optimizados
+- Ahorro de 0.17 KB (210 líneas → ~180 líneas, -14%)
 - Código más limpio y mantenible
 - Script `npm run optimize:icons` para futuras actualizaciones
+
+**Imágenes Demo Generadas:**
+
+- 54 imágenes en 3 formatos (AVIF, WebP, JPG)
+- 6 imágenes base × 3 tamaños (small: 400px, medium: 800px, large: 1200px)
+- Todas las imágenes < 20KB (máximo: 17.92 KB)
+- Total peso aproximado: ~350 KB
+
+**PNGs de Documentación Optimizadas:**
+
+- jerarquia-botones.png: 207.26 KB → 52.57 KB (-74.6%)
+- proximidad-tarjetas.png: 224.14 KB → 67.93 KB (-69.7%)
+- repeticion-design-tokens.png: 250.07 KB → 80.69 KB (-67.7%)
+- Ahorro total: 480.29 KB
 
 ---
 

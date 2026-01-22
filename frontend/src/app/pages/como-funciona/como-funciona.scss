@@ -157,6 +157,19 @@
     }
   }
 
+  &__paso-imagen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 6rem;
+    height: 6rem;
+    margin: 0 auto;
+
+    @include responder-a('movil') {
+      display: none;
+    }
+  }
+
   // =========================================================================
   // CTA
   // =========================================================================

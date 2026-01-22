@@ -9,6 +9,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "optimize:icons": "node scripts/optimize-icons.js",
+    "optimize:images": "node scripts/optimize-pngs.js",
+    "convert:demo-images": "node scripts/convert-demo-images.js",
     "generate:images": "node scripts/generate-demo-images.js"
   },
   "prettier": {
@@ -40,7 +42,9 @@
     "@angular/cli": "^21.0.1",
     "@angular/compiler-cli": "^21.0.0",
     "jsdom": "^27.1.0",
+    "sharp": "^0.34.5",
     "svgo": "^4.0.0",
+    "tinify": "^1.8.2",
     "typescript": "~5.9.2",
     "vite-tsconfig-paths": "^6.0.4",
     "vitest": "^4.0.8"

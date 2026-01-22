@@ -13,7 +13,13 @@
     height: auto;
     object-fit: cover;
     border-radius: var(--radio-medio);
-    @include transicion((opacity), var(--duracion-rapida));
+    transition: transform var(--duracion-rapida) var(--transicion-estandar),
+                box-shadow var(--duracion-rapida) var(--transicion-estandar),
+                opacity var(--duracion-rapida) var(--transicion-estandar);
+
+    &:hover {
+      transform: scale(1.02);
+    }
 
     &--hero {
       border-radius: var(--radio-grande);
@@ -21,6 +27,11 @@
 
       @container feature-image (min-width: 48rem) {
         box-shadow: var(--sombra-3);
+      }
+
+      &:hover {
+        transform: scale(1.01);
+        box-shadow: var(--sombra-4);
       }
     }
 
@@ -36,6 +47,10 @@
       aspect-ratio: 1 / 1;
       border-radius: 50%;
       object-fit: cover;
+
+      &:hover {
+        transform: scale(1.05);
+      }
     }
   }
 }

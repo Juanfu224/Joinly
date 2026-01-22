@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ButtonComponent, IconComponent, CardComponent } from '../../components/shared';
+import { ButtonComponent, IconComponent, CardComponent, FeatureImageComponent } from '../../components/shared';
 
 /**
  * Página Home - Landing pública de Joinly.
@@ -9,7 +9,7 @@ import { ButtonComponent, IconComponent, CardComponent } from '../../components/
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, ButtonComponent, IconComponent, CardComponent],
+  imports: [RouterLink, ButtonComponent, IconComponent, CardComponent, FeatureImageComponent],
   templateUrl: './home.html',
   styleUrl: './home.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
