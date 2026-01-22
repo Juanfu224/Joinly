@@ -4,7 +4,7 @@
 # =============================================================================
 # Uso: ./scripts/health-check.sh [--json] [--quiet]
 #
-# Verifica el estado completo de todos los servicios:
+# Verifica el estado de todos los servicios:
 #   - Contenedores Docker
 #   - Base de datos MySQL
 #   - Backend API
@@ -12,15 +12,15 @@
 #   - Certificados SSL
 # =============================================================================
 
-set -euo pipefail
+set -uo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 ENV_FILE=".env.prod"
-COMPOSE_FILE="docker-compose.prod.yml"
 JSON=false
 QUIET=false
-EXIT_CODE=0
+ERRORS=0
+JSON_OUTPUT=""
 
 # Parsear argumentos
 while [[ $# -gt 0 ]]; do
@@ -43,28 +43,41 @@ done
 [ -f "$ENV_FILE" ] && { set -a; source "$ENV_FILE"; set +a; }
 DOMAIN="${DOMAIN:-localhost}"
 
-# Colores (solo si no es JSON ni quiet)
-if [ "$JSON" = false ] && [ "$QUIET" = false ]; then
-    RED='\033[0;31m'
-    GREEN='\033[0;32m'
-    YELLOW='\033[0;33m'
-    BLUE='\033[0;34m'
-    NC='\033[0m'
-else
-    RED='' GREEN='' YELLOW='' BLUE='' NC=''
-fi
+# Colores
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
 
-# Funciones de salida
-declare -A RESULTS
+# Funciones
+add_check() {
+    local name="$1" status="$2"
+    [ -n "$JSON_OUTPUT" ] && JSON_OUTPUT="$JSON_OUTPUT,"
+    JSON_OUTPUT="$JSON_OUTPUT\"$name\":\"$status\""
+}
 
-check_pass() { RESULTS["$1"]="OK"; [ "$QUIET" = false ] && [ "$JSON" = false ] && echo -e "  ${GREEN}✓${NC} $1"; }
-check_fail() { RESULTS["$1"]="FAIL"; EXIT_CODE=1; [ "$QUIET" = false ] && [ "$JSON" = false ] && echo -e "  ${RED}✗${NC} $1: $2"; }
-check_warn() { RESULTS["$1"]="WARN"; [ "$QUIET" = false ] && [ "$JSON" = false ] && echo -e "  ${YELLOW}⚠${NC} $1: $2"; }
+print_section() {
+    [ "$QUIET" = false ] && [ "$JSON" = false ] && echo -e "\n${BLUE}$1:${NC}"
+}
 
-# =============================================================================
-# VERIFICACIONES
-# =============================================================================
+check_pass() {
+    add_check "$1" "OK"
+    [ "$QUIET" = false ] && [ "$JSON" = false ] && echo -e "  ${GREEN}✓${NC} $1"
+}
 
+check_fail() {
+    add_check "$1" "FAIL"
+    ERRORS=$((ERRORS + 1))
+    [ "$QUIET" = false ] && [ "$JSON" = false ] && echo -e "  ${RED}✗${NC} $1: $2"
+}
+
+check_warn() {
+    add_check "$1" "WARN"
+    [ "$QUIET" = false ] && [ "$JSON" = false ] && echo -e "  ${YELLOW}⚠${NC} $1: $2"
+}
+
+# Banner
 if [ "$JSON" = false ] && [ "$QUIET" = false ]; then
     echo -e "${BLUE}"
     echo "╔════════════════════════════════════════════════════════════╗"
@@ -73,8 +86,12 @@ if [ "$JSON" = false ] && [ "$QUIET" = false ]; then
     echo -e "${NC}"
 fi
 
+# =============================================================================
+# VERIFICACIONES
+# =============================================================================
+
 # 1. Docker
-[ "$QUIET" = false ] && [ "$JSON" = false ] && echo -e "\n${BLUE}Docker:${NC}"
+print_section "Docker"
 if docker info &>/dev/null; then
     check_pass "Docker daemon"
 else
@@ -82,7 +99,7 @@ else
 fi
 
 # 2. Contenedores
-[ "$QUIET" = false ] && [ "$JSON" = false ] && echo -e "\n${BLUE}Contenedores:${NC}"
+print_section "Contenedores"
 for container in joinly-mysql-prod joinly-backend-prod joinly-nginx-prod; do
     if docker ps --format '{{.Names}}' | grep -q "^${container}$"; then
         STATUS=$(docker inspect --format='{{.State.Health.Status}}' "$container" 2>/dev/null || echo "running")
@@ -97,7 +114,7 @@ for container in joinly-mysql-prod joinly-backend-prod joinly-nginx-prod; do
 done
 
 # 3. MySQL
-[ "$QUIET" = false ] && [ "$JSON" = false ] && echo -e "\n${BLUE}Base de datos:${NC}"
+print_section "Base de datos"
 if docker exec joinly-mysql-prod mysqladmin ping -h localhost --silent &>/dev/null; then
     check_pass "MySQL ping"
 else
@@ -105,7 +122,7 @@ else
 fi
 
 # 4. Backend API
-[ "$QUIET" = false ] && [ "$JSON" = false ] && echo -e "\n${BLUE}Backend API:${NC}"
+print_section "Backend API"
 if docker exec joinly-backend-prod curl -sf http://localhost:8080/actuator/health &>/dev/null; then
     check_pass "Actuator health"
 else
@@ -113,7 +130,7 @@ else
 fi
 
 # 5. Nginx
-[ "$QUIET" = false ] && [ "$JSON" = false ] && echo -e "\n${BLUE}Nginx:${NC}"
+print_section "Nginx"
 if docker exec joinly-nginx-prod curl -sf http://localhost/nginx-health &>/dev/null; then
     check_pass "Nginx health"
 else
@@ -121,11 +138,11 @@ else
 fi
 
 # 6. HTTPS externo
-[ "$QUIET" = false ] && [ "$JSON" = false ] && echo -e "\n${BLUE}Acceso externo:${NC}"
-if curl -sf "https://${DOMAIN}/nginx-health" &>/dev/null; then
+print_section "Acceso externo"
+if curl -sf "https://${DOMAIN}/nginx-health" --connect-timeout 5 &>/dev/null; then
     check_pass "HTTPS ($DOMAIN)"
 else
-    if curl -skf "https://${DOMAIN}/nginx-health" &>/dev/null; then
+    if curl -skf "https://${DOMAIN}/nginx-health" --connect-timeout 5 &>/dev/null; then
         check_warn "HTTPS ($DOMAIN)" "Certificado no válido"
     else
         check_fail "HTTPS ($DOMAIN)" "No accesible"
@@ -133,7 +150,7 @@ else
 fi
 
 # 7. SSL
-[ "$QUIET" = false ] && [ "$JSON" = false ] && echo -e "\n${BLUE}Certificado SSL:${NC}"
+print_section "Certificado SSL"
 CERT_PATH="/etc/letsencrypt/live/${DOMAIN}/fullchain.pem"
 if docker exec joinly-nginx-prod test -f "$CERT_PATH" 2>/dev/null; then
     EXPIRY=$(docker exec joinly-nginx-prod openssl x509 -enddate -noout -in "$CERT_PATH" 2>/dev/null | cut -d= -f2 || echo "")
@@ -143,17 +160,17 @@ if docker exec joinly-nginx-prod test -f "$CERT_PATH" 2>/dev/null; then
         DAYS_LEFT=$(( (EXPIRY_EPOCH - NOW_EPOCH) / 86400 ))
         
         if [ $DAYS_LEFT -gt 30 ]; then
-            check_pass "Let's Encrypt (expira en ${DAYS_LEFT} días)"
+            check_pass "Let's Encrypt (${DAYS_LEFT} días)"
         elif [ $DAYS_LEFT -gt 0 ]; then
             check_warn "Let's Encrypt" "Expira en ${DAYS_LEFT} días"
         else
-            check_fail "Let's Encrypt" "Certificado expirado"
+            check_fail "Let's Encrypt" "Expirado"
         fi
     else
         check_pass "Let's Encrypt"
     fi
 else
-    check_warn "Let's Encrypt" "Usando certificado autofirmado"
+    check_warn "SSL" "Usando certificado autofirmado"
 fi
 
 # =============================================================================
@@ -161,29 +178,24 @@ fi
 # =============================================================================
 
 if [ "$JSON" = true ]; then
+    STATUS="OK"
+    [ $ERRORS -gt 0 ] && STATUS="ERROR"
     echo "{"
-    echo "  \"status\": \"$([ $EXIT_CODE -eq 0 ] && echo 'OK' || echo 'ERROR')\","
+    echo "  \"status\": \"$STATUS\","
     echo "  \"domain\": \"$DOMAIN\","
-    echo "  \"checks\": {"
-    first=true
-    for key in "${!RESULTS[@]}"; do
-        [ "$first" = false ] && echo ","
-        echo -n "    \"$key\": \"${RESULTS[$key]}\""
-        first=false
-    done
-    echo ""
-    echo "  }"
+    echo "  \"errors\": $ERRORS,"
+    echo "  \"checks\": {$JSON_OUTPUT}"
     echo "}"
 elif [ "$QUIET" = false ]; then
     echo ""
     echo -e "${BLUE}═══════════════════════════════════════════════════════════════${NC}"
-    if [ $EXIT_CODE -eq 0 ]; then
+    if [ $ERRORS -eq 0 ]; then
         echo -e "${GREEN}           ✓ Todos los servicios funcionando${NC}"
     else
-        echo -e "${RED}           ✗ Algunos servicios tienen problemas${NC}"
+        echo -e "${RED}           ✗ $ERRORS servicio(s) con problemas${NC}"
     fi
     echo -e "${BLUE}═══════════════════════════════════════════════════════════════${NC}"
     echo ""
 fi
 
-exit $EXIT_CODE
+exit $ERRORS
