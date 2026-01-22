@@ -39,4 +39,14 @@ export class UsuarioService {
   desactivarCuenta(id: number): Observable<void> {
     return this.api.delete<void>(`usuarios/${id}`);
   }
+
+  subirAvatar(id: number, file: File): Observable<User> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.api.post<User>(`usuarios/${id}/avatar`, formData);
+  }
+
+  eliminarAvatar(id: number): Observable<User> {
+    return this.api.delete<User>(`usuarios/${id}/avatar`);
+  }
 }

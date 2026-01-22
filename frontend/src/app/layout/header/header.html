@@ -55,6 +55,7 @@
         <app-user-dropdown
           [userName]="currentUser()?.nombre || 'Usuario'"
           [userEmail]="currentUser()?.email"
+          [userAvatar]="currentUser()?.avatar"
           (logout)="onLogout()"
         />
       }
@@ -122,7 +123,7 @@
       <!-- Modo autenticado -->
       @if (isAuthenticated() && currentUser(); as user) {
         <div class="c-header__user-info">
-          <app-avatar [name]="user.nombre" size="sm" />
+          <app-avatar [src]="user.avatar ?? ''" [name]="user.nombre" size="sm" />
           <span>{{ user.nombre }}</span>
         </div>
         <button 

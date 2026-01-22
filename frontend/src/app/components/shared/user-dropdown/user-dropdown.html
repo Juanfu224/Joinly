@@ -7,13 +7,13 @@
     aria-label="Menú de usuario"
     (click)="toggle()"
   >
-    <app-avatar [name]="userName()" size="lg" />
+    <app-avatar [src]="userAvatar() ?? ''" [name]="userName()" size="lg" />
   </button>
 
   @if (isOpen()) {
     <div class="c-user-dropdown__menu" role="menu">
       <div class="c-user-dropdown__header">
-        <app-avatar [name]="userName()" size="md" />
+        <app-avatar [src]="userAvatar() ?? ''" [name]="userName()" size="md" />
         <div class="c-user-dropdown__user-info">
           <span class="c-user-dropdown__user-name">{{ userName() }}</span>
           @if (userEmail()) {

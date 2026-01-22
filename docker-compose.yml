@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   mysql:
     image: mysql:lts
@@ -18,6 +20,25 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
+    networks:
+      joinly-bbdd:
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: joinly-backend
+    environment:
+      DB_URL: jdbc:mysql://joinly-mysql:3306/${MYSQL_DATABASE:-bbdd_joinly}?createDatabaseIfNotExist=true&useSSL=false&useTimezone=true&serverTimezone=Europe%2FMadrid
+      DB_USERNAME: ${MYSQL_USER:-joinly_user}
+      DB_PASSWORD: ${MYSQL_PASSWORD:-joinly_dev_2024}
+      TZ: Europe/Madrid
+    ports:
+      - "${SERVER_PORT:-8080}:8080"
+    volumes:
+      - ./backend/uploads:/app/uploads
+    depends_on:
+      - mysql
     networks:
       - joinly-bbdd
 

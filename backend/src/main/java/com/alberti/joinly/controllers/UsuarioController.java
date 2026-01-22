@@ -3,6 +3,7 @@ package com.alberti.joinly.controllers;
 import com.alberti.joinly.dto.usuario.PreferenciasNotificacionDTO;
 import com.alberti.joinly.dto.usuario.UpdatePerfilRequest;
 import com.alberti.joinly.dto.usuario.UsuarioResponse;
+import com.alberti.joinly.services.FileStorageService;
 import com.alberti.joinly.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,6 +18,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Paths;
 
 @RestController
 @RequestMapping("/api/v1/usuarios")
@@ -25,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
+    private final FileStorageService fileStorageService;
 
     @GetMapping("/{id}")
     @Operation(summary = "Obtener perfil de usuario")
@@ -151,5 +157,67 @@ public class UsuarioController {
 
         var preferenciasActualizadas = usuarioService.actualizarPreferenciasNotificacion(id, preferencias);
         return ResponseEntity.ok(preferenciasActualizadas);
+    }
+
+    @PostMapping("/{id}/avatar")
+    @Operation(
+        summary = "Subir avatar de usuario",
+        description = "Sube y optimiza una imagen de perfil para el usuario. " +
+                     "La imagen se redimensiona automáticamente a 256x256px."
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Avatar actualizado exitosamente"),
+        @ApiResponse(responseCode = "400", description = "Archivo inválido o muy grande"),
+        @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    public ResponseEntity<UsuarioResponse> uploadAvatar(
+            @Parameter(description = "ID del usuario") @PathVariable Long id,
+            @Parameter(description = "Archivo de imagen (JPEG, PNG, WebP, max 5MB)")
+            @RequestParam("file") MultipartFile file) {
+
+        try {
+            String avatarPath = fileStorageService.saveAvatar(file);
+
+            var usuario = usuarioService.buscarPorId(id)
+                .orElseThrow(() -> new IllegalArgumentException(
+                    "Usuario no encontrado con ID: " + id));
+
+            if (usuario.getAvatar() != null && !usuario.getAvatar().isEmpty()) {
+                fileStorageService.deleteAvatar(usuario.getAvatar());
+            }
+
+            var updatedUsuario = usuarioService.actualizarPerfil(
+                id,
+                usuario.getNombre(),
+                usuario.getTelefono(),
+                "/uploads/avatars/" + Paths.get(avatarPath).getFileName().toString(),
+                usuario.getTemaPreferido()
+            );
+
+            return ResponseEntity.ok(UsuarioResponse.fromEntity(updatedUsuario));
+
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Error al procesar la imagen: " +
+                e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}/avatar")
+    @Operation(
+        summary = "Eliminar avatar de usuario",
+        description = "Elimina el avatar del usuario y establece el avatar por defecto."
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Avatar eliminado exitosamente"),
+        @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    public ResponseEntity<UsuarioResponse> deleteAvatar(
+            @Parameter(description = "ID del usuario") @PathVariable Long id) {
+
+        var updatedUsuario = usuarioService.eliminarAvatar(id);
+
+        return ResponseEntity.ok(UsuarioResponse.fromEntity(updatedUsuario));
     }
 }

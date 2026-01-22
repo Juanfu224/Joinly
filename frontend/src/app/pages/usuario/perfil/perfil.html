@@ -10,7 +10,10 @@
         <!-- Hero Section -->
         <section class="p-perfil__hero" aria-label="Información del usuario">
           <figure class="p-perfil__avatar-wrapper">
-            <app-avatar [name]="usuario()?.nombre ?? 'Usuario'" size="xl" />
+            <app-avatar
+              [src]="usuario()?.avatar ?? ''"
+              [name]="usuario()?.nombre ?? 'Usuario'"
+              size="xl" />
           </figure>
           <div class="p-perfil__hero-info">
             <h2 class="p-perfil__nombre">{{ usuario()?.nombre ?? 'Usuario' }}</h2>
@@ -58,6 +61,73 @@
       <header class="p-perfil__edit-header">
         <h2 class="p-perfil__edit-titulo">Editar información</h2>
       </header>
+
+      <!-- Sección de Avatar -->
+      <section class="p-perfil__avatar-section">
+        <h3 class="p-perfil__avatar-titulo">Foto de perfil</h3>
+
+        <div class="p-perfil__avatar-upload">
+          <div class="p-perfil__avatar-current">
+            @if (avatarPreview()) {
+              <img [src]="avatarPreview()!" alt="Preview" class="p-perfil__avatar-preview" />
+            } @else {
+              <app-avatar
+                [src]="usuario()?.avatar ?? ''"
+                [name]="usuario()?.nombre ?? 'Usuario'"
+                size="xl" />
+            }
+          </div>
+
+          <div class="p-perfil__avatar-actions">
+            @if (!avatarPreview()) {
+              <label class="p-perfil__avatar-label">
+                <app-icon name="upload" size="sm" aria-hidden="true" />
+                <span>Subir nueva foto</span>
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  (change)="onAvatarFileSelected($event)"
+                  class="p-perfil__avatar-input"
+                  [disabled]="isUploadingAvatar()" />
+              </label>
+              @if (hasCustomAvatar()) {
+                <app-button
+                  variant="yellow"
+                  size="sm"
+                  leftIcon="trash"
+                  (click)="onDeleteAvatar()"
+                  [loading]="isDeletingAvatar()"
+                  [disabled]="isDeletingAvatar()">
+                  Eliminar foto
+                </app-button>
+              }
+              <p class="p-perfil__avatar-hint">
+                JPG, PNG o WebP. Máximo 5MB. Se optimizará automáticamente.
+              </p>
+            } @else {
+              <div class="p-perfil__avatar-preview-actions">
+                <app-button
+                  variant="primary"
+                  size="sm"
+                  leftIcon="check"
+                  (click)="onUploadAvatar()"
+                  [loading]="isUploadingAvatar()"
+                  [disabled]="isUploadingAvatar()">
+                  Guardar foto
+                </app-button>
+                <app-button
+                  variant="ghost"
+                  size="sm"
+                  leftIcon="x"
+                  (click)="onCancelAvatarUpload()"
+                  [disabled]="isUploadingAvatar()">
+                  Cancelar
+                </app-button>
+              </div>
+            }
+          </div>
+        </div>
+      </section>
 
       <form 
         [formGroup]="perfilForm" 

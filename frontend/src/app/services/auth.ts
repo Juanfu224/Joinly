@@ -89,6 +89,7 @@ export class AuthService {
       emailVerificado: response.emailVerificado,
       temaPreferido: response.temaPreferido,
       telefono: response.telefono,
+      avatar: response.avatar,
       fechaRegistro: response.fechaRegistro,
       fechaUltimoAcceso: response.fechaUltimoAcceso,
     };

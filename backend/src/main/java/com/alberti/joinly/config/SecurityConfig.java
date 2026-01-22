@@ -66,6 +66,7 @@ public class SecurityConfig {
             "/webjars/**",
             "/actuator/health",
             "/actuator/info",
+            "/uploads/**",        // Archivos estáticos (avatares)
             "/error"
     };
 

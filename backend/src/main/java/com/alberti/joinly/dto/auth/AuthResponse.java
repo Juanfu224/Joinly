@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
  * @param temaPreferido    Tema preferido del usuario ('light' o 'dark')
  * @param emailVerificado  Indica si el email ha sido verificado
  * @param telefono         Teléfono del usuario
+ * @param avatar           URL del avatar del usuario
  * @param fechaRegistro    Fecha de registro del usuario
  * @param fechaUltimoAcceso Fecha del último acceso
  * @param accessToken      Token JWT de acceso (corta duración)
@@ -53,6 +54,9 @@ public record AuthResponse(
 
         @Schema(description = "Fecha del último acceso del usuario")
         LocalDateTime fechaUltimoAcceso,
+
+        @Schema(description = "URL del avatar del usuario", example = "/uploads/avatars/abc123.jpg")
+        String avatar,
 
         @Schema(description = "Token JWT de acceso", example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
         String accessToken,

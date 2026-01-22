@@ -21,6 +21,7 @@ import java.util.Optional;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final FileStorageService fileStorageService;
 
     public Optional<Usuario> buscarPorId(Long id) {
         return usuarioRepository.findById(id);
@@ -162,5 +163,18 @@ public class UsuarioService {
                 .notifRecordatorios(usuario.getNotifRecordatorios())
                 .notifNovedades(usuario.getNotifNovedades())
                 .build();
+    }
+
+    @Transactional
+    public Usuario eliminarAvatar(Long idUsuario) {
+        var usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con ID: " + idUsuario));
+
+        if (usuario.getAvatar() != null && !usuario.getAvatar().isEmpty()) {
+            fileStorageService.deleteAvatar(usuario.getAvatar());
+        }
+
+        usuario.setAvatar(null);
+        return usuarioRepository.save(usuario);
     }
 }

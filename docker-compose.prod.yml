@@ -86,6 +86,7 @@ services:
       TZ: Europe/Madrid
     volumes:
       - backend_logs:/app/logs
+      - uploads_data:/app/uploads
     networks:
       - joinly-internal
     depends_on:
@@ -187,6 +188,8 @@ volumes:
     name: joinly-mysql-data
   backend_logs:
     name: joinly-backend-logs
+  uploads_data:
+    name: joinly-uploads-data
   nginx_logs:
     name: joinly-nginx-logs
   certbot_conf:

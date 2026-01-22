@@ -29,6 +29,7 @@ import { AvatarComponent } from '../avatar/avatar';
 export class UserDropdownComponent implements OnInit, OnDestroy {
   readonly userName = input.required<string>();
   readonly userEmail = input<string>();
+  readonly userAvatar = input<string>();
   readonly logout = output<void>();
 
   readonly isOpen = signal(false);

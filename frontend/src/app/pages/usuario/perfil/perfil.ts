@@ -10,7 +10,7 @@ import {
   IconComponent,
   SpinnerOverlayComponent,
 } from '../../../components/shared';
-import { AuthService, ToastService, UsuarioService } from '../../../services';
+import { AuthService, ModalService, ToastService, UsuarioService } from '../../../services';
 
 /**
  * Página de perfil de usuario.
@@ -38,11 +38,17 @@ export class PerfilComponent {
   readonly #authService = inject(AuthService);
   readonly #usuarioService = inject(UsuarioService);
   readonly #toastService = inject(ToastService);
+  readonly #modalService = inject(ModalService);
   readonly #fb = inject(FormBuilder);
 
   protected readonly usuario = this.#authService.currentUser;
   protected readonly isEditing = signal(false);
   protected readonly isSaving = signal(false);
+
+  protected readonly avatarPreview = signal<string | null>(null);
+  protected readonly isUploadingAvatar = signal(false);
+  protected readonly isDeletingAvatar = signal(false);
+  private selectedAvatarFile: File | null = null;
 
   protected readonly perfilForm = this.#fb.nonNullable.group({
     nombre: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
@@ -68,7 +74,7 @@ export class PerfilComponent {
 
   protected onEdit(): void {
     const user = this.usuario();
-    if (!user) return;
+    if (!user) { return; }
 
     this.perfilForm.patchValue({
       nombre: user.nombre,
@@ -79,7 +85,7 @@ export class PerfilComponent {
   }
 
   protected onSave(): void {
-    if (!this.perfilForm.valid || this.isSaving()) return;
+    if (!this.perfilForm.valid || this.isSaving()) { return; }
 
     const user = this.usuario();
     if (!user) return;
@@ -110,5 +116,89 @@ export class PerfilComponent {
   protected onCancel(): void {
     this.perfilForm.reset();
     this.isEditing.set(false);
+  }
+
+  protected onAvatarFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) { return; }
+
+    const file = input.files[0];
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      this.#toastService.error('Tipo de archivo no permitido. Usa JPG, PNG o WebP');
+      return;
+    }
+
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+      this.#toastService.error('La imagen no puede superar 5MB');
+      return;
+    }
+
+    this.selectedAvatarFile = file;
+
+    const avatarUrl = URL.createObjectURL(file);
+    this.avatarPreview.set(avatarUrl);
+  }
+
+  protected onUploadAvatar(): void {
+    if (!this.selectedAvatarFile) { return; }
+
+    const user = this.usuario();
+    if (!user) return;
+
+    this.isUploadingAvatar.set(true);
+
+    this.#usuarioService.subirAvatar(user.id, this.selectedAvatarFile).subscribe({
+      next: (updatedUser) => {
+        this.#authService.updateUser(updatedUser);
+        this.#toastService.success('Avatar actualizado exitosamente');
+        this.avatarPreview.set(null);
+        this.selectedAvatarFile = null;
+        this.isUploadingAvatar.set(false);
+      },
+      error: (error) => {
+        this.#toastService.error(error.message || 'Error al subir el avatar');
+        this.isUploadingAvatar.set(false);
+      },
+    });
+  }
+
+  protected onCancelAvatarUpload(): void {
+    this.avatarPreview.set(null);
+    this.selectedAvatarFile = null;
+  }
+
+  protected hasCustomAvatar(): boolean {
+    const user = this.usuario();
+    return !!user && !!user.avatar && user.avatar.trim().length > 0;
+  }
+
+  protected onDeleteAvatar(): void {
+    const user = this.usuario();
+    if (!user) return;
+
+    this.#modalService.open({
+      title: '¿Eliminar foto de perfil?',
+      content: '¿Estás seguro de que quieres eliminar tu foto de perfil? Se usará el avatar por defecto.',
+      confirmText: 'Eliminar',
+      cancelText: 'Cancelar',
+      onConfirm: () => {
+        this.isDeletingAvatar.set(true);
+
+        this.#usuarioService.eliminarAvatar(user.id).subscribe({
+          next: (updatedUser) => {
+            this.#authService.updateUser(updatedUser);
+            this.#toastService.success('Foto de perfil eliminada');
+            this.isDeletingAvatar.set(false);
+          },
+          error: (error) => {
+            this.#toastService.error(error.message || 'Error al eliminar la foto de perfil');
+            this.isDeletingAvatar.set(false);
+          },
+        });
+      },
+    });
   }
 }

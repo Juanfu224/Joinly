@@ -23,6 +23,7 @@ export interface AuthResponse {
   temaPreferido?: 'light' | 'dark';
   emailVerificado?: boolean;
   telefono?: string;
+  avatar?: string;
   fechaRegistro?: string;
   fechaUltimoAcceso?: string;
   accessToken: string;
