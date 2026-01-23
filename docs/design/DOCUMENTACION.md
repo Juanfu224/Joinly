@@ -5909,6 +5909,42 @@ Container Queries permiten que los componentes se adapten al tamano de su conten
 - Verificar que los labels de formulario esten asociados correctamente
 - Probar focus visible en todos los elementos interactivos
 
+#### Screenshots Comparativos
+
+Capturas de las 3 páginas principales en los viewports clave, mostrando cómo se adapta la interfaz a cada dispositivo:
+
+**1. Página Home (/)** - Landing page principal
+
+| Viewport | Captura | Ancho | Adaptaciones principales |
+|----------|--------|-------|------------------------|
+| Mobile (375px) | ![Home Mobile](images/responsive/home-mobile-375px.png) | 375px | Hero compacto, features apiladas en 1 columna, navegación en header |
+| Tablet (768px) | ![Home Tablet](images/responsive/home-tablet-768px.png) | 768px | Features en 2 columnas, espaciado medio, hero con padding aumentado |
+| Desktop (1280px) | ![Home Desktop](images/responsive/home-desktop-1280px.png) | 1280px | Features en 3 columnas, layout completo con márgenes amplios |
+
+**2. Página Login (/login)** - Formulario de autenticación
+
+| Viewport | Captura | Ancho | Adaptaciones principales |
+|----------|--------|-------|------------------------|
+| Mobile (375px) | ![Login Mobile](images/responsive/login-mobile-375px.png) | 375px | Formulario full-width, botones apilados verticalmente, padding compacto |
+| Tablet (768px) | ![Login Tablet](images/responsive/login-tablet-768px.png) | 768px | Formulario centrado con max-width, botones en fila horizontal, espaciado medio |
+| Desktop (1280px) | ![Login Desktop](images/responsive/login-desktop-1280px.png) | 1280px | Formulario centrado con mayor padding, layout balanceado con márgenes generosos |
+
+**3. Página Cómo Funciona (/como-funciona)** - Guía de uso
+
+| Viewport | Captura | Ancho | Adaptaciones principales |
+|----------|--------|-------|------------------------|
+| Mobile (375px) | ![Cómo Funciona Mobile](images/responsive/como-funciona-mobile-375px.png) | 375px | Pasos numerados en 1 columna, botones full-width, navegación apilada |
+| Tablet (768px) | ![Cómo Funciona Tablet](images/responsive/como-funciona-tablet-768px.png) | 768px | Pasos numerados en 2 columnas, botones con layout horizontal, espaciado amplio |
+| Desktop (1280px) | ![Cómo Funciona Desktop](images/responsive/como-funciona-desktop-1280px.png) | 1280px | Pasos numerados en 4 columnas, layout completo con máximos espaciados |
+
+**Observaciones de las capturas:**
+
+- **Mobile (375px)**: Se aprecian las adaptaciones de navegación compacta, grillas de 1 columna, padding reducido y botones full-width para facilitar la interacción táctil. El contenido fluye verticalmente de forma natural.
+
+- **Tablet (768px)**: Se muestra la transición a layouts de 2-4 columnas según el contenido, con espaciado medio. Los formularios se centran con max-width y los botones cambian a disposición horizontal.
+
+- **Desktop (1280px)**: Se observa el layout completo con navegación expandida, grillas de 3-4 columnas, tipografía ampliada y márgenes generosos que aprovechan el espacio adicional disponible.
+
 ---
 
 ## 7. Optimización Multimedia y Animaciones CSS
