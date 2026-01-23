@@ -4,15 +4,6 @@
         =================================================================== -->
   <section class="p-home__hero">
     <div class="l-contenedor">
-      <app-feature-image
-        [imageSource]="{
-          src: '/assets/images/demo/hero',
-          alt: 'Comparte suscripciones con Joinly',
-          aspectRatio: '16 / 9'
-        }"
-        type="hero"
-        [lazy]="false"
-      />
       <!-- Contenido Hero centrado -->
       <div class="p-home__hero-content">
         <h1 class="p-home__hero-titulo">
@@ -76,6 +67,25 @@
           </p>
         </app-card>
       </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       SHOWCASE SECTION - Imagen promocional
+       =================================================================== -->
+  <section class="p-home__showcase" aria-labelledby="showcase-title">
+    <h2 id="showcase-title" class="visually-hidden">Comparte suscripciones con tu familia</h2>
+    <div class="l-contenedor">
+      <app-feature-image
+        [imageSource]="{
+          src: '/assets/images/demo/hero',
+          alt: 'Familia disfrutando de suscripciones compartidas con Joinly',
+          aspectRatio: '2.6 / 1'
+        }"
+        type="hero"
+        [lazy]="true"
+        cssClass="p-home__showcase-image"
+      />
     </div>
   </section>
 </main>

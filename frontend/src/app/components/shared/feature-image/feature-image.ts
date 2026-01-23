@@ -91,19 +91,32 @@ export class FeatureImageComponent {
 
   generateSrcset(basePath: string, format: 'avif' | 'webp' | 'jpg'): string {
     const sizes = this.getSizesForType();
-    return sizes.map((size) => `${basePath}-${size}.${format} ${size}w`).join(', ');
+    return sizes.map((size) => `${basePath}-${size.name}.${format} ${size.width}w`).join(', ');
   }
 
-  private getSizesForType(): number[] {
+  private getSizesForType(): { name: string; width: number }[] {
     switch (this.type()) {
       case 'hero':
-        return [400, 800, 1200];
+        return [
+          { name: 'small', width: 400 },
+          { name: 'medium', width: 800 },
+          { name: 'large', width: 1200 },
+        ];
       case 'feature':
-        return [400, 800];
+        return [
+          { name: 'small', width: 400 },
+          { name: 'medium', width: 800 },
+        ];
       case 'thumbnail':
-        return [200, 400];
+        return [
+          { name: 'small', width: 200 },
+          { name: 'medium', width: 400 },
+        ];
       default:
-        return [400, 800];
+        return [
+          { name: 'small', width: 400 },
+          { name: 'medium', width: 800 },
+        ];
     }
   }
 }
