@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, signal, inject } from '@angular/core';
 import {
+  AlertComponent,
   CardComponent,
   ButtonComponent,
   AvatarComponent,
@@ -64,6 +65,7 @@ import { ToastService } from '../../services/toast';
 @Component({
   selector: 'app-style-guide',
   imports: [
+    AlertComponent,
     CardComponent,
     ButtonComponent,
     AvatarComponent,

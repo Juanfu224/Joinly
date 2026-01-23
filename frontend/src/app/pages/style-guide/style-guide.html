@@ -736,8 +736,55 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
     </section>
 
     <!-- ===================================================================
-         SECCIÓN: ALERTAS
-         =================================================================== -->
+          SECCIÓN: ALERTAS
+          =================================================================== -->
+    <section class="p-style-guide__seccion" aria-labelledby="titulo-alertas">
+      <div class="p-style-guide__seccion-encabezado">
+        <h2 id="titulo-alertas" class="p-style-guide__subtitulo">Alertas</h2>
+        <p class="p-style-guide__nota">
+          Mensajes de alerta estáticos para feedback inline. Uso: confirmaciones, errores,
+          advertencias, información contextual. Diferencia con toasts: estas son estáticas en
+          la página, mientras que los toasts son temporales en la esquina de pantalla.
+        </p>
+      </div>
+
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Tipos de alerta</h3>
+        <div class="p-style-guide__grupo-alertas">
+          <app-alert type="success">
+            <strong>Éxito:</strong> El registro se completó correctamente. Bienvenido a Joinly.
+          </app-alert>
+          <app-alert type="error">
+            <strong>Error:</strong> El correo electrónico ya está registrado. Intenta con otro.
+          </app-alert>
+          <app-alert type="warning">
+            <strong>Advertencia:</strong> Tu suscripción expira en 3 días. Renueva ahora para no perder el acceso.
+          </app-alert>
+          <app-alert type="info">
+            <strong>Información:</strong> Revisa tus datos personales antes de guardar los cambios.
+          </app-alert>
+        </div>
+      </div>
+
+      <div class="p-style-guide__demo">
+        <h3 class="p-style-guide__demo-titulo">Alertas desechables</h3>
+        <p class="p-style-guide__descripcion">
+          Las alertas pueden ser cerradas manualmente con el botón X cuando son dismissible.
+        </p>
+        <div class="p-style-guide__grupo-alertas">
+          <app-alert type="success" [dismissible]="true">
+            Mensaje de éxito con botón de cierre
+          </app-alert>
+          <app-alert type="warning" [dismissible]="true">
+            Advertencia con botón de cierre
+          </app-alert>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+          SECCIÓN: TOASTS
+          =================================================================== -->
     <section class="p-style-guide__seccion" aria-labelledby="titulo-toasts">
       <div class="p-style-guide__seccion-encabezado">
         <h2 id="titulo-toasts" class="p-style-guide__subtitulo">Toasts</h2>

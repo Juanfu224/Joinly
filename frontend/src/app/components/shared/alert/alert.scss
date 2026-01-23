@@ -1,0 +1,90 @@
+@use '../../../../styles/01-tools/mixins' as *;
+
+// ==========================================================================
+// COMPONENTE: ALERT
+// ==========================================================================
+// Mensajes de alerta estáticos para feedback inline.
+// Diferencia con Toasts: estos son estáticos en la página,
+// mientras que los toasts son temporales en esquina de pantalla.
+//
+// Soporta 4 tipos: success (verde), error (rojo), warning (naranja), info (azul)
+// Opción de botón de cierre (dismissible)
+
+.c-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espaciado-2);
+  padding: var(--espaciado-3);
+  border-radius: var(--radio-medio);
+  border: var(--borde-delgado) solid;
+  background-color: var(--bg-primary);
+  transition: background-color var(--duracion-base) var(--transicion-estandar),
+              border-color var(--duracion-base) var(--transicion-estandar);
+
+  // ==========================================================================
+  // ELEMENTOS BEM
+  // ==========================================================================
+
+  &__icon {
+    flex-shrink: 0;
+    margin-top: 2px; // Alineación con primera línea de texto
+  }
+
+  &__content {
+    flex: 1;
+    min-inline-size: 0;
+    color: var(--text-primary);
+  }
+
+  &__close {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem; // 20px
+    height: 1.25rem;
+    padding: 0;
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    opacity: 0.7;
+    @include transicion();
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &:focus {
+      @include foco-visible();
+    }
+  }
+
+  // ==========================================================================
+  // MODIFICADORES (TIPOS DE ALERTA)
+  // ==========================================================================
+
+  &--success {
+    border-color: var(--color-exito);
+    background-color: var(--color-exito);
+    color: var(--color-blanco);
+  }
+
+  &--error {
+    border-color: var(--color-error);
+    background-color: var(--color-error);
+    color: var(--color-blanco);
+  }
+
+  &--warning {
+    border-color: var(--color-advertencia);
+    background-color: var(--color-advertencia);
+    color: var(--text-primary);
+  }
+
+  &--info {
+    border-color: var(--color-informacion);
+    background-color: var(--color-informacion);
+    color: var(--color-blanco);
+  }
+}

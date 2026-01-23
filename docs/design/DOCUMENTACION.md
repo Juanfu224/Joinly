@@ -5162,6 +5162,627 @@ import { ButtonComponent, ModalComponent, TabsComponent } from './components/sha
 | **ThemeToggle** | `<app-theme-toggle>` | Interruptor de tema claro/oscuro |
 | **Tooltip** | `[appTooltip]` | Directiva para tooltips informativos |
 
+### 3.1 Componentes Implementados
+
+Esta sección documenta TODOS los componentes UI implementados en el sistema de diseño de Joinly, incluyendo sus variantes, tamaños, estados y ejemplos de uso.
+
+#### 3.1.1 Botones (ButtonComponent)
+
+**Propósito:** Acciones principales, secundarias y terciarias de la aplicación.
+
+**Variantes:**
+| Variante | Color | Uso |
+|---------|-------|-----|
+| `primary` | Naranja (#F97316) | Acciones principales (crear, guardar) |
+| `purple` | Morado (#8B5CF6) | Acciones de autenticación (registrar, login) |
+| `blue` | Azul (#3B82F6) | Acciones informativas (ver detalles, info) |
+| `yellow` | Amarillo (#F59E0B) | Advertencias (eliminar, acciones de riesgo) |
+| `secondary` | Transparente con borde | Acciones secundarias (cancelar, regresar) |
+| `ghost` | Transparente sin borde | Acciones sutiles (editar, configuración) |
+
+**Tamaños:**
+| Tamaño | Altura | Texto | Uso |
+|--------|--------|-------|-----|
+| `xs` | 24px | 8px | Botones muy pequeños (iconos) |
+| `sm` | 32px | 12px | Botones pequeños (tablas, listas) |
+| `md` | 40px | 14px | Tamaño por defecto (formularios, cards) |
+| `lg` | 48px | 16px | Botones grandes (hero sections, acciones principales) |
+| `xl` | 64px | 24px | Botones muy grandes (landing pages, CTAs) |
+
+**Estados:**
+| Estado | Descripción |
+|--------|-------------|
+| `:hover` | Cambio de color y elevación (sombra) |
+| `:focus` | Outline visible para navegación con teclado (WCAG) |
+| `:active` | Presión visual al hacer clic (transform) |
+| `[disabled]` | Opacidad reducida, cursor not-allowed |
+| `--loading` | Muestra spinner y deshabilita el botón |
+
+**Ejemplo:**
+```html
+<!-- Botón básico -->
+<app-button>Botón</app-button>
+
+<!-- Botón con variantes y tamaños -->
+<app-button variant="primary" size="lg" leftIcon="add" rightIcon="arrow-right">
+  Crear grupo
+</app-button>
+
+<!-- Botón deshabilitado -->
+<app-button variant="secondary" [disabled]="true">
+  Cancelar
+</app-button>
+
+<!-- Botón en estado de carga -->
+<app-button variant="primary" [loading]="true">
+  Procesando...
+</app-button>
+```
+
+#### 3.1.2 Tarjetas (CardComponent)
+
+**Propósito:** Contenedores de contenido con múltiples variantes de presentación.
+
+**Variantes:**
+| Variante | Descripción | Uso |
+|---------|-------------|-----|
+| `feature` | Vertical con icono, título y descripción | Ventajas, características |
+| `action` | Horizontal con icono para acciones rápidas | Dashboard, shortcuts |
+| `info` | Horizontal compacta para datos resumidos | Estadísticas, detalles |
+| `list` | Con metadata, badge y botón de acción | Listas de items (suscripciones) |
+| `content` | Contenedor para contenido libre | Contenido personalizado |
+
+**Modificadores:**
+| Modificador | Descripción |
+|-------------|-------------|
+| `--no-hover` | Desactiva efecto hover (para cards no interactivas) |
+| `--fondo-gris` | Aplica fondo gris en lugar de blanco |
+
+**Estados:**
+| Estado | Descripción |
+|--------|-------------|
+| `:hover` | Elevación con sombra y translate (excepto --no-hover) |
+
+**Ejemplo:**
+```html
+<!-- Card de característica -->
+<app-card variant="feature">
+  <div slot="icon" class="c-card-icon c-card-icon--naranja">
+    <app-icon name="users" />
+  </div>
+  <h4 slot="title">Grupos familiares</h4>
+  <p slot="description">
+    Crea unidades familiares y gestiona todas tus suscripciones
+  </p>
+</app-card>
+
+<!-- Card de acción -->
+<app-card variant="action">
+  <div slot="icon" class="c-card-icon c-card-icon--azul">
+    <app-icon name="home" />
+  </div>
+  <h4 slot="title">Unirse a un grupo</h4>
+  <p slot="description">Usa un código de 12 dígitos</p>
+</app-card>
+
+<!-- Card de información -->
+<app-card variant="info">
+  <div slot="icon" class="c-card-icon c-card-icon--morado">
+    <app-icon name="users" />
+  </div>
+  <h4 slot="title">Plazas disponibles</h4>
+  <p slot="value">3 plazas</p>
+</app-card>
+
+<!-- Card de lista -->
+<app-card variant="list">
+  <h4 slot="title">Netflix Premium</h4>
+  <p slot="metadata">4,25€ · Renueva el 15/01/26</p>
+  <span slot="badge">
+    <app-icon name="user" size="sm" />
+    4
+  </span>
+  <app-button slot="action" variant="purple" size="sm">
+    Disponible
+  </app-button>
+</app-card>
+```
+
+#### 3.1.3 Form Textarea (FormTextareaComponent)
+
+**Propósito:** Área de texto multilínea para comentarios, descripciones y contenido largo.
+
+**Variantes:** No aplica (único tipo)
+
+**Tamaños:** Configurable via input `[rows]` (default: 4)
+
+**Estados:**
+| Estado | Descripción |
+|--------|-------------|
+| `:focus` | Borde color principal y sombra |
+| `[disabled]` | Opacidad reducida, cursor not-allowed |
+| `ng-touched.ng-invalid` | Borde rojo (error de validación) |
+| `ng-touched.ng-valid` | Borde verde (validación correcta) |
+| `ng-pending` | Borde punteado (validación asíncrona en curso) |
+
+**Ejemplo:**
+```html
+<app-form-textarea
+  label="Descripción"
+  placeholder="Escribe una descripción detallada..."
+  [rows]="6"
+  helpText="Máximo 500 caracteres"
+  [required]="true"
+  errorMessage="La descripción es requerida"
+/>
+```
+
+#### 3.1.4 Form Select (FormSelectComponent)
+
+**Propósito:** Selector desplegable para elegir una opción entre múltiples.
+
+**Variantes:** No aplica (único tipo)
+
+**Tamaños:** Fijo (44px altura mínimo táctil)
+
+**Estados:**
+| Estado | Descripción |
+|--------|-------------|
+| `:focus` | Borde color principal y sombra |
+| `[disabled]` | Opacidad reducida |
+| `ng-touched.ng-invalid` | Borde rojo |
+| `ng-touched.ng-valid` | Borde verde |
+| `ng-pending` | Borde punteado |
+
+**Ejemplo:**
+```html
+<app-form-select
+  label="Frecuencia de pago"
+  [options]="[
+    { value: 'mensual', label: 'Mensual' },
+    { value: 'trimestral', label: 'Trimestral' },
+    { value: 'anual', label: 'Anual', disabled: true }
+  ]"
+  helpText="Puedes cambiar esto más tarde"
+  [required]="true"
+  errorMessage="Selecciona una frecuencia"
+/>
+```
+
+#### 3.1.5 Form Checkbox (FormCheckboxComponent)
+
+**Propósito:** Casilla de verificación para opciones binarias (true/false).
+
+**Variantes:** No aplica (único tipo)
+
+**Tamaños:** Fijo (20px checkbox, 44px altura mínima táctil)
+
+**Estados:**
+| Estado | Descripción |
+|--------|-------------|
+| `:checked` | Fondo color principal con checkmark blanco |
+| `:focus` | Borde color principal y sombra |
+| `[disabled]` | Opacidad reducida |
+| `ng-touched.ng-invalid` | Borde rojo |
+| `ng-touched.ng-valid:checked` | Borde verde, fondo verde |
+
+**Ejemplo:**
+```html
+<app-form-checkbox
+  label="Acepto recibir notificaciones por email"
+  helpText="Te enviaremos ofertas y actualizaciones"
+/>
+
+<app-form-checkbox
+  label="Acepto los términos y condiciones"
+  [required]="true"
+  errorMessage="Debes aceptar los términos para continuar"
+/>
+```
+
+#### 3.1.6 Form Radio Group (FormRadioGroupComponent)
+
+**Propósito:** Grupo de opciones excluyentes donde solo se puede seleccionar una.
+
+**Variantes:** `[inline]` para disposición horizontal
+
+**Tamaños:** Fijo (20px radio, 44px altura mínima táctil)
+
+**Estados:**
+| Estado | Descripción |
+|--------|-------------|
+| `:checked` | Borde color principal |
+| `:focus` | Borde color principal y sombra |
+| `[disabled]` | Opacidad reducida |
+| `ng-touched.ng-invalid` | Opciones con error |
+
+**Ejemplo:**
+```html
+<!-- Radio group vertical -->
+<app-form-radio-group
+  label="Método de pago"
+  [options]="[
+    { value: 'tarjeta', label: 'Tarjeta de crédito' },
+    { value: 'paypal', label: 'PayPal' },
+    { value: 'transferencia', label: 'Transferencia bancaria' }
+  ]"
+  name="metodo-pago"
+  [required]="true"
+  errorMessage="Selecciona un método de pago"
+/>
+
+<!-- Radio group inline (horizontal) -->
+<app-form-radio-group
+  label="¿Deseas factura?"
+  [options]="[
+    { value: 'si', label: 'Sí' },
+    { value: 'no', label: 'No' }
+  ]"
+  name="factura"
+  [inline]="true"
+/>
+```
+
+#### 3.1.7 Breadcrumbs (BreadcrumbsComponent)
+
+**Propósito:** Navegación jerárquica para mostrar la ubicación actual.
+
+**Variantes:** No aplica (único tipo)
+
+**Tamaños:** Fijo
+
+**Estados:** `--activo` para item actual
+
+**Ejemplo:**
+```html
+<app-breadcrumbs [items]="[
+  { label: 'Inicio', url: '/' },
+  { label: 'Grupos', url: '/grupos' },
+  { label: 'Familia López' }
+]" />
+```
+
+#### 3.1.8 Tabs (TabsComponent)
+
+**Propósito:** Organizar contenido en pestañas intercambiables.
+
+**Variantes:** No aplica (único tipo)
+
+**Tamaños:** Fijo (44px altura de pestañas)
+
+**Estados:**
+| Estado | Descripción |
+|--------|-------------|
+| `:focus-visible` | Outline para navegación teclado |
+| `--active` | Pestaña activa con indicador visual |
+
+**Ejemplo:**
+```html
+<app-tabs [activeIndex]="0" (tabChange)="onTabChange($event)">
+  <app-tab title="General">
+    Contenido general
+  </app-tab>
+  <app-tab title="Avanzado">
+    Contenido avanzado
+  </app-tab>
+  <app-tab title="Configuración">
+    Configuración
+  </app-tab>
+</app-tabs>
+```
+
+#### 3.1.9 Modal (ModalComponent)
+
+**Propósito:** Ventana emergente con foco atrapado para confirmaciones y formularios.
+
+**Variantes:** Configurable via ModalService
+
+**Tamaños:** Ancho máximo 600px
+
+**Estados:**
+| Estado | Descripción |
+|--------|-------------|
+| `[data-state="open"]` | Visible con overlay |
+| `--closing` | Animación de salida |
+| `--strict` | No cierra con ESC ni overlay |
+
+**Ejemplo:**
+```typescript
+this.modalService.open({
+  title: '¿Eliminar suscripción?',
+  content: 'Esta acción no se puede deshacer. La suscripción será eliminada permanentemente.',
+  confirmText: 'Eliminar',
+  cancelText: 'Cancelar',
+  onConfirm: () => this.deleteSubscription(),
+  onCancel: () => console.log('Cancelado'),
+  closeOnEscape: true,
+  closeOnOverlayClick: true,
+});
+```
+
+#### 3.1.10 Toast (ToastComponent)
+
+**Propósito:** Notificaciones temporales en esquina de pantalla (feedback de acciones).
+
+**Variantes:** `success`, `error`, `warning`, `info`
+
+**Tamaños:** Fijo (ancho máximo 384px)
+
+**Estados:**
+| Estado | Descripción |
+|--------|-------------|
+| `--closing` | Animación de salida |
+
+**Ejemplo:**
+```typescript
+this.toastService.success('¡Operación completada!');
+this.toastService.error('Ha ocurrido un error');
+this.toastService.warning('Tu suscripción expira pronto');
+this.toastService.info('Se ha enviado un código a tu email');
+```
+
+#### 3.1.11 Alerta (AlertComponent)
+
+**Propósito:** Mensaje de alerta estático inline para feedback contextual en páginas y formularios.
+
+**Variantes:** `success`, `error`, `warning`, `info`
+
+**Tamaños:** Fijo
+
+**Estados:** Sin estados especiales (componente estático)
+
+**Diferencia con Toasts:**
+| Alerta | Toast |
+|--------|-------|
+| Estático en la página | Temporal en esquina |
+| Permanece hasta cerrar | Desaparece automáticamente |
+| Para feedback contextual | Para notificaciones de sistema |
+
+**Ejemplo:**
+```html
+<!-- Alertas en página -->
+<app-alert type="success">
+  <strong>¡Registro completado!</strong> Bienvenido a Joinly.
+</app-alert>
+
+<app-alert type="error" [dismissible]="true">
+  <strong>Error:</strong> El email ya está registrado.
+</app-alert>
+
+<app-alert type="warning">
+  <strong>Advertencia:</strong> Tu sesión expirará en 5 minutos.
+</app-alert>
+
+<app-alert type="info">
+  <strong>Información:</strong> Revisa tus datos antes de continuar.
+</app-alert>
+```
+
+### 3.2 Nomenclatura y Metodología
+
+En Joinly utilizamos la metodología **BEM (Block, Element, Modifier)** para todas las clases CSS. Esta convención proporciona una estructura clara, predecible y escalable.
+
+#### 3.2.1 Conceptos BEM
+
+**Block**: Componente independiente y reutilizable que puede existir por sí solo.
+- Sintaxis: `.bloque`
+- Ejemplo: `.c-button`, `.c-card`, `.c-form-textarea`
+
+**Element**: Parte de un bloque que no tiene significado fuera de su contexto.
+- Sintaxis: `.bloque__elemento`
+- Ejemplo: `.c-button__icon`, `.c-card__titulo`, `.c-form-textarea__label`
+
+**Modifier**: Variante de apariencia o estado de un bloque o elemento.
+- Sintaxis: `.bloque--modificador` o `.bloque__elemento--modificador`
+- Ejemplo: `.c-button--primary`, `.c-card--feature`, `.c-form-textarea__label--required`
+
+**Estado CSS**: Pseudoclases y atributos que representan el estado actual.
+- Ejemplos: `:hover`, `:focus`, `:active`, `[disabled]`, `[aria-invalid="true"]`
+
+#### 3.2.2 Estrategia de Nomenclatura
+
+**Prefijo `c-` (Component):**
+Todos los bloques de componentes llevan el prefijo `c-` para diferenciarlos de utilidades y elementos base:
+```scss
+.c-button { }       // Componente button
+.c-card { }        // Componente card
+.c-form-input { }   // Componente de formulario
+```
+
+**Modificadores vs Estados:**
+
+- **Modificadores** (BEM `--`): Variantes fijas del componente que el desarrollador controla:
+  ```scss
+  .c-button--primary { }   // Variante de color
+  .c-button--lg { }        // Variante de tamaño
+  .c-card--feature { }     // Variante de layout
+  ```
+
+- **Estados CSS** (`:`, `[attr]`): Estados interactivos que el navegador controla:
+  ```scss
+  .c-button:hover { }            // Mouse encima
+  .c-button:focus { }            // Teclado focus
+  .c-button:active { }           // Click presionado
+  .c-button[disabled] { }        // Deshabilitado
+  ```
+
+**Cuándo usar cada uno:**
+- Usa **modificadores** (`--`) cuando: El estado es controlado por inputs del componente (`variant="primary"`, `size="lg"`)
+- Usa **estados CSS** (`:`, `[attr]`) cuando: El estado es controlado por interacción del usuario o validación
+
+#### 3.2.3 Ejemplos Reales del Proyecto
+
+**Ejemplo 1: Botón (ButtonComponent)**
+
+```scss
+// Bloque base con estilos comunes
+.c-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+// Elemento: Icono izquierdo
+.c-button__icon {
+  display: block;
+  flex-shrink: 0;
+}
+
+// Modificador: Variante primaria
+.c-button--primary {
+  background-color: #f97316;
+  color: #ffffff;
+}
+
+// Modificador: Tamaño grande
+.c-button--lg {
+  height: 48px;
+  font-size: 16px;
+}
+
+// Estado CSS: Hover
+.c-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+// Estado CSS: Disabled
+.c-button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+```
+
+**HTML correspondiente:**
+```html
+<button class="c-button c-button--primary c-button--lg">
+  <span class="c-button__icon"><svg>...</svg></span>
+  <span>Botón grande</span>
+</button>
+```
+
+**Ejemplo 2: Card (CardComponent)**
+
+```scss
+// Bloque base
+.c-card {
+  display: flex;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+// Elemento: Título
+.c-card__titulo {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+}
+
+// Modificador: Variante feature
+.c-card--feature {
+  flex-direction: column;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+}
+
+// Estado CSS: Hover
+.c-card:not(.c-card--no-hover):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 42px rgba(0,0,0,0.14);
+}
+```
+
+**HTML correspondiente:**
+```html
+<article class="c-card c-card--feature">
+  <h4 class="c-card__titulo">Grupos familiares</h4>
+  <p class="c-card__descripcion">Crea unidades familiares...</p>
+</article>
+```
+
+#### 3.2.4 Beneficios de BEM en Joinly
+
+1. **Claridad**: Una clase como `.c-button--primary` comunica instantáneamente qué hace
+2. **Escalabilidad**: Podemos añadir nuevas variantes sin romper existentes
+3. **Colaboración**: Múltiples desarrolladores pueden trabajar sin conflictos
+4. **Mantenibilidad**: Localizar y modificar estilos es más rápido y seguro
+5. **Predecibilidad**: La estructura sigue un patrón consistente en todo el proyecto
+
+### 3.3 Style Guide
+
+La página `/style-guide` es una guía visual interactiva que muestra TODOS los componentes del sistema de diseño con sus variantes, tamaños y estados. Sirve como:
+
+1. **Documentación visual**: Referencia rápida para desarrolladores
+2. **Testing**: Verificar que los componentes se renderizan correctamente
+3. **Validación**: Asegurar que todos los estados funcionan como esperado
+4. **Onboarding**: Guía para nuevos desarrolladores
+
+#### 3.3.1 Secciones del Style Guide
+
+El Style Guide está organizado por categorías de componentes:
+
+**Secciones principales:**
+1. **Comunicación entre Componentes**: Demostración de comunicación reactiva con componentes sender y receiver
+2. **Tooltips**: Sistema de tooltips informativos con posicionamiento dinámico
+3. **Modales**: Sistema de ventanas emergentes con focus trap
+4. **Theme Switcher**: Sistema de cambio de tema claro/oscuro
+5. **Accordion**: Contenido expandible con múltiples items
+6. **Tarjetas**: Todas las variantes (feature, action, info, list, content)
+7. **Botones**: 5 variantes × 5 tamaños con iconos
+8. **Alertas**: 4 tipos (success, error, warning, info) con opción dismissible
+9. **Toasts**: Notificaciones temporales con animaciones
+10. **Formularios**: Todos los inputs (text, textarea, select, checkbox, radio)
+11. **Navegación**: Breadcrumbs y tabs
+12. **Logos**: Sistema de logos con variantes y tamaños
+13. **Iconos**: +60 iconos organizados por categoría
+
+#### 3.3.2 Capturas de Pantalla
+
+![Style Guide - Sección de Comunicación entre Componentes](images/style-guide-comunicacion.png)
+
+La sección de comunicación muestra el sistema reactivo con componentes sender y receiver que demuestran el uso de BehaviorSubject, Signals y comunicación entre componentes hermanos.
+
+![Style Guide - Sección de Botones](images/style-guide-botones.png)
+
+La sección de botones muestra las 5 variantes (primary, purple, blue, yellow, secondary, ghost) con los 5 tamaños (xs, sm, md, lg, xl). También incluye ejemplos con iconos y estados (normal, disabled, loading).
+
+![Style Guide - Sección de Tarjetas](images/style-guide-tarjetas.png)
+
+La sección de tarjetas muestra las 5 variantes (feature, action, info, list, content) con diferentes configuraciones de slots. Incluye tarjetas de grupos, suscripciones, miembros y estadísticas.
+
+![Style Guide - Sección de Formularios](images/style-guide-formularios.png)
+
+La sección de formularios muestra todos los inputs (text, textarea, select, checkbox, radio group) con sus estados de validación (normal, con ayuda, con error, requerido, disabled, valid).
+
+![Style Guide - Sección de Navegación](images/style-guide-navegacion.png)
+
+La sección de navegación muestra breadcrumbs con diferentes niveles de profundidad y el sistema de tabs con navegación por teclado e indicador visual deslizante.
+
+![Style Guide - Sección de Feedback](images/style-guide-feedback.png)
+
+La sección de feedback muestra alertas estáticas inline con los 4 tipos (success, error, warning, info) y toasts temporales con animaciones de entrada/salida.
+
+#### 3.3.3 Componentes Especializados
+
+El Style Guide también muestra componentes especializados del proyecto:
+
+- **Logos**: 6 variantes de color (naranja, morado, azul, amarillo, claro-naranja, claro-morado) y 3 tamaños (sm, md, lg)
+- **Avatares**: Avatares con iniciales o imagen, 4 tamaños disponibles
+- **Formularios completos**: Login, Registro, Crear Grupo, Unirse a Grupo, Nueva Suscripción con validación completa
+
+#### 3.3.4 Acceso al Style Guide
+
+```bash
+# Modo desarrollo
+ng serve
+# Navegar a: http://localhost:4200/style-guide
+```
+
+O desde cualquier página de la aplicación:
+- Header → "Guía de Estilos" (menú móvil)
+- Navegación directa: `/style-guide`
+
 ### 3.3 Ejemplos de Uso
 
 #### Modal con confirmación

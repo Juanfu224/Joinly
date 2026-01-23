@@ -1,0 +1,23 @@
+<div [class]="'c-alert c-alert--' + type()" [id]="computedId()">
+  <!-- Icono de la alerta -->
+  <div class="c-alert__icon">
+    <app-icon [name]="icon()" size="sm" />
+  </div>
+
+  <!-- Contenido de la alerta -->
+  <div class="c-alert__content">
+    <ng-content />
+  </div>
+
+  <!-- Botón de cerrar (opcional) -->
+  @if (dismissible()) {
+    <button
+      class="c-alert__close"
+      type="button"
+      (click)="onClose()"
+      [attr.aria-label]="'Cerrar alerta'"
+    >
+      <app-icon name="close" size="sm" />
+    </button>
+  }
+</div>
