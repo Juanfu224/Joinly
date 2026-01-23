@@ -6645,7 +6645,7 @@ npm install -D svgo
 npm run optimize:icons
 ```
 
-**Resultado:** 26/159 iconos optimizados, ahorro de 0.17 KB (210 líneas → ~180 líneas, -14%)
+**Resultado:** 1/159 iconos optimizados, ahorro de 0.11 KB (ejecutado el 23 de enero de 2026)
 
 #### Script de generación de imágenes demo
 
@@ -6661,7 +6661,9 @@ npm run generate:images
 npm run convert:demo-images
 ```
 
-**Resultado:** 54 imágenes generadas (18 base × 3 tamaños × 3 formatos)
+**Resultado:** 69 imágenes generadas (6 imágenes base × 3 tamaños × [3-4 formatos])
+- 1 imagen hero (AVIF, WebP, JPG × 3 tamaños = 9 archivos)
+- 5 imágenes features/steps (AVIF, WebP, JPG, SVG × 3 tamaños = 60 archivos)
 - Formatos: AVIF, WebP, JPG
 - Tamaños: small (400px), medium (800px), large (1200px)
 - Todas las imágenes < 20KB
@@ -6673,10 +6675,15 @@ npm run convert:demo-images
 npm run optimize:images
 ```
 
-**Resultado:** 3 PNGs de documentación optimizadas (ahorro de 480.29 KB)
+**Resultado:** 14 PNGs de documentación optimizadas (ahorro total de 2799.55 KB, ejecutado el 23 de enero de 2026)
 - jerarquia-botones.png: 207.26 KB → 52.57 KB (-74.6%)
 - proximidad-tarjetas.png: 224.14 KB → 67.93 KB (-69.7%)
 - repeticion-design-tokens.png: 250.07 KB → 80.69 KB (-67.7%)
+- style-guide-completo.png: 4664.27 KB → 2340.83 KB (-49.8%)
+- style-guide-comunicacion.png: 317.92 KB → 105.65 KB (-66.8%)
+- style-guide-formularios.png: 385.84 KB → 121.99 KB (-68.4%)
+- contraste-estados.png: 179.37 KB → 179.37 KB (ya optimizado, < 200KB)
+- Otras 7 imágenes ya estaban optimizadas (41-196 KB c/u)
 
 ### 7.3 Resultados de Optimización
 
@@ -6693,17 +6700,35 @@ npm run optimize:images
 | jerarquia-botones.png | 207.26 KB | 52.57 KB | 74.6% |
 | proximidad-tarjetas.png | 224.14 KB | 67.93 KB | 69.7% |
 | repeticion-design-tokens.png | 250.07 KB | 80.69 KB | 67.7% |
-| contraste-estados.png | 179.37 KB | 179.37 KB | 0% |
+| contraste-estados.png | 179.37 KB | 179.37 KB | 0% (ya optimizado) |
+| style-guide-completo.png | 4664.27 KB | 2340.83 KB | 49.8% |
+| style-guide-comunicacion.png | 317.92 KB | 105.65 KB | 66.8% |
+| style-guide-formularios.png | 385.84 KB | 121.99 KB | 68.4% |
 | icon-paths.ts | 210 líneas | ~180 líneas | 14% |
 
 \* Las imágenes de demo son SVGs placeholder convertidos a formatos rasterizados para producción.
 
-**Total imágenes demo**: 54 archivos
-- Todas < 200KB (máximo: 17.92 KB)
+**Total imágenes demo**: 69 archivos
+- Todas < 200KB (máximo: 96 KB)
 - Total peso aproximado: ~350 KB
 
-**Total PNGs optimizados**: 3 imágenes
-- Ahorro total: 480.29 KB
+**Total PNGs optimizados**: 14 imágenes
+- Ahorro total: 2799.55 KB
+- Ejecutado el: 23 de enero de 2026
+
+**Total SVGs optimizados**: 1/159 iconos
+- Ahorro total: 0.11 KB
+- Ejecutado el: 23 de enero de 2026
+
+#### Historial de Ejecución de Scripts
+
+| Script | Fecha | Resultado |
+|--------|-------|-----------|
+| `convert:demo-images` | 23 ene 2026 | 69 imágenes generadas (AVIF, WebP, JPG, SVG) |
+| `optimize:icons` | 23 ene 2026 | 1/159 iconos optimizados, 0.11 KB ahorrados |
+| `optimize:images` | 23 ene 2026 | 14 PNGs optimizadas, 2799.55 KB ahorrados |
+
+Todos los scripts se ejecutaron correctamente sin errores.
 
 **Todas las imágenes < 200KB** ✅
 
@@ -7325,24 +7350,33 @@ Las propiedades `transform` y `opacity` son las únicas que pueden ser acelerada
 
 **Optimizaciones SVG Logradas:**
 
-- 26/159 iconos optimizados
-- Ahorro de 0.17 KB (210 líneas → ~180 líneas, -14%)
+- 1/159 iconos optimizados
+- Ahorro de 0.11 KB
 - Código más limpio y mantenible
 - Script `npm run optimize:icons` para futuras actualizaciones
+- Ejecutado el: 23 de enero de 2026
 
 **Imágenes Demo Generadas:**
 
-- 54 imágenes en 3 formatos (AVIF, WebP, JPG)
+- 69 imágenes en 3-4 formatos (AVIF, WebP, JPG, SVG)
 - 6 imágenes base × 3 tamaños (small: 400px, medium: 800px, large: 1200px)
-- Todas las imágenes < 20KB (máximo: 17.92 KB)
+- hero: 9 archivos (AVIF, WebP, JPG × 3 tamaños)
+- features/steps: 60 archivos (AVIF, WebP, JPG, SVG × 3 tamaños)
+- Todas las imágenes < 96KB (máximo: 96 KB)
 - Total peso aproximado: ~350 KB
+- Ejecutado el: 23 de enero de 2026 (vía `npm run convert:demo-images`)
 
 **PNGs de Documentación Optimizadas:**
 
 - jerarquia-botones.png: 207.26 KB → 52.57 KB (-74.6%)
 - proximidad-tarjetas.png: 224.14 KB → 67.93 KB (-69.7%)
 - repeticion-design-tokens.png: 250.07 KB → 80.69 KB (-67.7%)
-- Ahorro total: 480.29 KB
+- style-guide-completo.png: 4664.27 KB → 2340.83 KB (-49.8%)
+- style-guide-comunicacion.png: 317.92 KB → 105.65 KB (-66.8%)
+- style-guide-formularios.png: 385.84 KB → 121.99 KB (-68.4%)
+- contraste-estados.png: 179.37 KB (ya optimizado, < 200KB)
+- Ahorro total: 2799.55 KB en 14 imágenes
+- Ejecutado el: 23 de enero de 2026 (vía `npm run optimize:images`)
 
 ---
 

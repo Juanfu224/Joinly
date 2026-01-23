@@ -64,7 +64,7 @@ export const ICON_PATHS = {
   'video-camera': `<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m23 7-7 5 7 5zm-7-2H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1"/>`,
 
   // ========== Dispositivos ==========
-  'mobile': `<rect width="14" height="20" x="5" y="2" fill="none" stroke="currentColor" stroke-width="2" rx="2" ry="2"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18"/>`,
+  'mobile': `<rect width="14" height="20" x="5" y="2" fill="none" stroke="currentColor" stroke-width="2" rx="2" ry="2"/>`,
   'laptop': `<rect width="20" height="14" x="2" y="3" fill="none" stroke="currentColor" stroke-width="2" rx="2" ry="2"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 17h20"/>`,
   'desktop': `<rect width="20" height="14" x="2" y="3" fill="none" stroke="currentColor" stroke-width="2" rx="2" ry="2"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8m-4-4v4"/>`,
 
