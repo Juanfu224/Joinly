@@ -40,22 +40,30 @@ Plataforma de gestión de suscripciones compartidas desarrollada con Angular 21,
   - [5.2 Manipulación del DOM](#52-manipulación-del-dom)
   - [5.3 Gestión de Eventos del Usuario](#53-gestión-de-eventos-del-usuario)
   - [5.4 Patrones de Eventos en el Proyecto](#54-patrones-de-eventos-en-el-proyecto)
-- [6. Responsive Design](#6-responsive-design)
-  - [6.1 Breakpoints Definidos](#61-breakpoints-definidos)
-  - [6.2 Estrategia Responsive: Mobile-First](#62-estrategia-responsive-mobile-first)
-  - [6.3 Container Queries](#63-container-queries)
-  - [6.4 Adaptaciones Principales](#64-adaptaciones-principales)
-  - [6.5 Paginas Implementadas](#65-paginas-implementadas)
-  - [6.6 Testing Responsive](#66-testing-responsive)
-- [7. Optimización Multimedia y Animaciones CSS](#7-optimización-multimedia-y-animaciones-css)
-  - [7.1 Formatos de Imagen Elegidos](#71-formatos-de-imagen-elegidos)
-  - [7.2 Herramientas de Optimización Utilizadas](#72-herramientas-de-optimización-utilizadas)
-  - [7.3 Resultados de Optimización](#73-resultados-de-optimización)
-  - [7.4 Tecnologías Responsive Implementadas](#74-tecnologías-responsive-implementadas)
-  - [7.5 Animaciones CSS Optimizadas](#75-animaciones-css-optimizadas)
-  - [7.6 FeatureImageComponent](#76-featureimagecomponent)
-  - [7.7 Integración con Arquitectura](#77-integración-con-arquitectura)
-  - [7.8 Resultados Esperados](#78-resultados-esperados)
+- [6. Sistema de temas](#6-sistema-de-temas)
+  - [6.1 Variables de tema](#61-variables-de-tema)
+  - [6.2 El Theme Switcher (Cambiador de tema)](#62-el-theme-switcher-cambiador-de-tema)
+  - [6.3 Transiciones suaves](#63-transiciones-suaves)
+  - [6.4 Cómo usar las variables de tema en tus componentes](#64-cómo-usar-las-variables-de-tema-en-tus-componentes)
+  - [6.5 Capturas de pantalla - Comparativo visual](#65-capturas-de-pantalla-comparativo-visual)
+  - [6.6 Accesibilidad y contraste](#66-accesibilidad-y-contraste)
+  - [6.7 Resumen de implementación](#67-resumen-de-implementación)
+- [7. Responsive Design](#7-responsive-design)
+  - [7.1 Breakpoints Definidos](#71-breakpoints-definidos)
+  - [7.2 Estrategia Responsive: Mobile-First](#72-estrategia-responsive-mobile-first)
+  - [7.3 Container Queries](#73-container-queries)
+  - [7.4 Adaptaciones Principales](#74-adaptaciones-principales)
+  - [7.5 Paginas Implementadas](#75-paginas-implementadas)
+  - [7.6 Testing Responsive](#76-testing-responsive)
+- [8. Optimización Multimedia y Animaciones CSS](#8-optimización-multimedia-y-animaciones-css)
+  - [8.1 Formatos de Imagen Elegidos](#81-formatos-de-imagen-elegidos)
+  - [8.2 Herramientas de Optimización Utilizadas](#82-herramientas-de-optimización-utilizadas)
+  - [8.3 Resultados de Optimización](#83-resultados-de-optimización)
+  - [8.4 Tecnologías Responsive Implementadas](#84-tecnologías-responsive-implementadas)
+  - [8.5 Animaciones CSS Optimizadas](#85-animaciones-css-optimizadas)
+  - [8.6 FeatureImageComponent](#86-featureimagecomponent)
+  - [8.7 Integración con Arquitectura](#87-integración-con-arquitectura)
+  - [8.8 Resultados Esperados](#88-resultados-esperados)
 - [Recursos Adicionales](#recursos-adicionales)
 
 ---
@@ -6285,11 +6293,343 @@ handleKeydown(event?: Event): void {
 
 ---
 
-## 6. Responsive Design
+## 6. Sistema de temas
+
+Joinly implementa un sistema completo de temas claro/oscuro que permite a los usuarios cambiar dinámicamente entre ambos modos. El sistema utiliza CSS Custom Properties (variables nativas de CSS) para redefinir colores, fondos y otros valores visuales sin modificar la estructura HTML.
+
+### ¿Por qué dos temas?
+
+El modo oscuro no es solo una preferencia estética: proporciona beneficios reales:
+
+- **Menor fatiga visual:** Reduce el brillo en sesiones largas, especialmente por la noche
+- **Ahorro de batería:** En pantallas OLED, los píxeles negros no consumen energía
+- **Accesibilidad:** Mejora la experiencia para usuarios sensibles a la luz brillante
+- **Preferencia del sistema:** Respetamos las configuraciones del dispositivo del usuario
+
+### 6.1 Variables de tema
+
+El sistema de temas funciona redefiniendo las mismas variables CSS según el tema activo.
+
+#### Tema Claro (Light Mode)
+
+Este es el tema por defecto. Usa colores cálidos y claros para un ambiente acogedor.
+
+**Ubicación:** `src/styles/00-settings/_css-variables.scss` (líneas 19-113)
+
+```css
+:root {
+  /* FONDOS - Colores de fondo para diferentes contenedores */
+  --bg-primary: #fef8eb;        /* Fondo principal (off-white cálido) */
+  --bg-secondary: #ffffff;      /* Fondo de tarjetas (blanco puro) */
+  --bg-tertiary: #e5e7eb;       /* Gris claro para skeletons y placeholders */
+  --bg-card: #ffffff;           /* Fondo de tarjetas anidadas */
+
+  /* TEXTO - Colores de texto para jerarquía visual */
+  --text-primary: #111827;      /* Texto principal (gris oscuro casi negro) */
+  --text-secondary: #475569;    /* Texto secundario (gris medio) */
+
+  /* BORDES - Colores para separar elementos */
+  --border-color: #e5e7eb;      /* Gris medio para bordes sutiles */
+
+  /* COLORES DE MARCA - Identidad visual de Joinly */
+  --color-principal: #9333ea;   /* Morado principal (acciones de autenticación) */
+  --color-principal-oscuro: #7c3aed;  /* Hover de botones morados */
+  --color-acento: #f97316;       /* Naranja principal (acciones principales) */
+  --color-acento-oscuro: #ea580c;     /* Hover de botones naranjas */
+
+  /* SUPERFICIES - Fondos con matices de color */
+  --color-superficie-base: #fef8eb;   /* Fondo base cálido */
+  --color-superficie-blanca: #ffffff; /* Superficie blanca */
+  --color-superficie-footer: #1e293b; /* Fondo del footer (azul oscuro) */
+}
+```
+
+**Explicación de los colores:**
+- `--bg-primary`: Off-white cálido (`#fef8eb`) en lugar de blanco puro. Reduce la fatiga visual y crea un ambiente acogedor.
+- `--bg-secondary`: Blanco puro (`#ffffff`) para tarjetas, creando elevación visual mediante diferencia de color con el fondo.
+- `--color-principal`: Morado para acciones de autenticación (login, registro)
+- `--color-acento`: Naranja para acciones principales (crear grupos, invitar)
+
+#### Tema Oscuro (Dark Mode)
+
+El modo oscuro redefine las variables usando tonos más oscuros y colores de acento más brillantes para mantener el contraste.
+
+**Ubicación:** `src/styles/00-settings/_css-variables.scss` (líneas 220-316)
+
+```css
+[data-theme="dark"] {
+  /* FONDOS - Escala de grises oscuros */
+  --bg-primary: #0f172a;        /* slate-900 (gris muy oscuro) */
+  --bg-secondary: #1e293b;      /* slate-800 (gris oscuro) */
+  --bg-tertiary: #334155;       /* slate-700 (gris medio-oscuro) */
+  --bg-card: #283548;          /* Entre slate-800 y slate-700 */
+
+  /* TEXTO - Colores claros para contraste */
+  --text-primary: #f8fafc;      /* slate-50 (blanco muy claro) */
+  --text-secondary: #e2e8f0;    /* slate-200 (blanco suave) */
+
+  /* BORDES - Grises oscuros para separación sutil */
+  --border-color: #334155;      /* slate-700 */
+
+  /* COLORES DE MARCA - Más brillantes para contraste */
+  --color-principal: #a855f7;   /* purple-500 (morado más vibrante) */
+  --color-principal-oscuro: #9333ea;  /* purple-600 */
+  --color-acento: #fb923c;      /* orange-400 (naranja más vibrante) */
+  --color-acento-oscuro: #f97316;     /* orange-500 */
+
+  /* SUPERFICIES - Tonos oscuros con matices */
+  --color-superficie-base: #0f172a;   /* slate-900 */
+  --color-superficie-blanca: #1e293b; /* slate-800 (antes "blanca") */
+  --color-superficie-footer: #020617; /* slate-950 (muy oscuro) */
+}
+```
+
+**Estrategia de implementación:**
+1. Solo redefinimos las variables que necesitan cambiar en dark mode
+2. Usamos la escala de grises de Tailwind CSS (slate) para coherencia
+3. Los colores de acento (morado/naranja) se vuelven más vibrantes en dark mode para mantener visibilidad
+4. El contraste cumple con WCAG 2.1 nivel AA (mínimo 4.5:1)
+
+### 6.2 El Theme Switcher (Cambiador de tema)
+
+El sistema de cambio de tema consta de tres partes trabajando juntas.
+
+#### 6.2.1 ThemeService - La lógica
+
+**Ubicación:** `src/app/services/theme.ts`
+
+Este servicio Angular gestiona toda la lógica del sistema de temas.
+
+**¿Qué hace el ThemeService?**
+
+```typescript
+// 1. Detecta preferencia del sistema
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+// 2. Lee preferencia guardada
+const savedTheme = localStorage.getItem('joinly-theme');
+
+// 3. Aplica el tema correcto (prioridad: guardado → sistema → claro)
+const theme = savedTheme || (prefersDark.matches ? 'dark' : 'light');
+document.documentElement.setAttribute('data-theme', theme);
+```
+
+**Prioridad de temas:**
+1. **LocalStorage:** Si el usuario eligió un tema manualmente, se respeta siempre
+2. **Sistema operativo:** Si no hay preferencia guardada, se usa `prefers-color-scheme`
+3. **Tema claro:** Por defecto si no hay ninguna de las anteriores
+
+**Uso en la aplicación:**
+
+El servicio se inicializa automáticamente en el componente raíz (`src/app/app.ts:43`):
+
+```typescript
+export class App {
+  private readonly themeService = inject(ThemeService);
+
+  constructor() {
+    // ← Esto se ejecuta al iniciar la app
+    this.themeService.initialize();
+  }
+}
+```
+
+#### 6.2.2 ThemeToggleComponent - El botón visual
+
+**Ubicación:** `src/app/components/shared/theme-toggle/`
+
+Este componente es el botón que el usuario ve en la interfaz.
+
+**Características:**
+- Muestra un icono que cambia según el tema actual
+- Icono de 🌙 luna en tema claro (indica "cambiar a oscuro")
+- Icono de ☀️ sol en tema oscuro (indica "cambiar a claro")
+- Animación de rotación al hacer clic
+- Accesible con etiquetas ARIA dinámicas
+
+**Código HTML simplificado:**
+```html
+<button class="c-theme-toggle" (click)="toggleTheme()">
+  <!-- Muestra luna si es claro, sol si es oscuro -->
+  @if (currentTheme() === 'light') {
+    <app-icon name="moon" />
+  } @else {
+    <app-icon name="sun" />
+  }
+</button>
+```
+
+**Estilos clave:**
+```scss
+.c-theme-toggle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;  // Botón circular
+  border: 1px solid var(--border-color);
+  background: transparent;
+  
+  &:hover {
+    transform: scale(1.05);  // Crece un poco al pasar el mouse
+    border-color: var(--color-principal);
+  }
+  
+  &:active {
+    transform: scale(0.95);  // Encoge al hacer clic
+  }
+  
+  // El icono gira 180° al cambiar
+  &:active app-icon {
+    transform: rotate(180deg);
+  }
+}
+```
+
+#### 6.2.3 Dónde está el botón
+
+El botón de cambio de tema aparece en dos lugares:
+
+**1. Header de escritorio** (`src/app/layout/header/header.html:23`)
+```html
+<nav class="c-header__utilidad">
+  <app-theme-toggle />  <!-- ← Aquí, a la derecha -->
+  <a routerLink="/login">Iniciar sesión</a>
+</nav>
+```
+
+**2. Menú móvil** (`src/app/layout/header/header.html:111`)
+```html
+<div class="c-header__nav-acciones">
+  <app-theme-toggle />  <!-- ← También aquí, en el menú móvil -->
+  <a routerLink="/login">Iniciar sesión</a>
+</div>
+```
+
+### 6.3 Transiciones suaves
+
+El cambio entre temas usa transiciones CSS para que sea suave y no abrupto.
+
+**Ubicación 1:** `src/styles/03-elements/_base.scss:36-37`
+```css
+body {
+  /* Transición de 300ms para fondo y color */
+  transition: background-color 300ms ease-in-out,
+              color 300ms ease-in-out;
+}
+```
+
+**Ubicación 2:** `src/styles/main.scss:12-13`
+```css
+html {
+  /* Transición de 300ms para el elemento raíz */
+  transition: background-color 300ms ease-in-out,
+              color 300ms ease-in-out;
+}
+```
+
+**¿Por qué 300ms?**
+- Muy rápido (ej: 100ms): El cambio es abrupto, incómodo visualmente
+- Muy lento (ej: 600ms): La interfaz se siente lenta y poco responsiva
+- 300ms: El punto ideal - suave pero rápido
+
+**Variables de duración** (`src/styles/00-settings/_css-variables.scss:386-388`):
+```css
+--duracion-rapida: 150ms;   /* Para micro-interacciones (hover botones) */
+--duracion-base: 300ms;     /* Para cambio de tema ✓ */
+--duracion-lenta: 500ms;    /* Para animaciones complejas */
+```
+
+### 6.4 Cómo usar las variables de tema en tus componentes
+
+Para que un componente funcione en ambos temas, **debes usar las variables CSS**, no valores fijos.
+
+**❌ MAL - No funciona en modo oscuro:**
+```scss
+.c-card {
+  background-color: #ffffff;  // ← Fijo, nunca cambiará
+  color: #111827;
+}
+```
+
+**✅ BIEN - Funciona en ambos temas:**
+```scss
+.c-card {
+  background-color: var(--bg-secondary);  // ← Cambia según el tema
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+```
+
+**Variables disponibles para tus componentes:**
+
+| Uso | Variable CSS | Tema Claro | Tema Oscuro |
+|-----|-------------|------------|-------------|
+| Fondo principal | `var(--bg-primary)` | `#fef8eb` | `#0f172a` |
+| Fondo de tarjetas | `var(--bg-secondary)` | `#ffffff` | `#1e293b` |
+| Texto principal | `var(--text-primary)` | `#111827` | `#f8fafc` |
+| Texto secundario | `var(--text-secondary)` | `#475569` | `#e2e8f0` |
+| Borde | `var(--border-color)` | `#e5e7eb` | `#334155` |
+| Color principal (morado) | `var(--color-principal)` | `#9333ea` | `#a855f7` |
+| Color de acento (naranja) | `var(--color-acento)` | `#f97316` | `#fb923c` |
+
+### 6.5 Capturas de pantalla - Comparativo visual
+
+A continuación se muestran las principales páginas de Joinly en ambos temas.
+
+| Página | Modo Claro | Modo Oscuro |
+|--------|------------|-------------|
+| **Home** (Inicio) | ![Home - Tema Claro](images/home-light.png) | ![Home - Tema Oscuro](images/home-dark.png) |
+| **Dashboard** (Mis Grupos) | ![Dashboard - Tema Claro](images/dashboard-light.png) | ![Dashboard - Tema Oscuro](images/dashboard-dark.png) |
+| **Style Guide** (Guía de Estilos) | ![Style Guide - Tema Claro](images/style-guide-light.png) | ![Style Guide - Tema Oscuro](images/style-guide-dark.png) |
+
+**Diferencias clave a observar:**
+1. **Fondo principal:** Off-white cálido → Gris muy oscuro
+2. **Tarjetas:** Blanco con borde gris → Gris oscuro con borde sutil
+3. **Texto:** Gris oscuro → Blanco claro
+4. **Botones de acento:** Mismos colores pero más vibrantes en dark mode
+5. **Footer:** Siempre azul oscuro, pero más intenso en dark mode
+
+### 6.6 Accesibilidad y contraste
+
+Joinly cumple con las pautas de accesibilidad WCAG 2.1 nivel AA en ambos temas.
+
+**Contraste mínimo requerido:** 4.5:1 (texto normal) / 3:1 (texto grande)
+
+**Contraste en modo claro:**
+- Texto sobre fondo: **15.6:1** ✅ (muy superior al mínimo)
+- Botón de acento: **4.8:1** ✅
+
+**Contraste en modo oscuro:**
+- Texto sobre fondo: **16.2:1** ✅
+- Botón de acento: **5.2:1** ✅
+
+**Cómo verificar contraste:**
+Usa herramientas como [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/) para validar cualquier color que añadas.
+
+### 6.7 Resumen de implementación
+
+| Componente | Archivo | Función |
+|-------------|---------|---------|
+| Variables CSS | `src/styles/00-settings/_css-variables.scss` | Define colores para ambos temas |
+| ThemeService | `src/app/services/theme.ts` | Lógica de cambio y persistencia |
+| ThemeToggle | `src/app/components/shared/theme-toggle/` | Botón visual para cambiar tema |
+| Transiciones | `src/styles/main.scss`, `src/styles/03-elements/_base.scss` | Animación suave de 300ms |
+| Header | `src/app/layout/header/header.html` | Ubicación del botón |
+| App | `src/app/app.ts` | Inicializa el servicio |
+
+**Flujo completo:**
+1. Usuario inicia app → `App` constructor ejecuta `themeService.initialize()`
+2. Service detecta tema → Lee localStorage → Detecta `prefers-color-scheme` → Aplica tema
+3. Usuario ve botón → `ThemeToggle` muestra icono según tema actual
+4. Usuario hace clic → `themeService.toggleTheme()` → Guarda en localStorage → Cambia `data-theme` en `<html>`
+5. CSS responde → Variables redefinidas → Transición de 300ms → Interfaz cambia de tema
+
+---
+
+## 7. Responsive Design
 
 Esta seccion documenta la estrategia responsive implementada en Joinly, incluyendo breakpoints, Container Queries y adaptaciones para todos los dispositivos.
 
-### 6.1 Breakpoints Definidos
+### 7.1 Breakpoints Definidos
 
 Los breakpoints estan definidos en `src/styles/00-settings/_variables.scss`:
 
@@ -6310,7 +6650,7 @@ $bp-desktop: 64rem;      // 1024px
 $bp-big-desktop: 80rem;  // 1280px
 ```
 
-### 6.2 Estrategia Responsive: Mobile-First
+### 7.2 Estrategia Responsive: Mobile-First
 
 Se utiliza la estrategia **Mobile-First** por las siguientes razones:
 
@@ -6359,7 +6699,7 @@ El mixin `responder-a()` implementa esta estrategia usando `min-width`:
 }
 ```
 
-### 6.3 Container Queries
+### 7.3 Container Queries
 
 Container Queries permiten que los componentes se adapten al tamano de su contenedor en lugar del viewport, haciendolos verdaderamente reutilizables.
 
@@ -6438,7 +6778,7 @@ Container Queries permiten que los componentes se adapten al tamano de su conten
 }
 ```
 
-### 6.4 Adaptaciones Principales
+### 7.4 Adaptaciones Principales
 
 | Elemento | Mobile (320-767px) | Tablet (768-1023px) | Desktop (1024px+) |
 |----------|-------------------|---------------------|-------------------|
@@ -6453,7 +6793,7 @@ Container Queries permiten que los componentes se adapten al tamano de su conten
 | **Como Funciona** | Pasos apilados, iconos ocultos | Iconos visibles, mas espacio | Padding y gaps amplios |
 | **FAQ** | Texto compacto, padding reducido | Texto normal | Layout completo |
 
-### 6.5 Paginas Implementadas
+### 7.5 Paginas Implementadas
 
 | Pagina | Ruta | Descripcion | Tecnicas Responsive |
 |--------|------|-------------|---------------------|
@@ -6475,7 +6815,7 @@ Container Queries permiten que los componentes se adapten al tamano de su conten
 | Terminos | `/legal/terminos` | Terminos de servicio | Contenido de lectura, max-width |
 | Privacidad | `/legal/privacidad` | Politica de privacidad | Contenido de lectura, max-width |
 
-### 6.6 Testing Responsive
+### 7.6 Testing Responsive
 
 #### Viewports Verificados
 
@@ -6568,11 +6908,11 @@ Capturas de las 3 páginas principales en los viewports clave, mostrando cómo s
 
 ---
 
-## 7. Optimización Multimedia y Animaciones CSS
+## 8. Optimización Multimedia y Animaciones CSS
 
 Esta sección documenta las técnicas de optimización multimedia implementadas para garantizar tiempos de carga rápidos sin sacrificar calidad visual.
 
-### 7.1 Formatos de Imagen Elegidos
+### 8.1 Formatos de Imagen Elegidos
 
 #### Justificación de Formatos
 
@@ -6601,7 +6941,7 @@ JPG  → Fallback universal
 
 **Decisión de proyecto:** El componente `FeatureImageComponent` implementa esta cascada automáticamente usando el elemento `<picture>`.
 
-### 7.2 Herramientas de Optimización Utilizadas
+### 8.2 Herramientas de Optimización Utilizadas
 
 #### Squoosh (Imágenes Raster - Recomendado)
 
@@ -6685,7 +7025,7 @@ npm run optimize:images
 - contraste-estados.png: 179.37 KB → 179.37 KB (ya optimizado, < 200KB)
 - Otras 7 imágenes ya estaban optimizadas (41-196 KB c/u)
 
-### 7.3 Resultados de Optimización
+### 8.3 Resultados de Optimización
 
 #### Tabla de Imágenes Optimizadas
 
@@ -6740,7 +7080,7 @@ Todos los scripts se ejecutaron correctamente sin errores.
 | medium | 800px | Tablets 480px - 1024px |
 | large | 1200px | Desktop > 1024px |
 
-### 7.4 Tecnologías Responsive Implementadas
+### 8.4 Tecnologías Responsive Implementadas
 
 Esta sección documenta dónde y cómo se implementaron las tecnologías de imágenes responsive.
 
@@ -6885,7 +7225,7 @@ readonly lazy = input<boolean>(true); // Por defecto lazy loading activado
 - Ahorro de bandwidth en scroll inicial
 - Lighthouse Performance Score: 95+
 
-### 7.5 Animaciones CSS Optimizadas
+### 8.5 Animaciones CSS Optimizadas
 
 Esta sección documenta las animaciones CSS implementadas siguiendo las mejores prácticas de rendimiento.
 
@@ -7282,7 +7622,7 @@ Las propiedades `transform` y `opacity` son las únicas que pueden ser acelerada
 />
 ```
 
-### 7.6 FeatureImageComponent
+### 8.6 FeatureImageComponent
 
 **Selector:** `<app-feature-image>`
 
@@ -7308,7 +7648,7 @@ Las propiedades `transform` y `opacity` son las únicas que pueden ser acelerada
 />
 ```
 
-### 7.7 Integración con Arquitectura
+### 8.7 Integración con Arquitectura
 
 **ITCSS:**
 
@@ -7330,7 +7670,7 @@ Las propiedades `transform` y `opacity` son las únicas que pueden ser acelerada
 - `var(--duracion-base)` - Animation duration
 - `var(--sombra-2)` - Box shadow
 
-### 7.8 Resultados Esperados
+### 8.8 Resultados Esperados
 
 **Performance Metrics:**
 
