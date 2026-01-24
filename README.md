@@ -2,8 +2,21 @@
 
 > **Plataforma inteligente de gestión de suscripciones compartidas**
 
+<div align="center">
+
+### 🌐 Demo en Producción
+
+# **[https://joinly.studio](https://joinly.studio)**
+
+*Aplicación desplegada y funcional - Accede desde cualquier navegador*
+
+</div>
+
+---
+
 Joinly es una solución completa para gestionar suscripciones digitales compartidas entre familias, amigos y grupos. Centraliza pagos, automatiza divisiones de costes y proporciona transparencia total en la gestión de servicios de streaming, gaming, música y más.
 
+[![Demo](https://img.shields.io/badge/🌐_Demo-joinly.studio-blueviolet.svg)](https://joinly.studio)
 [![Java](https://img.shields.io/badge/Java-25-orange.svg)](https://openjdk.org/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![Angular](https://img.shields.io/badge/Angular-21-red.svg)](https://angular.io/)
