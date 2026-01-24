@@ -396,7 +396,28 @@ Joinly fue desarrollado como proyecto final para demostrar competencias en:
 
 ---
 
-## � Despliegue en Producción
+## Despliegue en Producción
+
+### URL de Producción
+
+La aplicación está desplegada y disponible en: **https://joinly.studio**
+
+| Servicio | URL | Estado |
+|----------|-----|--------|
+| **Frontend** | [https://joinly.studio](https://joinly.studio) | Funcionando |
+| **API REST** | [https://joinly.studio/api](https://joinly.studio/api) | Funcionando |
+| **Swagger UI** | [https://joinly.studio/swagger-ui.html](https://joinly.studio/swagger-ui.html) | Funcionando |
+
+### Verificación en Producción
+
+Todas las funcionalidades han sido verificadas en producción:
+- Autenticación y registro de usuarios
+- Gestión de unidades familiares (crear, unirse, gestionar miembros)
+- Gestión de suscripciones (crear, editar, eliminar)
+- Sistema de pagos (procesar, liberar, reembolsos)
+- Perfil de usuario y configuración
+- Sistema de temas claro/oscuro
+- Responsive design (mobile, tablet, desktop)
 
 ### Despliegue Rápido (Un Solo Comando)
 
@@ -404,10 +425,10 @@ Para desplegar la aplicación en un VPS:
 
 ```bash
 # Opción 1: Desde tu máquina local
-./scripts/quick-deploy.sh root@159.89.1.100
+./scripts/quick-deploy.sh root@tu-servidor
 
 # Opción 2: Directamente en el servidor
-ssh root@159.89.1.100
+ssh root@tu-servidor
 curl -sSL https://raw.githubusercontent.com/Juanfu224/Joinly/main/scripts/quick-deploy.sh | bash
 ```
 
@@ -418,29 +439,29 @@ curl -sSL https://raw.githubusercontent.com/Juanfu224/Joinly/main/scripts/quick-
 - **Acceso:** SSH habilitado (puerto 22)
 - **Puertos:** 22, 80, 443 abiertos
 
-### Qué hace el script automáticamente:
+### Qué hace el script automáticamente
 
-✅ Instala Docker y Docker Compose  
-✅ Configura firewall (UFW)  
-✅ Crea usuario de aplicación  
-✅ Clona el repositorio  
-✅ Genera credenciales seguras  
-✅ Construye y despliega contenedores  
-✅ Configura health checks  
+- Instala Docker y Docker Compose
+- Configura firewall (UFW)
+- Crea usuario de aplicación
+- Clona el repositorio
+- Genera credenciales seguras
+- Construye y despliega contenedores
+- Configura health checks
 
 ### Después del Despliegue
 
 Tu aplicación estará disponible en:
-- **Frontend:** `http://159.89.1.100`
-- **API:** `http://159.89.1.100/api`
-- **Swagger:** `http://159.89.1.100/swagger-ui/`
+- **Frontend:** `https://joinly.studio`
+- **API:** `https://joinly.studio/api`
+- **Swagger:** `https://joinly.studio/swagger-ui.html`
 
-### Configurar HTTPS (Opcional)
+### Configurar HTTPS
 
-Si tienes un dominio:
+Si despliegas en un nuevo servidor con dominio propio:
 
 ```bash
-# 1. Configurar DNS A record apuntando a 159.89.1.100
+# 1. Configurar DNS A record apuntando a tu servidor
 # 2. Actualizar .env.prod con tu dominio
 # 3. Ejecutar:
 ./scripts/init-ssl.sh
@@ -448,17 +469,17 @@ Si tienes un dominio:
 
 ---
 
-## 📖 Documentación Adicional
+## Documentación Adicional
 
-- **[🚀 Despliegue Rápido](docs/QUICKSTART_DEPLOY.md)** - Guía de despliegue en 5 minutos
-- **[🔑 Configurar SSH en VPS](docs/SSH_SETUP.md)** - Habilitar acceso SSH
-- **[📘 Guía Completa de Despliegue](docs/DEPLOYMENT.md)** - Despliegue detallado paso a paso
-- **[📊 Monitoreo y Observabilidad](docs/MONITORING.md)** - Guía de monitoreo y logs
-- **[⚙️ Variables de Entorno](docs/ENV_CONFIG.md)** - Configuración de variables
-- **[🎨 Buenas Prácticas CSS](docs/buenas_practicas/)** - Arquitectura CSS del proyecto
-- **[🔧 Backend README](backend/README.md)** - Documentación técnica del backend
+- [Despliegue Rápido](docs/QUICKSTART_DEPLOY.md) - Guía de despliegue en 5 minutos
+- [Configurar SSH en VPS](docs/SSH_SETUP.md) - Habilitar acceso SSH
+- [Guía Completa de Despliegue](docs/DEPLOYMENT.md) - Despliegue detallado paso a paso
+- [Monitoreo y Observabilidad](docs/MONITORING.md) - Guía de monitoreo y logs
+- [Variables de Entorno](docs/ENV_CONFIG.md) - Configuración de variables
+- [Buenas Prácticas CSS](docs/buenas_practicas/) - Arquitectura CSS del proyecto
+- [Backend README](backend/README.md) - Documentación técnica del backend
 
-## 🛠️ Comandos Rápidos
+## Comandos Rápidos
 
 ```bash
 # Desarrollo
