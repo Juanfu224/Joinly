@@ -69,7 +69,10 @@ export class NewSubscriptionFormComponent implements CanComponentDeactivate {
   readonly form = this.fb.group(
     {
       nombre: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-      precioTotal: [null as number | null, [Validators.required, Validators.min(0.01), Validators.max(9999)]],
+      precioTotal: [
+        null as number | null,
+        [Validators.required, Validators.min(0.01), Validators.max(9999)],
+      ],
       plazas: [null as number | null, [Validators.required, Validators.min(1), Validators.max(20)]],
       periodicidad: ['MENSUAL' as 'MENSUAL' | 'TRIMESTRAL' | 'ANUAL', [Validators.required]],
       credencialUsuario: [''],
@@ -77,7 +80,7 @@ export class NewSubscriptionFormComponent implements CanComponentDeactivate {
     },
     {
       validators: [precioMinimoPlaza(1)],
-    }
+    },
   );
 
   private readonly formStatus = toSignal(this.form.statusChanges, {

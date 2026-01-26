@@ -27,12 +27,7 @@
     }
 
     <div class="c-create-group-form__actions">
-      <app-button
-        type="button"
-        variant="secondary"
-        size="xl"
-        (click)="onCancel()"
-      >
+      <app-button type="button" variant="secondary" size="xl" (click)="onCancel()">
         Cancelar
       </app-button>
 
@@ -43,9 +38,13 @@
         [disabled]="isFormInvalid() || form.pending || isLoading()"
         [loading]="isLoading()"
       >
-        @if (isLoading()) { Creando... }
-        @else if (form.pending) { Validando... }
-        @else { Crear }
+        @if (isLoading()) {
+          Creando...
+        } @else if (form.pending) {
+          Validando...
+        } @else {
+          Crear
+        }
       </app-button>
     </div>
   </form>
@@ -53,8 +52,8 @@
   <footer slot="footer" class="c-create-group-form__footer">
     <p class="c-create-group-form__footer-text">
       ¿Tienes un código de invitación?
-      <a 
-        href="/join-group" 
+      <a
+        href="/join-group"
         class="c-create-group-form__link c-create-group-form__link--azul"
         (click)="$event.preventDefault(); onJoinRequest()"
       >

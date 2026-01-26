@@ -1,7 +1,6 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
-import { forkJoin, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { of, forkJoin, catchError, map } from 'rxjs';
 
 import type { UnidadFamiliar, MiembroUnidadResponse, SuscripcionSummary } from '../models';
 import { UnidadFamiliarService, SuscripcionService } from '../services';
@@ -37,7 +36,7 @@ export const grupoDetalleResolver: ResolveFn<ResolvedData<GrupoDetalleData>> = (
     // Suscripciones falla graciosamente - no bloquea la vista del grupo
     suscripciones: suscripcionService.getSuscripcionesGrupo(id).pipe(
       map((page) => page.content),
-      catchError(() => of([] as SuscripcionSummary[]))
+      catchError(() => of([] as SuscripcionSummary[])),
     ),
   }).pipe(
     map((data) => resolveSuccess<GrupoDetalleData>(data)),
@@ -55,6 +54,6 @@ export const grupoDetalleResolver: ResolveFn<ResolvedData<GrupoDetalleData>> = (
       }
 
       return of(resolveError<GrupoDetalleData>(message));
-    })
+    }),
   );
 };

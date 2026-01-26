@@ -40,7 +40,7 @@ export type TooltipPosition = 'top' | 'bottom' | 'left' | 'right';
  * @remarks
  * El tooltip se posiciona automáticamente según el espacio disponible.
  * Orden de prioridad: top → bottom → left → right.
- * 
+ *
  * Manipula el DOM directamente usando Renderer2 para:
  * - Crear elemento tooltip dinámicamente
  * - Calcular posición óptima con getBoundingClientRect()
@@ -167,11 +167,7 @@ export class TooltipDirective implements OnDestroy {
     this.renderer.appendChild(document.body, this.tooltipElement);
 
     // Añadir atributo ARIA al elemento host
-    this.renderer.setAttribute(
-      this.el.nativeElement,
-      'aria-describedby',
-      this.tooltipId
-    );
+    this.renderer.setAttribute(this.el.nativeElement, 'aria-describedby', this.tooltipId);
 
     // Calcular y aplicar posición
     this.positionTooltip();
@@ -217,7 +213,7 @@ export class TooltipDirective implements OnDestroy {
 
   /**
    * Calcula y aplica la posición óptima del tooltip.
-   * 
+   *
    * @remarks
    * Estrategia de posicionamiento:
    * 1. Obtener dimensiones del elemento host y del tooltip
@@ -240,13 +236,7 @@ export class TooltipDirective implements OnDestroy {
     const scrollX = window.scrollX;
 
     // Intentar posicionar según preferencia, con fallback a otras posiciones
-    const positions: TooltipPosition[] = [
-      this.position(),
-      'top',
-      'bottom',
-      'left',
-      'right',
-    ];
+    const positions: TooltipPosition[] = [this.position(), 'top', 'bottom', 'left', 'right'];
 
     let finalPosition: TooltipPosition | null = null;
 
@@ -256,19 +246,11 @@ export class TooltipDirective implements OnDestroy {
       // Verificar si la posición cabe en el viewport
       if (this.fitsInViewport(coords, tooltipRect, viewportWidth, viewportHeight)) {
         finalPosition = pos;
-        
+
         // Aplicar posición
-        this.renderer.setStyle(
-          this.tooltipElement,
-          'top',
-          `${coords.top + scrollY}px`
-        );
-        this.renderer.setStyle(
-          this.tooltipElement,
-          'left',
-          `${coords.left + scrollX}px`
-        );
-        
+        this.renderer.setStyle(this.tooltipElement, 'top', `${coords.top + scrollY}px`);
+        this.renderer.setStyle(this.tooltipElement, 'left', `${coords.left + scrollX}px`);
+
         // Aplicar clase de posición para la flecha
         this.renderer.addClass(this.tooltipElement, `c-tooltip--${pos}`);
         break;
@@ -279,17 +261,9 @@ export class TooltipDirective implements OnDestroy {
     if (!finalPosition) {
       const centerTop = hostRect.top - tooltipRect.height - this.TOOLTIP_OFFSET;
       const centerLeft = hostRect.left + (hostRect.width - tooltipRect.width) / 2;
-      
-      this.renderer.setStyle(
-        this.tooltipElement,
-        'top',
-        `${centerTop + scrollY}px`
-      );
-      this.renderer.setStyle(
-        this.tooltipElement,
-        'left',
-        `${centerLeft + scrollX}px`
-      );
+
+      this.renderer.setStyle(this.tooltipElement, 'top', `${centerTop + scrollY}px`);
+      this.renderer.setStyle(this.tooltipElement, 'left', `${centerLeft + scrollX}px`);
       this.renderer.addClass(this.tooltipElement, 'c-tooltip--top');
     }
   }
@@ -300,7 +274,7 @@ export class TooltipDirective implements OnDestroy {
   private calculatePosition(
     position: TooltipPosition,
     hostRect: DOMRect,
-    tooltipRect: DOMRect
+    tooltipRect: DOMRect,
   ): { top: number; left: number } {
     switch (position) {
       case 'top':
@@ -336,7 +310,7 @@ export class TooltipDirective implements OnDestroy {
     coords: { top: number; left: number },
     tooltipRect: DOMRect,
     viewportWidth: number,
-    viewportHeight: number
+    viewportHeight: number,
   ): boolean {
     const margin = 8; // Margen mínimo desde los bordes del viewport
 

@@ -62,12 +62,12 @@ import { TabComponent } from './tab';
  * El componente padre detecta automáticamente los tabs hijos mediante
  * ContentChildren. Implementa roving tabindex para navegación con teclado:
  * solo el tab activo tiene tabindex="0", los demás tienen tabindex="-1".
- * 
+ *
  * Eventos de teclado:
  * - Arrow Left/Right: Navega entre pestañas
  * - Home/End: Va a primera/última pestaña
  * - Enter/Space: Activa la pestaña enfocada
- * 
+ *
  * El indicador visual se actualiza con Renderer2 para posicionarlo
  * dinámicamente bajo el tab activo con transición suave.
  */
@@ -127,7 +127,7 @@ export class TabsComponent implements AfterContentInit {
     effect(() => {
       const activeIndex = this.activeIndexSignal();
       const tabsArray = this.tabs();
-      
+
       if (tabsArray.length > 0) {
         // Usar queueMicrotask para asegurar que el DOM está actualizado
         queueMicrotask(() => {
@@ -154,19 +154,19 @@ export class TabsComponent implements AfterContentInit {
 
   /**
    * Selecciona un tab por su índice.
-   * 
+   *
    * @param index - Índice del tab a activar
    * @param emitEvent - Si debe emitir el evento tabChange
    */
   protected selectTab(index: number, emitEvent = true): void {
     const tabsArray = this.tabs();
-    
+
     if (index < 0 || index >= tabsArray.length) {
       return;
     }
 
     const previousIndex = this.activeIndexSignal();
-    
+
     if (previousIndex === index) {
       return;
     }
@@ -193,14 +193,14 @@ export class TabsComponent implements AfterContentInit {
 
   /**
    * Maneja los clicks en los botones de tabs.
-   * 
+   *
    * @param index - Índice del tab clickeado
    * @param event - Evento del mouse
    */
   protected onTabClick(index: number, event: MouseEvent): void {
     event.preventDefault();
     this.selectTab(index);
-    
+
     // Enfocar el botón clickeado
     const button = (event.target as HTMLElement).closest('button');
     if (button) {
@@ -210,7 +210,7 @@ export class TabsComponent implements AfterContentInit {
 
   /**
    * Maneja la navegación con teclado en los tabs.
-   * 
+   *
    * @remarks
    * Implementa el patrón roving tabindex:
    * - Arrow Left/Right: Navega entre tabs
@@ -220,7 +220,7 @@ export class TabsComponent implements AfterContentInit {
   @HostListener('keydown', ['$event'])
   protected handleKeydown(event: KeyboardEvent): void {
     const target = event.target as HTMLElement;
-    
+
     // Solo procesar si el evento viene de un botón de tab
     if (!target.matches('[role="tab"]')) {
       return;
@@ -261,11 +261,11 @@ export class TabsComponent implements AfterContentInit {
 
     if (shouldPreventDefault) {
       event.preventDefault();
-      
+
       // Si cambió el índice, seleccionar y enfocar nuevo tab
       if (newIndex !== currentIndex) {
         this.selectTab(newIndex);
-        
+
         // Enfocar el nuevo tab
         queueMicrotask(() => {
           const tabButtons = this.getTabButtons();
@@ -279,7 +279,7 @@ export class TabsComponent implements AfterContentInit {
 
   /**
    * Actualiza la posición y ancho del indicador visual del tab activo.
-   * 
+   *
    * @remarks
    * Usa Renderer2 para modificar los estilos de forma segura.
    * Calcula la posición y ancho del tab activo con getBoundingClientRect().

@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 /**
  * Pipe para formatear el número de suscripciones en texto legible.
- * 
+ *
  * @usageNotes
  * ```html
  * {{ totalSuscripciones | formatSuscripciones }}
@@ -18,8 +18,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FormatSuscripcionesPipe implements PipeTransform {
   transform(total: number | null | undefined): string {
     const cantidad = total ?? 0;
-    return cantidad === 0 ? 'Ninguna' : 
-           cantidad === 1 ? '1 suscripción' : 
-           `${cantidad} suscripciones`;
+    return cantidad === 0
+      ? 'Ninguna'
+      : cantidad === 1
+        ? '1 suscripción'
+        : `${cantidad} suscripciones`;
   }
 }

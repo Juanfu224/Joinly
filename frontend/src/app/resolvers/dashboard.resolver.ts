@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
-import { catchError, map, of } from 'rxjs';
+import { of, catchError, map } from 'rxjs';
 
 import type { GrupoCardData, Page } from '../models';
 import { UnidadFamiliarService } from '../services';
@@ -26,14 +26,14 @@ export const dashboardResolver: ResolveFn<ResolvedData<DashboardData>> = () => {
       resolveSuccess<DashboardData>({
         grupos: page.content,
         totalElements: page.totalElements,
-      })
+      }),
     ),
     catchError((err) =>
       of(
         resolveError<DashboardData>(
-          err.error?.message || 'No se pudieron cargar los grupos. Intenta de nuevo.'
-        )
-      )
-    )
+          err.error?.message || 'No se pudieron cargar los grupos. Intenta de nuevo.',
+        ),
+      ),
+    ),
   );
 };

@@ -82,11 +82,9 @@ export class FeatureImageComponent {
   });
 
   readonly imageClasses = computed(() => {
-    return [
-      'c-feature-image__img',
-      `c-feature-image__img--${this.type()}`,
-      this.cssClass(),
-    ].join(' ');
+    return ['c-feature-image__img', `c-feature-image__img--${this.type()}`, this.cssClass()].join(
+      ' ',
+    );
   });
 
   generateSrcset(basePath: string, format: 'avif' | 'webp' | 'jpg'): string {

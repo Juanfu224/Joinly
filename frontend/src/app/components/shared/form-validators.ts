@@ -2,13 +2,13 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 /**
  * @deprecated Use `passwordStrength()` from './validators' instead.
- * 
+ *
  * Este validador se mantiene por compatibilidad con código existente.
  * Para nuevas implementaciones, usa el validador configurable:
- * 
+ *
  * ```typescript
  * import { passwordStrength } from './validators';
- * 
+ *
  * this.fb.group({
  *   password: ['', [Validators.required, passwordStrength()]]
  * });
@@ -16,7 +16,7 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
  */
 export function passwordStrengthValidator(): ValidatorFn {
   const pattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-  
+
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
     if (!value) return null;
@@ -27,13 +27,13 @@ export function passwordStrengthValidator(): ValidatorFn {
 
 /**
  * @deprecated Use `matchFields()` from './validators' instead.
- * 
+ *
  * Este validador se mantiene por compatibilidad con código existente.
  * Para nuevas implementaciones, usa el validador del módulo validators:
- * 
+ *
  * ```typescript
  * import { matchFields } from './validators';
- * 
+ *
  * this.fb.group(
  *   { password: [''], confirmPassword: [''] },
  *   { validators: matchFields('password', 'confirmPassword') }
@@ -53,19 +53,19 @@ export function matchFieldsValidator(field1: string, field2: string): ValidatorF
 
 /**
  * @deprecated Use `getErrorMessage()` from './validators' instead.
- * 
+ *
  * Este helper se mantiene por compatibilidad con código existente.
  * Para nuevas implementaciones, usa el sistema centralizado de mensajes:
- * 
+ *
  * ```typescript
  * import { getErrorMessage } from './validators';
- * 
+ *
  * getErrorMessage(this.form.get('email'));
  * ```
  */
 export function getControlErrorMessage(
   control: AbstractControl | null,
-  fieldLabel: string = 'Este campo'
+  fieldLabel: string = 'Este campo',
 ): string {
   // Mostrar errores solo cuando el control ha sido tocado O modificado
   if (!control || !control.errors || (!control.touched && !control.dirty)) return '';
@@ -103,7 +103,7 @@ export function getControlErrorMessage(
 /**
  * Mapeo de mensajes de error específicos por campo y tipo de error.
  * Permite mensajes más descriptivos y contextuales.
- * 
+ *
  * @deprecated Use el sistema de mensajes de './validators/error-messages' instead.
  */
 export interface FieldErrorMessages {
@@ -114,18 +114,18 @@ export interface FieldErrorMessages {
  * Obtiene un mensaje de error personalizado para un campo específico.
  * Permite definir mensajes contextuales por tipo de error.
  * Muestra errores solo cuando el control ha sido tocado O modificado.
- * 
+ *
  * @deprecated Use `getErrorMessage()` from './validators' instead.
- * 
+ *
  * @param control Control del formulario a validar
  * @param customMessages Mensajes personalizados por tipo de error
  * @param defaultLabel Etiqueta por defecto si no hay mensaje custom
  * @returns Mensaje de error personalizado o genérico
- * 
+ *
  * @example
  * ```typescript
  * import { getErrorMessage } from './validators';
- * 
+ *
  * getErrorMessage(control, {
  *   required: 'El email es obligatorio',
  *   email: 'Formato de email inválido'
@@ -135,7 +135,7 @@ export interface FieldErrorMessages {
 export function getFieldErrorMessage(
   control: AbstractControl | null,
   customMessages: FieldErrorMessages = {},
-  defaultLabel: string = 'Este campo'
+  defaultLabel: string = 'Este campo',
 ): string {
   // Mostrar errores solo cuando el control ha sido tocado O modificado
   if (!control || !control.errors || (!control.touched && !control.dirty)) return '';
@@ -155,10 +155,10 @@ export function getFieldErrorMessage(
 /**
  * Validador para códigos alfanuméricos con guiones opcionales.
  * Ignora guiones al validar longitud.
- * 
+ *
  * @param length Longitud esperada del código sin guiones (por defecto 12)
  * @returns ValidatorFn que valida códigos alfanuméricos
- * 
+ *
  * @example
  * ```typescript
  * // Acepta: ABC1-DEF2-GHI3 o ABC1DEF2GHI3

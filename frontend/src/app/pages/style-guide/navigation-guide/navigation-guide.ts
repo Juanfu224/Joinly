@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import {
   CardComponent,
@@ -68,7 +63,9 @@ export class NavigationGuideComponent {
   }
 
   protected navigateWithQueryParams(): void {
-    this.addLog(`router.navigate(['/dashboard'], { queryParams: { sort: 'nombre', order: 'asc' } })`);
+    this.addLog(
+      `router.navigate(['/dashboard'], { queryParams: { sort: 'nombre', order: 'asc' } })`,
+    );
     this.addLog(`➡️ URL: /dashboard?sort=nombre&order=asc`);
   }
 

@@ -20,7 +20,9 @@ export class SolicitudService {
     return this.api.post<SolicitudResponse>('solicitudes/grupo', data);
   }
 
-  solicitarPlazaSuscripcion(data: CreateSolicitudSuscripcionRequest): Observable<SolicitudResponse> {
+  solicitarPlazaSuscripcion(
+    data: CreateSolicitudSuscripcionRequest,
+  ): Observable<SolicitudResponse> {
     return this.api.post<SolicitudResponse>('solicitudes/suscripcion', data);
   }
 
@@ -29,7 +31,7 @@ export class SolicitudService {
     fechaDesde?: string,
     fechaHasta?: string,
     page = 0,
-    size = 20
+    size = 20,
   ): Observable<Page<SolicitudResponse>> {
     let params = new HttpParams()
       .set('page', page.toString())

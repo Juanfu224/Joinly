@@ -4,7 +4,14 @@ import { Component, ChangeDetectionStrategy, input, computed } from '@angular/co
  * Variantes de color disponibles para el logotipo.
  * Coinciden con las definidas en el diseño de Figma.
  */
-export type LogoVariant = 'naranja' | 'morado' | 'claro-naranja' | 'claro-morado' | 'azul' | 'claro-azul' | 'amarillo';
+export type LogoVariant =
+  | 'naranja'
+  | 'morado'
+  | 'claro-naranja'
+  | 'claro-morado'
+  | 'azul'
+  | 'claro-azul'
+  | 'amarillo';
 
 /**
  * Tamaños disponibles para el logotipo.
@@ -71,6 +78,6 @@ export class LogoComponent {
 
   /** Determina si es una variante clara (para fondos oscuros) */
   readonly isLightVariant = computed(() =>
-    ['claro-naranja', 'claro-morado', 'claro-azul'].includes(this.variant())
+    ['claro-naranja', 'claro-morado', 'claro-azul'].includes(this.variant()),
   );
 }

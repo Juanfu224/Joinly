@@ -22,6 +22,8 @@ Joinly es una solución completa para gestionar suscripciones digitales comparti
 [![Angular](https://img.shields.io/badge/Angular-21-red.svg)](https://angular.io/)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue.svg)](https://www.mysql.com/)
 [![License](https://img.shields.io/badge/License-Academic-yellow.svg)](LICENSE)
+[![Tests](https://img.shields.io/badge/Tests-55%2B-success-brightgreen.svg)](backend/src/test)
+[![Coverage](https://img.shields.io/badge/Coverage-50%25-success-success.svg)](#testing)
 
 ---
 
@@ -97,7 +99,7 @@ Joinly es una solución completa para gestionar suscripciones digitales comparti
 - **Swagger/OpenAPI** (Documentación API)
 
 ### Frontend
-- **Angular 19** (Framework principal)
+- **Angular 21** (Framework principal)
 - **TypeScript** (Lenguaje)
 - **SCSS** (Estilos)
 - **BEM + ITCSS** (Metodología CSS)
@@ -223,13 +225,26 @@ Actualiza el archivo `.env` con los valores generados y contraseñas seguras.
 
 ## Documentación Completa
 
-- **[Backend README](backend/README.md)** - Configuración detallada del backend, endpoints, testing
-- **[Frontend README](frontend/README.md)** - Guía del frontend Angular
-- **[Guía de Despliegue en Producción](docs/DEPLOYMENT.md)** - Instrucciones completas para desplegar en servidor
+### Documentación General
+- **[Arquitectura del Sistema](docs/ARCHITECTURE.md)** - Diagramas de arquitectura, flujo de autenticación, patrones de diseño
+- **[Guía de Configuración Completa](docs/SETUP.md)** - Requisitos, instalación paso a paso, troubleshooting
+- **[Guía de Despliegue](docs/DEPLOYMENT-GUIDE.md)** - Despliegue en producción, Docker, Nginx, SSL
+- **[Variables de Entorno](docs/ENV_CONFIG.md)** - Todas las variables configurables y valores por defecto
+- **[Guía de Contribución](docs/CONTRIBUTING.md)** - Código de conducta, PRs, estándares de código
+- **[Changelog](CHANGELOG.md)** - Historial de versiones y cambios
+
+### Documentación de Diseño y Desarrollo
 - **[Documentación de Diseño](docs/design/DOCUMENTACION.md)** - Principios de diseño, CSS, BEM, ITCSS (2600+ líneas)
+- **[Arquitectura de Eventos](docs/design/event-architecture.md)** - Sistema de comunicación entre componentes
+- **[Buenas Prácticas CSS](docs/buenas_practicas/)** - HTML5 semántico, arquitectura CSS moderna
+
+### Documentación Backend
+- **[Backend README](backend/README.md)** - Configuración detallada del backend, endpoints, testing
 - **[Guía de Seguridad](backend/docs/SECURITY.md)** - Buenas prácticas, generación de claves, rotación
-- **[Lista de Mejoras](backend/docs/TODO_MEJORAS.md)** - Roadmap y tareas completadas
 - **[Modelo ER](backend/docs/Modelo%20ER/)** - Diagrama de base de datos
+
+### Decisiones Técnicas (ADRs)
+- **[ADRs](docs/adr/)** - Architecture Decision Records explicando las decisiones técnicas tomadas
 
 ### API REST Documentada
 
@@ -278,7 +293,7 @@ Joinly/
       docs/                      # Documentación backend
       pom.xml                    # Dependencias Maven
       README.md
-  frontend/                   # Frontend Angular 19
+   frontend/                   # Frontend Angular 21
       src/
           app/
               components/       # Componentes reutilizables

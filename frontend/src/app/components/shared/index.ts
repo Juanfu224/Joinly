@@ -91,10 +91,7 @@ export {
   type JoinRequest,
   type SubscriptionInfoData,
 } from './subscription-info-card';
-export {
-  SubscriptionStatCardComponent,
-  type StatCardType,
-} from './subscription-stat-card';
+export { SubscriptionStatCardComponent, type StatCardType } from './subscription-stat-card';
 export { MemberCardComponent, type MemberData, type MemberRole } from './member-card/member-card';
 export { MemberListComponent } from './member-list/member-list';
 export { InviteModalComponent } from './invite-modal/invite-modal';

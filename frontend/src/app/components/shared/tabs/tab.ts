@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  input,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
 import { generateShortId } from '../../../utils/uuid';
 
 /**
@@ -32,7 +27,7 @@ import { generateShortId } from '../../../utils/uuid';
  * @remarks
  * Este componente NO debe usarse de forma independiente. Debe estar
  * siempre dentro de un componente `<app-tabs>` que gestiona su estado.
- * 
+ *
  * El estado activo se controla mediante el signal `isActive`, que es
  * modificado por el componente padre TabsComponent cuando el usuario
  * selecciona una pestaña diferente.

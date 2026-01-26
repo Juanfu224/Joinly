@@ -1,8 +1,17 @@
-import { Directive, ElementRef, effect, inject, input, OnDestroy, OnInit, output } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  effect,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+  output,
+} from '@angular/core';
 
 @Directive({
   selector: '[appInfiniteScroll]',
-  standalone: true
+  standalone: true,
 })
 export class InfiniteScrollDirective implements OnInit, OnDestroy {
   private readonly elementRef = inject(ElementRef);
@@ -50,8 +59,8 @@ export class InfiniteScrollDirective implements OnInit, OnDestroy {
       },
       {
         threshold: this.threshold(),
-        rootMargin: this.rootMargin()
-      }
+        rootMargin: this.rootMargin(),
+      },
     );
 
     this.observer.observe(this.elementRef.nativeElement);

@@ -38,7 +38,12 @@ export class InviteModalComponent implements OnDestroy {
   protected readonly modalContent = viewChild<ElementRef>('modalContent');
 
   protected readonly socialNetworks: SocialNetwork[] = [
-    'email', 'whatsapp', 'discord', 'instagram', 'twitter', 'facebook',
+    'email',
+    'whatsapp',
+    'discord',
+    'instagram',
+    'twitter',
+    'facebook',
   ];
 
   protected readonly enlaceUnion = computed(() => {
@@ -83,7 +88,7 @@ export class InviteModalComponent implements OnDestroy {
     if (!modalEl) return;
 
     const focusables = modalEl.querySelectorAll(
-      'button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      'button:not([disabled]), [tabindex]:not([tabindex="-1"])',
     ) as NodeListOf<HTMLElement>;
 
     if (focusables.length === 0) return;
@@ -145,7 +150,9 @@ export class InviteModalComponent implements OnDestroy {
       try {
         await navigator.share({ title: 'Únete a Joinly', text: texto, url: enlace });
         return;
-      } catch { /* Usuario canceló */ }
+      } catch {
+        /* Usuario canceló */
+      }
     }
 
     // Fallback: URLs específicas

@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ICON_PATHS, type IconName } from '../icon/icon-paths';
 
@@ -57,25 +51,25 @@ export class ButtonComponent {
 
   /** Variante visual del botón */
   variant = input<ButtonVariant>('primary');
-  
+
   /** Tamaño del botón */
   size = input<ButtonSize>('md');
-  
+
   /** Tipo de botón HTML */
   type = input<ButtonType>('button');
-  
+
   /** Estado deshabilitado */
   disabled = input<boolean>(false);
-  
+
   /** Estado de carga (muestra spinner y deshabilita) */
   loading = input<boolean>(false);
-  
+
   /** Ocupa todo el ancho disponible */
   fullWidth = input<boolean>(false);
-  
+
   /** Icono a la izquierda del texto */
   leftIcon = input<IconName | undefined>(undefined);
-  
+
   /** Icono a la derecha del texto */
   rightIcon = input<IconName | undefined>(undefined);
 
@@ -84,11 +78,7 @@ export class ButtonComponent {
 
   /** Clases CSS computadas */
   buttonClasses = computed(() => {
-    const classes = [
-      'c-button',
-      `c-button--${this.variant()}`,
-      `c-button--${this.size()}`,
-    ];
+    const classes = ['c-button', `c-button--${this.variant()}`, `c-button--${this.size()}`];
 
     if (this.fullWidth()) {
       classes.push('c-button--full-width');

@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+  viewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import {
   NewSubscriptionFormComponent,

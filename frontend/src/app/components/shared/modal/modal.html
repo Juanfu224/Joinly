@@ -1,14 +1,10 @@
 <!-- Modal solo se renderiza si está abierto -->
 @if (modalService.isOpen()) {
   <!-- Overlay oscuro de fondo -->
-  <div 
-    class="c-modal__overlay" 
-    (click)="handleOverlayClick($event)"
-    aria-hidden="true"
-  ></div>
+  <div class="c-modal__overlay" (click)="handleOverlayClick($event)" aria-hidden="true"></div>
 
   <!-- Contenedor del modal (centrado en pantalla) -->
-  <div 
+  <div
     class="c-modal__contenedor"
     role="dialog"
     aria-modal="true"
@@ -16,11 +12,7 @@
     [attr.aria-describedby]="'modal-content'"
   >
     <!-- Contenido del modal -->
-    <div 
-      #modalContent
-      class="c-modal__contenido"
-      (click)="preventClose($event)"
-    >
+    <div #modalContent class="c-modal__contenido" (click)="preventClose($event)">
       <!-- Botón de cerrar (X) en la esquina superior derecha -->
       <button
         type="button"
@@ -39,28 +31,19 @@
       }
 
       <!-- Contenido del modal -->
-      <div id="modal-content" class="c-modal__texto" [innerHTML]="sanitizedContent()">
-      </div>
+      <div id="modal-content" class="c-modal__texto" [innerHTML]="sanitizedContent()"></div>
 
       <!-- Acciones (botones) -->
       <div class="c-modal__acciones">
         <!-- Botón de cancelar (solo si se proporciona cancelText) -->
         @if (modalService.config()?.cancelText) {
-          <app-button 
-            variant="secondary" 
-            size="md"
-            (click)="handleCancel()"
-          >
+          <app-button variant="secondary" size="md" (click)="handleCancel()">
             {{ modalService.config()!.cancelText }}
           </app-button>
         }
 
         <!-- Botón de confirmar -->
-        <app-button 
-          variant="primary" 
-          size="md"
-          (click)="handleConfirm()"
-        >
+        <app-button variant="primary" size="md" (click)="handleConfirm()">
           {{ modalService.config()!.confirmText }}
         </app-button>
       </div>

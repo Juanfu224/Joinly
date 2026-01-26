@@ -240,13 +240,7 @@ export class StyleGuideComponent {
   /**
    * Iconos de finanzas disponibles en el sistema de diseño.
    */
-  protected readonly financeIcons = [
-    'dollar',
-    'coin',
-    'wallet',
-    'credit-card',
-    'gift',
-  ] as const;
+  protected readonly financeIcons = ['dollar', 'coin', 'wallet', 'credit-card', 'gift'] as const;
 
   /**
    * Iconos de archivos y documentos disponibles en el sistema de diseño.
@@ -450,7 +444,7 @@ export class StyleGuideComponent {
     {
       id: 3,
       nombreServicio: 'Disney+ Premium',
-      precioPorPlaza: 3.50,
+      precioPorPlaza: 3.5,
       fechaRenovacion: '2026-02-01',
       plazasOcupadas: 1,
       numPlazasTotal: 4,
@@ -542,21 +536,27 @@ export class StyleGuideComponent {
    * Muestra un toast de éxito.
    */
   protected showSuccessToast(): void {
-    this.toastService.success('¡Operación completada con éxito! Tu suscripción ha sido actualizada.');
+    this.toastService.success(
+      '¡Operación completada con éxito! Tu suscripción ha sido actualizada.',
+    );
   }
 
   /**
    * Muestra un toast de error.
    */
   protected showErrorToast(): void {
-    this.toastService.error('Ha ocurrido un error al procesar tu solicitud. Por favor, inténtalo de nuevo.');
+    this.toastService.error(
+      'Ha ocurrido un error al procesar tu solicitud. Por favor, inténtalo de nuevo.',
+    );
   }
 
   /**
    * Muestra un toast de advertencia.
    */
   protected showWarningToast(): void {
-    this.toastService.warning('Tu suscripción expira en 3 días. Renueva ahora para no perder el acceso.');
+    this.toastService.warning(
+      'Tu suscripción expira en 3 días. Renueva ahora para no perder el acceso.',
+    );
   }
 
   /**
@@ -596,7 +596,8 @@ export class StyleGuideComponent {
   protected openInfoModal(): void {
     this.modalService.open({
       title: 'Información importante',
-      content: 'Las suscripciones compartidas deben ser gestionadas por el titular de la cuenta principal.',
+      content:
+        'Las suscripciones compartidas deben ser gestionadas por el titular de la cuenta principal.',
       confirmText: 'Entendido',
     });
   }

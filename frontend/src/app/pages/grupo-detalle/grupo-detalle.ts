@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, OnDestroy, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import type {
   MiembroUnidadResponse,
@@ -64,13 +73,15 @@ export class GrupoDetalleComponent implements OnInit, OnDestroy {
   protected readonly suscripcionesPaginadas = this.suscripcionesStore.suscripcionesPaginadas;
   protected readonly solicitudesPendientes = this.solicitudesStore.pendientesGrupo;
   protected readonly solicitudesPendientesVisible = this.solicitudesStore.pendientesGrupoVisible;
-  protected readonly isLoading = computed(() => this.suscripcionesStore.loading() || this.solicitudesStore.loadingPendientesGrupo());
+  protected readonly isLoading = computed(
+    () => this.suscripcionesStore.loading() || this.solicitudesStore.loadingPendientesGrupo(),
+  );
   protected readonly error = computed(() => this.suscripcionesStore.error());
 
   protected readonly estadosFiltro = this.suscripcionesStore.estadosFiltro;
   protected readonly periodicidadFiltro = this.suscripcionesStore.periodicidadFiltro;
-  protected readonly hasFiltrosActivos = computed(() =>
-    this.estadosFiltro().length > 0 || this.periodicidadFiltro() !== null
+  protected readonly hasFiltrosActivos = computed(
+    () => this.estadosFiltro().length > 0 || this.periodicidadFiltro() !== null,
   );
 
   protected readonly ESTADOS = ['ACTIVA', 'PAUSADA', 'CANCELADA', 'EXPIRADA'] as const;
@@ -90,7 +101,7 @@ export class GrupoDetalleComponent implements OnInit, OnDestroy {
       this.toastService.error(resolved.error);
     } else if (resolved.data) {
       this.miembros.set(resolved.data.miembros);
-      
+
       const grupoId = Number(this.id());
       if (!isNaN(grupoId)) {
         await Promise.all([
@@ -109,7 +120,7 @@ export class GrupoDetalleComponent implements OnInit, OnDestroy {
       email: m.usuario.email,
       avatar: m.usuario.avatar,
       rol: m.rol === 'ADMINISTRADOR' ? 'admin' : 'member',
-    }))
+    })),
   );
 
   protected readonly isAdmin = computed(() => {
@@ -119,12 +130,16 @@ export class GrupoDetalleComponent implements OnInit, OnDestroy {
     return grupoActual.administrador.id === usuarioActual.id;
   });
 
-  protected readonly hasSolicitudesPendientes = computed(() => this.solicitudesPendientes().length > 0);
+  protected readonly hasSolicitudesPendientes = computed(
+    () => this.solicitudesPendientes().length > 0,
+  );
 
   protected readonly hasSuscripciones = computed(() => this.suscripciones().length > 0);
-  protected readonly hasSuscripcionesFiltradas = computed(() => this.suscripcionesFiltradas().length > 0);
-  protected readonly noFilterResults = computed(() =>
-    this.hasFiltrosActivos() && !this.hasSuscripcionesFiltradas() && this.hasSuscripciones()
+  protected readonly hasSuscripcionesFiltradas = computed(
+    () => this.suscripcionesFiltradas().length > 0,
+  );
+  protected readonly noFilterResults = computed(
+    () => this.hasFiltrosActivos() && !this.hasSuscripcionesFiltradas() && this.hasSuscripciones(),
   );
   protected readonly paginationInfo = computed(() => ({
     currentPage: this.suscripcionesStore.page(),
@@ -145,7 +160,7 @@ export class GrupoDetalleComponent implements OnInit, OnDestroy {
       numPlazasTotal: s.numPlazasTotal,
       estado: s.estado,
       periodicidad: s.periodicidad,
-    }))
+    })),
   );
 
   protected toggleEstadoFiltro(estado: EstadoSuscripcion): void {
@@ -155,7 +170,7 @@ export class GrupoDetalleComponent implements OnInit, OnDestroy {
   protected onPeriodicidadChange(event: Event): void {
     const select = event.target as HTMLSelectElement;
     const value = select.value;
-    this.suscripcionesStore.setPeriodicidadFiltro(value ? value as Periodicidad : null);
+    this.suscripcionesStore.setPeriodicidadFiltro(value ? (value as Periodicidad) : null);
   }
 
   protected clearFiltros(): void {

@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { IconComponent } from '../icon/icon';
 import { type IconName } from '../icon/icon-paths';
 import type { ToastType } from '../../../services/toast';

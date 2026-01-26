@@ -18,10 +18,12 @@ import { ApiService } from '../core/services/api.service';
 export class SuscripcionService {
   private readonly api = inject(ApiService);
 
-  getSuscripcionesGrupo(idUnidad: number, page = 0, size = 20): Observable<Page<SuscripcionSummary>> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
+  getSuscripcionesGrupo(
+    idUnidad: number,
+    page = 0,
+    size = 20,
+  ): Observable<Page<SuscripcionSummary>> {
+    const params = new HttpParams().set('page', page.toString()).set('size', size.toString());
 
     return this.api.get<Page<SuscripcionSummary>>(`suscripciones/unidad/${idUnidad}`, { params });
   }

@@ -14,20 +14,20 @@ export interface PasswordStrengthConfig {
 
 /**
  * Validador configurable para verificar la fortaleza de contraseñas.
- * 
+ *
  * Permite establecer diferentes niveles de seguridad mediante configuración,
  * manteniendo compatibilidad con requisitos existentes mientras permite
  * endurecimiento gradual de políticas de seguridad.
- * 
+ *
  * @param config Configuración opcional de requisitos de contraseña
  * @returns ValidatorFn que valida según las reglas configuradas
- * 
+ *
  * @example
  * Configuración básica (compatible con backend actual):
  * ```typescript
  * passwordStrength() // Default: minLength=8, requireNumber=true
  * ```
- * 
+ *
  * @example
  * Configuración estricta para cuentas admin:
  * ```typescript
@@ -82,14 +82,14 @@ export function passwordStrength(config: PasswordStrengthConfig = {}): Validator
 /**
  * Preset de validador de contraseña con requisitos estrictos.
  * Útil para formularios que requieren alta seguridad.
- * 
+ *
  * Requisitos:
  * - Mínimo 12 caracteres
  * - Al menos una mayúscula
  * - Al menos una minúscula
  * - Al menos un número
  * - Al menos un carácter especial
- * 
+ *
  * @example
  * ```typescript
  * this.form = this.fb.group({

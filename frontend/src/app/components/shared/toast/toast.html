@@ -1,9 +1,4 @@
-<div
-  [className]="toastClasses()"
-  role="status"
-  aria-live="polite"
-  aria-atomic="true"
->
+<div [className]="toastClasses()" role="status" aria-live="polite" aria-atomic="true">
   <app-icon [name]="icon()" size="sm" customClass="c-toast__icon" />
   <p class="c-toast__message">{{ message() }}</p>
 </div>

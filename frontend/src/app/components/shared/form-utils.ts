@@ -44,7 +44,7 @@ export function focusInput(component: Focusable | undefined | null): void {
  */
 export function shouldTriggerSubmit(event: KeyboardEvent): boolean {
   if (event.key !== 'Enter') return false;
-  
+
   const target = event.target as HTMLElement;
   return target.tagName !== 'TEXTAREA';
 }

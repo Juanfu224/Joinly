@@ -83,12 +83,7 @@
     }
 
     <div class="c-register-form__actions">
-      <app-button
-        type="button"
-        variant="secondary"
-        size="xl"
-        (click)="onCancel()"
-      >
+      <app-button type="button" variant="secondary" size="xl" (click)="onCancel()">
         Cancelar
       </app-button>
 
@@ -99,9 +94,13 @@
         [disabled]="isSubmitDisabled()"
         [loading]="isLoading()"
       >
-        @if (isLoading()) { Registrando... } 
-        @else if (form.pending) { Validando... }
-        @else { Registrar }
+        @if (isLoading()) {
+          Registrando...
+        } @else if (form.pending) {
+          Validando...
+        } @else {
+          Registrar
+        }
       </app-button>
     </div>
   </form>
@@ -109,8 +108,8 @@
   <footer slot="footer" class="c-register-form__footer">
     <p class="c-register-form__footer-text">
       ¿Ya tienes cuenta?
-      <a 
-        href="/login" 
+      <a
+        href="/login"
         class="c-register-form__link c-register-form__link--morado"
         (click)="$event.preventDefault(); onLoginRequest()"
       >

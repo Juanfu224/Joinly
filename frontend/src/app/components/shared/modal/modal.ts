@@ -29,10 +29,10 @@ import { ButtonComponent, IconComponent } from '../index';
  * ```typescript
  * // En app.html (root component)
  * <app-modal />
- * 
+ *
  * // Para abrir el modal desde cualquier componente:
  * private readonly modalService = inject(ModalService);
- * 
+ *
  * openModal() {
  *   this.modalService.open({
  *     title: '¿Confirmar acción?',
@@ -47,7 +47,7 @@ import { ButtonComponent, IconComponent } from '../index';
  * @remarks
  * El modal implementa focus trap manual para cumplir requisitos educativos.
  * Detecta elementos focusables y gestiona la navegación con Tab/Shift+Tab.
- * 
+ *
  * Manipulación del DOM (viewChild + ElementRef):
  * - Acceder al contenedor del modal para gestionar foco
  * - Detectar elementos focusables dinámicamente
@@ -111,14 +111,14 @@ export class ModalComponent implements OnInit, OnDestroy {
 
   /**
    * Implementa focus trap: maneja navegación con Tab dentro del modal.
-   * 
+   *
    * @remarks
    * Cuando el usuario presiona Tab o Shift+Tab:
    * 1. Detecta todos los elementos focusables dentro del modal
    * 2. Si está en el último elemento y presiona Tab, vuelve al primero
    * 3. Si está en el primero y presiona Shift+Tab, va al último
    * 4. Previene que el foco salga del modal
-   * 
+   *
    * Esto cumple WCAG 2.1 AA para modales accesibles.
    */
   @HostListener('keydown', ['$event'])
@@ -150,7 +150,7 @@ export class ModalComponent implements OnInit, OnDestroy {
         event.preventDefault();
         lastElement.focus();
       }
-    } 
+    }
     // Tab: si estamos en el último elemento, ir al primero
     else {
       if (activeElement === lastElement) {
@@ -163,7 +163,7 @@ export class ModalComponent implements OnInit, OnDestroy {
   /**
    * Maneja el click en el overlay para cerrar el modal.
    * Solo cierra si closeOnOverlayClick es true.
-   * 
+   *
    * @param event - Evento de click
    */
   protected handleOverlayClick(event: MouseEvent): void {
@@ -176,9 +176,9 @@ export class ModalComponent implements OnInit, OnDestroy {
   /**
    * Previene que el click en el contenido del modal cierre el modal.
    * Usa $event.stopPropagation() para evitar que el evento llegue al overlay.
-   * 
+   *
    * @param event - Evento de click
-   * 
+   *
    * @remarks
    * Este es un ejemplo práctico del uso de stopPropagation():
    * - El overlay tiene (click)="handleOverlayClick()"
@@ -207,7 +207,7 @@ export class ModalComponent implements OnInit, OnDestroy {
   /**
    * Callback cuando el modal se abre (después de la animación de entrada).
    * Enfoca el primer elemento focusable del modal.
-   * 
+   *
    * @remarks
    * Este método se llama desde el template con @if para detectar cuando
    * el modal se renderiza. Usa viewChild para acceder al DOM y enfocar.
@@ -232,20 +232,20 @@ export class ModalComponent implements OnInit, OnDestroy {
 
   /**
    * Detecta y almacena todos los elementos focusables dentro del modal.
-   * 
+   *
    * @param container - Contenedor donde buscar elementos focusables
-   * 
+   *
    * @remarks
    * Elementos considerados focusables:
    * - Enlaces con href
    * - Botones
    * - Inputs, selects, textareas
    * - Elementos con tabindex >= 0
-   * 
+   *
    * Excluye elementos con tabindex="-1" o disabled.
    */
   private updateFocusableElements(container: HTMLElement): void {
-    const selector = 
+    const selector =
       'a[href], button:not([disabled]), textarea:not([disabled]), ' +
       'input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
 

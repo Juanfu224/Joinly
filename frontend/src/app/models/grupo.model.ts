@@ -1,6 +1,6 @@
 /**
  * Modelos de datos para Grupos (Unidades Familiares)
- * 
+ *
  * Estos modelos representan las estructuras de datos relacionadas con
  * los grupos familiares en la aplicación Joinly.
  */

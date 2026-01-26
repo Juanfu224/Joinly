@@ -43,7 +43,7 @@ export class BreadcrumbService {
     this.router.events
       .pipe(
         filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(() => this.buildBreadcrumbs());
   }
@@ -60,21 +60,23 @@ export class BreadcrumbService {
 
       const routeUrl = childRoute.snapshot.url.map((s) => s.path).join('/');
       if (routeUrl) url += `/${routeUrl}`;
-      
+
       // Acumular parámetros de todas las rutas
       allParams = { ...allParams, ...childRoute.snapshot.params };
 
       // Breadcrumb padres (soporta uno o varios)
-      const parentConfig = childRoute.snapshot.data['breadcrumbParent'] as BreadcrumbParent | BreadcrumbParent[] | undefined;
+      const parentConfig = childRoute.snapshot.data['breadcrumbParent'] as
+        | BreadcrumbParent
+        | BreadcrumbParent[]
+        | undefined;
       if (parentConfig) {
         const parents = Array.isArray(parentConfig) ? parentConfig : [parentConfig];
         for (const parent of parents) {
-          const parentLabel = typeof parent.label === 'function' 
-            ? parent.label(childRoute.snapshot.data, allParams) 
-            : parent.label;
-          const parentUrl = typeof parent.url === 'function'
-            ? parent.url(allParams)
-            : parent.url;
+          const parentLabel =
+            typeof parent.label === 'function'
+              ? parent.label(childRoute.snapshot.data, allParams)
+              : parent.label;
+          const parentUrl = typeof parent.url === 'function' ? parent.url(allParams) : parent.url;
           breadcrumbs.push({ label: parentLabel, url: parentUrl });
         }
       }

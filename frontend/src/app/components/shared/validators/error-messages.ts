@@ -2,7 +2,7 @@ import { AbstractControl } from '@angular/forms';
 
 /**
  * Diccionario centralizado de mensajes de error de validación.
- * 
+ *
  * Proporciona mensajes consistentes en toda la aplicación y facilita
  * la internacionalización futura. Los mensajes pueden ser cadenas
  * estáticas o funciones que reciben el objeto de error para mensajes dinámicos.
@@ -53,15 +53,15 @@ export const VALIDATION_MESSAGES: Record<string, string | ((error?: any) => stri
 
 /**
  * Obtiene el mensaje de error apropiado para un control de formulario.
- * 
+ *
  * Prioriza errores según su importancia y utiliza el diccionario
  * centralizado de mensajes. Permite mensajes personalizados por control.
  * Muestra errores solo cuando el control ha sido tocado O modificado.
- * 
+ *
  * @param control Control del formulario a validar
  * @param customMessages Mensajes personalizados que sobreescriben los del diccionario
  * @returns Mensaje de error o cadena vacía si no hay errores
- * 
+ *
  * @example
  * ```typescript
  * getErrorMessage(this.form.get('email'), {
@@ -72,7 +72,7 @@ export const VALIDATION_MESSAGES: Record<string, string | ((error?: any) => stri
  */
 export function getErrorMessage(
   control: AbstractControl | null,
-  customMessages?: Record<string, string>
+  customMessages?: Record<string, string>,
 ): string {
   // Mostrar errores solo cuando el control ha sido tocado O modificado
   if (!control || !control.errors || (!control.touched && !control.dirty)) return '';
@@ -98,15 +98,15 @@ export function getErrorMessage(
 
 /**
  * Obtiene todos los errores de un control como array de mensajes.
- * 
+ *
  * Útil para mostrar múltiples errores simultáneamente o para
  * validadores que retornan múltiples errores en un solo objeto.
  * Muestra errores solo cuando el control ha sido tocado O modificado.
- * 
+ *
  * @param control Control del formulario a validar
  * @param customMessages Mensajes personalizados opcionales
  * @returns Array de mensajes de error
- * 
+ *
  * @example
  * ```typescript
  * const errors = getAllErrorMessages(this.form.get('password'));
@@ -115,7 +115,7 @@ export function getErrorMessage(
  */
 export function getAllErrorMessages(
   control: AbstractControl | null,
-  customMessages?: Record<string, string>
+  customMessages?: Record<string, string>,
 ): string[] {
   // Mostrar errores solo cuando el control ha sido tocado O modificado
   if (!control || !control.errors || (!control.touched && !control.dirty)) return [];
@@ -139,13 +139,13 @@ export function getAllErrorMessages(
 
 /**
  * Verifica si un control tiene un error específico y está touched O dirty.
- * 
+ *
  * Útil para mostrar/ocultar mensajes de error específicos en templates.
- * 
+ *
  * @param control Control del formulario a validar
  * @param errorType Tipo de error a verificar
  * @returns true si el control tiene ese error y está touched o dirty
- * 
+ *
  * @example
  * ```html
  * <div *ngIf="hasError(form.get('email'), 'email')" class="error">
@@ -159,15 +159,15 @@ export function hasError(control: AbstractControl | null, errorType: string): bo
 
 /**
  * Verifica si se deben mostrar los errores de un control.
- * 
+ *
  * Un control debe mostrar errores cuando:
  * - Tiene errores de validación
  * - Ha sido tocado O modificado
  * - NO está en estado pending (validación asíncrona en curso)
- * 
+ *
  * @param control Control del formulario a validar
  * @returns true si se deben mostrar los errores
- * 
+ *
  * @example
  * ```typescript
  * if (shouldShowError(this.form.get('email'))) {
@@ -182,11 +182,11 @@ export function shouldShowError(control: AbstractControl | null): boolean {
 
 /**
  * Obtiene los errores del FormGroup (cross-field validations).
- * 
+ *
  * @param form FormGroup a validar
  * @param customMessages Mensajes personalizados opcionales
  * @returns Array de mensajes de error del formulario
- * 
+ *
  * @example
  * ```typescript
  * const formErrors = getFormErrors(this.registerForm);
@@ -195,7 +195,7 @@ export function shouldShowError(control: AbstractControl | null): boolean {
  */
 export function getFormErrors(
   form: AbstractControl | null,
-  customMessages?: Record<string, string>
+  customMessages?: Record<string, string>,
 ): string[] {
   if (!form?.errors) return [];
 

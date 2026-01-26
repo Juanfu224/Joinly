@@ -2,9 +2,7 @@
   <header class="c-pending-requests__header">
     <div class="c-pending-requests__header-content">
       <app-icon name="users" size="md" />
-      <h2 id="pending-requests-title" class="c-pending-requests__title">
-        Solicitudes pendientes
-      </h2>
+      <h2 id="pending-requests-title" class="c-pending-requests__title">Solicitudes pendientes</h2>
       @if (count() > 0) {
         <span class="c-pending-requests__badge">{{ count() }}</span>
       }
@@ -18,14 +16,16 @@
           <li class="c-pending-requests__item">
             <article class="c-pending-requests__card">
               <div class="c-pending-requests__user">
-                <app-avatar 
-                  [src]="solicitud.solicitante.avatar || ''" 
+                <app-avatar
+                  [src]="solicitud.solicitante.avatar || ''"
                   [name]="solicitud.solicitante.nombreCompleto"
                   size="md"
                   aria-hidden="true"
                 />
                 <div class="c-pending-requests__user-info">
-                  <h3 class="c-pending-requests__user-name">{{ solicitud.solicitante.nombreCompleto }}</h3>
+                  <h3 class="c-pending-requests__user-name">
+                    {{ solicitud.solicitante.nombreCompleto }}
+                  </h3>
                   <p class="c-pending-requests__user-email">{{ solicitud.solicitante.email }}</p>
                   @if (solicitud.mensaje) {
                     <p class="c-pending-requests__message">{{ solicitud.mensaje }}</p>
@@ -37,7 +37,9 @@
                   variant="secondary"
                   size="md"
                   (click)="handleReject(solicitud)"
-                  [attr.aria-label]="'Rechazar solicitud de ' + solicitud.solicitante.nombreCompleto"
+                  [attr.aria-label]="
+                    'Rechazar solicitud de ' + solicitud.solicitante.nombreCompleto
+                  "
                 >
                   Rechazar
                 </app-button>

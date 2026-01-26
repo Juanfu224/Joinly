@@ -32,8 +32,9 @@ export class RegisterComponent {
   private readonly authService = inject(AuthService);
   private readonly toastService = inject(ToastService);
   private readonly router = inject(Router);
-  
-  protected readonly registerForm = viewChild.required<RegisterFormComponent>(RegisterFormComponent);
+
+  protected readonly registerForm =
+    viewChild.required<RegisterFormComponent>(RegisterFormComponent);
 
   /**
    * Maneja el submit del formulario de registro.

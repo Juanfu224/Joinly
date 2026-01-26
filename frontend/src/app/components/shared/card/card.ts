@@ -86,10 +86,7 @@ export class CardComponent {
    * Clases CSS computadas basadas en las propiedades
    */
   cardClasses = computed(() => {
-    const classes = [
-      'c-card',
-      `c-card--${this.variant()}`,
-    ];
+    const classes = ['c-card', `c-card--${this.variant()}`];
 
     if (this.disableHover()) {
       classes.push('c-card--no-hover');

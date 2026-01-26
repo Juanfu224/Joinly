@@ -13,7 +13,8 @@
             <app-avatar
               [src]="usuario()?.avatar ?? ''"
               [name]="usuario()?.nombre ?? 'Usuario'"
-              size="xl" />
+              size="xl"
+            />
           </figure>
           <div class="p-perfil__hero-info">
             <h2 class="p-perfil__nombre">{{ usuario()?.nombre ?? 'Usuario' }}</h2>
@@ -69,12 +70,20 @@
         <div class="p-perfil__avatar-upload">
           <div class="p-perfil__avatar-current">
             @if (avatarPreview()) {
-              <img [src]="avatarPreview()!" alt="Preview" class="p-perfil__avatar-preview" width="128" height="128" decoding="async" />
+              <img
+                [src]="avatarPreview()!"
+                alt="Preview"
+                class="p-perfil__avatar-preview"
+                width="128"
+                height="128"
+                decoding="async"
+              />
             } @else {
               <app-avatar
                 [src]="usuario()?.avatar ?? ''"
                 [name]="usuario()?.nombre ?? 'Usuario'"
-                size="xl" />
+                size="xl"
+              />
             }
           </div>
 
@@ -88,7 +97,8 @@
                   accept="image/jpeg,image/png,image/webp"
                   (change)="onAvatarFileSelected($event)"
                   class="p-perfil__avatar-input"
-                  [disabled]="isUploadingAvatar()" />
+                  [disabled]="isUploadingAvatar()"
+                />
               </label>
               @if (hasCustomAvatar()) {
                 <app-button
@@ -97,7 +107,8 @@
                   leftIcon="bin"
                   (click)="onDeleteAvatar()"
                   [loading]="isDeletingAvatar()"
-                  [disabled]="isDeletingAvatar()">
+                  [disabled]="isDeletingAvatar()"
+                >
                   Eliminar foto
                 </app-button>
               }
@@ -112,7 +123,8 @@
                   leftIcon="check"
                   (click)="onUploadAvatar()"
                   [loading]="isUploadingAvatar()"
-                  [disabled]="isUploadingAvatar()">
+                  [disabled]="isUploadingAvatar()"
+                >
                   Guardar foto
                 </app-button>
                 <app-button
@@ -120,7 +132,8 @@
                   size="sm"
                   leftIcon="x"
                   (click)="onCancelAvatarUpload()"
-                  [disabled]="isUploadingAvatar()">
+                  [disabled]="isUploadingAvatar()"
+                >
                   Cancelar
                 </app-button>
               </div>
@@ -129,11 +142,12 @@
         </div>
       </section>
 
-      <form 
-        [formGroup]="perfilForm" 
-        (ngSubmit)="onSave()" 
+      <form
+        [formGroup]="perfilForm"
+        (ngSubmit)="onSave()"
         class="p-perfil__form"
-        aria-label="Formulario de edición de perfil">
+        aria-label="Formulario de edición de perfil"
+      >
         <div class="p-perfil__form-fields">
           <app-form-input
             formControlName="nombre"
@@ -142,7 +156,8 @@
             placeholder="Ingresa tu nombre completo"
             [required]="true"
             helperText="Entre 2 y 100 caracteres"
-            autocomplete="name" />
+            autocomplete="name"
+          />
 
           <app-form-input
             formControlName="telefono"
@@ -150,7 +165,8 @@
             type="tel"
             placeholder="+34 612 345 678"
             helperText="Opcional - Formato internacional"
-            autocomplete="tel" />
+            autocomplete="tel"
+          />
 
           <div class="p-perfil__campo-readonly">
             <label class="p-perfil__etiqueta">Correo electrónico</label>
@@ -163,11 +179,7 @@
         </div>
 
         <footer class="p-perfil__form-actions">
-          <app-button
-            type="button"
-            variant="ghost"
-            (click)="onCancel()"
-            [disabled]="isSaving()">
+          <app-button type="button" variant="ghost" (click)="onCancel()" [disabled]="isSaving()">
             Cancelar
           </app-button>
           <app-button
@@ -175,7 +187,8 @@
             variant="primary"
             leftIcon="check"
             [disabled]="!canSubmit()"
-            [loading]="isSaving()">
+            [loading]="isSaving()"
+          >
             Guardar cambios
           </app-button>
         </footer>

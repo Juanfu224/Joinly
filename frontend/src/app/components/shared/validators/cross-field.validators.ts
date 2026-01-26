@@ -3,11 +3,11 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 /**
  * Validador cross-field para verificar que dos campos coincidan.
  * Útil para confirmación de contraseña, email, etc.
- * 
+ *
  * @param field1 Nombre del primer campo
  * @param field2 Nombre del segundo campo que debe coincidir
  * @returns ValidatorFn que retorna error si los campos no coinciden
- * 
+ *
  * @example
  * ```typescript
  * this.form = this.fb.group(
@@ -32,13 +32,13 @@ export function matchFields(field1: string, field2: string): ValidatorFn {
 
 /**
  * Validador cross-field para verificar precio mínimo por plaza.
- * 
+ *
  * Calcula el precio por persona (precio total / número de plazas)
  * y valida que sea mayor o igual al mínimo establecido.
- * 
+ *
  * @param minEurosPerPerson Precio mínimo en euros por persona
  * @returns ValidatorFn que valida el precio por plaza
- * 
+ *
  * @example
  * ```typescript
  * this.form = this.fb.group(
@@ -72,16 +72,16 @@ export function precioMinimoPlaza(minEurosPerPerson: number): ValidatorFn {
 
 /**
  * Validador cross-field para campos que deben completarse juntos.
- * 
+ *
  * Valida que ambos campos estén completos o ambos estén vacíos,
  * evitando el estado inconsistente donde solo uno está lleno.
- * 
+ *
  * Útil para credenciales (usuario + password), direcciones parciales, etc.
- * 
+ *
  * @param field1 Nombre del primer campo
  * @param field2 Nombre del segundo campo
  * @returns ValidatorFn que valida completitud conjunta
- * 
+ *
  * @example
  * ```typescript
  * this.form = this.fb.group(
@@ -111,13 +111,13 @@ export function requireBothOrNeither(field1: string, field2: string): ValidatorF
 
 /**
  * Validador cross-field que requiere al menos uno de varios campos.
- * 
+ *
  * Valida que al menos uno de los campos especificados tenga un valor.
  * Útil para contacto (email O teléfono), opciones alternativas, etc.
- * 
+ *
  * @param fields Array con nombres de los campos a validar
  * @returns ValidatorFn que valida presencia de al menos un campo
- * 
+ *
  * @example
  * ```typescript
  * this.form = this.fb.group(
@@ -147,13 +147,13 @@ export function atLeastOne(fields: string[]): ValidatorFn {
 
 /**
  * Validador cross-field para rangos de fechas.
- * 
+ *
  * Valida que la fecha de inicio sea anterior a la fecha de fin.
- * 
+ *
  * @param startDateField Nombre del campo de fecha inicio
  * @param endDateField Nombre del campo de fecha fin
  * @returns ValidatorFn que valida el rango de fechas
- * 
+ *
  * @example
  * ```typescript
  * this.form = this.fb.group(
@@ -188,14 +188,14 @@ export function dateRange(startDateField: string, endDateField: string): Validat
 
 /**
  * Validador cross-field para edad mínima basada en fecha de nacimiento.
- * 
+ *
  * Calcula la edad a partir de la fecha de nacimiento y valida
  * que sea mayor o igual a la edad mínima especificada.
- * 
+ *
  * @param birthDateField Nombre del campo de fecha de nacimiento
  * @param minAge Edad mínima requerida
  * @returns ValidatorFn que valida edad mínima
- * 
+ *
  * @example
  * ```typescript
  * this.form = this.fb.group(

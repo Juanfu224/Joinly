@@ -10,8 +10,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { Router, RouterLink, NavigationStart } from '@angular/router';
-import { filter } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { IconComponent } from '../icon/icon';
 import { AvatarComponent } from '../avatar/avatar';
 

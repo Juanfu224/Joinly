@@ -28,11 +28,11 @@ export class UsuarioService {
 
   actualizarPreferenciasNotificacion(
     id: number,
-    preferencias: PreferenciasNotificacion
+    preferencias: PreferenciasNotificacion,
   ): Observable<PreferenciasNotificacion> {
     return this.api.put<PreferenciasNotificacion>(
       `usuarios/${id}/preferencias-notificaciones`,
-      preferencias
+      preferencias,
     );
   }
 

@@ -61,30 +61,30 @@ export class SolicitudesStore {
   readonly visiblePendientesSuscripcionCount = this._visiblePendientesSuscripcionCount.asReadonly();
 
   readonly solicitudesPendientes = computed(() =>
-    this._solicitudes().filter(s => s.estado === 'PENDIENTE')
+    this._solicitudes().filter((s) => s.estado === 'PENDIENTE'),
   );
 
   readonly solicitudesAprobadas = computed(() =>
-    this._solicitudes().filter(s => s.estado === 'APROBADA')
+    this._solicitudes().filter((s) => s.estado === 'APROBADA'),
   );
 
   readonly solicitudesRechazadas = computed(() =>
-    this._solicitudes().filter(s => s.estado === 'RECHAZADA')
+    this._solicitudes().filter((s) => s.estado === 'RECHAZADA'),
   );
 
   readonly solicitudesCanceladas = computed(() =>
-    this._solicitudes().filter(s => s.estado === 'CANCELADA')
+    this._solicitudes().filter((s) => s.estado === 'CANCELADA'),
   );
 
   readonly totalPendientesGrupo = computed(() => this._pendientesGrupo().length);
   readonly totalPendientesSuscripcion = computed(() => this._pendientesSuscripcion().length);
 
-  readonly hasMorePendientesGrupo = computed(() =>
-    this._visiblePendientesGrupoCount() < this._pendientesGrupo().length
+  readonly hasMorePendientesGrupo = computed(
+    () => this._visiblePendientesGrupoCount() < this._pendientesGrupo().length,
   );
 
-  readonly hasMorePendientesSuscripcion = computed(() =>
-    this._visiblePendientesSuscripcionCount() < this._pendientesSuscripcion().length
+  readonly hasMorePendientesSuscripcion = computed(
+    () => this._visiblePendientesSuscripcionCount() < this._pendientesSuscripcion().length,
   );
 
   private currentGrupoId: number | null = null;
@@ -95,14 +95,14 @@ export class SolicitudesStore {
     fechaDesde?: string,
     fechaHasta?: string,
     page = 0,
-    size = 20
+    size = 20,
   ): Promise<void> {
     this._loading.set(true);
     this._error.set(null);
 
     try {
       const response = await firstValueFrom(
-        this.solicitudService.getMisSolicitudes(estado, fechaDesde, fechaHasta, page, size)
+        this.solicitudService.getMisSolicitudes(estado, fechaDesde, fechaHasta, page, size),
       );
       this._solicitudes.set(response.content);
       this._page.set(response.number);
@@ -126,7 +126,7 @@ export class SolicitudesStore {
 
     try {
       const pendientes = await firstValueFrom(
-        this.solicitudService.getSolicitudesPendientesGrupo(idGrupo)
+        this.solicitudService.getSolicitudesPendientesGrupo(idGrupo),
       );
       this._pendientesGrupo.set(pendientes);
       this._visiblePendientesGrupoCount.set(Math.min(10, pendientes.length));
@@ -145,11 +145,13 @@ export class SolicitudesStore {
 
     try {
       const pendientes = await firstValueFrom(
-        this.solicitudService.getSolicitudesPendientesSuscripcion(idSuscripcion)
+        this.solicitudService.getSolicitudesPendientesSuscripcion(idSuscripcion),
       );
       this._pendientesSuscripcion.set(pendientes);
       this._visiblePendientesSuscripcionCount.set(Math.min(10, pendientes.length));
-      this._pendientesSuscripcionVisible.set(pendientes.slice(0, this._visiblePendientesSuscripcionCount()));
+      this._pendientesSuscripcionVisible.set(
+        pendientes.slice(0, this._visiblePendientesSuscripcionCount()),
+      );
     } catch (error) {
       this._error.set(this.handleError(error));
     } finally {
@@ -162,10 +164,8 @@ export class SolicitudesStore {
     this._error.set(null);
 
     try {
-      const solicitud = await firstValueFrom(
-        this.solicitudService.unirseGrupo(data)
-      );
-      this._solicitudes.update(list => [...list, solicitud]);
+      const solicitud = await firstValueFrom(this.solicitudService.unirseGrupo(data));
+      this._solicitudes.update((list) => [...list, solicitud]);
       this.toastService.success('Solicitud enviada');
       return solicitud;
     } catch (error) {
@@ -176,15 +176,15 @@ export class SolicitudesStore {
     }
   }
 
-  async createSolicitudSuscripcion(data: CreateSolicitudSuscripcionRequest): Promise<SolicitudResponse> {
+  async createSolicitudSuscripcion(
+    data: CreateSolicitudSuscripcionRequest,
+  ): Promise<SolicitudResponse> {
     this._loading.set(true);
     this._error.set(null);
 
     try {
-      const solicitud = await firstValueFrom(
-        this.solicitudService.solicitarPlazaSuscripcion(data)
-      );
-      this._solicitudes.update(list => [...list, solicitud]);
+      const solicitud = await firstValueFrom(this.solicitudService.solicitarPlazaSuscripcion(data));
+      this._solicitudes.update((list) => [...list, solicitud]);
       this.toastService.success('Solicitud enviada');
       return solicitud;
     } catch (error) {
@@ -197,7 +197,7 @@ export class SolicitudesStore {
 
   async aprobar(id: number): Promise<void> {
     const previous = this._solicitudes();
-    const solicitud = this._solicitudes().find(s => s.id === id);
+    const solicitud = this._solicitudes().find((s) => s.id === id);
     const previousPendientesGrupo = this._pendientesGrupo();
     const previousPendientesSuscripcion = this._pendientesSuscripcion();
     const previousPendientesGrupoVisible = this._pendientesGrupoVisible();
@@ -205,25 +205,23 @@ export class SolicitudesStore {
     const previousVisiblePendientesGrupoCount = this._visiblePendientesGrupoCount();
     const previousVisiblePendientesSuscripcionCount = this._visiblePendientesSuscripcionCount();
 
-    this._solicitudes.update(list =>
-      list.map(s => s.id === id ? { ...s, estado: 'APROBADA' } : s)
+    this._solicitudes.update((list) =>
+      list.map((s) => (s.id === id ? { ...s, estado: 'APROBADA' } : s)),
     );
 
     if (solicitud?.unidad) {
-      this._pendientesGrupo.update(list => list.filter(s => s.id !== id));
-      this._pendientesGrupoVisible.update(list => list.filter(s => s.id !== id));
+      this._pendientesGrupo.update((list) => list.filter((s) => s.id !== id));
+      this._pendientesGrupoVisible.update((list) => list.filter((s) => s.id !== id));
       this._visiblePendientesGrupoCount.set(this._visiblePendientesGrupoCount() - 1);
     }
     if (solicitud?.suscripcion) {
-      this._pendientesSuscripcion.update(list => list.filter(s => s.id !== id));
-      this._pendientesSuscripcionVisible.update(list => list.filter(s => s.id !== id));
+      this._pendientesSuscripcion.update((list) => list.filter((s) => s.id !== id));
+      this._pendientesSuscripcionVisible.update((list) => list.filter((s) => s.id !== id));
       this._visiblePendientesSuscripcionCount.set(this._visiblePendientesSuscripcionCount() - 1);
     }
 
     try {
-      await firstValueFrom(
-        this.solicitudService.aprobarSolicitud(id)
-      );
+      await firstValueFrom(this.solicitudService.aprobarSolicitud(id));
       this.toastService.success('Solicitud aprobada');
     } catch (error) {
       this._solicitudes.set(previous);
@@ -240,7 +238,7 @@ export class SolicitudesStore {
 
   async rechazar(id: number, motivo?: string): Promise<void> {
     const previous = this._solicitudes();
-    const solicitud = this._solicitudes().find(s => s.id === id);
+    const solicitud = this._solicitudes().find((s) => s.id === id);
     const previousPendientesGrupo = this._pendientesGrupo();
     const previousPendientesSuscripcion = this._pendientesSuscripcion();
     const previousPendientesGrupoVisible = this._pendientesGrupoVisible();
@@ -248,25 +246,25 @@ export class SolicitudesStore {
     const previousVisiblePendientesGrupoCount = this._visiblePendientesGrupoCount();
     const previousVisiblePendientesSuscripcionCount = this._visiblePendientesSuscripcionCount();
 
-    this._solicitudes.update(list =>
-      list.map(s => s.id === id ? { ...s, estado: 'RECHAZADA', motivoRechazo: motivo || null } : s)
+    this._solicitudes.update((list) =>
+      list.map((s) =>
+        s.id === id ? { ...s, estado: 'RECHAZADA', motivoRechazo: motivo || null } : s,
+      ),
     );
 
     if (solicitud?.unidad) {
-      this._pendientesGrupo.update(list => list.filter(s => s.id !== id));
-      this._pendientesGrupoVisible.update(list => list.filter(s => s.id !== id));
+      this._pendientesGrupo.update((list) => list.filter((s) => s.id !== id));
+      this._pendientesGrupoVisible.update((list) => list.filter((s) => s.id !== id));
       this._visiblePendientesGrupoCount.set(this._visiblePendientesGrupoCount() - 1);
     }
     if (solicitud?.suscripcion) {
-      this._pendientesSuscripcion.update(list => list.filter(s => s.id !== id));
-      this._pendientesSuscripcionVisible.update(list => list.filter(s => s.id !== id));
+      this._pendientesSuscripcion.update((list) => list.filter((s) => s.id !== id));
+      this._pendientesSuscripcionVisible.update((list) => list.filter((s) => s.id !== id));
       this._visiblePendientesSuscripcionCount.set(this._visiblePendientesSuscripcionCount() - 1);
     }
 
     try {
-      await firstValueFrom(
-        this.solicitudService.rechazarSolicitud(id, motivo)
-      );
+      await firstValueFrom(this.solicitudService.rechazarSolicitud(id, motivo));
       this.toastService.success('Solicitud rechazada');
     } catch (error) {
       this._solicitudes.set(previous);
@@ -284,14 +282,12 @@ export class SolicitudesStore {
   async cancelar(id: number): Promise<void> {
     const previous = this._solicitudes();
 
-    this._solicitudes.update(list =>
-      list.map(s => s.id === id ? { ...s, estado: 'CANCELADA' } : s)
+    this._solicitudes.update((list) =>
+      list.map((s) => (s.id === id ? { ...s, estado: 'CANCELADA' } : s)),
     );
 
     try {
-      await firstValueFrom(
-        this.solicitudService.cancelarSolicitud(id)
-      );
+      await firstValueFrom(this.solicitudService.cancelarSolicitud(id));
       this.toastService.success('Solicitud cancelada');
     } catch (error) {
       this._solicitudes.set(previous);
@@ -303,7 +299,7 @@ export class SolicitudesStore {
   async tieneSolicitudPendienteSuscripcion(idSuscripcion: number): Promise<boolean> {
     try {
       return await firstValueFrom(
-        this.solicitudService.tieneSolicitudPendienteSuscripcion(idSuscripcion)
+        this.solicitudService.tieneSolicitudPendienteSuscripcion(idSuscripcion),
       );
     } catch (error) {
       this._error.set(this.handleError(error));
@@ -313,9 +309,7 @@ export class SolicitudesStore {
 
   async tieneSolicitudPendienteGrupo(idUnidad: number): Promise<boolean> {
     try {
-      return await firstValueFrom(
-        this.solicitudService.tieneSolicitudPendienteGrupo(idUnidad)
-      );
+      return await firstValueFrom(this.solicitudService.tieneSolicitudPendienteGrupo(idUnidad));
     } catch (error) {
       this._error.set(this.handleError(error));
       return false;
@@ -332,7 +326,7 @@ export class SolicitudesStore {
         this._fechaDesdeFiltro(),
         this._fechaHastaFiltro(),
         current + 1,
-        this._pageSize()
+        this._pageSize(),
       );
     }
   }
@@ -346,7 +340,7 @@ export class SolicitudesStore {
         this._fechaDesdeFiltro(),
         this._fechaHastaFiltro(),
         current - 1,
-        this._pageSize()
+        this._pageSize(),
       );
     }
   }
@@ -358,7 +352,7 @@ export class SolicitudesStore {
         this._fechaDesdeFiltro(),
         this._fechaHastaFiltro(),
         page,
-        this._pageSize()
+        this._pageSize(),
       );
     }
   }
@@ -387,7 +381,7 @@ export class SolicitudesStore {
       this._fechaDesdeFiltro(),
       this._fechaHastaFiltro(),
       this._page(),
-      this._pageSize()
+      this._pageSize(),
     );
   }
 
@@ -413,7 +407,7 @@ export class SolicitudesStore {
       const increment = 10;
       const newCount = Math.min(currentCount + increment, this._pendientesGrupo().length);
 
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       this._visiblePendientesGrupoCount.set(newCount);
       this._pendientesGrupoVisible.set(this._pendientesGrupo().slice(0, newCount));
@@ -434,7 +428,7 @@ export class SolicitudesStore {
       const increment = 10;
       const newCount = Math.min(currentCount + increment, this._pendientesSuscripcion().length);
 
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       this._visiblePendientesSuscripcionCount.set(newCount);
       this._pendientesSuscripcionVisible.set(this._pendientesSuscripcion().slice(0, newCount));
@@ -474,33 +468,39 @@ export class SolicitudesStore {
     let wasUpdated = false;
     let isPendientesAffected = false;
 
-    this._solicitudes.update(list => {
-      const exists = list.some(s => s.id === solicitud.id);
+    this._solicitudes.update((list) => {
+      const exists = list.some((s) => s.id === solicitud.id);
       if (exists) {
         wasUpdated = true;
-        return list.map(s => s.id === solicitud.id ? solicitud : s);
+        return list.map((s) => (s.id === solicitud.id ? solicitud : s));
       }
       return [...list, solicitud];
     });
 
     if (solicitud.estado === 'PENDIENTE') {
       if (solicitud.unidad && solicitud.unidad.id === this.currentGrupoId) {
-        const existsInPendientes = this._pendientesGrupo().some(s => s.id === solicitud.id);
+        const existsInPendientes = this._pendientesGrupo().some((s) => s.id === solicitud.id);
         if (!existsInPendientes) {
           isPendientesAffected = true;
-          this._pendientesGrupo.update(list => [...list, solicitud]);
+          this._pendientesGrupo.update((list) => [...list, solicitud]);
           this._visiblePendientesGrupoCount.set(this._visiblePendientesGrupoCount() + 1);
-          this._pendientesGrupoVisible.set(this._pendientesGrupo().slice(0, this._visiblePendientesGrupoCount()));
+          this._pendientesGrupoVisible.set(
+            this._pendientesGrupo().slice(0, this._visiblePendientesGrupoCount()),
+          );
         }
       }
 
       if (solicitud.suscripcion && solicitud.suscripcion.id === this.currentSuscripcionId) {
-        const existsInPendientes = this._pendientesSuscripcion().some(s => s.id === solicitud.id);
+        const existsInPendientes = this._pendientesSuscripcion().some((s) => s.id === solicitud.id);
         if (!existsInPendientes) {
           isPendientesAffected = true;
-          this._pendientesSuscripcion.update(list => [...list, solicitud]);
-          this._visiblePendientesSuscripcionCount.set(this._visiblePendientesSuscripcionCount() + 1);
-          this._pendientesSuscripcionVisible.set(this._pendientesSuscripcion().slice(0, this._visiblePendientesSuscripcionCount()));
+          this._pendientesSuscripcion.update((list) => [...list, solicitud]);
+          this._visiblePendientesSuscripcionCount.set(
+            this._visiblePendientesSuscripcionCount() + 1,
+          );
+          this._pendientesSuscripcionVisible.set(
+            this._pendientesSuscripcion().slice(0, this._visiblePendientesSuscripcionCount()),
+          );
         }
       }
     }

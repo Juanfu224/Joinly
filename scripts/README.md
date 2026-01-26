@@ -23,14 +23,37 @@ sudo ./scripts/setup-server.sh      # Configurar servidor (solo primera vez)
 
 | Script | Descripción |
 |--------|-------------|
+| `quick-deploy.sh` | Despliegue remoto automatizado (rsync + deploy + SSL + health check) |
 | `deploy.sh` | Despliegue completo a producción (Git pull + Docker build + health check) |
 | `init-ssl.sh` | Obtener certificado SSL de Let's Encrypt |
 | `health-check.sh` | Verificar estado de todos los servicios |
 | `backup.sh` | Backup de base de datos con rotación |
 | `restore.sh` | Restaurar backup con verificación |
 | `setup-server.sh` | Configuración inicial del servidor (Docker, firewall, etc.) |
+| `build-prod.sh` | Build de frontend y backend para producción |
+| `analyze-bundles.sh` | Análisis de bundles del frontend |
 
 ## ⚙️ Opciones de Cada Script
+
+### quick-deploy.sh
+```bash
+./scripts/quick-deploy.sh [user@]hostname [directory]
+
+# Ejemplos:
+./scripts/quick-deploy.sh root@joinly.studio /opt/joinly
+./scripts/quick-deploy.sh joinly@192.168.1.100
+
+# Omitir configuración inicial del servidor:
+SKIP_SETUP=true ./scripts/quick-deploy.sh root@joinly.studio
+```
+
+Este script automatiza todo el despliegue remoto:
+1. Copia el código vía rsync
+2. Ejecuta setup-server.sh (si es necesario)
+3. Configura .env.prod
+4. Ejecuta deploy.sh --build
+5. Configura SSL con Let's Encrypt
+6. Verifica el despliegue
 
 ### deploy.sh
 ```bash
@@ -99,6 +122,13 @@ sudo ./scripts/setup-server.sh      # Configurar servidor (solo primera vez)
 
 ## 🔒 Flujo de Despliegue Completo
 
+### Opción A: Despliegue Remoto Automatizado (Recomendado)
+```bash
+# Desde tu máquina local
+./scripts/quick-deploy.sh root@joinly.studio /opt/joinly
+```
+
+### Opción B: Despliegue Manual en el Servidor
 ```
 1. setup-server.sh    → Prepara el servidor (una sola vez)
 2. git clone          → Clonar repositorio
@@ -111,8 +141,13 @@ sudo ./scripts/setup-server.sh      # Configurar servidor (solo primera vez)
 
 ## 🔄 Actualizaciones
 
-Para actualizar a una nueva versión:
+### Opción A: Actualización desde Local (Recomendado)
+```bash
+# Desde tu máquina local
+./scripts/quick-deploy.sh root@joinly.studio /opt/joinly
+```
 
+### Opción B: Actualización en el Servidor
 ```bash
 cd /opt/joinly
 ./scripts/deploy.sh --build  # Automáticamente hace git pull y rebuild

@@ -9,9 +9,7 @@
   <div class="notification-receiver__content">
     <!-- Estado de Usuario (Signal) -->
     <article class="notification-receiver__card">
-      <h3 class="notification-receiver__section-title">
-        👤 Estado de Usuario (Signal)
-      </h3>
+      <h3 class="notification-receiver__section-title">👤 Estado de Usuario (Signal)</h3>
 
       @if (isAuthenticated()) {
         <div class="notification-receiver__user">
@@ -26,7 +24,9 @@
               <strong>ID:</strong> {{ currentUser().id }}
             </p>
           </div>
-          <span class="notification-receiver__user-badge notification-receiver__user-badge--authenticated">
+          <span
+            class="notification-receiver__user-badge notification-receiver__user-badge--authenticated"
+          >
             ✓ Autenticado
           </span>
         </div>
@@ -41,9 +41,7 @@
 
     <!-- Filtros Compartidos (Signal) -->
     <article class="notification-receiver__card">
-      <h3 class="notification-receiver__section-title">
-        🔍 Filtros Compartidos (Signal)
-      </h3>
+      <h3 class="notification-receiver__section-title">🔍 Filtros Compartidos (Signal)</h3>
 
       <div class="notification-receiver__filters">
         <div class="notification-receiver__filter-item">
@@ -59,9 +57,7 @@
           <span>{{ currentFilters().dateRange ? 'Configurado' : 'N/A' }}</span>
         </div>
         @if (hasActiveFilters()) {
-          <p class="notification-receiver__filter-active">
-            ⚡ Hay filtros activos
-          </p>
+          <p class="notification-receiver__filter-active">⚡ Hay filtros activos</p>
         }
       </div>
     </article>
@@ -69,9 +65,7 @@
     <!-- Historial de Eventos (Observable) -->
     <article class="notification-receiver__card">
       <div class="notification-receiver__section-header">
-        <h3 class="notification-receiver__section-title">
-          📋 Eventos Recibidos (Observable)
-        </h3>
+        <h3 class="notification-receiver__section-title">📋 Eventos Recibidos (Observable)</h3>
         @if (eventHistory().length > 0) {
           <button
             class="notification-receiver__clear-button"
@@ -94,15 +88,15 @@
                 <p class="notification-receiver__history-type">
                   <strong>{{ event.type }}</strong>
                 </p>
-                <pre class="notification-receiver__history-payload">{{ formatPayload(event.payload) }}</pre>
+                <pre class="notification-receiver__history-payload">{{
+                  formatPayload(event.payload)
+                }}</pre>
               </div>
             </li>
           }
         </ul>
       } @else {
-        <p class="notification-receiver__empty">
-          No hay eventos en el historial
-        </p>
+        <p class="notification-receiver__empty">No hay eventos en el historial</p>
       }
     </article>
   </div>

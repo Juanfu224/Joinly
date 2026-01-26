@@ -7,8 +7,8 @@
       <div class="p-responsive-test__encabezado">
         <h1 class="p-responsive-test__titulo">🧪 Testing Responsive</h1>
         <p class="p-responsive-test__descripcion">
-          Herramienta de testing para verificar el comportamiento responsive de los componentes
-          en los 5 viewports requeridos por la Fase 6.
+          Herramienta de testing para verificar el comportamiento responsive de los componentes en
+          los 5 viewports requeridos por la Fase 6.
         </p>
       </div>
 
@@ -26,7 +26,13 @@
 
           <div class="p-responsive-test__info-item">
             <span class="p-responsive-test__info-label">Container Queries:</span>
-            <strong [class]="supportsContainerQueries() ? 'p-responsive-test__info-valor--exito' : 'p-responsive-test__info-valor--error'">
+            <strong
+              [class]="
+                supportsContainerQueries()
+                  ? 'p-responsive-test__info-valor--exito'
+                  : 'p-responsive-test__info-valor--error'
+              "
+            >
               {{ supportsContainerQueries() ? '✓ Soportado' : '✗ No soportado' }}
             </strong>
           </div>
@@ -38,14 +44,9 @@
             [options]="viewports"
             (selectChange)="onViewportChange($event)"
           />
-          
+
           @if (selectedViewport() !== 'auto') {
-            <app-button
-              variant="secondary"
-              size="sm"
-              leftIcon="close"
-              (click)="resetViewport()"
-            >
+            <app-button variant="secondary" size="sm" leftIcon="close" (click)="resetViewport()">
               Resetear
             </app-button>
           }
@@ -56,10 +57,7 @@
     <!-- ===================================================================
          CONTENEDOR DE TESTING (con viewport simulado)
          =================================================================== -->
-    <div 
-      class="p-responsive-test__viewport"
-      [style]="containerStyle()"
-    >
+    <div class="p-responsive-test__viewport" [style]="containerStyle()">
       <!-- Indicador de viewport simulado -->
       @if (selectedViewport() !== 'auto') {
         <div class="p-responsive-test__viewport-indicator">
@@ -77,14 +75,14 @@
             Card Component
           </h2>
           <p class="p-responsive-test__nota">
-            <strong>Container Queries:</strong> La variante 'feature' adapta su layout basándose en el ancho del contenedor,
-            no del viewport. Prueba diferentes anchos para ver el cambio.
+            <strong>Container Queries:</strong> La variante 'feature' adapta su layout basándose en
+            el ancho del contenedor, no del viewport. Prueba diferentes anchos para ver el cambio.
           </p>
         </div>
 
         <div class="p-responsive-test__demo">
           <h3 class="p-responsive-test__demo-titulo">Card Feature (Container Query)</h3>
-          
+
           <div class="p-responsive-test__card-container">
             <app-card variant="feature">
               <div slot="icon" class="c-card-icon c-card-icon--morado">
@@ -92,13 +90,14 @@
               </div>
               <h4 slot="title">Grupos familiares</h4>
               <p slot="description">
-                Crea unidades familiares y gestiona quién tiene acceso a cada suscripción de forma sencilla.
+                Crea unidades familiares y gestiona quién tiene acceso a cada suscripción de forma
+                sencilla.
               </p>
             </app-card>
           </div>
 
           <h3 class="p-responsive-test__demo-titulo">Card Action (Horizontal)</h3>
-          
+
           <div class="p-responsive-test__card-container">
             <app-card variant="action">
               <div slot="icon" class="c-card-icon c-card-icon--naranja">
@@ -110,7 +109,7 @@
           </div>
 
           <h3 class="p-responsive-test__demo-titulo">Card Info (Compacta)</h3>
-          
+
           <div class="p-responsive-test__card-container">
             <app-card variant="info">
               <div slot="icon" class="c-card-icon c-card-icon--naranja">
@@ -152,8 +151,8 @@
             Subscription Info Card
           </h2>
           <p class="p-responsive-test__nota">
-            <strong>Container Queries:</strong> Layout complejo que se adapta basándose en su contenedor.
-            Mobile: columna | Tablet: 2 columnas | Desktop: grid complejo.
+            <strong>Container Queries:</strong> Layout complejo que se adapta basándose en su
+            contenedor. Mobile: columna | Tablet: 2 columnas | Desktop: grid complejo.
           </p>
         </div>
 
@@ -172,8 +171,8 @@
             Formularios
           </h2>
           <p class="p-responsive-test__nota">
-            <strong>WCAG 2.1 AA:</strong> Todos los elementos interactivos tienen un área táctil mínima de 44x44px.
-            Verifica en mobile que sea cómodo interactuar.
+            <strong>WCAG 2.1 AA:</strong> Todos los elementos interactivos tienen un área táctil
+            mínima de 44x44px. Verifica en mobile que sea cómodo interactuar.
           </p>
         </div>
 
@@ -190,7 +189,7 @@
               [options]="[
                 { value: 'netflix', label: 'Netflix' },
                 { value: 'disney', label: 'Disney+' },
-                { value: 'hbo', label: 'HBO Max' }
+                { value: 'hbo', label: 'HBO Max' },
               ]"
               value="netflix"
             />
@@ -214,21 +213,13 @@
 
         <div class="p-responsive-test__demo">
           <div class="p-responsive-test__button-grid">
-            <app-button variant="primary">
-              Crear grupo
-            </app-button>
+            <app-button variant="primary"> Crear grupo </app-button>
 
-            <app-button variant="purple" leftIcon="add">
-              Nueva suscripción
-            </app-button>
+            <app-button variant="purple" leftIcon="add"> Nueva suscripción </app-button>
 
-            <app-button variant="blue" size="sm">
-              Botón pequeño
-            </app-button>
+            <app-button variant="blue" size="sm"> Botón pequeño </app-button>
 
-            <app-button variant="secondary" [fullWidth]="true">
-              Botón ancho completo
-            </app-button>
+            <app-button variant="secondary" [fullWidth]="true"> Botón ancho completo </app-button>
           </div>
         </div>
       </section>
@@ -236,7 +227,10 @@
       <!-- ===================================================================
            SECCIÓN: Checklist de verificación
            =================================================================== -->
-      <section class="p-responsive-test__seccion p-responsive-test__seccion--checklist" aria-labelledby="titulo-checklist">
+      <section
+        class="p-responsive-test__seccion p-responsive-test__seccion--checklist"
+        aria-labelledby="titulo-checklist"
+      >
         <div class="p-responsive-test__seccion-encabezado">
           <h2 id="titulo-checklist" class="p-responsive-test__subtitulo">
             <app-icon name="check" />
@@ -289,16 +283,21 @@
     <footer class="p-responsive-test__footer">
       <div class="p-responsive-test__instrucciones">
         <h3 class="p-responsive-test__instrucciones-titulo">📋 Instrucciones de Testing</h3>
-        
+
         <div class="p-responsive-test__instrucciones-grid">
           <div class="p-responsive-test__instruccion">
             <strong>1. Chrome DevTools</strong>
-            <p>F12 → Device Toolbar (Ctrl+Shift+M) → Seleccionar viewport o introducir dimensiones personalizadas</p>
+            <p>
+              F12 → Device Toolbar (Ctrl+Shift+M) → Seleccionar viewport o introducir dimensiones
+              personalizadas
+            </p>
           </div>
 
           <div class="p-responsive-test__instruccion">
             <strong>2. Firefox Dev Tools</strong>
-            <p>F12 → Responsive Design Mode (Ctrl+Shift+M) → Verificar Container Queries en Inspector</p>
+            <p>
+              F12 → Responsive Design Mode (Ctrl+Shift+M) → Verificar Container Queries en Inspector
+            </p>
           </div>
 
           <div class="p-responsive-test__instruccion">

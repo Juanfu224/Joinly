@@ -12,7 +12,6 @@
 
   <!-- Contenido principal -->
   <div class="p-navigation-guide__content">
-    
     <!-- Panel de Log -->
     <aside class="p-navigation-guide__log">
       <div class="p-navigation-guide__log-header">
@@ -20,11 +19,12 @@
           <app-icon name="settings" size="sm" />
           Log de Navegación
         </h3>
-        <app-button 
-          variant="ghost" 
-          size="sm" 
+        <app-button
+          variant="ghost"
+          size="sm"
           (click)="clearLog()"
-          [disabled]="navigationLog().length === 0">
+          [disabled]="navigationLog().length === 0"
+        >
           Limpiar
         </app-button>
       </div>
@@ -49,7 +49,6 @@
 
     <!-- Demos -->
     <main class="p-navigation-guide__demos">
-
       <!-- Demo 1: Fragments -->
       <app-card>
         <section class="p-navigation-guide__section" id="fragments">
@@ -58,10 +57,10 @@
             Navegación con Fragments
           </h2>
           <p class="p-navigation-guide__description">
-            Deep linking a secciones específicas usando <code>#fragment</code> en la URL.
-            Permite scroll automático y compartir enlaces directos a secciones.
+            Deep linking a secciones específicas usando <code>#fragment</code> en la URL. Permite
+            scroll automático y compartir enlaces directos a secciones.
           </p>
-          
+
           <div class="p-navigation-guide__code">
             <code>router.navigate(['/faq'], &#123; fragment: 'suscripciones' &#125;);</code>
           </div>
@@ -93,21 +92,22 @@
             Query Params
           </h2>
           <p class="p-navigation-guide__description">
-            Parámetros de búsqueda en la URL como <code>?sort=nombre&order=asc</code>.
-            Útiles para filtros, paginación y búsqueda.
+            Parámetros de búsqueda en la URL como <code>?sort=nombre&order=asc</code>. Útiles para
+            filtros, paginación y búsqueda.
           </p>
-          
+
           <div class="p-navigation-guide__code">
-            <code>router.navigate(['/page'], &#123; queryParams: &#123; sort: 'nombre' &#125; &#125;);</code>
+            <code
+              >router.navigate(['/page'], &#123; queryParams: &#123; sort: 'nombre' &#125;
+              &#125;);</code
+            >
           </div>
 
           <div class="p-navigation-guide__actions">
             <app-button variant="secondary" (click)="navigateWithQueryParams()">
               Simple
             </app-button>
-            <app-button variant="secondary" (click)="navigateWithMerge()">
-              Con Merge
-            </app-button>
+            <app-button variant="secondary" (click)="navigateWithMerge()"> Con Merge </app-button>
           </div>
 
           <app-accordion>
@@ -130,12 +130,14 @@
             State Navigation
           </h2>
           <p class="p-navigation-guide__description">
-            Pasar datos entre componentes sin exponerlos en la URL.
-            Ideal para objetos complejos, datos temporales y UX optimizada.
+            Pasar datos entre componentes sin exponerlos en la URL. Ideal para objetos complejos,
+            datos temporales y UX optimizada.
           </p>
-          
+
           <div class="p-navigation-guide__code">
-            <code>router.navigate(['/detail'], &#123; state: &#123; product: data &#125; &#125;);</code>
+            <code
+              >router.navigate(['/detail'], &#123; state: &#123; product: data &#125; &#125;);</code
+            >
           </div>
 
           <div class="p-navigation-guide__actions">
@@ -178,10 +180,10 @@ if (state?.product) &#123;
             Replace URL
           </h2>
           <p class="p-navigation-guide__description">
-            Reemplazar la entrada del historial en lugar de añadir una nueva.
-            Evita que el usuario vuelva a formularios con el botón "Atrás".
+            Reemplazar la entrada del historial en lugar de añadir una nueva. Evita que el usuario
+            vuelva a formularios con el botón "Atrás".
           </p>
-          
+
           <div class="p-navigation-guide__code">
             <code>router.navigate(['/dashboard'], &#123; replaceUrl: true &#125;);</code>
           </div>
@@ -206,10 +208,10 @@ if (state?.product) &#123;
             Skip Location Change
           </h2>
           <p class="p-navigation-guide__description">
-            Cargar contenido de una ruta sin cambiar la URL visible.
-            Útil para modales, wizards y navegación interna.
+            Cargar contenido de una ruta sin cambiar la URL visible. Útil para modales, wizards y
+            navegación interna.
           </p>
-          
+
           <div class="p-navigation-guide__code">
             <code>router.navigate(['/modal'], &#123; skipLocationChange: true &#125;);</code>
           </div>
@@ -229,7 +231,7 @@ if (state?.product) &#123;
             <app-icon name="info" size="sm" />
             Resumen NavigationExtras
           </h2>
-          
+
           <table class="p-navigation-guide__table">
             <thead>
               <tr>
@@ -266,7 +268,6 @@ if (state?.product) &#123;
           </table>
         </section>
       </app-card>
-
     </main>
   </div>
 </article>

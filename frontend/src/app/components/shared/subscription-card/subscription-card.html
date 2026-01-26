@@ -5,13 +5,16 @@
   tabindex="0"
   (click)="handleViewDetails()"
   (keydown.enter)="handleViewDetails()"
-  (keydown.space)="handleViewDetails()">
+  (keydown.space)="handleViewDetails()"
+>
   <!-- Header: nombre + plazas -->
   <header class="c-subscription-card__header">
     <h3 class="c-subscription-card__nombre">{{ suscripcion().nombreServicio }}</h3>
     <div class="c-subscription-card__plazas">
       <app-icon name="users" size="sm" />
-      <span class="c-subscription-card__plazas-count">{{ suscripcion().plazasOcupadas }}/{{ suscripcion().numPlazasTotal }}</span>
+      <span class="c-subscription-card__plazas-count"
+        >{{ suscripcion().plazasOcupadas }}/{{ suscripcion().numPlazasTotal }}</span
+      >
     </div>
   </header>
 

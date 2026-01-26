@@ -2,18 +2,18 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 /**
  * Validador para teléfonos móviles españoles.
- * 
+ *
  * Acepta múltiples formatos:
  * - 612345678 (formato básico)
  * - +34612345678 (con prefijo internacional +34)
  * - 34612345678 (con prefijo sin +)
  * - 612 345 678 (con espacios)
  * - 612-345-678 (con guiones)
- * 
+ *
  * Permite números que comiencen con 6, 7, 8 o 9 (móviles y fijos españoles).
- * 
+ *
  * @returns ValidatorFn que valida formato de teléfono español
- * 
+ *
  * @example
  * ```typescript
  * this.form = this.fb.group({
@@ -38,12 +38,12 @@ export function telefono(): ValidatorFn {
 
 /**
  * Validador para NIF (Número de Identificación Fiscal) español.
- * 
+ *
  * Valida tanto el formato como el dígito de control (letra final).
  * Formato: 8 dígitos seguidos de una letra (12345678Z).
- * 
+ *
  * @returns ValidatorFn que valida NIF español con letra de control
- * 
+ *
  * @example
  * ```typescript
  * this.form = this.fb.group({
@@ -75,12 +75,12 @@ export function nif(): ValidatorFn {
 
 /**
  * Validador para códigos postales españoles.
- * 
+ *
  * Valida que el código sea de exactamente 5 dígitos.
  * Opcionalmente puede validar rangos específicos de provincias.
- * 
+ *
  * @returns ValidatorFn que valida formato de código postal español
- * 
+ *
  * @example
  * ```typescript
  * this.form = this.fb.group({
@@ -100,11 +100,11 @@ export function codigoPostal(): ValidatorFn {
 
 /**
  * Validador para NIE (Número de Identificación de Extranjero) español.
- * 
+ *
  * Formato: X, Y o Z seguido de 7 dígitos y una letra de control (X1234567L).
- * 
+ *
  * @returns ValidatorFn que valida NIE español con letra de control
- * 
+ *
  * @example
  * ```typescript
  * this.form = this.fb.group({
@@ -125,10 +125,7 @@ export function nie(): ValidatorFn {
     }
 
     // Reemplazar letra inicial por número para cálculo
-    const nieNumber = nieUpper
-      .replace('X', '0')
-      .replace('Y', '1')
-      .replace('Z', '2');
+    const nieNumber = nieUpper.replace('X', '0').replace('Y', '1').replace('Z', '2');
 
     const letters = 'TRWAGMYFPDXBNJZSQVHLCKE';
     const number = parseInt(nieNumber.substring(0, 8), 10);
@@ -141,12 +138,12 @@ export function nie(): ValidatorFn {
 
 /**
  * Validador combinado para NIF o NIE español.
- * 
+ *
  * Acepta tanto formato NIF como NIE, validando el correcto
  * según el formato detectado.
- * 
+ *
  * @returns ValidatorFn que valida NIF o NIE español
- * 
+ *
  * @example
  * ```typescript
  * this.form = this.fb.group({

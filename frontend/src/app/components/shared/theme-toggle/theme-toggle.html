@@ -2,9 +2,7 @@
   class="c-theme-toggle"
   type="button"
   (click)="toggleTheme()"
-  [attr.aria-label]="
-    currentTheme() === 'light' ? 'Cambiar a tema oscuro' : 'Cambiar a tema claro'
-  "
+  [attr.aria-label]="currentTheme() === 'light' ? 'Cambiar a tema oscuro' : 'Cambiar a tema claro'"
   [title]="currentTheme() === 'light' ? 'Cambiar a tema oscuro' : 'Cambiar a tema claro'"
 >
   @if (currentTheme() === 'light') {

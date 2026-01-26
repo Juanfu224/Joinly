@@ -38,9 +38,7 @@ export class PaginationComponent {
 
   protected readonly isFirstPage = computed(() => this.currentPage() === 0);
 
-  protected readonly isLastPage = computed(() =>
-    this.currentPage() >= this.totalPages() -1
-  );
+  protected readonly isLastPage = computed(() => this.currentPage() >= this.totalPages() - 1);
 
   protected readonly pages = computed(() => {
     const total = this.totalPages();
@@ -73,20 +71,20 @@ export class PaginationComponent {
   });
 
   protected goToPage(page: number): void {
-    if (page >=0 && page < this.totalPages()) {
+    if (page >= 0 && page < this.totalPages()) {
       this.pageChange.emit(page);
     }
   }
 
   protected prevPage(): void {
     if (!this.isFirstPage()) {
-      this.pageChange.emit(this.currentPage() -1);
+      this.pageChange.emit(this.currentPage() - 1);
     }
   }
 
   protected nextPage(): void {
     if (!this.isLastPage()) {
-      this.pageChange.emit(this.currentPage() +1);
+      this.pageChange.emit(this.currentPage() + 1);
     }
   }
 
@@ -95,7 +93,7 @@ export class PaginationComponent {
   }
 
   protected isLast(): boolean {
-    return this.currentPage() >= this.totalPages() -1;
+    return this.currentPage() >= this.totalPages() - 1;
   }
 
   protected isEllipsis(page: number): boolean {

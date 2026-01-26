@@ -33,7 +33,7 @@ export class LoginComponent {
   private readonly toastService = inject(ToastService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  
+
   protected readonly loginForm = viewChild.required<LoginFormComponent>(LoginFormComponent);
 
   /**

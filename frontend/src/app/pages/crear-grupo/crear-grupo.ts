@@ -42,7 +42,7 @@ export class CrearGrupoComponent implements CanComponentDeactivate {
         const msg = error.error?.message || 'Error al crear el grupo';
         this.toastService.show('error', msg);
         this.formComponent()?.setError(msg);
-      }
+      },
     });
   }
 

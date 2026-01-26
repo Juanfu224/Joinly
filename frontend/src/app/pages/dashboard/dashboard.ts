@@ -1,8 +1,20 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { CardComponent, GroupCardComponent, EmptyGroupsComponent, IconComponent } from '../../components/shared';
+import {
+  CardComponent,
+  GroupCardComponent,
+  EmptyGroupsComponent,
+  IconComponent,
+} from '../../components/shared';
 import type { GrupoCardData } from '../../models';
 import { GruposStore } from '../../stores';
 import { type DashboardData, type ResolvedData } from '../../resolvers';
@@ -15,7 +27,13 @@ import { AuthService, ToastService, ModalService } from '../../services';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CardComponent, GroupCardComponent, EmptyGroupsComponent, IconComponent, ReactiveFormsModule],
+  imports: [
+    CardComponent,
+    GroupCardComponent,
+    EmptyGroupsComponent,
+    IconComponent,
+    ReactiveFormsModule,
+  ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,16 +55,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   protected readonly searchControl = new FormControl('');
   protected readonly hasSearchTerm = computed(() => this.searchTerm().length > 0);
-  protected readonly noResults = computed(() => this.gruposFiltrados().length === 0 && this.hasSearchTerm());
+  protected readonly noResults = computed(
+    () => this.gruposFiltrados().length === 0 && this.hasSearchTerm(),
+  );
 
-  private searchSubscription = this.searchControl.valueChanges.pipe(
-    debounceTime(300),
-    distinctUntilChanged()
-  ).subscribe(term => {
-    const searchTerm = term ?? '';
-    this.gruposStore.setSearchTerm(searchTerm);
-    localStorage.setItem('dashboard-search-term', searchTerm);
-  });
+  private searchSubscription = this.searchControl.valueChanges
+    .pipe(debounceTime(300), distinctUntilChanged())
+    .subscribe((term) => {
+      const searchTerm = term ?? '';
+      this.gruposStore.setSearchTerm(searchTerm);
+      localStorage.setItem('dashboard-search-term', searchTerm);
+    });
 
   ngOnInit(): void {
     const resolved = this.route.snapshot.data['dashboardData'] as ResolvedData<DashboardData>;

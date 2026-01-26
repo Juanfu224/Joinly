@@ -22,20 +22,13 @@
 ></textarea>
 
 @if (errorMessage()) {
-  <span
-    [id]="errorId()"
-    class="c-form-textarea__error"
-    role="alert"
-  >
+  <span [id]="errorId()" class="c-form-textarea__error" role="alert">
     {{ errorMessage() }}
   </span>
 }
 
 @if (helpText() && !errorMessage()) {
-  <span
-    [id]="helpTextId()"
-    class="c-form-textarea__help"
-  >
+  <span [id]="helpTextId()" class="c-form-textarea__help">
     {{ helpText() }}
   </span>
 }

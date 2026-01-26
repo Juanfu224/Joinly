@@ -6,11 +6,7 @@
         Gestiona tus solicitudes de unión a grupos y suscripciones
       </p>
     </div>
-    <app-button
-      variant="secondary"
-      leftIcon="sync"
-      (click)="onRefresh()"
-      [disabled]="isLoading()">
+    <app-button variant="secondary" leftIcon="sync" (click)="onRefresh()" [disabled]="isLoading()">
       Actualizar
     </app-button>
   </header>
@@ -30,12 +26,19 @@
             (filtro.value === 'TODAS' && filtroEstado() === undefined) ||
             filtroEstado() === filtro.value
           "
-          [attr.aria-pressed]="(filtro.value === 'TODAS' && filtroEstado() === undefined) || filtroEstado() === filtro.value"
-          (click)="onFiltroChange(filtro.value)">
+          [attr.aria-pressed]="
+            (filtro.value === 'TODAS' && filtroEstado() === undefined) ||
+            filtroEstado() === filtro.value
+          "
+          (click)="onFiltroChange(filtro.value)"
+        >
           <app-icon [name]="filtro.icon" size="xs" aria-hidden="true" />
           <span>{{ filtro.label }}</span>
           @if (filtro.value !== 'TODAS') {
-            <span class="p-mis-solicitudes__filter-count" aria-label="{{ getContador(filtro.value) }} solicitudes">
+            <span
+              class="p-mis-solicitudes__filter-count"
+              aria-label="{{ getContador(filtro.value) }} solicitudes"
+            >
               {{ getContador(filtro.value) }}
             </span>
           }
@@ -51,9 +54,7 @@
         <ul class="p-mis-solicitudes__grid" role="list">
           @for (solicitud of solicitudesGrupos(); track solicitud.id) {
             <li>
-              <app-solicitud-card
-                [solicitud]="solicitud"
-                (cancel)="onRequestCancel(solicitud)" />
+              <app-solicitud-card [solicitud]="solicitud" (cancel)="onRequestCancel(solicitud)" />
             </li>
           }
         </ul>
@@ -69,8 +70,8 @@
             @if (filtroEstado()) {
               No tienes solicitudes de grupos con el estado "{{ filtroEstado()?.toLowerCase() }}"
             } @else {
-              Aún no has enviado ninguna solicitud para unirte a un grupo familiar.
-              Usa un código de invitación para solicitar unirte a uno.
+              Aún no has enviado ninguna solicitud para unirte a un grupo familiar. Usa un código de
+              invitación para solicitar unirte a uno.
             }
           </p>
           @if (filtroEstado()) {
@@ -87,9 +88,7 @@
         <ul class="p-mis-solicitudes__grid" role="list">
           @for (solicitud of solicitudesSuscripciones(); track solicitud.id) {
             <li>
-              <app-solicitud-card
-                [solicitud]="solicitud"
-                (cancel)="onRequestCancel(solicitud)" />
+              <app-solicitud-card [solicitud]="solicitud" (cancel)="onRequestCancel(solicitud)" />
             </li>
           }
         </ul>
@@ -103,10 +102,12 @@
           </h3>
           <p class="p-mis-solicitudes__empty-text">
             @if (filtroEstado()) {
-              No tienes solicitudes de suscripciones con el estado "{{ filtroEstado()?.toLowerCase() }}"
+              No tienes solicitudes de suscripciones con el estado "{{
+                filtroEstado()?.toLowerCase()
+              }}"
             } @else {
-              Aún no has solicitado unirte a ninguna suscripción compartida.
-              Explora las suscripciones disponibles en tu grupo.
+              Aún no has solicitado unirte a ninguna suscripción compartida. Explora las
+              suscripciones disponibles en tu grupo.
             }
           </p>
           @if (filtroEstado()) {

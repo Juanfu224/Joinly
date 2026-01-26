@@ -24,16 +24,16 @@ interface LoginFormValue {
 
 /**
  * Componente de formulario de inicio de sesión.
- * 
+ *
  * **Características:**
  * - Validación de email y contraseña
  * - Submit con Enter desde cualquier campo
  * - Prevención de submit múltiple con throttle
  * - Diseño según especificaciones de Figma
- * 
+ *
  * @usageNotes
  * ```html
- * <app-login-form 
+ * <app-login-form
  *   (submitted)="handleLogin($event)"
  *   (cancelled)="handleCancel()"
  *   (registerRequested)="goToRegister()"
@@ -54,7 +54,7 @@ export class LoginFormComponent {
 
   readonly isLoading = signal(false);
   readonly formError = signal<string | null>(null);
-  
+
   readonly submitted = output<LoginFormValue>();
   readonly cancelled = output<void>();
   readonly registerRequested = output<void>();
@@ -70,8 +70,8 @@ export class LoginFormComponent {
   });
 
   // Signal que observa el estado del formulario de forma reactiva
-  private readonly formStatus = toSignal(this.form.statusChanges, { 
-    initialValue: this.form.status 
+  private readonly formStatus = toSignal(this.form.statusChanges, {
+    initialValue: this.form.status,
   });
 
   readonly isSubmitDisabled = computed(() => {

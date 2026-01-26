@@ -61,20 +61,20 @@ export interface InviteModalConfig {
 
 /**
  * Servicio para gestión centralizada de modales.
- * 
+ *
  * Proporciona una API fluida para abrir y cerrar modales desde cualquier
  * parte de la aplicación. Gestiona el estado del modal, previene scroll
  * del body cuando está abierto, y maneja el focus management.
- * 
+ *
  * @remarks
  * El servicio trabaja en conjunto con el ModalComponent que debe estar
  * en el root del App component para funcionar correctamente.
- * 
+ *
  * @usageNotes
  * ```typescript
  * // Inyectar el servicio
  * private readonly modalService = inject(ModalService);
- * 
+ *
  * // Modal simple de confirmación
  * this.modalService.open({
  *   title: '¿Estás seguro?',
@@ -84,17 +84,17 @@ export interface InviteModalConfig {
  *   onConfirm: () => console.log('Confirmado'),
  *   onCancel: () => console.log('Cancelado'),
  * });
- * 
+ *
  * // Modal informativo (solo botón de aceptar)
  * this.modalService.open({
  *   title: 'Éxito',
  *   content: 'La operación se completó correctamente.',
  *   confirmText: 'Entendido',
  * });
- * 
+ *
  * // Modal de invitación
  * this.modalService.openInviteModal('ABC123456789');
- * 
+ *
  * // Cerrar programáticamente
  * this.modalService.close();
  * ```
@@ -150,9 +150,9 @@ export class ModalService {
 
   /**
    * Abre un modal con la configuración proporcionada.
-   * 
+   *
    * @param config - Configuración del modal
-   * 
+   *
    * @remarks
    * - Guarda el elemento activo actual para restaurar el foco al cerrar
    * - Previene el scroll del body
@@ -176,7 +176,7 @@ export class ModalService {
 
   /**
    * Cierra el modal actual.
-   * 
+   *
    * @remarks
    * - Restaura el scroll del body
    * - Restaura el foco al elemento que lo tenía antes de abrir el modal
@@ -224,7 +224,7 @@ export class ModalService {
 
   /**
    * Abre un modal con código de invitación para copiar.
-   * 
+   *
    * @param codigo - Código de invitación del grupo
    * @deprecated Usar openInviteModal() en su lugar para el nuevo diseño
    */
@@ -247,9 +247,9 @@ export class ModalService {
 
   /**
    * Abre el modal de invitación con el código del grupo.
-   * 
+   *
    * @param codigo - Código de invitación del grupo
-   * 
+   *
    * @remarks
    * Este modal muestra el código formateado, el enlace de unión,
    * y opciones para compartir en redes sociales.

@@ -6,18 +6,18 @@ import type { GrupoCardData } from '../../../models/grupo.model';
 
 /**
  * Componente de tarjeta de grupo.
- * 
+ *
  * Muestra la información resumida de un grupo familiar en formato de tarjeta,
  * siguiendo el diseño de Figma con sombras, espaciado y tipografía consistentes.
- * 
+ *
  * @usageNotes
  * ```html
- * <app-group-card 
+ * <app-group-card
  *   [grupo]="grupoData"
  *   (invite)="handleInvite(grupoData)"
  *   (cardClick)="navigateToGroup(grupoData.id)" />
  * ```
- * 
+ *
  * ### Características
  * - Diseño basado en Figma (tarjeta con sombras y bordes redondeados)
  * - Muestra: nombre, total de miembros y suscripciones
@@ -35,7 +35,7 @@ import type { GrupoCardData } from '../../../models/grupo.model';
   styleUrls: ['./group-card.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    'class': 'c-group-card-host',
+    class: 'c-group-card-host',
     '[attr.role]': '"button"',
     '[attr.tabindex]': '0',
     '(click)': 'handleCardClick($event)',

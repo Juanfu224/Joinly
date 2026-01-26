@@ -35,20 +35,13 @@
 </div>
 
 @if (errorMessage()) {
-  <span
-    [id]="errorId()"
-    class="c-form-select__error"
-    role="alert"
-  >
+  <span [id]="errorId()" class="c-form-select__error" role="alert">
     {{ errorMessage() }}
   </span>
 }
 
 @if (helpText() && !errorMessage()) {
-  <span
-    [id]="helpTextId()"
-    class="c-form-select__help"
-  >
+  <span [id]="helpTextId()" class="c-form-select__help">
     {{ helpText() }}
   </span>
 }

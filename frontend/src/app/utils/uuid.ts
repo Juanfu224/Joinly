@@ -1,11 +1,11 @@
 /**
  * Genera un UUID v4 compatible con todos los navegadores.
- * 
+ *
  * Usa crypto.randomUUID() si está disponible en contexto seguro (HTTPS),
  * o un fallback basado en Math.random() para contextos inseguros.
- * 
+ *
  * @returns UUID v4 string en formato estándar (xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx)
- * 
+ *
  * @example
  * ```typescript
  * const userId = generateUUID();
@@ -37,15 +37,15 @@ export function generateUUID(): string {
 /**
  * Genera un ID corto basado en UUID (8 caracteres).
  * Útil para IDs únicos de elementos del DOM (ARIA, formularios, etc.).
- * 
+ *
  * @param prefix - Prefijo opcional para el ID (mejora legibilidad en DevTools)
  * @returns ID corto con prefijo opcional
- * 
+ *
  * @example
  * ```typescript
  * const inputId = generateShortId('form-input');
  * // => "form-input-a3bb189e"
- * 
+ *
  * const tabId = generateShortId();
  * // => "a3bb189e"
  * ```

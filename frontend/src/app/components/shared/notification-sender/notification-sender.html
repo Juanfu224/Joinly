@@ -15,35 +15,17 @@
       </p>
 
       <div class="notification-sender__actions">
-        <app-button
-          variant="primary"
-          leftIcon="circle-check"
-          (click)="sendSuccessAlert()"
-        >
+        <app-button variant="primary" leftIcon="circle-check" (click)="sendSuccessAlert()">
           Éxito
         </app-button>
 
-        <app-button
-          variant="purple"
-          leftIcon="close"
-          (click)="sendErrorAlert()"
-        >
+        <app-button variant="purple" leftIcon="close" (click)="sendErrorAlert()">
           Error
         </app-button>
 
-        <app-button
-          variant="blue"
-          leftIcon="info"
-          (click)="sendInfoAlert()"
-        >
-          Info
-        </app-button>
+        <app-button variant="blue" leftIcon="info" (click)="sendInfoAlert()"> Info </app-button>
 
-        <app-button
-          variant="yellow"
-          leftIcon="bell"
-          (click)="sendWarningAlert()"
-        >
+        <app-button variant="yellow" leftIcon="bell" (click)="sendWarningAlert()">
           Warning
         </app-button>
       </div>
@@ -57,19 +39,11 @@
       </p>
 
       <div class="notification-sender__actions">
-        <app-button
-          variant="blue"
-          leftIcon="filter"
-          (click)="updateSharedFilters()"
-        >
+        <app-button variant="blue" leftIcon="filter" (click)="updateSharedFilters()">
           Actualizar Filtros
         </app-button>
 
-        <app-button
-          variant="secondary"
-          leftIcon="close"
-          (click)="clearSharedFilters()"
-        >
+        <app-button variant="secondary" leftIcon="close" (click)="clearSharedFilters()">
           Limpiar Filtros
         </app-button>
       </div>
@@ -83,19 +57,11 @@
       </p>
 
       <div class="notification-sender__actions">
-        <app-button
-          variant="primary"
-          leftIcon="user"
-          (click)="simulateLogin()"
-        >
+        <app-button variant="primary" leftIcon="user" (click)="simulateLogin()">
           Simular Login
         </app-button>
 
-        <app-button
-          variant="secondary"
-          leftIcon="arrow-external-left"
-          (click)="simulateLogout()"
-        >
+        <app-button variant="secondary" leftIcon="arrow-external-left" (click)="simulateLogout()">
           Simular Logout
         </app-button>
       </div>

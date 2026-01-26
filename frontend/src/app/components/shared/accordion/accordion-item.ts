@@ -50,7 +50,7 @@ import { generateShortId } from '../../../utils/uuid';
  * - ElementRef: Obtiene la referencia nativa del DOM
  * - Renderer2: Modifica la altura de forma segura (sin acceso directo)
  * - scrollHeight: Calcula la altura real del contenido (aunque esté oculto)
- * 
+ *
  * La animación funciona estableciendo height: 0 cuando está colapsado y
  * height: [scrollHeight]px cuando está expandido. CSS transitions hace
  * el resto del trabajo.
@@ -147,7 +147,7 @@ export class AccordionItemComponent implements AfterViewInit {
 
   /**
    * Expande el item mostrando su contenido con animación.
-   * 
+   *
    * @remarks
    * Proceso de expansión:
    * 1. Actualiza el signal para cambiar aria-expanded
@@ -182,7 +182,7 @@ export class AccordionItemComponent implements AfterViewInit {
 
   /**
    * Colapsa el item ocultando su contenido con animación.
-   * 
+   *
    * @remarks
    * El proceso es inverso a expand():
    * 1. Actualiza el signal para cambiar aria-expanded
@@ -206,7 +206,7 @@ export class AccordionItemComponent implements AfterViewInit {
   /**
    * Maneja eventos de teclado para accesibilidad.
    * Enter o Space activan el toggle.
-   * 
+   *
    * @remarks
    * @HostListener escucha eventos en el elemento host del componente.
    * preventDefault() evita el scroll al presionar Space.

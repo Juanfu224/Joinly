@@ -76,9 +76,7 @@ export class ToastService {
       this.timeouts.delete(id);
     }
 
-    this.toasts.update((toasts) =>
-      toasts.map((t) => (t.id === id ? { ...t, closing: true } : t))
-    );
+    this.toasts.update((toasts) => toasts.map((t) => (t.id === id ? { ...t, closing: true } : t)));
 
     setTimeout(() => this.remove(id), ToastService.ANIMATION_DURATION);
   }

@@ -63,18 +63,20 @@ export class PerfilComponent {
       map(() => ({
         valid: this.perfilForm.valid,
         dirty: this.perfilForm.dirty,
-      }))
+      })),
     ),
-    { initialValue: { valid: false, dirty: false } }
+    { initialValue: { valid: false, dirty: false } },
   );
 
   protected readonly canSubmit = computed(
-    () => this.#formState().valid && this.#formState().dirty && !this.isSaving()
+    () => this.#formState().valid && this.#formState().dirty && !this.isSaving(),
   );
 
   protected onEdit(): void {
     const user = this.usuario();
-    if (!user) { return; }
+    if (!user) {
+      return;
+    }
 
     this.perfilForm.patchValue({
       nombre: user.nombre,
@@ -85,7 +87,9 @@ export class PerfilComponent {
   }
 
   protected onSave(): void {
-    if (!this.perfilForm.valid || this.isSaving()) { return; }
+    if (!this.perfilForm.valid || this.isSaving()) {
+      return;
+    }
 
     const user = this.usuario();
     if (!user) return;
@@ -120,7 +124,9 @@ export class PerfilComponent {
 
   protected onAvatarFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (!input.files || input.files.length === 0) { return; }
+    if (!input.files || input.files.length === 0) {
+      return;
+    }
 
     const file = input.files[0];
 
@@ -143,7 +149,9 @@ export class PerfilComponent {
   }
 
   protected onUploadAvatar(): void {
-    if (!this.selectedAvatarFile) { return; }
+    if (!this.selectedAvatarFile) {
+      return;
+    }
 
     const user = this.usuario();
     if (!user) return;
@@ -181,7 +189,8 @@ export class PerfilComponent {
 
     this.#modalService.open({
       title: '¿Eliminar foto de perfil?',
-      content: '¿Estás seguro de que quieres eliminar tu foto de perfil? Se usará el avatar por defecto.',
+      content:
+        '¿Estás seguro de que quieres eliminar tu foto de perfil? Se usará el avatar por defecto.',
       confirmText: 'Eliminar',
       cancelText: 'Cancelar',
       onConfirm: () => {

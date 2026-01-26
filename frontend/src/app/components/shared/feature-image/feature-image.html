@@ -40,12 +40,12 @@
       media="(min-width: 769px)"
     />
     <!-- Desktop JPG -->
-      <source
-        [srcset]="generateSrcset(imageSource().src, 'jpg')"
-        [sizes]="sizesAttribute()"
-        type="image/jpeg"
-        media="(max-width: 768px)"
-      />
+    <source
+      [srcset]="generateSrcset(imageSource().src, 'jpg')"
+      [sizes]="sizesAttribute()"
+      type="image/jpeg"
+      media="(max-width: 768px)"
+    />
 
     <!-- Fallback -->
     <img
@@ -75,11 +75,11 @@
       type="image/webp"
     />
     <!-- JPG -->
-      <source
-        [srcset]="generateSrcset(imageSource().src, 'jpg')"
-        [sizes]="sizesAttribute()"
-        type="image/jpeg"
-      />
+    <source
+      [srcset]="generateSrcset(imageSource().src, 'jpg')"
+      [sizes]="sizesAttribute()"
+      type="image/jpeg"
+    />
 
     <!-- Fallback -->
     <img

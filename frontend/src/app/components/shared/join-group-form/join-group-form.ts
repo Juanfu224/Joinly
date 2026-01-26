@@ -15,7 +15,11 @@ import { ButtonComponent } from '../button/button';
 import { FormCardComponent } from '../form-card/form-card';
 import { FormInputComponent } from '../form-input/form-input';
 import { canSubmit, focusInput, shouldTriggerSubmit } from '../form-utils';
-import { codePatternValidator, getFieldErrorMessage, type FieldErrorMessages } from '../form-validators';
+import {
+  codePatternValidator,
+  getFieldErrorMessage,
+  type FieldErrorMessages,
+} from '../form-validators';
 import { AsyncValidatorsService } from '../../../services';
 
 interface JoinGroupFormValue {
@@ -37,7 +41,7 @@ export class JoinGroupFormComponent {
 
   readonly isLoading = signal(false);
   readonly formError = signal<string | null>(null);
-  
+
   readonly submitted = output<JoinGroupFormValue>();
   readonly cancelled = output<void>();
   readonly createRequested = output<void>();
@@ -47,16 +51,19 @@ export class JoinGroupFormComponent {
   private lastSubmitTime = 0;
 
   readonly form = this.fb.group({
-    codigo: ['', {
-      validators: [Validators.required, codePatternValidator(12)],
-      asyncValidators: [this.asyncValidators.groupCodeExists()],
-      updateOn: 'blur' as const
-    }],
+    codigo: [
+      '',
+      {
+        validators: [Validators.required, codePatternValidator(12)],
+        asyncValidators: [this.asyncValidators.groupCodeExists()],
+        updateOn: 'blur' as const,
+      },
+    ],
   });
 
   // Signal que observa el estado del formulario de forma reactiva
-  private readonly formStatus = toSignal(this.form.statusChanges, { 
-    initialValue: this.form.status 
+  private readonly formStatus = toSignal(this.form.statusChanges, {
+    initialValue: this.form.status,
   });
 
   readonly isFormInvalid = computed(() => {
@@ -85,7 +92,7 @@ export class JoinGroupFormComponent {
     this.lastSubmitTime = Date.now();
     this.formError.set(null);
     this.isLoading.set(true);
-    
+
     const codigo = this.form.get('codigo')?.value.replace(/-/g, '').toUpperCase() || '';
     this.submitted.emit({ codigo });
   }

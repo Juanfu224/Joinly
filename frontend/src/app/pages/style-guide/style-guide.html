@@ -5,7 +5,9 @@
          =================================================================== -->
     <section class="p-style-guide__seccion" aria-labelledby="titulo-comunicacion">
       <div class="p-style-guide__seccion-encabezado">
-        <h2 id="titulo-comunicacion" class="p-style-guide__subtitulo">Comunicación entre Componentes</h2>
+        <h2 id="titulo-comunicacion" class="p-style-guide__subtitulo">
+          Comunicación entre Componentes
+        </h2>
         <p class="p-style-guide__nota">
           Sistema reactivo de comunicación entre componentes hermanos mediante CommunicationService.
           Implementa BehaviorSubject + Signals para estado compartido unidireccional.
@@ -15,8 +17,9 @@
       <div class="p-style-guide__demo">
         <h3 class="p-style-guide__demo-titulo">Demostración en tiempo real</h3>
         <p class="p-style-guide__descripcion">
-          El componente emisor envía alertas (AlertService) y actualiza estado compartido (CommunicationService).
-          El componente receptor escucha y muestra los cambios de estado y eventos automáticamente.
+          El componente emisor envía alertas (AlertService) y actualiza estado compartido
+          (CommunicationService). El componente receptor escucha y muestra los cambios de estado y
+          eventos automáticamente.
         </p>
 
         <div class="p-style-guide__grid-comunicacion">
@@ -29,15 +32,30 @@
           <ul class="p-style-guide__lista-caracteristicas">
             <li>✅ <strong>BehaviorSubject</strong>: Estado persistente (usuario, filtros)</li>
             <li>✅ <strong>Subject</strong>: Eventos one-time sin persistencia</li>
-            <li>✅ <strong>Signals (Angular 21)</strong>: Reactividad nativa sin suscripciones manuales</li>
-            <li>✅ <strong>Computed Signals</strong>: Estado derivado (isAuthenticated, hasActiveFilters)</li>
+            <li>
+              ✅ <strong>Signals (Angular 21)</strong>: Reactividad nativa sin suscripciones
+              manuales
+            </li>
+            <li>
+              ✅ <strong>Computed Signals</strong>: Estado derivado (isAuthenticated,
+              hasActiveFilters)
+            </li>
             <li>✅ <strong>takeUntilDestroyed()</strong>: Limpieza automática de suscripciones</li>
-            <li>✅ <strong>Separación de responsabilidades</strong>: AlertService (UI) vs CommunicationService (estado)</li>
+            <li>
+              ✅ <strong>Separación de responsabilidades</strong>: AlertService (UI) vs
+              CommunicationService (estado)
+            </li>
             <li>✅ <strong>OnPush compatible</strong>: Optimizado para detección de cambios</li>
           </ul>
 
-          <p style="margin-top: var(--espaciado-3);"><strong>Casos de uso:</strong></p>
-          <ul style="margin-top: var(--espaciado-1); padding-left: var(--espaciado-4); list-style: disc;">
+          <p style="margin-top: var(--espaciado-3)"><strong>Casos de uso:</strong></p>
+          <ul
+            style="
+              margin-top: var(--espaciado-1);
+              padding-left: var(--espaciado-4);
+              list-style: disc;
+            "
+          >
             <li>Estado de usuario compartido (header, sidebar, profile)</li>
             <li>Filtros sincronizados entre componentes de búsqueda</li>
             <li>Eventos del sistema (login, logout, CRUD operations)</li>
@@ -54,31 +72,32 @@
       <div class="p-style-guide__seccion-encabezado">
         <h2 id="titulo-tooltips" class="p-style-guide__subtitulo">Tooltips</h2>
         <p class="p-style-guide__nota">
-          Tooltips informativos con posicionamiento dinámico y delay. Uso: iconos, botones, ayuda contextual.
+          Tooltips informativos con posicionamiento dinámico y delay. Uso: iconos, botones, ayuda
+          contextual.
         </p>
       </div>
 
       <div class="p-style-guide__demo">
         <h3 class="p-style-guide__demo-titulo">Tooltips en botones</h3>
         <div class="p-style-guide__grupo-botones">
-          <app-button 
-            variant="primary" 
+          <app-button
+            variant="primary"
             appTooltip="Crea una nueva unidad familiar"
             tooltipPosition="top"
           >
             Crear grupo
           </app-button>
 
-          <app-button 
-            variant="purple" 
+          <app-button
+            variant="purple"
             appTooltip="Envía una invitación por email"
             tooltipPosition="right"
           >
             Invitar miembros
           </app-button>
 
-          <app-button 
-            variant="blue" 
+          <app-button
+            variant="blue"
             leftIcon="info"
             appTooltip="Ver información detallada de la suscripción"
             tooltipPosition="bottom"
@@ -89,22 +108,22 @@
 
         <h3 class="p-style-guide__demo-titulo">Tooltips en iconos</h3>
         <div class="p-style-guide__grupo-botones">
-          <app-icon 
-            name="user" 
+          <app-icon
+            name="user"
             appTooltip="Usuario activo"
             tooltipPosition="top"
             style="cursor: help; color: var(--color-principal)"
           />
-          
-          <app-icon 
-            name="dollar" 
+
+          <app-icon
+            name="dollar"
             appTooltip="Coste mensual de la suscripción"
             tooltipPosition="right"
             style="cursor: help; color: var(--color-acento)"
           />
-          
-          <app-icon 
-            name="check" 
+
+          <app-icon
+            name="check"
             appTooltip="Verificación completada"
             tooltipPosition="left"
             style="cursor: help; color: var(--color-exito)"
@@ -120,31 +139,28 @@
       <div class="p-style-guide__seccion-encabezado">
         <h2 id="titulo-modales" class="p-style-guide__subtitulo">Modales</h2>
         <p class="p-style-guide__nota">
-          Modales accesibles con focus trap, cierre con ESC y overlay. Uso: confirmaciones, alertas, formularios.
+          Modales accesibles con focus trap, cierre con ESC y overlay. Uso: confirmaciones, alertas,
+          formularios.
         </p>
       </div>
 
       <div class="p-style-guide__demo">
         <h3 class="p-style-guide__demo-titulo">Tipos de modales</h3>
         <div class="p-style-guide__grupo-botones">
-          <app-button 
-            variant="primary" 
+          <app-button
+            variant="primary"
             (click)="openConfirmModal()"
             appTooltip="Requiere confirmación o cancelación"
           >
             Modal de confirmación
           </app-button>
 
-          <app-button 
-            variant="blue" 
-            (click)="openInfoModal()"
-            appTooltip="Solo botón de aceptar"
-          >
+          <app-button variant="blue" (click)="openInfoModal()" appTooltip="Solo botón de aceptar">
             Modal informativo
           </app-button>
 
-          <app-button 
-            variant="yellow" 
+          <app-button
+            variant="yellow"
             (click)="openStrictModal()"
             appTooltip="No se puede cerrar con ESC ni overlay"
           >
@@ -152,9 +168,9 @@
           </app-button>
         </div>
 
-        <div class="p-style-guide__nota" style="margin-top: var(--espaciado-3);">
+        <div class="p-style-guide__nota" style="margin-top: var(--espaciado-3)">
           <strong>Características implementadas:</strong>
-          <ul style="margin-top: var(--espaciado-1); padding-left: var(--espaciado-3);">
+          <ul style="margin-top: var(--espaciado-1); padding-left: var(--espaciado-3)">
             <li>✅ Focus trap (Tab solo dentro del modal)</li>
             <li>✅ Cierre con ESC (configurable)</li>
             <li>✅ Cierre con click en overlay (configurable)</li>
@@ -174,23 +190,26 @@
       <div class="p-style-guide__seccion-encabezado">
         <h2 id="titulo-theme-toggle" class="p-style-guide__subtitulo">Theme Switcher</h2>
         <p class="p-style-guide__nota">
-          Sistema de cambio de tema claro/oscuro con persistencia en localStorage y detección automática de preferencias del sistema.
+          Sistema de cambio de tema claro/oscuro con persistencia en localStorage y detección
+          automática de preferencias del sistema.
         </p>
       </div>
 
       <div class="p-style-guide__demo">
         <h3 class="p-style-guide__demo-titulo">Componente Theme Toggle</h3>
-        <div class="p-style-guide__grupo-botones" style="align-items: center;">
+        <div class="p-style-guide__grupo-botones" style="align-items: center">
           <app-theme-toggle />
           <span class="p-style-guide__tema-label">
             Tema actual: <strong>{{ currentTheme === 'light' ? 'Claro ☀️' : 'Oscuro 🌙' }}</strong>
           </span>
         </div>
 
-        <h3 class="p-style-guide__demo-titulo" style="margin-top: var(--espaciado-4);">Control programático</h3>
+        <h3 class="p-style-guide__demo-titulo" style="margin-top: var(--espaciado-4)">
+          Control programático
+        </h3>
         <div class="p-style-guide__grupo-botones">
-          <app-button 
-            variant="secondary" 
+          <app-button
+            variant="secondary"
             leftIcon="sun"
             (click)="setTheme('light')"
             [class.c-button--active]="currentTheme === 'light'"
@@ -198,8 +217,8 @@
             Tema claro
           </app-button>
 
-          <app-button 
-            variant="secondary" 
+          <app-button
+            variant="secondary"
             leftIcon="moon"
             (click)="setTheme('dark')"
             [class.c-button--active]="currentTheme === 'dark'"
@@ -208,20 +227,39 @@
           </app-button>
         </div>
 
-        <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4);">
+        <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4)">
           <strong>Características del sistema de temas:</strong>
-          <ul style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc;">
+          <ul
+            style="
+              margin-top: var(--espaciado-2);
+              padding-left: var(--espaciado-4);
+              list-style: disc;
+            "
+          >
             <li>✅ <strong>Persistencia</strong>: Guarda preferencia en localStorage</li>
             <li>✅ <strong>Detección automática</strong>: Lee preferencia del sistema operativo</li>
-            <li>✅ <strong>Reactividad</strong>: Usa Signals de Angular para cambios instantáneos</li>
+            <li>
+              ✅ <strong>Reactividad</strong>: Usa Signals de Angular para cambios instantáneos
+            </li>
             <li>✅ <strong>Accesibilidad</strong>: Botón con aria-label dinámico</li>
             <li>✅ <strong>CSS Variables</strong>: Cambio de tema mediante data-theme en :root</li>
             <li>✅ <strong>Transiciones suaves</strong>: Animación de cambio de colores</li>
-            <li>✅ <strong>Sincronización del sistema</strong>: Escucha cambios de prefers-color-scheme</li>
+            <li>
+              ✅ <strong>Sincronización del sistema</strong>: Escucha cambios de
+              prefers-color-scheme
+            </li>
           </ul>
 
-          <p style="margin-top: var(--espaciado-3);"><strong>Uso en componentes:</strong></p>
-          <pre style="background: var(--bg-secondary); padding: var(--espaciado-3); border-radius: var(--radio-md); margin-top: var(--espaciado-2); overflow-x: auto;"><code>// Inyectar servicio
+          <p style="margin-top: var(--espaciado-3)"><strong>Uso en componentes:</strong></p>
+          <pre
+            style="
+              background: var(--bg-secondary);
+              padding: var(--espaciado-3);
+              border-radius: var(--radio-md);
+              margin-top: var(--espaciado-2);
+              overflow-x: auto;
+            "
+          ><code>// Inyectar servicio
 private readonly themeService = inject(ThemeService);
 
 // Alternar tema
@@ -240,7 +278,8 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
       <div class="p-style-guide__seccion-encabezado">
         <h2 id="titulo-accordion" class="p-style-guide__subtitulo">Accordion</h2>
         <p class="p-style-guide__nota">
-          Componente de contenido expandible/colapsable. Ideal para FAQs, secciones de configuración y contenido organizado.
+          Componente de contenido expandible/colapsable. Ideal para FAQs, secciones de configuración
+          y contenido organizado.
         </p>
       </div>
 
@@ -248,13 +287,24 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
         <h3 class="p-style-guide__demo-titulo">Accordion múltiple (varios abiertos)</h3>
         <app-accordion [allowMultiple]="true">
           <app-accordion-item title="¿Qué es Joinly?">
-            <p>Joinly es una plataforma que te permite gestionar suscripciones compartidas con familiares y amigos de forma segura y organizada. Facilita el reparto de costes y la administración de accesos.</p>
+            <p>
+              Joinly es una plataforma que te permite gestionar suscripciones compartidas con
+              familiares y amigos de forma segura y organizada. Facilita el reparto de costes y la
+              administración de accesos.
+            </p>
           </app-accordion-item>
           <app-accordion-item title="¿Cómo funcionan los pagos?" [expanded]="true">
-            <p>Los pagos se gestionan de forma automática. Cada miembro de la unidad familiar recibe una notificación antes del vencimiento y puede pagar su parte directamente desde la plataforma.</p>
+            <p>
+              Los pagos se gestionan de forma automática. Cada miembro de la unidad familiar recibe
+              una notificación antes del vencimiento y puede pagar su parte directamente desde la
+              plataforma.
+            </p>
           </app-accordion-item>
           <app-accordion-item title="¿Es seguro compartir suscripciones?">
-            <p>Sí, Joinly implementa medidas de seguridad avanzadas. Las credenciales se almacenan encriptadas y solo el titular puede ver y gestionar los accesos de cada suscripción.</p>
+            <p>
+              Sí, Joinly implementa medidas de seguridad avanzadas. Las credenciales se almacenan
+              encriptadas y solo el titular puede ver y gestionar los accesos de cada suscripción.
+            </p>
           </app-accordion-item>
         </app-accordion>
       </div>
@@ -263,21 +313,34 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
         <h3 class="p-style-guide__demo-titulo">Accordion individual (solo uno abierto)</h3>
         <app-accordion [allowMultiple]="false">
           <app-accordion-item title="Plan Básico - 4,99€/mes">
-            <p>Ideal para empezar. Incluye hasta 3 suscripciones compartidas y 4 miembros por unidad familiar.</p>
+            <p>
+              Ideal para empezar. Incluye hasta 3 suscripciones compartidas y 4 miembros por unidad
+              familiar.
+            </p>
           </app-accordion-item>
           <app-accordion-item title="Plan Premium - 9,99€/mes">
-            <p>Para familias grandes. Suscripciones ilimitadas y hasta 10 miembros por unidad familiar. Incluye soporte prioritario.</p>
+            <p>
+              Para familias grandes. Suscripciones ilimitadas y hasta 10 miembros por unidad
+              familiar. Incluye soporte prioritario.
+            </p>
           </app-accordion-item>
           <app-accordion-item title="Plan Empresarial - Personalizado">
-            <p>Solución a medida para empresas. Contacta con nuestro equipo comercial para una propuesta adaptada a tus necesidades.</p>
+            <p>
+              Solución a medida para empresas. Contacta con nuestro equipo comercial para una
+              propuesta adaptada a tus necesidades.
+            </p>
           </app-accordion-item>
         </app-accordion>
       </div>
 
-      <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4);">
+      <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4)">
         <strong>Características del Accordion:</strong>
-        <ul style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc;">
-          <li>✅ <strong>Modo múltiple/individual</strong>: Permite varios items abiertos o solo uno</li>
+        <ul
+          style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc"
+        >
+          <li>
+            ✅ <strong>Modo múltiple/individual</strong>: Permite varios items abiertos o solo uno
+          </li>
           <li>✅ <strong>Navegación con teclado</strong>: Enter y Space para expandir/colapsar</li>
           <li>✅ <strong>Animaciones suaves</strong>: Altura dinámica con transiciones CSS</li>
           <li>✅ <strong>Accesibilidad completa</strong>: ARIA expanded, controls, labelledby</li>
@@ -415,8 +478,8 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
       <div class="p-style-guide__seccion-encabezado">
         <h2 id="titulo-grupos" class="p-style-guide__subtitulo">Tarjetas de Grupos</h2>
         <p class="p-style-guide__nota">
-          Tarjetas especializadas para mostrar grupos familiares. Incluye nombre, contador de miembros,
-          suscripciones y botón de invitar. Diseño según Figma con sombras combinadas.
+          Tarjetas especializadas para mostrar grupos familiares. Incluye nombre, contador de
+          miembros, suscripciones y botón de invitar. Diseño según Figma con sombras combinadas.
         </p>
       </div>
 
@@ -424,9 +487,7 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
         <h3 class="p-style-guide__demo-titulo">Tarjetas de grupo con datos</h3>
         <div class="p-style-guide__rejilla p-style-guide__rejilla--grupos">
           @for (grupo of gruposEjemplo; track grupo.id) {
-            <app-group-card 
-              [grupo]="grupo"
-              (invite)="handleGroupInvite(grupo.id)" />
+            <app-group-card [grupo]="grupo" (invite)="handleGroupInvite(grupo.id)" />
           }
         </div>
       </div>
@@ -434,15 +495,17 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
       <div class="p-style-guide__demo">
         <h3 class="p-style-guide__demo-titulo">Estado vacío</h3>
         <p class="p-style-guide__descripcion">
-          Componente que se muestra cuando el usuario no tiene grupos creados.
-          Incluye icono circular, mensaje y descripción centrados.
+          Componente que se muestra cuando el usuario no tiene grupos creados. Incluye icono
+          circular, mensaje y descripción centrados.
         </p>
         <app-empty-groups />
       </div>
 
-      <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4);">
+      <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4)">
         <strong>Características de las tarjetas de grupos:</strong>
-        <ul style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc;">
+        <ul
+          style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc"
+        >
           <li>✅ <strong>Diseño Figma</strong>: Sombras combinadas (sombra 1 + sombra 3)</li>
           <li>✅ <strong>HTML Semántico</strong>: Uso de article, header, section, footer</li>
           <li>✅ <strong>Efecto hover</strong>: Elevación suave con translateY</li>
@@ -459,10 +522,12 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
          =================================================================== -->
     <section class="p-style-guide__seccion" aria-labelledby="titulo-suscripciones">
       <div class="p-style-guide__seccion-encabezado">
-        <h2 id="titulo-suscripciones" class="p-style-guide__subtitulo">Tarjetas de Suscripciones</h2>
+        <h2 id="titulo-suscripciones" class="p-style-guide__subtitulo">
+          Tarjetas de Suscripciones
+        </h2>
         <p class="p-style-guide__nota">
-          Tarjetas especializadas para mostrar suscripciones compartidas. Incluye nombre del servicio, 
-          precio por plaza, fecha de renovación, plazas disponibles y botón de acción. 
+          Tarjetas especializadas para mostrar suscripciones compartidas. Incluye nombre del
+          servicio, precio por plaza, fecha de renovación, plazas disponibles y botón de acción.
           Diseño según Figma con sombras combinadas.
         </p>
       </div>
@@ -471,9 +536,10 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
         <h3 class="p-style-guide__demo-titulo">Tarjetas de suscripción con datos</h3>
         <div class="p-style-guide__rejilla p-style-guide__rejilla--grupos">
           @for (suscripcion of suscripcionesEjemplo; track suscripcion.id) {
-            <app-subscription-card 
+            <app-subscription-card
               [suscripcion]="suscripcion"
-              (viewDetails)="handleSubscriptionViewDetails(suscripcion.id)" />
+              (viewDetails)="handleSubscriptionViewDetails(suscripcion.id)"
+            />
           }
         </div>
       </div>
@@ -481,15 +547,17 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
       <div class="p-style-guide__demo">
         <h3 class="p-style-guide__demo-titulo">Estado vacío</h3>
         <p class="p-style-guide__descripcion">
-          Componente que se muestra cuando el grupo no tiene suscripciones creadas.
-          Incluye icono circular, mensaje y descripción centrados.
+          Componente que se muestra cuando el grupo no tiene suscripciones creadas. Incluye icono
+          circular, mensaje y descripción centrados.
         </p>
         <app-empty-subscriptions />
       </div>
 
-      <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4);">
+      <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4)">
         <strong>Características de las tarjetas de suscripciones:</strong>
-        <ul style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc;">
+        <ul
+          style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc"
+        >
           <li>✅ <strong>Diseño Figma</strong>: Sombras combinadas (sombra 1 + sombra 3)</li>
           <li>✅ <strong>HTML Semántico</strong>: Uso de article, header, section, footer</li>
           <li>✅ <strong>Efecto hover</strong>: Elevación suave con translateY</li>
@@ -509,34 +577,43 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
          =================================================================== -->
     <section class="p-style-guide__seccion" aria-labelledby="titulo-subscription-info">
       <div class="p-style-guide__seccion-encabezado">
-        <h2 id="titulo-subscription-info" class="p-style-guide__subtitulo">Información de Suscripción</h2>
+        <h2 id="titulo-subscription-info" class="p-style-guide__subtitulo">
+          Información de Suscripción
+        </h2>
         <p class="p-style-guide__nota">
-          Tarjeta expandida con información detallada de una suscripción. Incluye sistema de pestañas
-          para mostrar credenciales de acceso, estado del pago y solicitudes de unión pendientes.
-          Diseño según Figma (node-id 1234-1814).
+          Tarjeta expandida con información detallada de una suscripción. Incluye sistema de
+          pestañas para mostrar credenciales de acceso, estado del pago y solicitudes de unión
+          pendientes. Diseño según Figma (node-id 1234-1814).
         </p>
       </div>
 
       <div class="p-style-guide__demo">
         <h3 class="p-style-guide__demo-titulo">Tarjeta de información completa</h3>
         <p class="p-style-guide__descripcion">
-          Componente con dos pestañas: "Información" muestra credenciales de acceso y estado del pago,
-          mientras que "Solicitudes" muestra las peticiones de unión pendientes con acciones para aceptar o rechazar.
+          Componente con dos pestañas: "Información" muestra credenciales de acceso y estado del
+          pago, mientras que "Solicitudes" muestra las peticiones de unión pendientes con acciones
+          para aceptar o rechazar.
         </p>
         <app-subscription-info-card
           [info]="subscriptionInfoEjemplo"
           (acceptRequest)="handleAcceptRequest($event)"
-          (rejectRequest)="handleRejectRequest($event)" />
+          (rejectRequest)="handleRejectRequest($event)"
+        />
       </div>
 
-      <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4);">
+      <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4)">
         <strong>Características del componente:</strong>
-        <ul style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc;">
+        <ul
+          style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc"
+        >
           <li>✅ <strong>Diseño Figma</strong>: Basado en node-id 1234-1814</li>
           <li>✅ <strong>Sistema de pestañas</strong>: Información / Solicitudes con contador</li>
           <li>✅ <strong>Credenciales de acceso</strong>: Usuario y contraseña en box morado</li>
           <li>✅ <strong>Estado del pago</strong>: Monto retenido, estado y fecha de liberación</li>
-          <li>✅ <strong>Badge de estado</strong>: Retenido (morado), Liberado (verde), Pendiente (amarillo)</li>
+          <li>
+            ✅ <strong>Badge de estado</strong>: Retenido (morado), Liberado (verde), Pendiente
+            (amarillo)
+          </li>
           <li>✅ <strong>Grid de solicitudes</strong>: 2 columnas en tablet+, 1 en móvil</li>
           <li>✅ <strong>Avatar integrado</strong>: Muestra iniciales o foto del solicitante</li>
           <li>✅ <strong>Acciones</strong>: Botones Aceptar/Rechazar con outputs</li>
@@ -554,18 +631,18 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
         <h2 id="titulo-miembros" class="p-style-guide__subtitulo">Tarjetas de Miembros</h2>
         <p class="p-style-guide__nota">
           Tarjetas individuales y lista de miembros para mostrar usuarios de grupos o suscripciones.
-          Incluye avatar, nombre de usuario, email y badge de rol (Admin/Miembro).
-          Diseño según Figma (node-id 1079-853) con fondo morado claro y badge azul.
+          Incluye avatar, nombre de usuario, email y badge de rol (Admin/Miembro). Diseño según
+          Figma (node-id 1079-853) con fondo morado claro y badge azul.
         </p>
       </div>
 
       <div class="p-style-guide__demo">
         <h3 class="p-style-guide__demo-titulo">Tarjeta individual de miembro</h3>
         <p class="p-style-guide__descripcion">
-          Componente compacto que muestra la información básica de un miembro:
-          avatar con iniciales, nombre de usuario, email y rol.
+          Componente compacto que muestra la información básica de un miembro: avatar con iniciales,
+          nombre de usuario, email y rol.
         </p>
-        <div style="display: flex; gap: var(--espaciado-3); flex-wrap: wrap;">
+        <div style="display: flex; gap: var(--espaciado-3); flex-wrap: wrap">
           @for (member of miembrosEjemplo.slice(0, 2); track member.id) {
             <app-member-card [member]="member" />
           }
@@ -575,8 +652,8 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
       <div class="p-style-guide__demo">
         <h3 class="p-style-guide__demo-titulo">Lista completa de miembros</h3>
         <p class="p-style-guide__descripcion">
-          Sección con encabezado, contador de miembros y grid de tarjetas.
-          Se usa en páginas de detalle de grupos y suscripciones.
+          Sección con encabezado, contador de miembros y grid de tarjetas. Se usa en páginas de
+          detalle de grupos y suscripciones.
         </p>
         <app-member-list [members]="miembrosEjemplo" />
       </div>
@@ -586,14 +663,14 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
         <p class="p-style-guide__descripcion">
           El componente permite personalizar el título de la sección.
         </p>
-        <app-member-list 
-          [members]="miembrosEjemplo.slice(0, 3)" 
-          titulo="Participantes" />
+        <app-member-list [members]="miembrosEjemplo.slice(0, 3)" titulo="Participantes" />
       </div>
 
-      <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4);">
+      <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4)">
         <strong>Características de las tarjetas de miembros:</strong>
-        <ul style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc;">
+        <ul
+          style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc"
+        >
           <li>✅ <strong>Diseño Figma</strong>: Basado en node-id 1079-853</li>
           <li>✅ <strong>HTML Semántico</strong>: Uso de article (card), section (list)</li>
           <li>✅ <strong>Fondo morado claro</strong>: var(--color-superficie-morada)</li>
@@ -626,10 +703,10 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
         <h3 class="p-style-guide__demo-titulo">Variantes con texto (tamaño mediano)</h3>
         <div class="p-style-guide__grupo-logos">
           @for (variant of logoVariants; track variant.variant) {
-          <div class="p-style-guide__logo-item">
-            <app-logo [variant]="variant.variant" size="md" [showText]="true" />
-            <p class="p-style-guide__logo-label">{{ variant.label }}</p>
-          </div>
+            <div class="p-style-guide__logo-item">
+              <app-logo [variant]="variant.variant" size="md" [showText]="true" />
+              <p class="p-style-guide__logo-label">{{ variant.label }}</p>
+            </div>
           }
         </div>
       </div>
@@ -639,10 +716,10 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
         <h3 class="p-style-guide__demo-titulo">Variantes sin texto (tamaño mediano)</h3>
         <div class="p-style-guide__grupo-logos">
           @for (variant of logoVariants; track variant.variant) {
-          <div class="p-style-guide__logo-item">
-            <app-logo [variant]="variant.variant" size="md" [showText]="false" />
-            <p class="p-style-guide__logo-label">{{ variant.label }}</p>
-          </div>
+            <div class="p-style-guide__logo-item">
+              <app-logo [variant]="variant.variant" size="md" [showText]="false" />
+              <p class="p-style-guide__logo-label">{{ variant.label }}</p>
+            </div>
           }
         </div>
       </div>
@@ -652,10 +729,10 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
         <h3 class="p-style-guide__demo-titulo">Tamaños disponibles</h3>
         <div class="p-style-guide__grupo-logos p-style-guide__grupo-logos--tamaños">
           @for (size of logoSizes; track size.size) {
-          <div class="p-style-guide__logo-item">
-            <app-logo variant="naranja" [size]="size.size" [showText]="true" />
-            <p class="p-style-guide__logo-label">{{ size.label }}</p>
-          </div>
+            <div class="p-style-guide__logo-item">
+              <app-logo variant="naranja" [size]="size.size" [showText]="true" />
+              <p class="p-style-guide__logo-label">{{ size.label }}</p>
+            </div>
           }
         </div>
       </div>
@@ -696,17 +773,17 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
       <div class="p-style-guide__demo">
         <div class="p-style-guide__grupo-estados">
           @for (variantItem of buttonVariants; track variantItem.variant) {
-          <div class="p-style-guide__grupo-botones p-style-guide__grupo-botones--alineado">
-            @for (size of buttonSizes; track size) {
-            <app-button
-              [size]="size"
-              [variant]="variantItem.variant"
-              leftIcon="add"
-              rightIcon="arrow-right"
-              >Botón</app-button
-            >
-            }
-          </div>
+            <div class="p-style-guide__grupo-botones p-style-guide__grupo-botones--alineado">
+              @for (size of buttonSizes; track size) {
+                <app-button
+                  [size]="size"
+                  [variant]="variantItem.variant"
+                  leftIcon="add"
+                  rightIcon="arrow-right"
+                  >Botón</app-button
+                >
+              }
+            </div>
           }
         </div>
       </div>
@@ -743,8 +820,8 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
         <h2 id="titulo-alertas" class="p-style-guide__subtitulo">Alertas</h2>
         <p class="p-style-guide__nota">
           Mensajes de alerta estáticos para feedback inline. Uso: confirmaciones, errores,
-          advertencias, información contextual. Diferencia con toasts: estas son estáticas en
-          la página, mientras que los toasts son temporales en la esquina de pantalla.
+          advertencias, información contextual. Diferencia con toasts: estas son estáticas en la
+          página, mientras que los toasts son temporales en la esquina de pantalla.
         </p>
       </div>
 
@@ -758,7 +835,8 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
             <strong>Error:</strong> El correo electrónico ya está registrado. Intenta con otro.
           </app-alert>
           <app-alert type="warning">
-            <strong>Advertencia:</strong> Tu suscripción expira en 3 días. Renueva ahora para no perder el acceso.
+            <strong>Advertencia:</strong> Tu suscripción expira en 3 días. Renueva ahora para no
+            perder el acceso.
           </app-alert>
           <app-alert type="info">
             <strong>Información:</strong> Revisa tus datos personales antes de guardar los cambios.
@@ -939,7 +1017,7 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
             [options]="[
               { value: 'basic', label: 'Básico - 4,99€/mes' },
               { value: 'standard', label: 'Estándar - 9,99€/mes' },
-              { value: 'premium', label: 'Premium - 14,99€/mes' }
+              { value: 'premium', label: 'Premium - 14,99€/mes' },
             ]"
             [required]="true"
           />
@@ -950,7 +1028,7 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
             [options]="[
               { value: 'streaming', label: 'Streaming' },
               { value: 'musica', label: 'Música' },
-              { value: 'gaming', label: 'Gaming' }
+              { value: 'gaming', label: 'Gaming' },
             ]"
             [required]="true"
             errorMessage="Debes seleccionar una categoría"
@@ -1028,7 +1106,7 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
             [options]="[
               { value: 'tarjeta', label: 'Tarjeta de crédito' },
               { value: 'paypal', label: 'PayPal' },
-              { value: 'transferencia', label: 'Transferencia bancaria' }
+              { value: 'transferencia', label: 'Transferencia bancaria' },
             ]"
             name="metodo-pago"
             [required]="true"
@@ -1087,7 +1165,9 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
       <!-- Nueva Suscripción -->
       <div class="p-style-guide__demo">
         <h3 class="p-style-guide__demo-titulo">Suscripciones</h3>
-        <div class="p-style-guide__rejilla-formularios p-style-guide__rejilla-formularios--centrado">
+        <div
+          class="p-style-guide__rejilla-formularios p-style-guide__rejilla-formularios--centrado"
+        >
           <app-new-subscription-form
             (submitted)="onNewSubscriptionSubmit($event)"
             (cancelled)="onFormCancel()"
@@ -1095,14 +1175,22 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
         </div>
       </div>
 
-      <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4);">
+      <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4)">
         <strong>Características de los formularios:</strong>
-        <ul style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc;">
+        <ul
+          style="margin-top: var(--espaciado-2); padding-left: var(--espaciado-4); list-style: disc"
+        >
           <li>✅ <strong>Validación reactiva</strong>: Validadores síncronos con Angular Forms</li>
-          <li>✅ <strong>Submit con Enter</strong>: Envío desde cualquier campo con la tecla Enter</li>
+          <li>
+            ✅ <strong>Submit con Enter</strong>: Envío desde cualquier campo con la tecla Enter
+          </li>
           <li>✅ <strong>Throttle</strong>: Prevención de submit múltiple (300ms)</li>
-          <li>✅ <strong>Accesibilidad</strong>: Labels asociados, errores anunciados, foco gestionado</li>
-          <li>✅ <strong>Estados de carga</strong>: Indicadores visuales durante el procesamiento</li>
+          <li>
+            ✅ <strong>Accesibilidad</strong>: Labels asociados, errores anunciados, foco gestionado
+          </li>
+          <li>
+            ✅ <strong>Estados de carga</strong>: Indicadores visuales durante el procesamiento
+          </li>
           <li>✅ <strong>Navegación cruzada</strong>: Enlaces entre formularios relacionados</li>
           <li>✅ <strong>OnPush</strong>: Optimizado para detección de cambios</li>
         </ul>
@@ -1135,7 +1223,7 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
               { label: 'Inicio', url: '/' },
               { label: 'Grupos', url: '/grupos' },
               { label: 'Familia López', url: '/grupos/1' },
-              { label: 'Netflix Premium' }
+              { label: 'Netflix Premium' },
             ]"
           />
         </div>
@@ -1149,8 +1237,9 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
       <div class="p-style-guide__seccion-encabezado">
         <h2 id="titulo-iconos" class="p-style-guide__subtitulo">Iconos</h2>
         <p class="p-style-guide__nota">
-          Sistema completo de iconos SVG optimizados con stroke. Todos los iconos heredan el color del padre (currentColor),
-          usan stroke-width="2", stroke-linecap="round" y stroke-linejoin="round" para un estilo minimalista y consistente.
+          Sistema completo de iconos SVG optimizados con stroke. Todos los iconos heredan el color
+          del padre (currentColor), usan stroke-width="2", stroke-linecap="round" y
+          stroke-linejoin="round" para un estilo minimalista y consistente.
         </p>
       </div>
 
@@ -1361,7 +1450,8 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
       <div class="p-style-guide__seccion-header">
         <h2 class="p-style-guide__seccion-titulo">7. Optimización Multimedia</h2>
         <p class="p-style-guide__seccion-descripcion">
-          Demostraciones de imágenes responsive con múltiples formatos (AVIF, WebP, JPG) y animaciones CSS optimizadas.
+          Demostraciones de imágenes responsive con múltiples formatos (AVIF, WebP, JPG) y
+          animaciones CSS optimizadas.
         </p>
       </div>
 
@@ -1371,16 +1461,16 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
         <p class="u-texto-regular">
           El componente <code>FeatureImageComponent</code> implementa imágenes responsive con:
         </p>
-        <ul class="u-texto-regular" style="margin-left: 1.5rem;">
+        <ul class="u-texto-regular" style="margin-left: 1.5rem">
           <li><code>srcset</code> y <code>sizes</code> para diferentes tamaños de pantalla</li>
           <li>Múltiples formatos de imagen (AVIF, WebP, JPG) con fallbacks automáticos</li>
           <li>Art direction para mobile vs desktop con <code>&lt;picture&gt;</code></li>
           <li>Lazy loading nativo</li>
           <li>Aspect ratio personalizable</li>
         </ul>
-        <p class="u-texto-regular" style="margin-top: 1rem;">
-          <strong>Nota:</strong> Para ver las imágenes demo, necesitas generar las imágenes usando el script del plan
-          con sharp-cli y colocarlas en <code>public/assets/images/demo/</code>.
+        <p class="u-texto-regular" style="margin-top: 1rem">
+          <strong>Nota:</strong> Para ver las imágenes demo, necesitas generar las imágenes usando
+          el script del plan con sharp-cli y colocarlas en <code>public/assets/images/demo/</code>.
         </p>
 
         <!-- Ejemplo de uso del componente (comentado para cuando existan las imágenes) -->
@@ -1403,7 +1493,8 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
       <div class="p-style-guide__demo">
         <h3 class="p-style-guide__demo-titulo">7.2 Animaciones CSS Optimizadas</h3>
         <p class="u-texto-regular">
-          Solo se animan propiedades <code>transform</code> y <code>opacity</code> (GPU-accelerated).
+          Solo se animan propiedades <code>transform</code> y
+          <code>opacity</code> (GPU-accelerated).
         </p>
       </div>
 
@@ -1411,16 +1502,16 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
       <div class="p-style-guide__demo">
         <h4 class="p-style-guide__demo-subtitulo">7.2.1 Skeleton Loading (Shimmer)</h4>
         <p class="u-texto-regular">Para estados de carga de contenido:</p>
-        <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+        <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem">
           <div class="u-skeleton u-skeleton--card"></div>
           <div class="u-skeleton u-skeleton--heading"></div>
           <div class="u-skeleton u-skeleton--text"></div>
-          <div class="u-skeleton u-skeleton--text" style="width: 80%;"></div>
-          <div style="display: flex; gap: 1rem; align-items: center;">
+          <div class="u-skeleton u-skeleton--text" style="width: 80%"></div>
+          <div style="display: flex; gap: 1rem; align-items: center">
             <div class="u-skeleton u-skeleton--avatar"></div>
-            <div style="flex: 1;">
-              <div class="u-skeleton u-skeleton--text" style="margin-bottom: 0.5rem;"></div>
-              <div class="u-skeleton u-skeleton--text" style="width: 60%;"></div>
+            <div style="flex: 1">
+              <div class="u-skeleton u-skeleton--text" style="margin-bottom: 0.5rem"></div>
+              <div class="u-skeleton u-skeleton--text" style="width: 60%"></div>
             </div>
           </div>
         </div>
@@ -1429,8 +1520,10 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
       <!-- 7.2.2 Bounce -->
       <div class="p-style-guide__demo">
         <h4 class="p-style-guide__demo-subtitulo">7.2.2 Bounce (Éxito/Confirmación)</h4>
-        <p class="u-texto-regular">Para feedback positivo en acciones (haz clic para ver la animación):</p>
-        <div style="margin-top: 1rem; display: flex; gap: 1rem;">
+        <p class="u-texto-regular">
+          Para feedback positivo en acciones (haz clic para ver la animación):
+        </p>
+        <div style="margin-top: 1rem; display: flex; gap: 1rem">
           <app-button
             variant="primary"
             size="md"
@@ -1454,25 +1547,70 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
       <div class="p-style-guide__demo">
         <h4 class="p-style-guide__demo-subtitulo">7.2.3 Slide-in (Entrada de elementos)</h4>
         <p class="u-texto-regular">Para revelar elementos con stagger automático en listas:</p>
-        <ul style="list-style: none; padding: 0; margin-top: 1rem;">
-          <li class="u-slide-in-bottom" style="padding: 0.75rem; margin-bottom: 0.5rem; background: var(--bg-secondary); border-radius: var(--radio-medio);">
+        <ul style="list-style: none; padding: 0; margin-top: 1rem">
+          <li
+            class="u-slide-in-bottom"
+            style="
+              padding: 0.75rem;
+              margin-bottom: 0.5rem;
+              background: var(--bg-secondary);
+              border-radius: var(--radio-medio);
+            "
+          >
             <app-icon name="check" size="sm" /> Item con slide-in desde abajo 1
           </li>
-          <li class="u-slide-in-bottom" style="padding: 0.75rem; margin-bottom: 0.5rem; background: var(--bg-secondary); border-radius: var(--radio-medio);">
+          <li
+            class="u-slide-in-bottom"
+            style="
+              padding: 0.75rem;
+              margin-bottom: 0.5rem;
+              background: var(--bg-secondary);
+              border-radius: var(--radio-medio);
+            "
+          >
             <app-icon name="check" size="sm" /> Item con slide-in desde abajo 2
           </li>
-          <li class="u-slide-in-bottom" style="padding: 0.75rem; margin-bottom: 0.5rem; background: var(--bg-secondary); border-radius: var(--radio-medio);">
+          <li
+            class="u-slide-in-bottom"
+            style="
+              padding: 0.75rem;
+              margin-bottom: 0.5rem;
+              background: var(--bg-secondary);
+              border-radius: var(--radio-medio);
+            "
+          >
             <app-icon name="check" size="sm" /> Item con slide-in desde abajo 3
           </li>
         </ul>
-        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-          <div class="u-slide-in-left" style="padding: 1rem; background: var(--bg-secondary); border-radius: var(--radio-medio);">
+        <div style="display: flex; gap: 1rem; margin-top: 1rem">
+          <div
+            class="u-slide-in-left"
+            style="
+              padding: 1rem;
+              background: var(--bg-secondary);
+              border-radius: var(--radio-medio);
+            "
+          >
             Desde izquierda
           </div>
-          <div class="u-slide-in-right" style="padding: 1rem; background: var(--bg-secondary); border-radius: var(--radio-medio);">
+          <div
+            class="u-slide-in-right"
+            style="
+              padding: 1rem;
+              background: var(--bg-secondary);
+              border-radius: var(--radio-medio);
+            "
+          >
             Desde derecha
           </div>
-          <div class="u-slide-in-top" style="padding: 1rem; background: var(--bg-secondary); border-radius: var(--radio-medio);">
+          <div
+            class="u-slide-in-top"
+            style="
+              padding: 1rem;
+              background: var(--bg-secondary);
+              border-radius: var(--radio-medio);
+            "
+          >
             Desde arriba
           </div>
         </div>
@@ -1482,8 +1620,16 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
       <div class="p-style-guide__demo">
         <h4 class="p-style-guide__demo-subtitulo">7.2.4 Fade-in-scale (Modales/Tooltips)</h4>
         <p class="u-texto-regular">Para apariciones suaves de elementos emergentes:</p>
-        <div style="margin-top: 1rem; display: flex; gap: 1rem;">
-          <div class="u-fade-in-scale" style="padding: 1.5rem; background: var(--bg-secondary); border-radius: var(--radio-grande); box-shadow: var(--sombra-2);">
+        <div style="margin-top: 1rem; display: flex; gap: 1rem">
+          <div
+            class="u-fade-in-scale"
+            style="
+              padding: 1.5rem;
+              background: var(--bg-secondary);
+              border-radius: var(--radio-grande);
+              box-shadow: var(--sombra-2);
+            "
+          >
             Contenido con fade-in-scale
           </div>
         </div>
@@ -1493,12 +1639,20 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
       <div class="p-style-guide__demo">
         <h4 class="p-style-guide__demo-subtitulo">7.2.5 Pulse (Indicadores de atención)</h4>
         <p class="u-texto-regular">Para notificaciones o elementos que requieren atención:</p>
-        <div style="margin-top: 1rem; display: flex; gap: 1rem; align-items: center;">
+        <div style="margin-top: 1rem; display: flex; gap: 1rem; align-items: center">
           <app-button variant="primary" size="md" cssClass="u-pulse">
             <app-icon name="bell" size="sm" />
             Notificaciones (3)
           </app-button>
-          <span class="u-pulse" style="padding: 0.5rem 1rem; background: var(--color-primary); color: white; border-radius: var(--radio-medio);">
+          <span
+            class="u-pulse"
+            style="
+              padding: 0.5rem 1rem;
+              background: var(--color-primary);
+              color: white;
+              border-radius: var(--radio-medio);
+            "
+          >
             ¡Nueva actualización!
           </span>
         </div>
@@ -1507,8 +1661,10 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
       <!-- 7.2.6 Shake -->
       <div class="p-style-guide__demo">
         <h4 class="p-style-guide__demo-subtitulo">7.2.6 Shake (Feedback de error)</h4>
-        <p class="u-texto-regular">Para indicar errores de validación (haz clic para ver la animación):</p>
-        <div style="margin-top: 1rem;">
+        <p class="u-texto-regular">
+          Para indicar errores de validación (haz clic para ver la animación):
+        </p>
+        <div style="margin-top: 1rem">
           <app-button
             variant="secondary"
             size="md"
@@ -1523,8 +1679,11 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
       <!-- 7.3 Información técnica -->
       <div class="p-style-guide__demo">
         <h3 class="p-style-guide__demo-titulo">7.3 Principios de Optimización</h3>
-        <ul class="u-texto-regular" style="margin-left: 1.5rem;">
-          <li><strong>GPU-accelerated:</strong> Solo se animan <code>transform</code> y <code>opacity</code></li>
+        <ul class="u-texto-regular" style="margin-left: 1.5rem">
+          <li>
+            <strong>GPU-accelerated:</strong> Solo se animan <code>transform</code> y
+            <code>opacity</code>
+          </li>
           <li><strong>Duraciones óptimas:</strong> 150ms - 500ms para mejor UX</li>
           <li><strong>Will-change:</strong> Usado apropiadamente para preparar animaciones</li>
           <li><strong>Responsive:</strong> Imágenes optimizadas por tamaño de pantalla</li>

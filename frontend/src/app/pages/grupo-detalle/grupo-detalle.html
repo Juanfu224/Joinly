@@ -11,7 +11,9 @@
         <!-- Skeleton miembros -->
         <div class="p-grupo-detalle__skeleton-seccion"></div>
         <!-- Skeleton suscripciones -->
-        <div class="p-grupo-detalle__skeleton-seccion p-grupo-detalle__skeleton-seccion--grande"></div>
+        <div
+          class="p-grupo-detalle__skeleton-seccion p-grupo-detalle__skeleton-seccion--grande"
+        ></div>
       </div>
     } @else if (error()) {
       <!-- Estado de error -->
@@ -19,9 +21,7 @@
         <div class="p-grupo-detalle__error-content">
           <app-icon name="alert-triangle" size="lg" />
           <p class="p-grupo-detalle__error-text">{{ error() }}</p>
-          <app-button variant="primary" (click)="onReintentar()">
-            Reintentar
-          </app-button>
+          <app-button variant="primary" (click)="onReintentar()"> Reintentar </app-button>
         </div>
       </section>
     } @else {
@@ -29,17 +29,9 @@
       <header class="p-grupo-detalle__header">
         <div class="p-grupo-detalle__header-info">
           <h1 class="p-grupo-detalle__titulo">{{ grupo()?.nombre }}</h1>
-          <p class="p-grupo-detalle__subtitulo">
-            Gestiona suscripciones o crea alguna
-          </p>
+          <p class="p-grupo-detalle__subtitulo">Gestiona suscripciones o crea alguna</p>
         </div>
-        <app-button 
-          variant="blue" 
-          leftIcon="add"
-          (click)="onInvitar()"
-        >
-          Invitar
-        </app-button>
+        <app-button variant="blue" leftIcon="add" (click)="onInvitar()"> Invitar </app-button>
       </header>
 
       <!-- Sección de miembros -->
@@ -56,7 +48,11 @@
             (rejectRequest)="onRechazarSolicitud($event)"
           />
           @if (hasMoreSolicitudes() && !loadingMoreSolicitudes()) {
-            <div class="p-grupo-detalle__infinite-scroll-trigger" appInfiniteScroll (scrolled)="onLoadMoreSolicitudes()"></div>
+            <div
+              class="p-grupo-detalle__infinite-scroll-trigger"
+              appInfiniteScroll
+              (scrolled)="onLoadMoreSolicitudes()"
+            ></div>
           }
           @if (loadingMoreSolicitudes()) {
             <div class="p-grupo-detalle__loading-more">Cargando más solicitudes...</div>
@@ -70,10 +66,7 @@
           <h2 id="titulo-suscripciones" class="p-grupo-detalle__suscripciones-titulo">
             Tus suscripciones
           </h2>
-          <app-button 
-            variant="purple"
-            (click)="onCrearSuscripcion()"
-          >
+          <app-button variant="purple" (click)="onCrearSuscripcion()">
             Crear suscripción
           </app-button>
         </header>

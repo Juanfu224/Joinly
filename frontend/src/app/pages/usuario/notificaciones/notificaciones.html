@@ -6,7 +6,11 @@
     </p>
   </header>
 
-  <form [formGroup]="preferencesForm" (ngSubmit)="onSave()" aria-label="Preferencias de notificaciones">
+  <form
+    [formGroup]="preferencesForm"
+    (ngSubmit)="onSave()"
+    aria-label="Preferencias de notificaciones"
+  >
     <app-card class="p-notificaciones__seccion">
       <header class="p-notificaciones__seccion-header">
         <div class="p-notificaciones__seccion-info">
@@ -51,8 +55,8 @@
         <div>
           <p id="info-notif" class="p-notificaciones__info-titulo">Sobre las notificaciones</p>
           <p class="p-notificaciones__info-texto">
-            Las notificaciones críticas de seguridad (como cambios de contraseña o accesos sospechosos) 
-            siempre se enviarán independientemente de tu configuración.
+            Las notificaciones críticas de seguridad (como cambios de contraseña o accesos
+            sospechosos) siempre se enviarán independientemente de tu configuración.
           </p>
         </div>
       </aside>
@@ -64,12 +68,13 @@
           Descartar cambios
         </app-button>
       }
-      <app-button 
-        type="submit" 
-        variant="primary" 
+      <app-button
+        type="submit"
+        variant="primary"
         leftIcon="check"
-        [disabled]="!canSave()" 
-        [loading]="isSaving()">
+        [disabled]="!canSave()"
+        [loading]="isSaving()"
+      >
         Guardar preferencias
       </app-button>
     </footer>

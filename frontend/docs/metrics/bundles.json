@@ -1,0 +1,196 @@
+[
+  {
+    "main": {
+      "size": 28987,
+      "gzip": 8116
+    },
+    "polyfills": {
+      "size": 0,
+      "gzip": 0
+    },
+    "vendor": {
+      "size": 0,
+      "gzip": 0
+    },
+    "lazy": [
+      {
+        "name": "chunk-B2GAXJPM.js",
+        "size": 274278,
+        "gzip": 82283
+      },
+      {
+        "name": "chunk-FL3E2Z2F.js",
+        "size": 186826,
+        "gzip": 56048
+      },
+      {
+        "name": "chunk-OJ7LMWYF.js",
+        "size": 77425,
+        "gzip": 23228
+      },
+      {
+        "name": "chunk-E3GAZVTB.js",
+        "size": 70263,
+        "gzip": 21079
+      },
+      {
+        "name": "chunk-C5DUA6XP.js",
+        "size": 54367,
+        "gzip": 16310
+      },
+      {
+        "name": "chunk-GA5272GI.js",
+        "size": 21034,
+        "gzip": 6310
+      },
+      {
+        "name": "chunk-VE3OG7FA.js",
+        "size": 20209,
+        "gzip": 6063
+      },
+      {
+        "name": "chunk-LUOLS4GE.js",
+        "size": 18825,
+        "gzip": 5648
+      },
+      {
+        "name": "chunk-WXNFFMXB.js",
+        "size": 18653,
+        "gzip": 5596
+      },
+      {
+        "name": "chunk-OGLWLGII.js",
+        "size": 18650,
+        "gzip": 5595
+      },
+      {
+        "name": "chunk-EVHNJP2R.js",
+        "size": 15125,
+        "gzip": 4538
+      },
+      {
+        "name": "chunk-G2DMBEFF.js",
+        "size": 13174,
+        "gzip": 3952
+      },
+      {
+        "name": "chunk-CH7W7RRZ.js",
+        "size": 12601,
+        "gzip": 3780
+      },
+      {
+        "name": "chunk-NCFFSBDL.js",
+        "size": 11933,
+        "gzip": 3580
+      },
+      {
+        "name": "chunk-OSJ5QASZ.js",
+        "size": 11069,
+        "gzip": 3321
+      },
+      {
+        "name": "chunk-XD6UIWHB.js",
+        "size": 10642,
+        "gzip": 3193
+      },
+      {
+        "name": "chunk-364HVE4Q.js",
+        "size": 7692,
+        "gzip": 2308
+      },
+      {
+        "name": "chunk-LCPWE3ZV.js",
+        "size": 6640,
+        "gzip": 1992
+      },
+      {
+        "name": "chunk-6Q2IXPMP.js",
+        "size": 6467,
+        "gzip": 1940
+      },
+      {
+        "name": "chunk-ELVWQEFF.js",
+        "size": 6140,
+        "gzip": 1842
+      },
+      {
+        "name": "chunk-QOFU7665.js",
+        "size": 5170,
+        "gzip": 1551
+      },
+      {
+        "name": "chunk-BAO76U7B.js",
+        "size": 4917,
+        "gzip": 1475
+      },
+      {
+        "name": "chunk-76K7YXBN.js",
+        "size": 4868,
+        "gzip": 1460
+      },
+      {
+        "name": "chunk-RVUX3SOI.js",
+        "size": 3940,
+        "gzip": 1182
+      },
+      {
+        "name": "chunk-ZWW5EQGV.js",
+        "size": 2476,
+        "gzip": 743
+      },
+      {
+        "name": "chunk-EUS2CABZ.js",
+        "size": 1972,
+        "gzip": 592
+      },
+      {
+        "name": "chunk-77YN5IMF.js",
+        "size": 1925,
+        "gzip": 578
+      },
+      {
+        "name": "chunk-4HMEZQEZ.js",
+        "size": 1869,
+        "gzip": 561
+      },
+      {
+        "name": "chunk-X7THG4PQ.js",
+        "size": 1853,
+        "gzip": 556
+      },
+      {
+        "name": "chunk-IZ42E3SQ.js",
+        "size": 1291,
+        "gzip": 387
+      },
+      {
+        "name": "chunk-3UOEXP7O.js",
+        "size": 482,
+        "gzip": 145
+      },
+      {
+        "name": "chunk-2NFLSA4Y.js",
+        "size": 449,
+        "gzip": 135
+      },
+      {
+        "name": "chunk-IEYWL6E3.js",
+        "size": 343,
+        "gzip": 103
+      },
+      {
+        "name": "chunk-PSAI7NU2.js",
+        "size": 311,
+        "gzip": 93
+      },
+      {
+        "name": "chunk-DBFHE5WM.js",
+        "size": 156,
+        "gzip": 47
+      }
+    ],
+    "totalSize": 923022,
+    "totalGzip": 276330,
+    "timestamp": "2026-01-26T12:46:03.471Z"
+  }
+]

@@ -87,8 +87,8 @@ export class IconComponent {
   private readonly iconPath = computed(() => ICON_PATHS[this.name()] ?? '');
 
   /** Path SVG sanitizado para inyección segura */
-  protected readonly sanitizedIconPath = computed<SafeHtml>(() => 
-    this.sanitizer.bypassSecurityTrustHtml(this.iconPath())
+  protected readonly sanitizedIconPath = computed<SafeHtml>(() =>
+    this.sanitizer.bypassSecurityTrustHtml(this.iconPath()),
   );
 
   /** Tamaño en píxeles basado en la variante */

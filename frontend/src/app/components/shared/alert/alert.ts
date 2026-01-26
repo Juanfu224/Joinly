@@ -75,8 +75,8 @@ export class AlertComponent {
   /**
    * ID computado para accesibilidad (genera uno si no se proporciona)
    */
-  protected computedId = computed(() =>
-    this.alertId() || `alert-${Math.random().toString(36).substr(2, 9)}`
+  protected computedId = computed(
+    () => this.alertId() || `alert-${Math.random().toString(36).substr(2, 9)}`,
   );
 
   /**

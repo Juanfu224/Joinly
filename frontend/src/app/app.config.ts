@@ -1,9 +1,20 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter, withComponentInputBinding, withViewTransitions, withPreloading, withInMemoryScrolling } from '@angular/router';
+import {
+  provideRouter,
+  withComponentInputBinding,
+  withViewTransitions,
+  withPreloading,
+  withInMemoryScrolling,
+} from '@angular/router';
 import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/http';
 
 import { routes } from './app.routes';
-import { authInterceptor, loadingInterceptor, loggingInterceptor, errorInterceptor } from './interceptors';
+import {
+  authInterceptor,
+  loadingInterceptor,
+  loggingInterceptor,
+  errorInterceptor,
+} from './interceptors';
 import { SelectivePreloadStrategy } from './strategies';
 
 /**
@@ -28,7 +39,7 @@ export const appConfig: ApplicationConfig = {
         scrollPositionRestoration: 'enabled',
         anchorScrolling: 'enabled',
       }),
-      withPreloading(SelectivePreloadStrategy)
+      withPreloading(SelectivePreloadStrategy),
     ),
     provideHttpClient(
       withFetch(),
@@ -37,7 +48,7 @@ export const appConfig: ApplicationConfig = {
       // 2. loading: muestra/oculta spinner global
       // 3. logging: registra requests/responses (desarrollo)
       // 4. error: captura errores y muestra toasts (después de auth para no mostrar errores 401 durante refresh)
-      withInterceptors([authInterceptor, loadingInterceptor, loggingInterceptor, errorInterceptor])
+      withInterceptors([authInterceptor, loadingInterceptor, loggingInterceptor, errorInterceptor]),
     ),
-  ]
+  ],
 };

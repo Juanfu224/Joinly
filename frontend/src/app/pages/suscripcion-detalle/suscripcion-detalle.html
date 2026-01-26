@@ -6,9 +6,7 @@
         <div class="p-suscripcion-detalle__error-content">
           <app-icon name="alert-triangle" size="lg" />
           <p class="p-suscripcion-detalle__error-message">{{ error() }}</p>
-          <app-button variant="primary" (click)="onReintentar()">
-            Reintentar
-          </app-button>
+          <app-button variant="primary" (click)="onReintentar()"> Reintentar </app-button>
         </div>
       </div>
     } @else if (suscripcion()) {
@@ -20,10 +18,7 @@
         </div>
         @if (puedeSolicitarPlaza()) {
           <div class="p-suscripcion-detalle__actions">
-            <app-button
-              variant="primary"
-              leftIcon="add"
-              (click)="onSolicitarPlaza()">
+            <app-button variant="primary" leftIcon="add" (click)="onSolicitarPlaza()">
               Solicitar plaza
             </app-button>
           </div>
@@ -48,7 +43,8 @@
           <app-subscription-stat-card
             [tipo]="stat.tipo"
             [titulo]="stat.titulo"
-            [valor]="stat.valor" />
+            [valor]="stat.valor"
+          />
         }
       </div>
 
@@ -56,7 +52,8 @@
       <app-member-list
         [members]="miembrosData()"
         [titulo]="'Miembros'"
-        class="p-suscripcion-detalle__members" />
+        class="p-suscripcion-detalle__members"
+      />
 
       <!-- Solicitudes pendientes - Solo visible para anfitriones -->
       @if (esAnfitrion() && solicitudesPendientes().length > 0) {
@@ -67,7 +64,11 @@
             (rejectRequest)="onRechazarSolicitud($event)"
           />
           @if (hasMoreSolicitudes() && !loadingMoreSolicitudes()) {
-            <div class="p-suscripcion-detalle__infinite-scroll-trigger" appInfiniteScroll (scrolled)="onLoadMoreSolicitudes()"></div>
+            <div
+              class="p-suscripcion-detalle__infinite-scroll-trigger"
+              appInfiniteScroll
+              (scrolled)="onLoadMoreSolicitudes()"
+            ></div>
           }
           @if (loadingMoreSolicitudes()) {
             <div class="p-suscripcion-detalle__loading-more">Cargando más solicitudes...</div>
@@ -80,7 +81,8 @@
         <app-subscription-info-card
           [info]="infoData()"
           [isAdmin]="false"
-          class="p-suscripcion-detalle__info" />
+          class="p-suscripcion-detalle__info"
+        />
       }
     }
   </div>

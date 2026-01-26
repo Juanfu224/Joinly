@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   SubscriptionStatCardComponent,
@@ -49,9 +57,11 @@ export class SuscripcionDetalleComponent implements OnInit {
   protected readonly error = computed(() => this.suscripcionesStore.error());
   protected readonly tieneSolicitudPendiente = signal(false);
   protected readonly solicitudesPendientes = this.solicitudesStore.pendientesSuscripcion;
-  protected readonly solicitudesPendientesVisible = this.solicitudesStore.pendientesSuscripcionVisible;
+  protected readonly solicitudesPendientesVisible =
+    this.solicitudesStore.pendientesSuscripcionVisible;
   protected readonly hasMoreSolicitudes = this.solicitudesStore.hasMorePendientesSuscripcion;
-  protected readonly loadingMoreSolicitudes = this.solicitudesStore.loadingMorePendientesSuscripcion;
+  protected readonly loadingMoreSolicitudes =
+    this.solicitudesStore.loadingMorePendientesSuscripcion;
 
   protected readonly esAnfitrion = computed(() => {
     const sub = this.suscripcion();
@@ -64,7 +74,7 @@ export class SuscripcionDetalleComponent implements OnInit {
     const sub = this.suscripcion();
     const currentUser = this.authService.currentUser();
     if (!sub || !currentUser) return false;
-    return sub.miembros.some(m => m.usuario.id === currentUser.id);
+    return sub.miembros.some((m) => m.usuario.id === currentUser.id);
   });
 
   protected readonly estaCompleta = computed(() => {
@@ -84,7 +94,9 @@ export class SuscripcionDetalleComponent implements OnInit {
   });
 
   async ngOnInit(): Promise<void> {
-    const resolved = this.route.snapshot.data['suscripcionData'] as ResolvedData<SuscripcionDetalle>;
+    const resolved = this.route.snapshot.data[
+      'suscripcionData'
+    ] as ResolvedData<SuscripcionDetalle>;
 
     if (resolved.error) {
       this.toastService.error(resolved.error);
@@ -93,23 +105,20 @@ export class SuscripcionDetalleComponent implements OnInit {
       if (!isNaN(subId)) {
         await this.suscripcionesStore.loadDetalle(subId);
         await this.solicitudesStore.loadPendientesSuscripcion(subId);
-        const tienePendiente = await this.solicitudesStore.tieneSolicitudPendienteSuscripcion(subId);
+        const tienePendiente =
+          await this.solicitudesStore.tieneSolicitudPendienteSuscripcion(subId);
         this.tieneSolicitudPendiente.set(tienePendiente);
       }
     }
   }
 
-  protected readonly tituloSuscripcion = computed(() =>
-    this.suscripcion()?.servicio.nombre ?? ''
+  protected readonly tituloSuscripcion = computed(() => this.suscripcion()?.servicio.nombre ?? '');
+
+  protected readonly descripcionSuscripcion = computed(
+    () => 'Gestiona la suscripción con tu familia y ahorra',
   );
 
-  protected readonly descripcionSuscripcion = computed(() =>
-    'Gestiona la suscripción con tu familia y ahorra'
-  );
-
-  protected readonly nombreGrupo = computed(() =>
-    this.suscripcion()?.nombreUnidad ?? ''
-  );
+  protected readonly nombreGrupo = computed(() => this.suscripcion()?.nombreUnidad ?? '');
 
   protected readonly statCards = computed(() => {
     const sub = this.suscripcion();

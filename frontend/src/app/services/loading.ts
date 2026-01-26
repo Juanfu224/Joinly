@@ -1,5 +1,6 @@
 import { Injectable, signal, computed } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Servicio centralizado para gestionar estados de carga global.

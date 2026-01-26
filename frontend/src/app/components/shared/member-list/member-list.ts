@@ -4,11 +4,11 @@ import { IconComponent } from '../icon/icon';
 
 /**
  * Componente de lista de miembros.
- * 
+ *
  * Muestra una sección con encabezado, contador de miembros y
  * un grid de tarjetas individuales para cada miembro del grupo o suscripción.
  * Sigue el diseño de Figma con sombras, bordes y espaciado consistentes.
- * 
+ *
  * @usageNotes
  * ```html
  * <!-- Lista de miembros básica -->
@@ -17,7 +17,7 @@ import { IconComponent } from '../icon/icon';
  * <!-- Con título personalizado -->
  * <app-member-list [members]="usuarios" titulo="Participantes" />
  * ```
- * 
+ *
  * ### Características
  * - Diseño basado en Figma (sección con sombras y bordes redondeados)
  * - Muestra: título, contador con icono y grid de tarjetas

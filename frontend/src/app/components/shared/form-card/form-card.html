@@ -2,7 +2,7 @@
   <header class="c-form-card__header">
     <!-- Logo Joinly -->
     <app-logo [variant]="computedLogoVariant()" size="md" [showText]="true" />
-    
+
     <!-- Título y subtítulo -->
     <h2 class="c-form-card__title">
       {{ title() }}
@@ -10,17 +10,17 @@
         <span class="c-form-card__subtitle">{{ subtitle() }}</span>
       }
     </h2>
-    
+
     @if (description()) {
       <p class="c-form-card__description">{{ description() }}</p>
     }
   </header>
-  
+
   <!-- Contenido del formulario (proyectado) -->
   <div class="c-form-card__content">
     <ng-content />
   </div>
-  
+
   <!-- Footer del formulario (proyectado) -->
   <footer class="c-form-card__footer">
     <ng-content select="[slot='footer']" />

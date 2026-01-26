@@ -21,20 +21,13 @@
 </div>
 
 @if (errorMessage()) {
-  <span
-    [id]="errorId()"
-    class="c-form-checkbox__error"
-    role="alert"
-  >
+  <span [id]="errorId()" class="c-form-checkbox__error" role="alert">
     {{ errorMessage() }}
   </span>
 }
 
 @if (helpText() && !errorMessage()) {
-  <span
-    [id]="helpTextId()"
-    class="c-form-checkbox__help"
-  >
+  <span [id]="helpTextId()" class="c-form-checkbox__help">
     {{ helpText() }}
   </span>
 }

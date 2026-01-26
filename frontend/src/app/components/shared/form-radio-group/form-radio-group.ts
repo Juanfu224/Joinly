@@ -6,11 +6,7 @@ import {
   input,
   signal,
 } from '@angular/core';
-import {
-  ControlValueAccessor,
-  NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { generateShortId } from '../../../utils/uuid';
 
 export interface RadioOption {
@@ -84,7 +80,7 @@ export class FormRadioGroupComponent implements ControlValueAccessor {
     const value = (event.target as HTMLInputElement).value;
     const numValue = Number(value);
     const finalValue = !isNaN(numValue) && value !== '' ? numValue : value;
-    
+
     this.value.set(finalValue);
     this.onChange(finalValue);
   }

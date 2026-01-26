@@ -7,7 +7,13 @@ import {
   IconComponent,
   SpinnerOverlayComponent,
 } from '../../../components/shared';
-import { AuthService, ModalService, ThemeService, ToastService, UsuarioService } from '../../../services';
+import {
+  AuthService,
+  ModalService,
+  ThemeService,
+  ToastService,
+  UsuarioService,
+} from '../../../services';
 
 function passwordMatchValidator(control: AbstractControl) {
   const newPass = control.get('nuevaContrasena');
@@ -60,10 +66,12 @@ export class ConfiguracionComponent {
       nuevaContrasena: ['', [Validators.required, Validators.minLength(8)]],
       confirmarContrasena: ['', [Validators.required]],
     },
-    { validators: passwordMatchValidator }
+    { validators: passwordMatchValidator },
   );
 
-  protected readonly canSubmitPassword = computed(() => this.passwordForm.valid && !this.isSaving());
+  protected readonly canSubmitPassword = computed(
+    () => this.passwordForm.valid && !this.isSaving(),
+  );
 
   protected readonly passwordErrors = computed(() => {
     if (this.passwordForm.hasError('passwordMismatch')) {
@@ -82,7 +90,8 @@ export class ConfiguracionComponent {
   protected onChangePassword(): void {
     if (!this.passwordForm.valid || this.isSaving()) return;
 
-    const { contrasenaActual, nuevaContrasena, confirmarContrasena } = this.passwordForm.getRawValue();
+    const { contrasenaActual, nuevaContrasena, confirmarContrasena } =
+      this.passwordForm.getRawValue();
 
     if (nuevaContrasena !== confirmarContrasena) {
       this.#toastService.error('Las contraseñas no coinciden');

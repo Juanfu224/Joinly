@@ -75,7 +75,7 @@ export class AccordionComponent implements AfterContentInit {
   /**
    * Notifica cuando un item es expandido.
    * Si allowMultiple es false, colapsa todos los demás items.
-   * 
+   *
    * @param expandedItem - El item que acaba de expandirse
    */
   onItemExpanded(expandedItem: AccordionItemComponent): void {

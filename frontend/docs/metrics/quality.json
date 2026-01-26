@@ -1,0 +1,172 @@
+[
+  {
+    "typeCheck": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "prettier": {
+      "passed": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    "consoleCheck": {
+      "passed": false,
+      "errors": 11,
+      "warnings": 0
+    },
+    "todoCheck": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "angularCheck": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "lines": {
+      "totalLines": 29470,
+      "tsLines": 13021,
+      "htmlLines": 5756,
+      "scssLines": 10693
+    },
+    "timestamp": "2026-01-26T12:49:29.617Z"
+  },
+  {
+    "typeCheck": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "prettier": {
+      "passed": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    "consoleCheck": {
+      "passed": false,
+      "errors": 11,
+      "warnings": 0
+    },
+    "todoCheck": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "angularCheck": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "lines": {
+      "totalLines": 29470,
+      "tsLines": 13021,
+      "htmlLines": 5756,
+      "scssLines": 10693
+    },
+    "timestamp": "2026-01-26T12:51:53.691Z"
+  },
+  {
+    "typeCheck": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "prettier": {
+      "passed": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    "consoleCheck": {
+      "passed": false,
+      "errors": 11,
+      "warnings": 0
+    },
+    "todoCheck": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "angularCheck": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "lines": {
+      "totalLines": 29470,
+      "tsLines": 13021,
+      "htmlLines": 5756,
+      "scssLines": 10693
+    },
+    "timestamp": "2026-01-26T13:08:29.612Z"
+  },
+  {
+    "typeCheck": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "prettier": {
+      "passed": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    "consoleCheck": {
+      "passed": false,
+      "errors": 11,
+      "warnings": 0
+    },
+    "todoCheck": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "angularCheck": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "lines": {
+      "totalLines": 29470,
+      "tsLines": 13021,
+      "htmlLines": 5756,
+      "scssLines": 10693
+    },
+    "timestamp": "2026-01-26T13:10:32.916Z"
+  },
+  {
+    "typeCheck": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "prettier": {
+      "passed": false,
+      "errors": 0,
+      "warnings": 0
+    },
+    "consoleCheck": {
+      "passed": false,
+      "errors": 11,
+      "warnings": 0
+    },
+    "todoCheck": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "angularCheck": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "lines": {
+      "totalLines": 29470,
+      "tsLines": 13021,
+      "htmlLines": 5756,
+      "scssLines": 10693
+    },
+    "timestamp": "2026-01-26T13:11:24.382Z"
+  }
+]

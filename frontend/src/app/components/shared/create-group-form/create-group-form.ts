@@ -38,7 +38,7 @@ export class CreateGroupFormComponent implements CanComponentDeactivate {
 
   readonly isLoading = signal(false);
   readonly formError = signal<string | null>(null);
-  
+
   readonly submitted = output<CreateGroupFormValue>();
   readonly cancelled = output<void>();
   readonly joinRequested = output<void>();
@@ -52,8 +52,8 @@ export class CreateGroupFormComponent implements CanComponentDeactivate {
   });
 
   // Signal que observa el estado del formulario de forma reactiva
-  private readonly formStatus = toSignal(this.form.statusChanges, { 
-    initialValue: this.form.status 
+  private readonly formStatus = toSignal(this.form.statusChanges, {
+    initialValue: this.form.status,
   });
 
   readonly isFormInvalid = computed(() => {

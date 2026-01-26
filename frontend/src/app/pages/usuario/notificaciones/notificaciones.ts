@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, map, startWith } from 'rxjs';
 import {
@@ -60,7 +67,9 @@ export class NotificacionesComponent implements OnInit {
     notifNovedades: [false],
   });
 
-  protected readonly canSave = computed(() => this.hasChanges() && !this.isSaving() && !this.isLoading());
+  protected readonly canSave = computed(
+    () => this.hasChanges() && !this.isSaving() && !this.isLoading(),
+  );
 
   protected readonly notificationOptions: NotificationOption[] = [
     {
@@ -100,7 +109,9 @@ export class NotificacionesComponent implements OnInit {
 
       const current = this.preferencesForm.getRawValue();
       const changed = Object.keys(current).some(
-        (key) => current[key as keyof typeof current] !== this.#initialValues![key as keyof PreferenciasNotificacion]
+        (key) =>
+          current[key as keyof typeof current] !==
+          this.#initialValues![key as keyof PreferenciasNotificacion],
       );
       this.hasChanges.set(changed);
     });

@@ -4,8 +4,7 @@ import { Routes } from '@angular/router';
 export const DEV_ROUTES: Routes = [
   {
     path: '',
-    loadComponent: () =>
-      import('../pages/style-guide').then((m) => m.StyleGuideComponent),
+    loadComponent: () => import('../pages/style-guide').then((m) => m.StyleGuideComponent),
     title: 'Guía de Estilos - Joinly',
   },
   {

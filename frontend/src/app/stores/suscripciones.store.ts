@@ -50,18 +50,18 @@ export class SuscripcionesStore {
     const periodicidad = this._periodicidadFiltro();
 
     if (estados.length > 0) {
-      result = result.filter(s => estados.includes(s.estado));
+      result = result.filter((s) => estados.includes(s.estado));
     }
 
     if (periodicidad) {
-      result = result.filter(s => s.periodicidad === periodicidad);
+      result = result.filter((s) => s.periodicidad === periodicidad);
     }
 
     return result;
   });
 
   readonly totalPagesFiltradas = computed(() =>
-    Math.ceil(this._suscripciones().length / this._pageSize())
+    Math.ceil(this._suscripciones().length / this._pageSize()),
   );
 
   readonly suscripcionesPaginadas = computed(() => {
@@ -74,11 +74,11 @@ export class SuscripcionesStore {
     let result = items;
 
     if (estados.length > 0) {
-      result = result.filter(s => estados.includes(s.estado));
+      result = result.filter((s) => estados.includes(s.estado));
     }
 
     if (periodicidad) {
-      result = result.filter(s => s.periodicidad === periodicidad);
+      result = result.filter((s) => s.periodicidad === periodicidad);
     }
 
     const start = page * size;
@@ -94,7 +94,7 @@ export class SuscripcionesStore {
 
     try {
       const response = await firstValueFrom(
-        this.suscripcionService.getSuscripcionesGrupo(idUnidad, page, size)
+        this.suscripcionService.getSuscripcionesGrupo(idUnidad, page, size),
       );
       this._suscripciones.set(response.content);
       this._page.set(response.number);
@@ -114,7 +114,7 @@ export class SuscripcionesStore {
 
     try {
       const detalle = await firstValueFrom(
-        this.suscripcionService.getSuscripcionById(idSuscripcion)
+        this.suscripcionService.getSuscripcionById(idSuscripcion),
       );
       this._detalle.set(detalle);
     } catch (error) {
@@ -130,7 +130,7 @@ export class SuscripcionesStore {
 
     try {
       const nuevaSuscripcion = await firstValueFrom(
-        this.suscripcionService.crearSuscripcion(request)
+        this.suscripcionService.crearSuscripcion(request),
       );
       this.toastService.success('Suscripción creada exitosamente');
       return nuevaSuscripcion;
@@ -148,16 +148,20 @@ export class SuscripcionesStore {
 
     try {
       const updated = await firstValueFrom(
-        this.suscripcionService.getSuscripcionById(suscripcion.id)
+        this.suscripcionService.getSuscripcionById(suscripcion.id),
       );
       this._detalle.set(updated);
-      this._suscripciones.update(list =>
-        list.map(s => s.id === updated.id ? {
-          ...s,
-          estado: updated.estado,
-          periodicidad: updated.periodicidad,
-          plazasOcupadas: updated.plazasOcupadas
-        } : s)
+      this._suscripciones.update((list) =>
+        list.map((s) =>
+          s.id === updated.id
+            ? {
+                ...s,
+                estado: updated.estado,
+                periodicidad: updated.periodicidad,
+                plazasOcupadas: updated.plazasOcupadas,
+              }
+            : s,
+        ),
       );
       this.toastService.success('Suscripción actualizada');
     } catch (error) {
@@ -204,7 +208,7 @@ export class SuscripcionesStore {
     const current = this._estadosFiltro();
 
     if (current.includes(estado)) {
-      this._estadosFiltro.set(current.filter(e => e !== estado));
+      this._estadosFiltro.set(current.filter((e) => e !== estado));
     } else {
       this._estadosFiltro.set([...current, estado]);
     }
@@ -251,16 +255,20 @@ export class SuscripcionesStore {
   }
 
   updateFromExternal(suscripcion: SuscripcionDetalle): void {
-    const wasUpdated = this._suscripciones().some(s => s.id === suscripcion.id);
+    const wasUpdated = this._suscripciones().some((s) => s.id === suscripcion.id);
     const isDetalleVisible = this._detalle()?.id === suscripcion.id;
 
-    this._suscripciones.update(list =>
-      list.map(s => s.id === suscripcion.id ? {
-        ...s,
-        estado: suscripcion.estado,
-        periodicidad: suscripcion.periodicidad,
-        plazasOcupadas: suscripcion.plazasOcupadas
-      } : s)
+    this._suscripciones.update((list) =>
+      list.map((s) =>
+        s.id === suscripcion.id
+          ? {
+              ...s,
+              estado: suscripcion.estado,
+              periodicidad: suscripcion.periodicidad,
+              plazasOcupadas: suscripcion.plazasOcupadas,
+            }
+          : s,
+      ),
     );
 
     if (isDetalleVisible) {

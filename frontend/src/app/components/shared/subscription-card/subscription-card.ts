@@ -39,8 +39,8 @@ export class SubscriptionCardComponent {
     return `${dia}/${mes}/${anio}`;
   });
 
-  protected readonly precioFormateado = computed(() => 
-    this.suscripcion().precioPorPlaza.toFixed(2)
+  protected readonly precioFormateado = computed(() =>
+    this.suscripcion().precioPorPlaza.toFixed(2),
   );
 
   handleViewDetails(): void {

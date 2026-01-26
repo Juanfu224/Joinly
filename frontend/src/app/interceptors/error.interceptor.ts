@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, throwError } from 'rxjs';
+import { catchError, throwError, Observable } from 'rxjs';
 
 import { ToastService } from '../services/toast';
 
@@ -60,8 +60,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: HttpErrorResponse) => {
       // Verificar si este error debe manejarse globalmente
       const shouldShowToast =
-        !isSilentErrorUrl(error.url ?? '') &&
-        !hasSkipErrorHandlingHeader(req);
+        !isSilentErrorUrl(error.url ?? '') && !hasSkipErrorHandlingHeader(req);
 
       if (shouldShowToast) {
         const message = getErrorMessage(error);
@@ -70,7 +69,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
       // Siempre propagar el error para que los componentes puedan manejarlo
       return throwError(() => error);
-    })
+    }),
   );
 };
 

@@ -58,7 +58,8 @@ describe('dashboardResolver - lógica de transformación', () => {
 
   it('error sin mensaje debe usar mensaje genérico', () => {
     const err = {};
-    const message = (err as any).error?.message || 'No se pudieron cargar los grupos. Intenta de nuevo.';
+    const message =
+      (err as any).error?.message || 'No se pudieron cargar los grupos. Intenta de nuevo.';
     const result = resolveError(message);
 
     expect(result.error).toBe('No se pudieron cargar los grupos. Intenta de nuevo.');

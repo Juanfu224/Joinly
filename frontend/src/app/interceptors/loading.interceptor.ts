@@ -1,6 +1,6 @@
 import { HttpInterceptorFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { finalize } from 'rxjs';
+import { finalize, Observable } from 'rxjs';
 import { LoadingService } from '../services/loading';
 
 /**
@@ -72,9 +72,7 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
 
   // Verificar si este request debe mostrar el spinner
   const shouldShowLoading =
-    !isExcludedUrl(req.url) &&
-    !isExcludedMethod(req.method) &&
-    !hasSkipLoadingHeader(req);
+    !isExcludedUrl(req.url) && !isExcludedMethod(req.method) && !hasSkipLoadingHeader(req);
 
   if (shouldShowLoading) {
     loadingService.show();
@@ -90,6 +88,6 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
       if (shouldShowLoading) {
         loadingService.hide();
       }
-    })
+    }),
   );
 };

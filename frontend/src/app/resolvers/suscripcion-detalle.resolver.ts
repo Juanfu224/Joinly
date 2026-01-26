@@ -1,7 +1,6 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
-import { of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { of, catchError, map } from 'rxjs';
 
 import type { SuscripcionDetalle } from '../models';
 import { SuscripcionService } from '../services';
@@ -30,6 +29,6 @@ export const suscripcionDetalleResolver: ResolveFn<ResolvedData<SuscripcionDetal
       }
 
       return of(resolveError<SuscripcionDetalle>(message));
-    })
+    }),
   );
 };

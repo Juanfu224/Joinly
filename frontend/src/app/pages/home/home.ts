@@ -1,6 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ButtonComponent, IconComponent, CardComponent, FeatureImageComponent } from '../../components/shared';
+import {
+  ButtonComponent,
+  IconComponent,
+  CardComponent,
+  FeatureImageComponent,
+} from '../../components/shared';
 
 /**
  * Página Home - Landing pública de Joinly.

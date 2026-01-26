@@ -3,9 +3,9 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 /**
  * Validador para verificar que al menos una credencial tenga etiqueta única.
  * Evita duplicados en el FormArray de credenciales.
- * 
+ *
  * @returns ValidatorFn que valida etiquetas únicas en credenciales
- * 
+ *
  * @example
  * ```typescript
  * this.fb.array([], [uniqueCredentialLabels()])
@@ -20,7 +20,7 @@ export function uniqueCredentialLabels(): ValidatorFn {
       .filter((label: string) => label);
 
     const duplicates = etiquetas.filter(
-      (label: string, index: number) => etiquetas.indexOf(label) !== index
+      (label: string, index: number) => etiquetas.indexOf(label) !== index,
     );
 
     return duplicates.length > 0
@@ -32,7 +32,7 @@ export function uniqueCredentialLabels(): ValidatorFn {
 /**
  * Validador para verificar que una credencial de tipo USUARIO_PASSWORD
  * tenga tanto usuario como contraseña.
- * 
+ *
  * @returns ValidatorFn que valida campos requeridos según el tipo
  */
 export function credentialFieldsRequired(): ValidatorFn {

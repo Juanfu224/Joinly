@@ -3,16 +3,16 @@ import { IconComponent } from '../icon/icon';
 
 /**
  * Componente de estado vacío para grupos.
- * 
+ *
  * Se muestra cuando el usuario no tiene grupos creados,
  * siguiendo el diseño de Figma con icono de usuarios,
  * mensaje y descripción centrados.
- * 
+ *
  * @usageNotes
  * ```html
  * <app-empty-groups />
  * ```
- * 
+ *
  * ### Características
  * - Diseño centrado con icono circular
  * - Mensaje y descripción según diseño Figma

@@ -7,7 +7,8 @@ import {
 } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, catchError, filter, switchMap, take, throwError } from 'rxjs';
+import { catchError, filter, switchMap, take, throwError, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 import type { AuthResponse } from '../models';
 
@@ -78,9 +79,7 @@ function addRequestHeaders(req: HttpRequest<unknown>, token?: string | null): Ht
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  return Object.keys(headers).length > 0
-    ? req.clone({ setHeaders: headers })
-    : req;
+  return Object.keys(headers).length > 0 ? req.clone({ setHeaders: headers }) : req;
 }
 
 // MAIN INTERCEPTOR
@@ -102,14 +101,14 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         return handleUnauthorizedError(req, next, router);
       }
       return throwError(() => error);
-    })
+    }),
   );
 };
 
 function handleUnauthorizedError(
   req: HttpRequest<unknown>,
   next: HttpHandlerFn,
-  router: Router
+  router: Router,
 ): Observable<HttpEvent<unknown>> {
   if (!isRefreshing) {
     isRefreshing = true;
@@ -132,17 +131,17 @@ function handleUnauthorizedError(
         // HttpResponse viene en el evento
         if ('body' in event && event.body) {
           const response = event.body as AuthResponse;
-          
+
           // Guardar nuevos tokens
           saveTokens(response);
-          
+
           isRefreshing = false;
           refreshTokenSubject.next(response.accessToken);
 
           // Reintentar petición original con nuevo token
           return next(addRequestHeaders(req, response.accessToken));
         }
-        
+
         return throwError(() => new Error('Refresh response invalid'));
       }),
       catchError((refreshError) => {
@@ -151,7 +150,7 @@ function handleUnauthorizedError(
 
         // Refresh falló, hacer logout
         return handleLogout(router);
-      })
+      }),
     );
   }
 
@@ -159,7 +158,7 @@ function handleUnauthorizedError(
   return refreshTokenSubject.pipe(
     filter((token): token is string => token !== null),
     take(1),
-    switchMap((token) => next(addRequestHeaders(req, token)))
+    switchMap((token) => next(addRequestHeaders(req, token))),
   );
 }
 
@@ -177,11 +176,11 @@ export const TokenStorage = {
   getRefreshToken,
   saveTokens,
   clearTokens,
-  
+
   hasToken(): boolean {
     return !!getAccessToken();
   },
-  
+
   isTokenExpired(): boolean {
     const expiry = localStorage.getItem(STORAGE_KEYS.TOKEN_EXPIRY);
     if (!expiry) return true;

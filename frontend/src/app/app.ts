@@ -43,4 +43,3 @@ export class App {
     this.themeService.initialize();
   }
 }
-

@@ -10,9 +10,13 @@ import {
   inject,
 } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, NavigationStart } from '@angular/router';
-import { filter } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
-import { ThemeToggleComponent, IconComponent, LogoComponent, AvatarComponent } from '../../components/shared';
+import { filter, Subscription } from 'rxjs';
+import {
+  ThemeToggleComponent,
+  IconComponent,
+  LogoComponent,
+  AvatarComponent,
+} from '../../components/shared';
 import { UserDropdownComponent } from '../../components/shared/user-dropdown';
 import { AuthService } from '../../services/auth';
 import { ThemeService } from '../../services/theme';
@@ -41,7 +45,15 @@ import type { LogoVariant } from '../../components/shared/logo/logo';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, ThemeToggleComponent, IconComponent, LogoComponent, AvatarComponent, UserDropdownComponent],
+  imports: [
+    RouterLink,
+    RouterLinkActive,
+    ThemeToggleComponent,
+    IconComponent,
+    LogoComponent,
+    AvatarComponent,
+    UserDropdownComponent,
+  ],
   templateUrl: './header.html',
   styleUrl: './header.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -185,4 +197,3 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authService.logout();
   }
 }
-

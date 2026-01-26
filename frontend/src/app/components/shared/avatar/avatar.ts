@@ -56,11 +56,7 @@ export class AvatarComponent {
 
   /** Clases CSS computadas */
   readonly avatarClasses = computed(() => {
-    return [
-      'c-avatar',
-      `c-avatar--${this.size()}`,
-      `c-avatar--${this.variant()}`,
-    ].join(' ');
+    return ['c-avatar', `c-avatar--${this.size()}`, `c-avatar--${this.variant()}`].join(' ');
   });
 
   /** Determina si se muestra imagen o iniciales */

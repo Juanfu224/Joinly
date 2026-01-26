@@ -1,6 +1,6 @@
 /**
  * Barrel file para exportar todos los validadores personalizados.
- * 
+ *
  * Facilita las importaciones en componentes:
  * ```typescript
  * import { passwordStrength, telefono, matchFields } from '../validators';
@@ -28,10 +28,7 @@ export {
 } from './cross-field.validators';
 
 // Validadores de credenciales
-export {
-  uniqueCredentialLabels,
-  credentialFieldsRequired,
-} from './credential.validators';
+export { uniqueCredentialLabels, credentialFieldsRequired } from './credential.validators';
 
 // Sistema de mensajes de error
 export {

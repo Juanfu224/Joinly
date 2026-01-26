@@ -20,11 +20,11 @@ export interface MemberData {
 
 /**
  * Componente de tarjeta de miembro.
- * 
+ *
  * Muestra la información de un miembro de un grupo o suscripción,
  * incluyendo avatar, nombre de usuario, email y su rol (Admin/Miembro).
  * Sigue el diseño de Figma con fondo morado claro y badge azul.
- * 
+ *
  * @usageNotes
  * ```html
  * <!-- Tarjeta de miembro básica -->
@@ -35,7 +35,7 @@ export interface MemberData {
  *   <app-member-card [member]="member" />
  * }
  * ```
- * 
+ *
  * ### Características
  * - Diseño basado en Figma (fondo morado claro, badge azul con sombra)
  * - Muestra: avatar, nombre de usuario, email y rol

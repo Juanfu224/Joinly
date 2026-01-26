@@ -7,19 +7,13 @@
         <li class="c-breadcrumbs__item">
           <!-- Elementos intermedios: enlaces navegables -->
           @if (item.url && !isLast) {
-            <a 
-              [routerLink]="item.url" 
-              class="c-breadcrumbs__link"
-            >
+            <a [routerLink]="item.url" class="c-breadcrumbs__link">
               {{ item.label }}
             </a>
             <span class="c-breadcrumbs__separator" aria-hidden="true"> / </span>
           } @else {
             <!-- Último elemento: página actual sin enlace -->
-            <span 
-              class="c-breadcrumbs__current"
-              [attr.aria-current]="isLast ? 'page' : null"
-            >
+            <span class="c-breadcrumbs__current" [attr.aria-current]="isLast ? 'page' : null">
               {{ item.label }}
             </span>
             @if (!isLast) {

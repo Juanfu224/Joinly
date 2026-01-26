@@ -1,6 +1,6 @@
-<button 
-  [class]="buttonClasses()" 
-  [type]="type()" 
+<button
+  [class]="buttonClasses()"
+  [type]="type()"
   [disabled]="isDisabled()"
   [attr.aria-label]="ariaLabel()"
 >
@@ -19,11 +19,11 @@
       [innerHTML]="leftIconPath()"
     ></svg>
   }
-  
+
   <span class="c-button__text">
     <ng-content />
   </span>
-  
+
   @if (rightIconPath() && !loading()) {
     <svg
       [attr.width]="iconSize()"

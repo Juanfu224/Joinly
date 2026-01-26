@@ -1,8 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { Observable, of, timer } from 'rxjs';
-import { map, catchError, switchMap, take, tap, timeout } from 'rxjs/operators';
+import { of, timer, map, catchError, switchMap, take, tap, timeout, Observable } from 'rxjs';
 
 /**
  * Respuesta de verificación de código de grupo.
@@ -130,7 +129,7 @@ export class AsyncValidatorsService {
       return timer(this.DEBOUNCE_TIME).pipe(
         switchMap(() => this.checkEmailAvailability(email, excludeUserId)),
         map((available) => (available ? null : { emailTaken: true })),
-        take(1)
+        take(1),
       );
     };
   }
@@ -156,19 +155,17 @@ export class AsyncValidatorsService {
     }
 
     // Realizar petición al backend
-    return this.http
-      .get<{ available: boolean }>(`${this.API_AUTH}/check-email`, { params })
-      .pipe(
-        timeout(this.TIMEOUT_MS),
-        map((response) => response.available),
-        tap((available) => this.cacheEmail(email, available)),
-        catchError((error) => {
-          console.warn('[AsyncValidators] Error verificando email:', error);
-          // En caso de error de red, no bloquear el formulario
-          // El backend hará la validación definitiva en el submit
-          return of(true);
-        })
-      );
+    return this.http.get<{ available: boolean }>(`${this.API_AUTH}/check-email`, { params }).pipe(
+      timeout(this.TIMEOUT_MS),
+      map((response) => response.available),
+      tap((available) => this.cacheEmail(email, available)),
+      catchError((error) => {
+        console.warn('[AsyncValidators] Error verificando email:', error);
+        // En caso de error de red, no bloquear el formulario
+        // El backend hará la validación definitiva en el submit
+        return of(true);
+      }),
+    );
   }
 
   /**
@@ -255,7 +252,7 @@ export class AsyncValidatorsService {
       return timer(this.DEBOUNCE_TIME).pipe(
         switchMap(() => this.checkGroupCodeExists(normalizedCode)),
         map((exists) => (exists ? null : { groupCodeNotFound: true })),
-        take(1)
+        take(1),
       );
     };
   }
@@ -274,23 +271,21 @@ export class AsyncValidatorsService {
     }
 
     // Realizar petición al backend
-    return this.http
-      .get<GroupCodeResponse>(`${this.API_UNIDADES}/codigo/${codigo}`)
-      .pipe(
-        timeout(this.TIMEOUT_MS),
-        map(() => true), // Si responde 200, el código existe
-        tap((exists) => this.cacheGroupCode(codigo, exists)),
-        catchError((error: HttpErrorResponse) => {
-          // 404 significa que el código no existe - es un caso válido
-          if (error.status === 404) {
-            this.cacheGroupCode(codigo, false);
-            return of(false);
-          }
-          // Otros errores: no bloquear el formulario
-          console.warn('[AsyncValidators] Error verificando código de grupo:', error);
-          return of(true); // Asumir válido para no bloquear
-        })
-      );
+    return this.http.get<GroupCodeResponse>(`${this.API_UNIDADES}/codigo/${codigo}`).pipe(
+      timeout(this.TIMEOUT_MS),
+      map(() => true), // Si responde 200, el código existe
+      tap((exists) => this.cacheGroupCode(codigo, exists)),
+      catchError((error: HttpErrorResponse) => {
+        // 404 significa que el código no existe - es un caso válido
+        if (error.status === 404) {
+          this.cacheGroupCode(codigo, false);
+          return of(false);
+        }
+        // Otros errores: no bloquear el formulario
+        console.warn('[AsyncValidators] Error verificando código de grupo:', error);
+        return of(true); // Asumir válido para no bloquear
+      }),
+    );
   }
 
   /**

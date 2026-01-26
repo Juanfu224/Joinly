@@ -27,7 +27,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './spinner-overlay.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    'role': 'status',
+    role: 'status',
     'aria-live': 'polite',
     '[attr.aria-busy]': 'true',
   },

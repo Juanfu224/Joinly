@@ -25,25 +25,20 @@ export class GruposStore {
   readonly searchTerm = this._searchTerm.asReadonly();
 
   readonly totalGrupos = computed(() => this._grupos().length);
-  readonly gruposActivos = computed(() =>
-    this._grupos().filter(g => g.estado === 'ACTIVO')
-  );
+  readonly gruposActivos = computed(() => this._grupos().filter((g) => g.estado === 'ACTIVO'));
   readonly gruposFiltrados = computed(() => {
     const term = this._searchTerm().toLowerCase();
     if (!term) return this._grupos();
 
-    return this._grupos().filter(g =>
-      g.nombre.toLowerCase().includes(term) ||
-      g.descripcion?.toLowerCase().includes(term)
+    return this._grupos().filter(
+      (g) => g.nombre.toLowerCase().includes(term) || g.descripcion?.toLowerCase().includes(term),
     );
   });
   readonly cardsFiltradas = computed(() => {
     const term = this._searchTerm().toLowerCase();
     if (!term) return this._cards();
 
-    return this._cards().filter(c =>
-      c.nombre.toLowerCase().includes(term)
-    );
+    return this._cards().filter((c) => c.nombre.toLowerCase().includes(term));
   });
 
   async load(): Promise<void> {
@@ -51,9 +46,7 @@ export class GruposStore {
     this._error.set(null);
 
     try {
-      const grupos = await firstValueFrom(
-        this.grupoService.getGruposAdministrados()
-      );
+      const grupos = await firstValueFrom(this.grupoService.getGruposAdministrados());
       this._grupos.set(grupos);
     } catch (error) {
       this._error.set(this.handleError(error));
@@ -67,9 +60,7 @@ export class GruposStore {
     this._error.set(null);
 
     try {
-      const response = await firstValueFrom(
-        this.grupoService.getGruposCards(page, size)
-      );
+      const response = await firstValueFrom(this.grupoService.getGruposCards(page, size));
       this._cards.set(response.content);
     } catch (error) {
       this._error.set(this.handleError(error));
@@ -83,10 +74,8 @@ export class GruposStore {
     this._error.set(null);
 
     try {
-      const nuevoGrupo = await firstValueFrom(
-        this.grupoService.crearUnidad(data)
-      );
-      this._grupos.update(list => [...list, nuevoGrupo]);
+      const nuevoGrupo = await firstValueFrom(this.grupoService.crearUnidad(data));
+      this._grupos.update((list) => [...list, nuevoGrupo]);
       this.toastService.success('Grupo creado exitosamente');
       return nuevoGrupo;
     } catch (error) {
@@ -102,14 +91,10 @@ export class GruposStore {
     const previousCards = this._cards();
 
     try {
-      const updated = await firstValueFrom(
-        this.grupoService.getGrupoById(grupo.id)
-      );
-      this._grupos.update(list =>
-        list.map(g => g.id === updated.id ? updated : g)
-      );
-      this._cards.update(cards =>
-        cards.map(c => c.id === updated.id ? { ...c, nombre: updated.nombre } : c)
+      const updated = await firstValueFrom(this.grupoService.getGrupoById(grupo.id));
+      this._grupos.update((list) => list.map((g) => (g.id === updated.id ? updated : g)));
+      this._cards.update((cards) =>
+        cards.map((c) => (c.id === updated.id ? { ...c, nombre: updated.nombre } : c)),
       );
       this.toastService.success('Grupo actualizado');
     } catch (error) {
@@ -138,7 +123,7 @@ export class GruposStore {
   }
 
   getGrupoById(id: number): UnidadFamiliar | undefined {
-    return this._grupos().find(g => g.id === id);
+    return this._grupos().find((g) => g.id === id);
   }
 
   clear(): void {
@@ -150,12 +135,12 @@ export class GruposStore {
   }
 
   updateFromExternal(grupo: UnidadFamiliar): void {
-    this._grupos.update(list => {
-      const exists = list.some(g => g.id === grupo.id);
-      return exists ? list.map(g => g.id === grupo.id ? grupo : g) : [...list, grupo];
+    this._grupos.update((list) => {
+      const exists = list.some((g) => g.id === grupo.id);
+      return exists ? list.map((g) => (g.id === grupo.id ? grupo : g)) : [...list, grupo];
     });
-    this._cards.update(cards =>
-      cards.map(c => c.id === grupo.id ? { ...c, nombre: grupo.nombre } : c)
+    this._cards.update((cards) =>
+      cards.map((c) => (c.id === grupo.id ? { ...c, nombre: grupo.nombre } : c)),
     );
     this.toastService.info('Grupo actualizado por otro usuario');
   }

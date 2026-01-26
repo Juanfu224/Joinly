@@ -27,10 +27,7 @@
           (change)="onRadioChange($event)"
           (blur)="onBlur()"
         />
-        <label
-          class="c-form-radio-group__label"
-          [attr.for]="getRadioId(i)"
-        >
+        <label class="c-form-radio-group__label" [attr.for]="getRadioId(i)">
           {{ option.label }}
         </label>
       </div>
@@ -38,20 +35,13 @@
   </div>
 
   @if (errorMessage()) {
-    <span
-      [id]="errorId()"
-      class="c-form-radio-group__error"
-      role="alert"
-    >
+    <span [id]="errorId()" class="c-form-radio-group__error" role="alert">
       {{ errorMessage() }}
     </span>
   }
 
   @if (helpText() && !errorMessage()) {
-    <span
-      [id]="helpTextId()"
-      class="c-form-radio-group__help"
-    >
+    <span [id]="helpTextId()" class="c-form-radio-group__help">
       {{ helpText() }}
     </span>
   }

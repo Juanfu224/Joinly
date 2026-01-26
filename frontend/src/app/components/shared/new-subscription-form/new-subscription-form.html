@@ -92,12 +92,7 @@
     }
 
     <div class="c-new-subscription-form__actions">
-      <app-button
-        type="button"
-        variant="secondary"
-        size="xl"
-        (click)="onCancel()"
-      >
+      <app-button type="button" variant="secondary" size="xl" (click)="onCancel()">
         Cancelar
       </app-button>
 
@@ -108,9 +103,13 @@
         [disabled]="isFormInvalid() || form.pending || isLoading()"
         [loading]="isLoading()"
       >
-        @if (isLoading()) { Creando... }
-        @else if (form.pending) { Validando... }
-        @else { Crear }
+        @if (isLoading()) {
+          Creando...
+        } @else if (form.pending) {
+          Validando...
+        } @else {
+          Crear
+        }
       </app-button>
     </div>
   </form>

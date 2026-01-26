@@ -14,7 +14,12 @@ describe('grupoDetalleResolver - lógica de transformación', () => {
     id: 1,
     nombre: 'Familia García',
     codigoInvitacion: 'ABC123',
-    administrador: { id: 1, nombreCompleto: 'Juan García', email: 'juan@test.com', nombreUsuario: 'juang' },
+    administrador: {
+      id: 1,
+      nombreCompleto: 'Juan García',
+      email: 'juan@test.com',
+      nombreUsuario: 'juang',
+    },
     fechaCreacion: '2025-01-01',
     descripcion: null,
     maxMiembros: 10,
@@ -24,7 +29,12 @@ describe('grupoDetalleResolver - lógica de transformación', () => {
   const mockMiembros: MiembroUnidadResponse[] = [
     {
       id: 1,
-      usuario: { id: 1, nombreCompleto: 'Juan García', email: 'juan@test.com', nombreUsuario: 'juang' },
+      usuario: {
+        id: 1,
+        nombreCompleto: 'Juan García',
+        email: 'juan@test.com',
+        nombreUsuario: 'juang',
+      },
       rol: 'ADMINISTRADOR',
       fechaUnion: '2025-01-01',
       estado: 'ACTIVO',

@@ -6,11 +6,7 @@ import {
   input,
   signal,
 } from '@angular/core';
-import {
-  ControlValueAccessor,
-  NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { IconComponent } from '../icon/icon';
 import { generateShortId } from '../../../utils/uuid';
 
@@ -85,7 +81,7 @@ export class FormSelectComponent implements ControlValueAccessor {
     const value = (event.target as HTMLSelectElement).value;
     const numValue = Number(value);
     const finalValue = !isNaN(numValue) && value !== '' ? numValue : value;
-    
+
     this.value.set(finalValue);
     this.onChange(finalValue);
   }

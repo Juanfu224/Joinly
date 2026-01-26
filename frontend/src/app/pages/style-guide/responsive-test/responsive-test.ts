@@ -109,12 +109,12 @@ export class ResponsiveTestComponent {
   readonly containerStyle = computed(() => {
     const viewport = this.selectedViewport();
     if (viewport === 'auto') return {};
-    
+
     const width = parseInt(viewport, 10);
     return {
       'max-width': `${width}px`,
-      'margin': '0 auto',
-      'border': '2px solid var(--color-acento)',
+      margin: '0 auto',
+      border: '2px solid var(--color-acento)',
       'border-radius': 'var(--radio-grande)',
     };
   });
@@ -151,7 +151,7 @@ export class ResponsiveTestComponent {
     // Actualizar ancho del viewport cuando cambia el tamaño de la ventana
     const updateWidth = () => this.currentWidth.set(window.innerWidth);
     window.addEventListener('resize', updateWidth);
-    
+
     // Cleanup automático cuando el componente se destruye (Angular 21)
     this.destroyRef.onDestroy(() => {
       window.removeEventListener('resize', updateWidth);

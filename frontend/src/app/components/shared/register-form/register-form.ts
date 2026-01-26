@@ -15,11 +15,7 @@ import { ButtonComponent } from '../button/button';
 import { FormCardComponent } from '../form-card/form-card';
 import { FormInputComponent } from '../form-input/form-input';
 import { canSubmit, focusInput, shouldTriggerSubmit } from '../form-utils';
-import {
-  getErrorMessage,
-  matchFields,
-  passwordStrength,
-} from '../validators';
+import { getErrorMessage, matchFields, passwordStrength } from '../validators';
 import { AsyncValidatorsService } from '../../../services';
 
 type RegisterFormFields = 'nombre' | 'apellido' | 'email' | 'password' | 'confirmPassword';
@@ -63,20 +59,26 @@ export class RegisterFormComponent {
     {
       nombre: ['', [Validators.required, Validators.minLength(2)]],
       apellido: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', {
-        validators: [Validators.required, Validators.email],
-        asyncValidators: [this.asyncValidators.emailAvailable()],
-        updateOn: 'blur'
-      }],
-      password: ['', [Validators.required, passwordStrength({ minLength: 8, requireNumber: true })]],
+      email: [
+        '',
+        {
+          validators: [Validators.required, Validators.email],
+          asyncValidators: [this.asyncValidators.emailAvailable()],
+          updateOn: 'blur',
+        },
+      ],
+      password: [
+        '',
+        [Validators.required, passwordStrength({ minLength: 8, requireNumber: true })],
+      ],
       confirmPassword: ['', [Validators.required]],
     },
-    { validators: matchFields('password', 'confirmPassword') }
+    { validators: matchFields('password', 'confirmPassword') },
   );
 
   // Signal que observa el estado del formulario de forma reactiva
-  private readonly formStatus = toSignal(this.form.statusChanges, { 
-    initialValue: this.form.status 
+  private readonly formStatus = toSignal(this.form.statusChanges, {
+    initialValue: this.form.status,
   });
 
   readonly isSubmitDisabled = computed(() => {

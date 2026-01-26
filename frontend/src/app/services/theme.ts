@@ -54,7 +54,7 @@ export class ThemeService implements OnDestroy {
    * MediaQueryList para detectar preferencia del sistema
    */
   private readonly prefersDarkScheme = this.document.defaultView?.matchMedia(
-    '(prefers-color-scheme: dark)'
+    '(prefers-color-scheme: dark)',
   );
 
   /**
@@ -70,12 +70,12 @@ export class ThemeService implements OnDestroy {
 
   /**
    * Inicializa el servicio de temas.
-   * 
+   *
    * 1. Lee preferencia guardada en localStorage
    * 2. Si no existe, detecta preferencia del sistema
    * 3. Aplica el tema detectado
    * 4. Suscribe a cambios en la preferencia del sistema
-   * 
+   *
    * @remarks
    * Debe llamarse en el constructor del componente raíz (App)
    */
@@ -127,19 +127,19 @@ export class ThemeService implements OnDestroy {
 
   /**
    * Obtiene la preferencia de tema guardada en localStorage.
-   * 
+   *
    * @returns El tema guardado o null si no existe
    */
   private getStoredTheme(): Theme | null {
     if (typeof localStorage === 'undefined') return null;
-    
+
     const stored = localStorage.getItem(this.STORAGE_KEY);
     return stored === 'light' || stored === 'dark' ? stored : null;
   }
 
   /**
    * Detecta la preferencia de tema del sistema operativo.
-   * 
+   *
    * @returns 'dark' si el sistema prefiere modo oscuro, 'light' en caso contrario
    */
   private getSystemTheme(): Theme {

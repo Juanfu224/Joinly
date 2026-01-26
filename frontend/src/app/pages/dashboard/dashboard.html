@@ -4,9 +4,7 @@
     <header class="p-dashboard__header">
       <div class="p-dashboard__header-content">
         <h1 class="p-dashboard__titulo">Grupos</h1>
-        <p class="p-dashboard__subtitulo">
-          Gestiona tus unidades familiares y únete a alguno
-        </p>
+        <p class="p-dashboard__subtitulo">Gestiona tus unidades familiares y únete a alguno</p>
       </div>
       <div class="p-dashboard__search">
         <input
@@ -32,8 +30,8 @@
     <!-- Tarjetas de acción: Crear / Unirse -->
     <section class="p-dashboard__acciones" aria-label="Acciones de grupo">
       <!-- Crear unidad familiar -->
-      <button 
-        type="button" 
+      <button
+        type="button"
         class="u-btn-wrapper"
         (click)="onCreateGroup()"
         aria-label="Crear unidad familiar"
@@ -48,8 +46,8 @@
       </button>
 
       <!-- Unirse a un grupo -->
-      <button 
-        type="button" 
+      <button
+        type="button"
         class="u-btn-wrapper"
         (click)="onJoinGroup()"
         aria-label="Unirse a un grupo"
@@ -66,7 +64,10 @@
 
     <!-- Estado de carga -->
     @if (isLoading()) {
-      <section class="p-dashboard__grupos p-dashboard__grupos--loading" aria-label="Cargando grupos">
+      <section
+        class="p-dashboard__grupos p-dashboard__grupos--loading"
+        aria-label="Cargando grupos"
+      >
         <div class="p-dashboard__grid">
           @for (i of [1, 2, 3]; track i) {
             <div class="p-dashboard__skeleton" aria-hidden="true">
@@ -91,11 +92,7 @@
         <div class="p-dashboard__error-content">
           <app-icon name="alert-triangle" size="lg" />
           <p class="p-dashboard__error-text">{{ error() }}</p>
-          <button 
-            type="button" 
-            class="p-dashboard__error-retry"
-            (click)="recargarGrupos()"
-          >
+          <button type="button" class="p-dashboard__error-retry" (click)="recargarGrupos()">
             Reintentar
           </button>
         </div>
@@ -106,8 +103,15 @@
           @if (noResults()) {
             <div class="p-dashboard__no-results">
               <app-icon name="search" size="lg" />
-              <p>No se encontraron grupos que coincidan con "<strong>{{ searchTerm() }}</strong>"</p>
-              <button type="button" class="p-dashboard__clear-search" (click)="searchControl.setValue('')">
+              <p>
+                No se encontraron grupos que coincidan con "<strong>{{ searchTerm() }}</strong
+                >"
+              </p>
+              <button
+                type="button"
+                class="p-dashboard__clear-search"
+                (click)="searchControl.setValue('')"
+              >
                 Limpiar búsqueda
               </button>
             </div>

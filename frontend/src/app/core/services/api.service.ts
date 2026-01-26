@@ -1,7 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, retry, throwError, timer } from 'rxjs';
-import { retryWhen, mergeMap } from 'rxjs/operators';
+import { Observable, catchError, retry, throwError, timer, retryWhen, mergeMap } from 'rxjs';
 
 import { API_CONFIG } from '../config/api.config';
 
@@ -22,7 +21,9 @@ export interface RetryConfig {
  */
 export interface ApiRequestOptions {
   headers?: HttpHeaders | Record<string, string | string[]>;
-  params?: HttpParams | Record<string, string | number | boolean | ReadonlyArray<string | number | boolean>>;
+  params?:
+    | HttpParams
+    | Record<string, string | number | boolean | ReadonlyArray<string | number | boolean>>;
   withCredentials?: boolean;
   /** Configuración de reintentos automáticos */
   retry?: RetryConfig;
@@ -60,7 +61,7 @@ export class ApiService {
       .get<T>(`${this.baseUrl}/${endpoint}`, { ...options, observe: 'body' as const })
       .pipe(
         this.applyRetry(options?.retry),
-        catchError((error) => this.handleError(error, 'GET', endpoint))
+        catchError((error) => this.handleError(error, 'GET', endpoint)),
       );
   }
 
@@ -77,7 +78,7 @@ export class ApiService {
       .post<T>(`${this.baseUrl}/${endpoint}`, body, { ...options, observe: 'body' as const })
       .pipe(
         this.applyRetry(options?.retry),
-        catchError((error) => this.handleError(error, 'POST', endpoint))
+        catchError((error) => this.handleError(error, 'POST', endpoint)),
       );
   }
 
@@ -94,7 +95,7 @@ export class ApiService {
       .put<T>(`${this.baseUrl}/${endpoint}`, body, { ...options, observe: 'body' as const })
       .pipe(
         this.applyRetry(options?.retry),
-        catchError((error) => this.handleError(error, 'PUT', endpoint))
+        catchError((error) => this.handleError(error, 'PUT', endpoint)),
       );
   }
 
@@ -111,7 +112,7 @@ export class ApiService {
       .patch<T>(`${this.baseUrl}/${endpoint}`, body, { ...options, observe: 'body' as const })
       .pipe(
         this.applyRetry(options?.retry),
-        catchError((error) => this.handleError(error, 'PATCH', endpoint))
+        catchError((error) => this.handleError(error, 'PATCH', endpoint)),
       );
   }
 
@@ -127,7 +128,7 @@ export class ApiService {
       .delete<T>(`${this.baseUrl}/${endpoint}`, { ...options, observe: 'body' as const })
       .pipe(
         this.applyRetry(options?.retry),
-        catchError((error) => this.handleError(error, 'DELETE', endpoint))
+        catchError((error) => this.handleError(error, 'DELETE', endpoint)),
       );
   }
 
@@ -163,9 +164,9 @@ export class ApiService {
 
               // Reintentar después del delay
               return timer(delayMs);
-            })
-          )
-        )
+            }),
+          ),
+        ),
       );
     };
   }
@@ -185,7 +186,7 @@ export class ApiService {
   private handleError(
     error: HttpErrorResponse,
     method: string,
-    endpoint: string
+    endpoint: string,
   ): Observable<never> {
     console.error('[ApiService] HTTP Error:', {
       method,

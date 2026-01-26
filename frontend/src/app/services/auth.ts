@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, catchError, map, tap, throwError } from 'rxjs';
+import { catchError, map, tap, throwError, Observable } from 'rxjs';
 
 import type { AuthResponse, LoginData, RegisterData, User } from '../models';
 import { TokenStorage } from '../interceptors/auth.interceptor';
@@ -30,7 +30,7 @@ export class AuthService {
     return this.api.post<AuthResponse>('auth/login', data).pipe(
       tap((response) => this.handleAuthSuccess(response)),
       map((response) => this.extractUser(response)),
-      catchError((error) => this.handleAuthError(error))
+      catchError((error) => this.handleAuthError(error)),
     );
   }
 
@@ -38,7 +38,7 @@ export class AuthService {
     return this.api.post<AuthResponse>('auth/register', data).pipe(
       tap((response) => this.handleAuthSuccess(response)),
       map((response) => this.extractUser(response)),
-      catchError((error) => this.handleAuthError(error))
+      catchError((error) => this.handleAuthError(error)),
     );
   }
 
@@ -52,7 +52,7 @@ export class AuthService {
   validateToken(token: string): Observable<boolean> {
     return this.api.get<void>('auth/validate', { params: { token } }).pipe(
       map(() => true),
-      catchError(() => [false])
+      catchError(() => [false]),
     );
   }
 
@@ -62,7 +62,7 @@ export class AuthService {
 
     return this.api.get<{ available: boolean }>('auth/check-email', { params }).pipe(
       map((response) => response.available),
-      catchError(() => [false])
+      catchError(() => [false]),
     );
   }
 
@@ -130,7 +130,6 @@ export class AuthService {
       }
     }
 
-    console.error('[AuthService] Error:', error.status, message, error);
     return throwError(() => ({ message, status: error.status }));
   }
 

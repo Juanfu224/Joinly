@@ -29,8 +29,7 @@ export const routes: Routes = [
   // Páginas institucionales
   {
     path: 'como-funciona',
-    loadComponent: () =>
-      import('./pages/como-funciona').then((m) => m.ComoFuncionaComponent),
+    loadComponent: () => import('./pages/como-funciona').then((m) => m.ComoFuncionaComponent),
     title: 'Cómo funciona - Joinly',
     data: { breadcrumb: 'Cómo funciona' },
   },
@@ -50,8 +49,7 @@ export const routes: Routes = [
     path: 'dashboard',
     canActivate: [authGuard],
     resolve: { dashboardData: dashboardResolver },
-    loadComponent: () =>
-      import('./pages/dashboard').then((m) => m.DashboardComponent),
+    loadComponent: () => import('./pages/dashboard').then((m) => m.DashboardComponent),
     title: 'Mis Grupos - Joinly',
     data: { breadcrumb: 'Mis Grupos' },
   },
@@ -59,23 +57,20 @@ export const routes: Routes = [
     path: 'crear-grupo',
     canActivate: [authGuard],
     canDeactivate: [pendingChangesGuard],
-    loadComponent: () =>
-      import('./pages/crear-grupo').then((m) => m.CrearGrupoComponent),
+    loadComponent: () => import('./pages/crear-grupo').then((m) => m.CrearGrupoComponent),
     title: 'Crear Unidad Familiar - Joinly',
   },
   {
     path: 'unirse-grupo',
     canActivate: [authGuard],
-    loadComponent: () =>
-      import('./pages/unirse-grupo').then((m) => m.UnirseGrupoComponent),
+    loadComponent: () => import('./pages/unirse-grupo').then((m) => m.UnirseGrupoComponent),
     title: 'Unirse a Grupo - Joinly',
   },
   {
     path: 'grupos/:id',
     canActivate: [authGuard],
     resolve: { grupoData: grupoDetalleResolver },
-    loadComponent: () =>
-      import('./pages/grupo-detalle').then((m) => m.GrupoDetalleComponent),
+    loadComponent: () => import('./pages/grupo-detalle').then((m) => m.GrupoDetalleComponent),
     title: 'Detalle del Grupo - Joinly',
     data: {
       breadcrumbParent: {
@@ -128,7 +123,9 @@ export const routes: Routes = [
         },
         {
           label: (data: Data) => {
-            const resolved = data['suscripcionData'] as ResolvedData<SuscripcionDetalle> | undefined;
+            const resolved = data['suscripcionData'] as
+              | ResolvedData<SuscripcionDetalle>
+              | undefined;
             return resolved?.data?.nombreUnidad ?? 'Grupo';
           },
           url: (params: Record<string, string>) => `/grupos/${params['grupoId']}`,
@@ -145,16 +142,14 @@ export const routes: Routes = [
   {
     path: 'usuario',
     canActivate: [authGuard],
-    loadComponent: () =>
-      import('./pages/usuario').then((m) => m.UsuarioLayoutComponent),
+    loadComponent: () => import('./pages/usuario').then((m) => m.UsuarioLayoutComponent),
     title: 'Mi cuenta - Joinly',
     data: { breadcrumb: 'Mi Cuenta' },
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'perfil' },
       {
         path: 'perfil',
-        loadComponent: () =>
-          import('./pages/usuario/perfil').then((m) => m.PerfilComponent),
+        loadComponent: () => import('./pages/usuario/perfil').then((m) => m.PerfilComponent),
         title: 'Mi perfil - Joinly',
         data: { breadcrumb: 'Perfil' },
       },
@@ -192,8 +187,7 @@ export const routes: Routes = [
   // 404 (sin breadcrumbs)
   {
     path: '**',
-    loadComponent: () =>
-      import('./components/shared/not-found').then((m) => m.NotFoundComponent),
+    loadComponent: () => import('./components/shared/not-found').then((m) => m.NotFoundComponent),
     title: 'Página no encontrada - Joinly',
   },
 ];

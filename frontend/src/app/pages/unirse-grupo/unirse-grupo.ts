@@ -6,7 +6,7 @@ import { CreateSolicitudGrupoRequest } from '../../models';
 
 /**
  * Página para unirse a un grupo familiar existente.
- * 
+ *
  * Contiene el formulario de código y maneja la comunicación con el servicio.
  * Fondo azul claro según diseño Figma.
  */
@@ -31,7 +31,7 @@ export class UnirseGrupoComponent {
    */
   protected onJoinSubmitted(data: { codigo: string }): void {
     const request: CreateSolicitudGrupoRequest = {
-      codigoInvitacion: data.codigo
+      codigoInvitacion: data.codigo,
     };
 
     this.solicitudService.unirseGrupo(request).subscribe({
@@ -44,10 +44,10 @@ export class UnirseGrupoComponent {
         if (error.status === 409) msg = 'Ya eres miembro o tienes una solicitud pendiente';
         else if (error.status === 404) msg = 'Código de invitación inválido';
         else if (error.error?.message) msg = error.error.message;
-        
+
         this.toastService.show('error', msg);
         this.formComponent()?.setError(msg);
-      }
+      },
     });
   }
 

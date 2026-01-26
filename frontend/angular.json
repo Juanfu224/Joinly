@@ -34,13 +34,24 @@
               "src/styles.scss"
             ]
           },
-            "configurations": {
+          "configurations": {
             "production": {
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                },
+                "fonts": true
+              },
+              "aot": true,
+              "sourceMap": false,
+              "extractLicenses": true,
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "750kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "500kB",
+                  "maximumError": "750kB"
                 },
                 {
                   "type": "anyComponentStyle",

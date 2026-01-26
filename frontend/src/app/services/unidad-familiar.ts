@@ -2,7 +2,13 @@ import { Injectable, inject } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { UnidadFamiliar, CreateUnidadRequest, GrupoCardData, Page, MiembroUnidadResponse } from '../models';
+import {
+  UnidadFamiliar,
+  CreateUnidadRequest,
+  GrupoCardData,
+  Page,
+  MiembroUnidadResponse,
+} from '../models';
 import { ApiService } from '../core/services/api.service';
 
 @Injectable({
@@ -47,9 +53,7 @@ export class UnidadFamiliarService {
    * @param size Elementos por página (default: 50)
    */
   getGruposCards(page = 0, size = 50): Observable<Page<GrupoCardData>> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
+    const params = new HttpParams().set('page', page.toString()).set('size', size.toString());
 
     return this.api.get<Page<GrupoCardData>>('unidades/miembro/cards', { params });
   }

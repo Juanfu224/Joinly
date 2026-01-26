@@ -4,15 +4,8 @@
 -->
 
 <div class="c-tabs">
-  
   <!-- Contenedor de las pestañas (tablist) -->
-  <div 
-    #tablist
-    class="c-tabs__list"
-    role="tablist"
-    aria-label="Pestañas de navegación"
-  >
-    
+  <div #tablist class="c-tabs__list" role="tablist" aria-label="Pestañas de navegación">
     <!-- Botones de navegación de tabs -->
     @for (tab of tabs(); track tab.tabId; let i = $index) {
       <button
@@ -31,16 +24,11 @@
     }
 
     <!-- Indicador visual del tab activo -->
-    <span 
-      #indicator
-      class="c-tabs__indicator"
-      aria-hidden="true"
-    ></span>
+    <span #indicator class="c-tabs__indicator" aria-hidden="true"></span>
   </div>
 
   <!-- Contenedor de los paneles de contenido -->
   <div class="c-tabs__panels">
     <ng-content />
   </div>
-
 </div>

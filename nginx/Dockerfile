@@ -10,7 +10,7 @@ COPY frontend/package*.json ./
 RUN npm ci --prefer-offline --no-audit --silent
 
 COPY frontend/ .
-RUN npm run build -- --configuration=production
+RUN npm run build:prod
 
 # Stage 2: Runtime
 FROM nginx:alpine

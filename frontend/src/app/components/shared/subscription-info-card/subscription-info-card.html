@@ -32,7 +32,7 @@
   </header>
 
   <!-- Divider -->
-  <hr class="c-subscription-info__divider" aria-hidden="true">
+  <hr class="c-subscription-info__divider" aria-hidden="true" />
 
   <!-- Panel de Información -->
   <section
@@ -51,16 +51,24 @@
           <div class="c-subscription-info__credentials-box">
             <p class="c-subscription-info__credential">
               <span class="c-subscription-info__credential-label">Usuario:</span>
-              <span class="c-subscription-info__credential-value">{{ info().credenciales.usuario || 'No definido' }}</span>
+              <span class="c-subscription-info__credential-value">{{
+                info().credenciales.usuario || 'No definido'
+              }}</span>
             </p>
             <p class="c-subscription-info__credential">
               <span class="c-subscription-info__credential-label">Contraseña:</span>
-              <span class="c-subscription-info__credential-value">{{ info().credenciales.contrasena || 'No definida' }}</span>
+              <span class="c-subscription-info__credential-value">{{
+                info().credenciales.contrasena || 'No definida'
+              }}</span>
             </p>
           </div>
         } @else {
-          <div class="c-subscription-info__credentials-box c-subscription-info__credentials-box--empty">
-            <p class="c-subscription-info__empty-text">El anfitrión no ha compartido credenciales</p>
+          <div
+            class="c-subscription-info__credentials-box c-subscription-info__credentials-box--empty"
+          >
+            <p class="c-subscription-info__empty-text">
+              El anfitrión no ha compartido credenciales
+            </p>
           </div>
         }
       </article>
@@ -76,16 +84,32 @@
             </div>
             <div class="c-subscription-info__payment-row">
               <dt class="c-subscription-info__payment-label">Estado</dt>
-              <dd class="c-subscription-info__payment-value c-subscription-info__payment-value--status">
+              <dd
+                class="c-subscription-info__payment-value c-subscription-info__payment-value--status"
+              >
                 <span
                   class="c-subscription-info__status-badge"
-                  [class.c-subscription-info__status-badge--PENDIENTE]="info().pago.estado === 'PENDIENTE'"
-                  [class.c-subscription-info__status-badge--FALLIDO]="info().pago.estado === 'FALLIDO'"
-                  [class.c-subscription-info__status-badge--RETENIDO]="info().pago.estado === 'RETENIDO'"
-                  [class.c-subscription-info__status-badge--LIBERADO]="info().pago.estado === 'LIBERADO'"
-                  [class.c-subscription-info__status-badge--REEMBOLSADO]="info().pago.estado === 'REEMBOLSADO'"
-                  [class.c-subscription-info__status-badge--REEMBOLSO_PARCIAL]="info().pago.estado === 'REEMBOLSO_PARCIAL'"
-                  [class.c-subscription-info__status-badge--DISPUTADO]="info().pago.estado === 'DISPUTADO'"
+                  [class.c-subscription-info__status-badge--PENDIENTE]="
+                    info().pago.estado === 'PENDIENTE'
+                  "
+                  [class.c-subscription-info__status-badge--FALLIDO]="
+                    info().pago.estado === 'FALLIDO'
+                  "
+                  [class.c-subscription-info__status-badge--RETENIDO]="
+                    info().pago.estado === 'RETENIDO'
+                  "
+                  [class.c-subscription-info__status-badge--LIBERADO]="
+                    info().pago.estado === 'LIBERADO'
+                  "
+                  [class.c-subscription-info__status-badge--REEMBOLSADO]="
+                    info().pago.estado === 'REEMBOLSADO'
+                  "
+                  [class.c-subscription-info__status-badge--REEMBOLSO_PARCIAL]="
+                    info().pago.estado === 'REEMBOLSO_PARCIAL'
+                  "
+                  [class.c-subscription-info__status-badge--DISPUTADO]="
+                    info().pago.estado === 'DISPUTADO'
+                  "
                 >
                   {{ paymentStatusText() }}
                 </span>
@@ -120,8 +144,8 @@
           <li class="c-subscription-info__request-item">
             <article class="c-subscription-info__request-card">
               <div class="c-subscription-info__request-user">
-                <app-avatar 
-                  [src]="request.avatarUrl || ''" 
+                <app-avatar
+                  [src]="request.avatarUrl || ''"
                   [name]="request.nombreUsuario"
                   size="sm"
                   aria-hidden="true"

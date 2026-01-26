@@ -37,12 +37,14 @@ export class SelectivePreloadStrategy implements PreloadingStrategy {
    */
   private shouldSkipPreload(): boolean {
     // Verificar API de Network Information (experimental)
-    const connection = (navigator as Navigator & {
-      connection?: {
-        effectiveType?: string;
-        saveData?: boolean;
-      };
-    }).connection;
+    const connection = (
+      navigator as Navigator & {
+        connection?: {
+          effectiveType?: string;
+          saveData?: boolean;
+        };
+      }
+    ).connection;
 
     if (connection) {
       // Omitir en conexiones lentas

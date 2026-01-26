@@ -75,7 +75,9 @@ export class MisSolicitudesComponent implements OnInit {
   });
 
   protected readonly haySolicitudesGrupos = computed(() => this.solicitudesGrupos().length > 0);
-  protected readonly haySolicitudesSuscripciones = computed(() => this.solicitudesSuscripciones().length > 0);
+  protected readonly haySolicitudesSuscripciones = computed(
+    () => this.solicitudesSuscripciones().length > 0,
+  );
 
   protected readonly contadoresGrupos = computed(() => ({
     total: this.solicitudes().filter((s) => s.tipoSolicitud === 'UNION_GRUPO').length,

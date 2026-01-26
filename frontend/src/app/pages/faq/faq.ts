@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, effect, inject, signal, PLATFORM_ID } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  signal,
+  PLATFORM_ID,
+} from '@angular/core';
 import { isPlatformBrowser, ViewportScroller } from '@angular/common';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { IconComponent, ButtonComponent } from '../../components/shared';
@@ -47,15 +54,18 @@ export class FaqComponent {
       items: [
         {
           question: '¿Cómo creo una cuenta en Joinly?',
-          answer: 'Haz clic en "Registrarse" en la página principal, introduce tu nombre, email y contraseña. Recibirás un email de confirmación para activar tu cuenta.',
+          answer:
+            'Haz clic en "Registrarse" en la página principal, introduce tu nombre, email y contraseña. Recibirás un email de confirmación para activar tu cuenta.',
         },
         {
           question: '¿Es gratis usar Joinly?',
-          answer: 'Sí, crear una cuenta y gestionar grupos es completamente gratis. Solo cobramos una pequeña comisión cuando se realizan pagos entre miembros.',
+          answer:
+            'Sí, crear una cuenta y gestionar grupos es completamente gratis. Solo cobramos una pequeña comisión cuando se realizan pagos entre miembros.',
         },
         {
           question: '¿Cómo creo un grupo familiar?',
-          answer: 'Una vez registrado, ve a tu dashboard y haz clic en "Crear grupo". Asigna un nombre al grupo y se generará automáticamente un código de invitación de 12 dígitos.',
+          answer:
+            'Una vez registrado, ve a tu dashboard y haz clic en "Crear grupo". Asigna un nombre al grupo y se generará automáticamente un código de invitación de 12 dígitos.',
         },
       ],
     },
@@ -66,15 +76,18 @@ export class FaqComponent {
       items: [
         {
           question: '¿Qué servicios puedo compartir?',
-          answer: 'Puedes compartir cualquier suscripción que permita múltiples usuarios: Netflix, Spotify Family, HBO Max, Disney+, YouTube Premium, NordVPN Family, y muchos más.',
+          answer:
+            'Puedes compartir cualquier suscripción que permita múltiples usuarios: Netflix, Spotify Family, HBO Max, Disney+, YouTube Premium, NordVPN Family, y muchos más.',
         },
         {
           question: '¿Cómo añado una suscripción compartida?',
-          answer: 'Dentro de tu grupo, haz clic en "Nueva suscripción". Indica el nombre del servicio, precio total, número de plazas y fecha de renovación.',
+          answer:
+            'Dentro de tu grupo, haz clic en "Nueva suscripción". Indica el nombre del servicio, precio total, número de plazas y fecha de renovación.',
         },
         {
           question: '¿Cómo se calculan los pagos?',
-          answer: 'El precio total se divide automáticamente entre el número de plazas. Cada miembro paga su parte proporcional.',
+          answer:
+            'El precio total se divide automáticamente entre el número de plazas. Cada miembro paga su parte proporcional.',
         },
       ],
     },
@@ -85,15 +98,18 @@ export class FaqComponent {
       items: [
         {
           question: '¿Cómo funcionan los pagos?',
-          answer: 'Los pagos de cada miembro quedan retenidos de forma segura hasta que finaliza el período de suscripción. Al concluir, se liberan al anfitrión.',
+          answer:
+            'Los pagos de cada miembro quedan retenidos de forma segura hasta que finaliza el período de suscripción. Al concluir, se liberan al anfitrión.',
         },
         {
           question: '¿Es seguro compartir credenciales?',
-          answer: 'Las credenciales se almacenan de forma encriptada y solo son visibles para los miembros aprobados de la suscripción. Nunca compartimos esta información con terceros.',
+          answer:
+            'Las credenciales se almacenan de forma encriptada y solo son visibles para los miembros aprobados de la suscripción. Nunca compartimos esta información con terceros.',
         },
         {
           question: '¿Qué pasa si un miembro no paga?',
-          answer: 'El sistema de pagos retenidos garantiza que el anfitrión recibe el pago antes de compartir el acceso. Si hay impagos, el anfitrión puede revocar el acceso.',
+          answer:
+            'El sistema de pagos retenidos garantiza que el anfitrión recibe el pago antes de compartir el acceso. Si hay impagos, el anfitrión puede revocar el acceso.',
         },
       ],
     },

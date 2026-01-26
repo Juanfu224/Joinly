@@ -1,5 +1,6 @@
 import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 /**
  * HTTP Interceptor funcional para logging de requests/responses.
@@ -22,26 +23,12 @@ import { tap } from 'rxjs/operators';
  * - Los logs siguen formato estructurado para facilitar debugging
  */
 export const loggingInterceptor: HttpInterceptorFn = (req, next) => {
-  // Solo logear en desarrollo
-  const isProduction = false; // En producción real: environment.production
-  if (isProduction) {
+  if (environment.production) {
     return next(req);
   }
 
   const started = Date.now();
   const requestId = generateRequestId();
-
-  // Log de inicio de request
-  console.log(
-    `%c[HTTP] ▶ ${req.method} ${req.urlWithParams}`,
-    'color: #2196F3; font-weight: bold',
-    {
-      requestId,
-      timestamp: new Date().toISOString(),
-      headers: getHeadersObject(req.headers),
-      body: req.body,
-    }
-  );
 
   return next(req).pipe(
     tap({
@@ -59,7 +46,7 @@ export const loggingInterceptor: HttpInterceptorFn = (req, next) => {
               status: event.status,
               statusText: event.statusText,
               body: event.body,
-            }
+            },
           );
         }
       },
@@ -76,10 +63,10 @@ export const loggingInterceptor: HttpInterceptorFn = (req, next) => {
             statusText: error.statusText,
             message: error.message,
             error: error.error,
-          }
+          },
         );
       },
-    })
+    }),
   );
 };
 
@@ -88,24 +75,4 @@ export const loggingInterceptor: HttpInterceptorFn = (req, next) => {
  */
 function generateRequestId(): string {
   return `req_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
-}
-
-/**
- * Convierte HttpHeaders a un objeto plano para logging.
- */
-function getHeadersObject(headers: any): Record<string, string> {
-  const result: Record<string, string> = {};
-
-  // Excluir headers sensibles del log
-  const sensitiveHeaders = ['authorization', 'x-auth-token'];
-
-  headers.keys().forEach((key: string) => {
-    if (!sensitiveHeaders.includes(key.toLowerCase())) {
-      result[key] = headers.get(key) ?? '';
-    } else {
-      result[key] = '[REDACTED]';
-    }
-  });
-
-  return result;
 }
