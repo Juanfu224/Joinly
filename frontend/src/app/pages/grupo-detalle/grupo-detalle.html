@@ -51,10 +51,16 @@
       @if (isAdmin() && hasSolicitudesPendientes()) {
         <section class="p-grupo-detalle__solicitudes" aria-labelledby="titulo-solicitudes">
           <app-pending-requests-card
-            [solicitudes]="solicitudesPendientes()"
+            [solicitudes]="solicitudesPendientesVisible()"
             (acceptRequest)="onAceptarSolicitud($event)"
             (rejectRequest)="onRechazarSolicitud($event)"
           />
+          @if (hasMoreSolicitudes() && !loadingMoreSolicitudes()) {
+            <div class="p-grupo-detalle__infinite-scroll-trigger" appInfiniteScroll (scrolled)="onLoadMoreSolicitudes()"></div>
+          }
+          @if (loadingMoreSolicitudes()) {
+            <div class="p-grupo-detalle__loading-more">Cargando más solicitudes...</div>
+          }
         </section>
       }
 
@@ -72,16 +78,78 @@
           </app-button>
         </header>
 
+        <!-- Filtros de suscripciones -->
+        @if (hasSuscripciones()) {
+          <div class="p-grupo-detalle__filtros">
+            <div class="p-grupo-detalle__filtros-label">Filtros:</div>
+            <div class="p-grupo-detalle__filtros-chips">
+              @for (estado of ESTADOS; track estado) {
+                <button
+                  type="button"
+                  class="p-grupo-detalle__filtro-chip"
+                  [class.p-grupo-detalle__filtro-chip--active]="estadosFiltro().includes(estado)"
+                  (click)="toggleEstadoFiltro(estado)"
+                  aria-pressed="estadosFiltro().includes(estado)"
+                >
+                  {{ estado.toLowerCase() }}
+                </button>
+              }
+            </div>
+            <div class="p-grupo-detalle__filtros-periodicidad">
+              <select
+                class="p-grupo-detalle__filtro-select"
+                [value]="periodicidadFiltro() ?? ''"
+                (change)="onPeriodicidadChange($event)"
+                aria-label="Filtrar por periodicidad"
+              >
+                <option value="">Todas las periodicidades</option>
+                @for (p of PERIODICIDADES; track p) {
+                  <option [value]="p">{{ p.toLowerCase() }}</option>
+                }
+              </select>
+            </div>
+            @if (hasFiltrosActivos()) {
+              <button
+                type="button"
+                class="p-grupo-detalle__filtros-clear"
+                (click)="clearFiltros()"
+                aria-label="Limpiar filtros"
+              >
+                <app-icon name="x" size="sm" />
+                Limpiar
+              </button>
+            }
+          </div>
+        }
+
         <div class="p-grupo-detalle__suscripciones-content">
-          @if (hasSuscripciones()) {
+          @if (noFilterResults()) {
+            <div class="p-grupo-detalle__no-results">
+              <app-icon name="filter" size="lg" />
+              <p>No hay suscripciones que coincidan con los filtros aplicados</p>
+              <button type="button" class="p-grupo-detalle__clear-filters" (click)="clearFiltros()">
+                Limpiar filtros
+              </button>
+            </div>
+          } @else if (hasSuscripciones()) {
             <div class="p-grupo-detalle__suscripciones-grid">
-              @for (suscripcion of suscripcionCards(); track suscripcion.id) {
+              @for (suscripcion of suscripcionesFiltradasCards(); track suscripcion.id) {
                 <app-subscription-card
                   [suscripcion]="suscripcion"
                   (viewDetails)="onSuscripcionClick(suscripcion.id)"
                 />
               }
             </div>
+            @if (suscripcionesFiltradas().length > suscripcionesPageSize()) {
+              <div class="p-grupo-detalle__pagination">
+                <app-pagination
+                  [currentPage]="paginationInfo().currentPage"
+                  [totalItems]="paginationInfo().totalItems"
+                  [pageSize]="paginationInfo().pageSize"
+                  (pageChange)="onPageChange($event)"
+                />
+              </div>
+            }
           } @else {
             <app-empty-subscriptions />
           }

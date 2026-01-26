@@ -104,3 +104,4 @@ export { PendingRequestsCardComponent } from './pending-requests-card/pending-re
 export { NotFoundComponent } from './not-found';
 export { FeatureImageComponent } from './feature-image/feature-image';
 export { UserDropdownComponent } from './user-dropdown/user-dropdown';
+export { PaginationComponent } from './pagination/pagination';

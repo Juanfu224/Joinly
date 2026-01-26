@@ -6,14 +6,16 @@ import {
   SubscriptionInfoCardComponent,
   IconComponent,
   ButtonComponent,
+  PendingRequestsCardComponent,
   type MemberData,
   type SubscriptionInfoData,
-  type JoinRequest,
   type StatCardType,
 } from '../../components/shared';
-import type { SuscripcionDetalle } from '../../models';
+import type { SuscripcionDetalle, SolicitudResponse } from '../../models';
 import { type ResolvedData } from '../../resolvers';
-import { SuscripcionService, ToastService, AuthService, SolicitudService, ModalService } from '../../services';
+import { ToastService, AuthService, ModalService } from '../../services';
+import { SuscripcionesStore, SolicitudesStore } from '../../stores';
+import { InfiniteScrollDirective } from '../../directives';
 
 @Component({
   selector: 'app-suscripcion-detalle',
@@ -24,6 +26,8 @@ import { SuscripcionService, ToastService, AuthService, SolicitudService, ModalS
     SubscriptionInfoCardComponent,
     IconComponent,
     ButtonComponent,
+    PendingRequestsCardComponent,
+    InfiniteScrollDirective,
   ],
   templateUrl: './suscripcion-detalle.html',
   styleUrl: './suscripcion-detalle.scss',
@@ -31,19 +35,23 @@ import { SuscripcionService, ToastService, AuthService, SolicitudService, ModalS
 })
 export class SuscripcionDetalleComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
-  private readonly suscripcionService = inject(SuscripcionService);
-  private readonly solicitudService = inject(SolicitudService);
   private readonly toastService = inject(ToastService);
   private readonly authService = inject(AuthService);
   private readonly modalService = inject(ModalService);
+  private readonly suscripcionesStore = inject(SuscripcionesStore);
+  private readonly solicitudesStore = inject(SolicitudesStore);
 
   readonly id = input.required<string>();
   readonly grupoId = input.required<string>();
 
-  protected readonly suscripcion = signal<SuscripcionDetalle | null>(null);
-  protected readonly isLoading = signal(false);
-  protected readonly error = signal<string | null>(null);
+  protected readonly suscripcion = this.suscripcionesStore.detalle;
+  protected readonly isLoading = this.suscripcionesStore.loadingDetalle;
+  protected readonly error = computed(() => this.suscripcionesStore.error());
   protected readonly tieneSolicitudPendiente = signal(false);
+  protected readonly solicitudesPendientes = this.solicitudesStore.pendientesSuscripcion;
+  protected readonly solicitudesPendientesVisible = this.solicitudesStore.pendientesSuscripcionVisible;
+  protected readonly hasMoreSolicitudes = this.solicitudesStore.hasMorePendientesSuscripcion;
+  protected readonly loadingMoreSolicitudes = this.solicitudesStore.loadingMorePendientesSuscripcion;
 
   protected readonly esAnfitrion = computed(() => {
     const sub = this.suscripcion();
@@ -59,7 +67,6 @@ export class SuscripcionDetalleComponent implements OnInit {
     return sub.miembros.some(m => m.usuario.id === currentUser.id);
   });
 
-  /** Indica si la suscripción está completa (sin plazas disponibles) */
   protected readonly estaCompleta = computed(() => {
     const sub = this.suscripcion();
     if (!sub) return false;
@@ -76,30 +83,20 @@ export class SuscripcionDetalleComponent implements OnInit {
     return true;
   });
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     const resolved = this.route.snapshot.data['suscripcionData'] as ResolvedData<SuscripcionDetalle>;
 
     if (resolved.error) {
-      this.error.set(resolved.error);
       this.toastService.error(resolved.error);
     } else if (resolved.data) {
-      this.suscripcion.set(resolved.data);
-      this.verificarSolicitudPendiente();
-    }
-  }
-
-  private verificarSolicitudPendiente(): void {
-    const subId = this.suscripcion()?.id;
-    if (!subId) return;
-
-    this.solicitudService.tieneSolicitudPendienteSuscripcion(subId).subscribe({
-      next: (tienePendiente) => {
+      const subId = Number(this.id());
+      if (!isNaN(subId)) {
+        await this.suscripcionesStore.loadDetalle(subId);
+        await this.solicitudesStore.loadPendientesSuscripcion(subId);
+        const tienePendiente = await this.solicitudesStore.tieneSolicitudPendienteSuscripcion(subId);
         this.tieneSolicitudPendiente.set(tienePendiente);
-      },
-      error: () => {
-        this.tieneSolicitudPendiente.set(false);
-      },
-    });
+      }
+    }
   }
 
   protected readonly tituloSuscripcion = computed(() =>
@@ -171,94 +168,68 @@ export class SuscripcionDetalleComponent implements OnInit {
     return {
       credenciales: sub.credenciales ?? { usuario: '', contrasena: '' },
       pago: sub.pago,
-      solicitudes: sub.solicitudes.map((s) => ({
-        id: s.id,
-        nombreUsuario: s.usuario.nombreUsuario,
-        email: s.usuario.email,
-        avatarUrl: s.usuario.avatar,
-      })),
+      solicitudes: [],
     };
   });
 
-  protected onAceptarSolicitud(request: JoinRequest): void {
+  protected async onAceptarSolicitud(request: SolicitudResponse): Promise<void> {
+    const nombreUsuario = request.solicitante.nombreUsuario;
     this.modalService.open({
       title: '¿Aceptar solicitud?',
-      content: `¿Estás seguro de que quieres aceptar la solicitud de <strong>${request.nombreUsuario}</strong> para unirse a esta suscripción?`,
+      content: `¿Estás seguro de que quieres aceptar la solicitud de <strong>${nombreUsuario}</strong> para unirse a esta suscripción?`,
       confirmText: 'Aceptar',
       cancelText: 'Cancelar',
-      onConfirm: () => {
-        this.suscripcionService.aceptarSolicitud(request.id).subscribe({
-          next: () => {
-            this.toastService.success('Solicitud aceptada');
-            this.recargarDatos();
-          },
-          error: () => {
-            // El errorInterceptor ya muestra el mensaje de error
-          },
-        });
+      onConfirm: async () => {
+        try {
+          await this.solicitudesStore.aprobar(request.id);
+        } catch (error) {
+          this.toastService.error('Error al aceptar la solicitud');
+        }
       },
     });
   }
 
-  protected onRechazarSolicitud(request: JoinRequest): void {
+  protected async onRechazarSolicitud(request: SolicitudResponse): Promise<void> {
+    const nombreUsuario = request.solicitante.nombreUsuario;
     this.modalService.open({
       title: '¿Rechazar solicitud?',
-      content: `¿Estás seguro de que quieres rechazar la solicitud de <strong>${request.nombreUsuario}</strong>? Esta acción no se puede deshacer.`,
+      content: `¿Estás seguro de que quieres rechazar la solicitud de <strong>${nombreUsuario}</strong>? Esta acción no se puede deshacer.`,
       confirmText: 'Rechazar',
       cancelText: 'Cancelar',
-      onConfirm: () => {
-        this.suscripcionService.rechazarSolicitud(request.id).subscribe({
-          next: () => {
-            this.toastService.success('Solicitud rechazada');
-            this.recargarDatos();
-          },
-          error: () => {
-            // El errorInterceptor ya muestra el mensaje de error
-          },
-        });
+      onConfirm: async () => {
+        try {
+          await this.solicitudesStore.rechazar(request.id);
+        } catch (error) {
+          this.toastService.error('Error al rechazar la solicitud');
+        }
       },
     });
   }
 
-  private recargarDatos(): void {
-    const subId = this.suscripcion()?.id ?? Number(this.id());
-    if (!subId || isNaN(subId)) return;
-
-    this.isLoading.set(true);
-
-    this.suscripcionService.getSuscripcionById(subId).subscribe({
-      next: (data) => {
-        this.suscripcion.set(data);
-        this.isLoading.set(false);
-      },
-      error: () => {
-        // El errorInterceptor ya muestra el mensaje de error
-        this.isLoading.set(false);
-      },
-    });
-  }
-
-  protected onSolicitarPlaza(): void {
+  protected async onSolicitarPlaza(): Promise<void> {
     const subId = this.suscripcion()?.id;
     if (!subId) return;
 
-    this.isLoading.set(true);
-
-    this.solicitudService.solicitarPlazaSuscripcion({ idSuscripcion: subId }).subscribe({
-      next: () => {
-        this.toastService.success('Solicitud enviada correctamente. El anfitrión la revisará pronto.');
-        this.tieneSolicitudPendiente.set(true);
-        this.recargarDatos();
-      },
-      error: (err) => {
-        const mensaje = err.error?.message || 'Error al enviar la solicitud';
-        this.toastService.error(mensaje);
-        this.isLoading.set(false);
-      },
-    });
+    try {
+      await this.solicitudesStore.createSolicitudSuscripcion({ idSuscripcion: subId });
+      this.tieneSolicitudPendiente.set(true);
+    } catch (error) {
+      const mensaje = error instanceof Error ? error.message : 'Error al enviar la solicitud';
+      this.toastService.error(mensaje);
+    }
   }
 
-  protected onReintentar(): void {
-    this.recargarDatos();
+  protected async onReintentar(): Promise<void> {
+    const subId = Number(this.id());
+    if (!isNaN(subId)) {
+      await this.suscripcionesStore.refreshDetalle();
+      await this.solicitudesStore.refreshPendientesSuscripcion();
+      const tienePendiente = await this.solicitudesStore.tieneSolicitudPendienteSuscripcion(subId);
+      this.tieneSolicitudPendiente.set(tienePendiente);
+    }
+  }
+
+  protected async onLoadMoreSolicitudes(): Promise<void> {
+    await this.solicitudesStore.loadMorePendientesSuscripcion();
   }
 }

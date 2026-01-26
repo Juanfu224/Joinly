@@ -1,62 +1,78 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CardComponent, GroupCardComponent, EmptyGroupsComponent, IconComponent } from '../../components/shared';
 import type { GrupoCardData } from '../../models';
+import { GruposStore } from '../../stores';
 import { type DashboardData, type ResolvedData } from '../../resolvers';
-import { AuthService, UnidadFamiliarService, ToastService, ModalService } from '../../services';
+import { AuthService, ToastService, ModalService } from '../../services';
 
 /**
  * Dashboard - Vista principal de grupos del usuario autenticado.
- * Datos precargados via dashboardResolver.
+ * Datos precargados via dashboardResolver y gestionados por GruposStore.
  */
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CardComponent, GroupCardComponent, EmptyGroupsComponent, IconComponent],
+  imports: [CardComponent, GroupCardComponent, EmptyGroupsComponent, IconComponent, ReactiveFormsModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly authService = inject(AuthService);
-  private readonly unidadService = inject(UnidadFamiliarService);
   private readonly toastService = inject(ToastService);
   private readonly modalService = inject(ModalService);
   private readonly router = inject(Router);
+  private readonly gruposStore = inject(GruposStore);
 
-  protected readonly grupos = signal<GrupoCardData[]>([]);
-  protected readonly isLoading = signal(false);
-  protected readonly error = signal<string | null>(null);
+  protected readonly grupos = this.gruposStore.cards;
+  protected readonly gruposFiltrados = this.gruposStore.cardsFiltradas;
+  protected readonly isLoading = this.gruposStore.loading;
+  protected readonly error = this.gruposStore.error;
   protected readonly currentUser = this.authService.currentUser;
+  protected readonly searchTerm = this.gruposStore.searchTerm;
+
+  protected readonly searchControl = new FormControl('');
+  protected readonly hasSearchTerm = computed(() => this.searchTerm().length > 0);
+  protected readonly noResults = computed(() => this.gruposFiltrados().length === 0 && this.hasSearchTerm());
+
+  private searchSubscription = this.searchControl.valueChanges.pipe(
+    debounceTime(300),
+    distinctUntilChanged()
+  ).subscribe(term => {
+    const searchTerm = term ?? '';
+    this.gruposStore.setSearchTerm(searchTerm);
+    localStorage.setItem('dashboard-search-term', searchTerm);
+  });
 
   ngOnInit(): void {
     const resolved = this.route.snapshot.data['dashboardData'] as ResolvedData<DashboardData>;
 
+    const savedSearch = localStorage.getItem('dashboard-search-term');
+    if (savedSearch) {
+      this.searchControl.setValue(savedSearch);
+      this.gruposStore.setSearchTerm(savedSearch);
+    }
+
     if (resolved.error) {
-      this.error.set(resolved.error);
       this.toastService.error(resolved.error);
-    } else if (resolved.data) {
-      this.grupos.set(resolved.data.grupos);
+    } else if (resolved.data && resolved.data.grupos.length > 0) {
+      this.gruposStore.loadCards(0, 50);
+    } else {
+      this.gruposStore.loadCards(0, 50);
     }
   }
 
-  /** Recarga grupos desde la API */
-  protected recargarGrupos(): void {
-    this.isLoading.set(true);
-    this.error.set(null);
+  ngOnDestroy(): void {
+    this.searchSubscription.unsubscribe();
+  }
 
-    this.unidadService.getGruposCards().subscribe({
-      next: (page) => {
-        this.grupos.set(page.content);
-        this.isLoading.set(false);
-      },
-      error: () => {
-        this.error.set('No se pudieron cargar los grupos. Intenta de nuevo.');
-        this.isLoading.set(false);
-        this.toastService.error('Error al cargar los grupos');
-      },
-    });
+  /** Recarga grupos desde el store */
+  protected recargarGrupos(): Promise<void> {
+    return this.gruposStore.refreshCards();
   }
 
   /**
@@ -75,18 +91,15 @@ export class DashboardComponent implements OnInit {
 
   /**
    * Maneja el evento de invitar miembros a un grupo.
-   * Busca el código de invitación y abre el modal.
+   * Obtiene el grupo desde el store y abre el modal.
    */
   protected onGroupInvite(groupId: number): void {
-    // Obtener el grupo para acceder a su código de invitación
-    this.unidadService.getGrupoById(groupId).subscribe({
-      next: (grupo) => {
-        this.modalService.openInviteModal(grupo.codigoInvitacion);
-      },
-      error: () => {
-        this.toastService.error('No se pudo obtener el código de invitación');
-      },
-    });
+    const grupo = this.gruposStore.getGrupoById(groupId);
+    if (grupo?.codigoInvitacion) {
+      this.modalService.openInviteModal(grupo.codigoInvitacion);
+    } else {
+      this.toastService.error('No se pudo obtener el código de invitación');
+    }
   }
 
   /**

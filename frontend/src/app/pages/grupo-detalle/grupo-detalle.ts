@@ -1,6 +1,17 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, OnDestroy, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin, of, catchError, map } from 'rxjs';
+import type {
+  MiembroUnidadResponse,
+  SuscripcionSummary,
+  SuscripcionCardData,
+  GrupoCardData,
+  SolicitudResponse,
+  EstadoSuscripcion,
+  Periodicidad,
+} from '../../models';
+import { type GrupoDetalleData, type ResolvedData } from '../../resolvers';
+import { ToastService, ModalService, AuthService } from '../../services';
+import { GruposStore, SuscripcionesStore, SolicitudesStore } from '../../stores';
 import {
   ButtonComponent,
   MemberListComponent,
@@ -9,23 +20,14 @@ import {
   SubscriptionCardComponent,
   IconComponent,
   PendingRequestsCardComponent,
+  PaginationComponent,
 } from '../../components/shared';
-import type { UnidadFamiliar, MiembroUnidadResponse, SuscripcionSummary, SuscripcionCardData, GrupoCardData, SuscripcionResponse, SolicitudResponse } from '../../models';
-import { type GrupoDetalleData, type ResolvedData } from '../../resolvers';
-import { UnidadFamiliarService, SuscripcionService, ToastService, ModalService, SolicitudService, AuthService } from '../../services';
+import { InfiniteScrollDirective } from '../../directives';
 
-/**
- * Estado de navegación para mostrar datos optimistamente.
- */
 interface GrupoNavigationState {
   grupoPreview?: GrupoCardData;
-  nuevaSuscripcion?: SuscripcionResponse;
 }
 
-/**
- * Página Detalle de Grupo.
- * Datos precargados via grupoDetalleResolver.
- */
 @Component({
   selector: 'app-grupo-detalle',
   standalone: true,
@@ -36,107 +38,69 @@ interface GrupoNavigationState {
     SubscriptionCardComponent,
     IconComponent,
     PendingRequestsCardComponent,
+    PaginationComponent,
+    InfiniteScrollDirective,
   ],
   templateUrl: './grupo-detalle.html',
   styleUrl: './grupo-detalle.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GrupoDetalleComponent implements OnInit {
+export class GrupoDetalleComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly unidadService = inject(UnidadFamiliarService);
-  private readonly suscripcionService = inject(SuscripcionService);
-  private readonly solicitudService = inject(SolicitudService);
   private readonly toastService = inject(ToastService);
   private readonly modalService = inject(ModalService);
   private readonly authService = inject(AuthService);
+  private readonly gruposStore = inject(GruposStore);
+  private readonly suscripcionesStore = inject(SuscripcionesStore);
+  private readonly solicitudesStore = inject(SolicitudesStore);
 
-  /**
-   * ID del grupo recibido desde la ruta mediante Router Input Binding.
-   * Angular 21 best practice: usar input() en lugar de ActivatedRoute.
-   */
   readonly id = input.required<string>();
 
-  protected readonly grupo = signal<UnidadFamiliar | null>(null);
+  protected readonly grupo = computed(() => this.gruposStore.getGrupoById(Number(this.id())));
   protected readonly miembros = signal<MiembroUnidadResponse[]>([]);
-  protected readonly suscripciones = signal<SuscripcionSummary[]>([]);
-  protected readonly solicitudesPendientes = signal<SolicitudResponse[]>([]);
-  protected readonly isLoading = signal(false);
-  protected readonly error = signal<string | null>(null);
+  protected readonly suscripciones = this.suscripcionesStore.suscripciones;
+  protected readonly suscripcionesFiltradas = this.suscripcionesStore.suscripcionesFiltradas;
+  protected readonly suscripcionesPaginadas = this.suscripcionesStore.suscripcionesPaginadas;
+  protected readonly solicitudesPendientes = this.solicitudesStore.pendientesGrupo;
+  protected readonly solicitudesPendientesVisible = this.solicitudesStore.pendientesGrupoVisible;
+  protected readonly isLoading = computed(() => this.suscripcionesStore.loading() || this.solicitudesStore.loadingPendientesGrupo());
+  protected readonly error = computed(() => this.suscripcionesStore.error());
 
-  /** State de navegación capturado en el constructor (antes de que termine la navegación). */
+  protected readonly estadosFiltro = this.suscripcionesStore.estadosFiltro;
+  protected readonly periodicidadFiltro = this.suscripcionesStore.periodicidadFiltro;
+  protected readonly hasFiltrosActivos = computed(() =>
+    this.estadosFiltro().length > 0 || this.periodicidadFiltro() !== null
+  );
+
+  protected readonly ESTADOS = ['ACTIVA', 'PAUSADA', 'CANCELADA', 'EXPIRADA'] as const;
+  protected readonly PERIODICIDADES = ['MENSUAL', 'TRIMESTRAL', 'ANUAL'] as const;
+
   private readonly navigationState: GrupoNavigationState | undefined;
 
   constructor() {
-    // Capturar state DURANTE la navegación (solo disponible en constructor)
     const nav = this.router.getCurrentNavigation();
     this.navigationState = nav?.extras?.state as GrupoNavigationState | undefined;
-
-    // Preview optimista del grupo
-    if (this.navigationState?.grupoPreview) {
-      this.grupo.set({
-        id: this.navigationState.grupoPreview.id,
-        nombre: this.navigationState.grupoPreview.nombre,
-        codigoInvitacion: '',
-        administrador: { id: 0, nombreCompleto: '', email: '', nombreUsuario: '' },
-        fechaCreacion: '',
-        descripcion: null,
-        maxMiembros: 0,
-        estado: 'ACTIVO',
-      });
-    }
   }
 
-  ngOnInit(): void {
-    // Leer datos precargados por el resolver
+  async ngOnInit(): Promise<void> {
     const resolved = this.route.snapshot.data['grupoData'] as ResolvedData<GrupoDetalleData>;
 
     if (resolved.error) {
-      this.error.set(resolved.error);
       this.toastService.error(resolved.error);
     } else if (resolved.data) {
-      this.grupo.set(resolved.data.grupo);
       this.miembros.set(resolved.data.miembros);
-      this.suscripciones.set(resolved.data.suscripciones);
-
-      // Actualización optimista: agregar suscripción recién creada
-
-      // Cargar solicitudes pendientes si es admin
-      if (this.isAdmin()) {
-        this.cargarSolicitudesPendientes();
+      
+      const grupoId = Number(this.id());
+      if (!isNaN(grupoId)) {
+        await Promise.all([
+          this.suscripcionesStore.loadByUnidad(grupoId),
+          this.solicitudesStore.loadPendientesGrupo(grupoId),
+        ]);
       }
-      this.aplicarSuscripcionOptimista();
     }
   }
 
-  /**
-   * Aplica actualización optimista si hay una suscripción nueva en el state.
-   * Transforma SuscripcionResponse a SuscripcionSummary y la agrega al inicio.
-   */
-  private aplicarSuscripcionOptimista(): void {
-    if (!this.navigationState?.nuevaSuscripcion) return;
-
-    const nueva = this.navigationState.nuevaSuscripcion;
-    const suscripcionSummary: SuscripcionSummary = {
-      id: nueva.id,
-      nombreServicio: nueva.servicio.nombre,
-      logoServicio: nueva.servicio.logo,
-      precioPorPlaza: nueva.precioPorPlaza,
-      fechaRenovacion: nueva.fechaRenovacion,
-      periodicidad: nueva.periodicidad,
-      estado: nueva.estado,
-      numPlazasTotal: nueva.numPlazasTotal,
-      plazasOcupadas: nueva.plazasOcupadas,
-    };
-
-    // Evitar duplicados (por si el resolver ya la trajo)
-    const yaExiste = this.suscripciones().some((s) => s.id === nueva.id);
-    if (!yaExiste) {
-      this.suscripciones.update((current) => [suscripcionSummary, ...current]);
-    }
-  }
-
-  // --- Computed ---
   protected readonly membersData = computed<MemberData[]>(() =>
     this.miembros().map((m) => ({
       id: m.id,
@@ -152,16 +116,27 @@ export class GrupoDetalleComponent implements OnInit {
     const grupoActual = this.grupo();
     const usuarioActual = this.authService.currentUser();
     if (!grupoActual || !usuarioActual) return false;
-    // Verificar si el usuario actual es el administrador del grupo
     return grupoActual.administrador.id === usuarioActual.id;
   });
 
   protected readonly hasSolicitudesPendientes = computed(() => this.solicitudesPendientes().length > 0);
 
   protected readonly hasSuscripciones = computed(() => this.suscripciones().length > 0);
+  protected readonly hasSuscripcionesFiltradas = computed(() => this.suscripcionesFiltradas().length > 0);
+  protected readonly noFilterResults = computed(() =>
+    this.hasFiltrosActivos() && !this.hasSuscripcionesFiltradas() && this.hasSuscripciones()
+  );
+  protected readonly paginationInfo = computed(() => ({
+    currentPage: this.suscripcionesStore.page(),
+    totalItems: this.suscripcionesFiltradas().length,
+    pageSize: this.suscripcionesStore.pageSize(),
+  }));
+  protected readonly hasMoreSolicitudes = this.solicitudesStore.hasMorePendientesGrupo;
+  protected readonly loadingMoreSolicitudes = this.solicitudesStore.loadingMorePendientesGrupo;
+  protected readonly suscripcionesPageSize = this.suscripcionesStore.pageSize;
 
-  protected readonly suscripcionCards = computed<SuscripcionCardData[]>(() =>
-    this.suscripciones().map((s) => ({
+  protected readonly suscripcionesFiltradasCards = computed<SuscripcionCardData[]>(() =>
+    this.suscripcionesFiltradas().map((s) => ({
       id: s.id,
       nombreServicio: s.nombreServicio,
       precioPorPlaza: s.precioPorPlaza,
@@ -173,126 +148,79 @@ export class GrupoDetalleComponent implements OnInit {
     }))
   );
 
-
-  /**
-   * Recarga todos los datos del grupo.
-   */
-  private recargarDatos(id: number): void {
-    this.isLoading.set(true);
-    this.error.set(null);
-
-    forkJoin({
-      grupo: this.unidadService.getGrupoById(id),
-      miembros: this.unidadService.getMiembrosGrupo(id),
-      suscripciones: this.suscripcionService.getSuscripcionesGrupo(id).pipe(
-        map((page) => page.content),
-        catchError(() => of([] as SuscripcionSummary[]))
-      ),
-    }).subscribe({
-      next: ({ grupo, miembros, suscripciones }) => {
-        this.grupo.set(grupo);
-        this.miembros.set(miembros);
-        this.suscripciones.set(suscripciones);
-        this.isLoading.set(false);
-        
-        // Cargar solicitudes si es admin
-        if (this.isAdmin()) {
-          this.cargarSolicitudesPendientes();
-        }
-      },
-      error: () => {
-        this.error.set('No se pudo cargar el grupo. Intenta de nuevo.');
-        this.isLoading.set(false);
-        // El errorInterceptor ya muestra el mensaje de error
-      },
-    });
+  protected toggleEstadoFiltro(estado: EstadoSuscripcion): void {
+    this.suscripcionesStore.toggleEstadoFiltro(estado);
   }
 
-  /**
-   * Carga las solicitudes pendientes del grupo
-   */
-  private cargarSolicitudesPendientes(): void {
-    const grupoId = this.grupo()?.id;
-    if (!grupoId) return;
-
-    this.solicitudService.getSolicitudesPendientesGrupo(grupoId).subscribe({
-      next: (solicitudes) => {
-        this.solicitudesPendientes.set(solicitudes);
-      },
-      error: (error) => {
-        // Manejar silenciosamente - puede ser que no haya solicitudes o no tenga permisos
-        console.warn('No se pudieron cargar las solicitudes pendientes:', error);
-        this.solicitudesPendientes.set([]);
-      },
-    });
+  protected onPeriodicidadChange(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    const value = select.value;
+    this.suscripcionesStore.setPeriodicidadFiltro(value ? value as Periodicidad : null);
   }
 
-  /**
-   * Maneja la aceptación de una solicitud
-   */
-  protected onAceptarSolicitud(solicitud: SolicitudResponse): void {
-    this.modalService.open({
-      title: '¿Aceptar solicitud?',
-      content: `¿Estás seguro de que quieres aceptar la solicitud de <strong>${solicitud.solicitante.nombreCompleto}</strong> para unirse al grupo?`,
-      confirmText: 'Aceptar',
-      cancelText: 'Cancelar',
-      onConfirm: () => {
-        this.solicitudService.aprobarSolicitud(solicitud.id).subscribe({
-          next: () => {
-            this.toastService.show('success', `Solicitud de ${solicitud.solicitante.nombreCompleto} aceptada`);
-            // Recargar datos para mostrar el nuevo miembro
-            const grupoId = Number(this.id());
-            if (grupoId && !isNaN(grupoId)) {
-              this.recargarDatos(grupoId);
-            }
-          },
-          error: () => {
-            // El errorInterceptor ya muestra el mensaje de error
-          },
-        });
-      },
-    });
+  protected clearFiltros(): void {
+    this.suscripcionesStore.clearFiltros();
   }
 
-  /**
-   * Maneja el rechazo de una solicitud
-   */
-  protected onRechazarSolicitud(solicitud: SolicitudResponse): void {
+  protected async onPageChange(page: number): Promise<void> {
+    await this.suscripcionesStore.goToPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  protected async onLoadMoreSolicitudes(): Promise<void> {
+    await this.solicitudesStore.loadMorePendientesGrupo();
+  }
+
+  protected trackBySuscripcionId(index: number, suscripcion: SuscripcionCardData): number {
+    return suscripcion.id;
+  }
+
+  protected trackBySolicitudId(index: number, solicitud: SolicitudResponse): number {
+    return solicitud.id;
+  }
+
+  private async recargarDatos(id: number): Promise<void> {
+    try {
+      await this.gruposStore.refresh();
+      await this.suscripcionesStore.refresh();
+      await this.solicitudesStore.refreshPendientesGrupo();
+    } catch (error) {
+      this.toastService.error('Error al recargar los datos');
+    }
+  }
+
+  protected async onAceptarSolicitud(solicitud: SolicitudResponse): Promise<void> {
+    try {
+      await this.solicitudesStore.aprobar(solicitud.id);
+    } catch (error) {
+      const nombreSolicitante = solicitud.solicitante?.nombreCompleto || 'Usuario';
+      this.toastService.error(`Error al aceptar la solicitud de ${nombreSolicitante}`);
+    }
+  }
+
+  protected async onRechazarSolicitud(solicitud: SolicitudResponse): Promise<void> {
     this.modalService.open({
       title: '¿Rechazar solicitud?',
       content: `¿Estás seguro de que quieres rechazar la solicitud de <strong>${solicitud.solicitante.nombreCompleto}</strong>? Esta acción no se puede deshacer.`,
       confirmText: 'Rechazar',
       cancelText: 'Cancelar',
-      onConfirm: () => {
-        this.solicitudService.rechazarSolicitud(solicitud.id).subscribe({
-          next: () => {
-            this.toastService.show('info', `Solicitud de ${solicitud.solicitante.nombreCompleto} rechazada`);
-            // Eliminar la solicitud de la lista
-            this.solicitudesPendientes.update(solicitudes => 
-              solicitudes.filter(s => s.id !== solicitud.id)
-            );
-          },
-          error: () => {
-            // El errorInterceptor ya muestra el mensaje de error
-          },
-        });
+      onConfirm: async () => {
+        try {
+          await this.solicitudesStore.rechazar(solicitud.id);
+        } catch (error) {
+          this.toastService.error('Error al rechazar la solicitud');
+        }
       },
     });
   }
 
-  /**
-   * Abre modal con el código de invitación.
-   */
   protected onInvitar(): void {
-    const codigo = this.grupo()?.codigoInvitacion;
-    if (!codigo) return;
+    const grupo = this.grupo();
+    if (!grupo) return;
 
-    this.modalService.openInviteModal(codigo);
+    this.modalService.openInviteModal(grupo.codigoInvitacion);
   }
 
-  /**
-   * Navega a la página de crear suscripción.
-   */
   protected onCrearSuscripcion(): void {
     const grupoId = this.grupo()?.id;
     if (grupoId) {
@@ -300,9 +228,6 @@ export class GrupoDetalleComponent implements OnInit {
     }
   }
 
-  /**
-   * Navega al detalle de la suscripción.
-   */
   protected onSuscripcionClick(id: number): void {
     const grupoId = this.grupo()?.id;
     if (grupoId) {
@@ -310,13 +235,14 @@ export class GrupoDetalleComponent implements OnInit {
     }
   }
 
-  /**
-   * Reintenta cargar los datos.
-   */
-  protected onReintentar(): void {
+  protected async onReintentar(): Promise<void> {
     const grupoId = Number(this.id());
     if (grupoId && !isNaN(grupoId)) {
-      this.recargarDatos(grupoId);
+      await this.recargarDatos(grupoId);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.suscripcionesStore.clearFiltros();
   }
 }

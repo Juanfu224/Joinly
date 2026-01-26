@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
 import {
   ButtonComponent,
   IconComponent,
@@ -9,7 +9,8 @@ import {
 } from '../../../components/shared';
 import type { IconName } from '../../../components/shared/icon/icon-paths';
 import type { EstadoSolicitud, SolicitudResponse } from '../../../models';
-import { ModalService, SolicitudService, ToastService } from '../../../services';
+import { ModalService, ToastService } from '../../../services';
+import { SolicitudesStore } from '../../../stores';
 
 interface FiltroOption {
   value: EstadoSolicitud | 'TODAS';
@@ -17,12 +18,6 @@ interface FiltroOption {
   icon: IconName;
 }
 
-/**
- * Página de gestión de solicitudes del usuario.
- * Muestra solicitudes de grupos y suscripciones con filtros por estado.
- *
- * @route /usuario/solicitudes
- */
 @Component({
   selector: 'app-mis-solicitudes',
   standalone: true,
@@ -39,13 +34,13 @@ interface FiltroOption {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MisSolicitudesComponent implements OnInit {
-  readonly #solicitudService = inject(SolicitudService);
-  readonly #toastService = inject(ToastService);
-  readonly #modalService = inject(ModalService);
+  readonly solicitudesStore = inject(SolicitudesStore);
+  readonly toastService = inject(ToastService);
+  readonly modalService = inject(ModalService);
 
-  protected readonly solicitudes = signal<SolicitudResponse[]>([]);
-  protected readonly isLoading = signal(false);
-  protected readonly filtroEstado = signal<EstadoSolicitud | undefined>(undefined);
+  protected readonly solicitudes = this.solicitudesStore.solicitudes;
+  protected readonly isLoading = this.solicitudesStore.loading;
+  protected readonly filtroEstado = this.solicitudesStore.estadoFiltro;
 
   protected readonly filtroOptions: FiltroOption[] = [
     { value: 'TODAS', label: 'Todas', icon: 'folder' },
@@ -90,26 +85,12 @@ export class MisSolicitudesComponent implements OnInit {
     total: this.solicitudes().filter((s) => s.tipoSolicitud === 'UNION_SUSCRIPCION').length,
   }));
 
-  ngOnInit(): void {
-    this.#cargarSolicitudes();
-  }
-
-  #cargarSolicitudes(): void {
-    this.isLoading.set(true);
-    this.#solicitudService.getMisSolicitudes().subscribe({
-      next: (page) => {
-        this.solicitudes.set(page.content);
-        this.isLoading.set(false);
-      },
-      error: () => {
-        this.#toastService.error('Error al cargar las solicitudes');
-        this.isLoading.set(false);
-      },
-    });
+  async ngOnInit(): Promise<void> {
+    await this.solicitudesStore.loadMisSolicitudes();
   }
 
   protected onFiltroChange(estado: EstadoSolicitud | 'TODAS'): void {
-    this.filtroEstado.set(estado === 'TODAS' ? undefined : estado);
+    this.solicitudesStore.setEstadoFiltro(estado === 'TODAS' ? undefined : estado);
   }
 
   protected getContador(estado: EstadoSolicitud | 'total'): number {
@@ -123,31 +104,22 @@ export class MisSolicitudesComponent implements OnInit {
         ? solicitud.unidad.nombre
         : (solicitud.suscripcion?.nombreServicio ?? 'desconocido');
 
-    this.#modalService.open({
+    this.modalService.open({
       title: 'Cancelar solicitud',
       content: `¿Estás seguro de que deseas cancelar la solicitud para unirte a <strong>${nombreDestino}</strong>?<br><br><small>Esta acción no se puede deshacer.</small>`,
       confirmText: 'Sí, cancelar',
       cancelText: 'Mantener',
-      onConfirm: () => this.#confirmarCancelacion(solicitud.id),
-    });
-  }
-
-  #confirmarCancelacion(id: number): void {
-    this.isLoading.set(true);
-
-    this.#solicitudService.cancelarSolicitud(id).subscribe({
-      next: () => {
-        this.#toastService.success('Solicitud cancelada correctamente');
-        this.#cargarSolicitudes();
-      },
-      error: () => {
-        this.#toastService.error('Error al cancelar la solicitud');
-        this.isLoading.set(false);
+      onConfirm: async () => {
+        try {
+          await this.solicitudesStore.cancelar(solicitud.id);
+        } catch (error) {
+          this.toastService.error('Error al cancelar la solicitud');
+        }
       },
     });
   }
 
-  protected onRefresh(): void {
-    this.#cargarSolicitudes();
+  protected async onRefresh(): Promise<void> {
+    await this.solicitudesStore.refreshMisSolicitudes();
   }
 }

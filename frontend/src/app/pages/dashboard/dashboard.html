@@ -8,6 +8,25 @@
           Gestiona tus unidades familiares y únete a alguno
         </p>
       </div>
+      <div class="p-dashboard__search">
+        <input
+          class="p-dashboard__search-input"
+          type="search"
+          placeholder="Buscar grupos..."
+          [formControl]="searchControl"
+          aria-label="Buscar grupos"
+        />
+        @if (hasSearchTerm()) {
+          <button
+            type="button"
+            class="p-dashboard__search-clear"
+            (click)="searchControl.setValue('')"
+            aria-label="Limpiar búsqueda"
+          >
+            <app-icon name="x" size="sm" />
+          </button>
+        }
+      </div>
     </header>
 
     <!-- Tarjetas de acción: Crear / Unirse -->
@@ -81,23 +100,31 @@
           </button>
         </div>
       </section>
-    } @else if (grupos().length > 0) {
-      <!-- Contenido principal: Grid de grupos -->
-      <section class="p-dashboard__grupos" aria-label="Mis grupos">
-        <div class="p-dashboard__grid">
-          @for (grupo of grupos(); track grupo.id) {
-            <app-group-card
-              [grupo]="grupo"
-              (invite)="onGroupInvite(grupo.id)"
-              (cardClick)="onGroupClick(grupo.id, grupo)"
-            />
-          }
-        </div>
-      </section>
     } @else {
-      <!-- Empty state -->
-      <section class="p-dashboard__empty" aria-label="Sin grupos">
-        <app-empty-groups />
+      <section class="p-dashboard__grupos" aria-label="Mis grupos">
+        @if (grupos().length > 0) {
+          @if (noResults()) {
+            <div class="p-dashboard__no-results">
+              <app-icon name="search" size="lg" />
+              <p>No se encontraron grupos que coincidan con "<strong>{{ searchTerm() }}</strong>"</p>
+              <button type="button" class="p-dashboard__clear-search" (click)="searchControl.setValue('')">
+                Limpiar búsqueda
+              </button>
+            </div>
+          } @else {
+            <div class="p-dashboard__grid">
+              @for (grupo of gruposFiltrados(); track grupo.id) {
+                <app-group-card
+                  [grupo]="grupo"
+                  (invite)="onGroupInvite(grupo.id)"
+                  (cardClick)="onGroupClick(grupo.id, grupo)"
+                />
+              }
+            </div>
+          }
+        } @else {
+          <app-empty-groups />
+        }
       </section>
     }
   </div>

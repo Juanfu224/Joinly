@@ -115,6 +115,27 @@
   }
 
   // ---------------------------------------------------------------------------
+  // ELEMENTO: Seccion de solicitudes
+  // ---------------------------------------------------------------------------
+  &__solicitudes {
+    margin-bottom: var(--espaciado-6);
+  }
+
+  &__infinite-scroll-trigger {
+    height: 1px;
+    width: 100%;
+  }
+
+  &__loading-more {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--espaciado-3);
+    color: var(--text-secondary);
+    font-size: var(--tamano-texto-pequeno);
+  }
+
+  // ---------------------------------------------------------------------------
   // ELEMENTO: Card de informacion
   // ---------------------------------------------------------------------------
   &__info {
