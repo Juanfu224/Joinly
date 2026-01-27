@@ -96,21 +96,29 @@ export class GrupoDetalleComponent implements OnInit, OnDestroy {
 
   async ngOnInit(): Promise<void> {
     const resolved = this.route.snapshot.data['grupoData'] as ResolvedData<GrupoDetalleData>;
+    const grupoId = Number(this.id());
 
     if (resolved.error) {
-      this.toastService.error(resolved.error);
-    } else if (resolved.data) {
-      // Añadir el grupo al store sin notificación (es carga inicial)
+      // Solo mostrar error si hay mensaje (no si fue timeout)
+      if (resolved.error.trim()) {
+        this.toastService.error(resolved.error);
+        return;
+      }
+    }
+
+    // Si tenemos datos del resolver, usarlos
+    if (resolved.data) {
       this.gruposStore.addOrUpdate(resolved.data.grupo);
       this.miembros.set(resolved.data.miembros);
+    }
 
-      const grupoId = Number(this.id());
-      if (!isNaN(grupoId)) {
-        await Promise.all([
-          this.suscripcionesStore.loadByUnidad(grupoId),
-          this.solicitudesStore.loadPendientesGrupo(grupoId),
-        ]);
-      }
+    // Cargar suscripciones y solicitudes (con caché)
+    if (!isNaN(grupoId)) {
+      // Cargar en paralelo sin bloquear
+      Promise.all([
+        this.suscripcionesStore.loadByUnidad(grupoId),
+        this.solicitudesStore.loadPendientesGrupo(grupoId),
+      ]);
     }
   }
 

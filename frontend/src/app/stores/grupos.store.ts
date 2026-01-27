@@ -5,6 +5,9 @@ import { UnidadFamiliar, CreateUnidadRequest, GrupoCardData } from '../models';
 import { UnidadFamiliarService } from '../services/unidad-familiar';
 import { ToastService } from '../services/toast';
 
+/** Tiempo de vida del caché en milisegundos (2 minutos) */
+const CACHE_TTL = 2 * 60 * 1000;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -17,12 +20,20 @@ export class GruposStore {
   private _loading = signal(false);
   private _error = signal<string | null>(null);
   private _searchTerm = signal('');
+  
+  /** Timestamps para control de caché */
+  private _cardsLastFetch = 0;
+  private _gruposLastFetch = 0;
 
   readonly grupos = this._grupos.asReadonly();
   readonly cards = this._cards.asReadonly();
   readonly loading = this._loading.asReadonly();
   readonly error = this._error.asReadonly();
   readonly searchTerm = this._searchTerm.asReadonly();
+  
+  /** Indica si hay datos cargados (para mostrar UI inmediatamente) */
+  readonly hasCards = computed(() => this._cards().length > 0);
+  readonly hasGrupos = computed(() => this._grupos().length > 0);
 
   readonly totalGrupos = computed(() => this._grupos().length);
   readonly gruposActivos = computed(() => this._grupos().filter((g) => g.estado === 'ACTIVO'));
@@ -42,12 +53,18 @@ export class GruposStore {
   });
 
   async load(): Promise<void> {
+    // Usar caché si es válida
+    if (this.isCacheValid(this._gruposLastFetch) && this._grupos().length > 0) {
+      return;
+    }
+
     this._loading.set(true);
     this._error.set(null);
 
     try {
       const grupos = await firstValueFrom(this.grupoService.getGruposAdministrados());
       this._grupos.set(grupos);
+      this._gruposLastFetch = Date.now();
     } catch (error) {
       this._error.set(this.handleError(error));
     } finally {
@@ -55,17 +72,33 @@ export class GruposStore {
     }
   }
 
-  async loadCards(page = 0, size = 50): Promise<void> {
-    this._loading.set(true);
+  /**
+   * Carga las tarjetas de grupos con soporte de caché.
+   * @param forceRefresh - Fuerza recarga ignorando caché
+   */
+  async loadCards(page = 0, size = 50, forceRefresh = false): Promise<void> {
+    // Usar caché si es válida y no se fuerza refresh
+    if (!forceRefresh && this.isCacheValid(this._cardsLastFetch) && this._cards().length > 0) {
+      return;
+    }
+
+    // Solo mostrar loading si no hay datos cacheados (evita parpadeo)
+    const showLoading = this._cards().length === 0;
+    if (showLoading) {
+      this._loading.set(true);
+    }
     this._error.set(null);
 
     try {
       const response = await firstValueFrom(this.grupoService.getGruposCards(page, size));
       this._cards.set(response.content);
+      this._cardsLastFetch = Date.now();
     } catch (error) {
       this._error.set(this.handleError(error));
     } finally {
-      this._loading.set(false);
+      if (showLoading) {
+        this._loading.set(false);
+      }
     }
   }
 
@@ -111,11 +144,12 @@ export class GruposStore {
   }
 
   async refresh(): Promise<void> {
+    this._gruposLastFetch = 0; // Invalida caché
     await this.load();
   }
 
   async refreshCards(): Promise<void> {
-    await this.loadCards();
+    await this.loadCards(0, 50, true); // Fuerza refresh
   }
 
   setSearchTerm(term: string): void {
@@ -126,12 +160,24 @@ export class GruposStore {
     return this._grupos().find((g) => g.id === id);
   }
 
+  /** Verifica si el caché es válido basándose en TTL */
+  private isCacheValid(lastFetch: number): boolean {
+    return Date.now() - lastFetch < CACHE_TTL;
+  }
+
+  /** Invalida todo el caché */
+  invalidateCache(): void {
+    this._cardsLastFetch = 0;
+    this._gruposLastFetch = 0;
+  }
+
   clear(): void {
     this._grupos.set([]);
     this._cards.set([]);
     this._loading.set(false);
     this._error.set(null);
     this._searchTerm.set('');
+    this.invalidateCache();
   }
 
   /**

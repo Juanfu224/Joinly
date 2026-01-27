@@ -77,10 +77,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     if (resolved.error) {
-      this.toastService.error(resolved.error);
-    } else if (resolved.data && resolved.data.grupos.length > 0) {
-      this.gruposStore.loadCards(0, 50);
-    } else {
+      // Solo mostrar error si hay mensaje (no si fue timeout)
+      if (resolved.error.trim()) {
+        this.toastService.error(resolved.error);
+      }
+      // Cargar si no hay datos en caché
+      if (!this.gruposStore.hasCards()) {
+        this.gruposStore.loadCards(0, 50);
+      }
+    } else if (!this.gruposStore.hasCards()) {
+      // Solo cargar si no hay datos en caché
       this.gruposStore.loadCards(0, 50);
     }
   }

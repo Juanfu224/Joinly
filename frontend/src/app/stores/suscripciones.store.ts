@@ -13,6 +13,9 @@ import {
 import { SuscripcionService } from '../services/suscripcion';
 import { ToastService } from '../services/toast';
 
+/** Tiempo de vida del caché en milisegundos (2 minutos) */
+const CACHE_TTL = 2 * 60 * 1000;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -31,6 +34,10 @@ export class SuscripcionesStore {
   private _totalPages = signal(0);
   private _estadosFiltro = signal<EstadoSuscripcion[]>([]);
   private _periodicidadFiltro = signal<Periodicidad | null>(null);
+  
+  /** Control de caché por unidad */
+  private _lastFetchByUnidad = new Map<number, number>();
+  private _lastFetchDetalle = new Map<number, number>();
 
   readonly suscripciones = this._suscripciones.asReadonly();
   readonly detalle = this._detalle.asReadonly();
@@ -43,6 +50,9 @@ export class SuscripcionesStore {
   readonly totalPages = this._totalPages.asReadonly();
   readonly estadosFiltro = this._estadosFiltro.asReadonly();
   readonly periodicidadFiltro = this._periodicidadFiltro.asReadonly();
+  
+  /** Indica si hay datos cargados */
+  readonly hasSuscripciones = computed(() => this._suscripciones().length > 0);
 
   readonly suscripcionesFiltradas = computed(() => {
     let result = this._suscripciones();
@@ -87,8 +97,24 @@ export class SuscripcionesStore {
 
   private currentUnidadId: number | null = null;
 
-  async loadByUnidad(idUnidad: number, page = 0, size = 20): Promise<void> {
-    this._loading.set(true);
+  /**
+   * Carga suscripciones de una unidad con soporte de caché.
+   */
+  async loadByUnidad(idUnidad: number, page = 0, size = 20, forceRefresh = false): Promise<void> {
+    // Verificar caché válida
+    const lastFetch = this._lastFetchByUnidad.get(idUnidad) ?? 0;
+    const isSameUnidad = this.currentUnidadId === idUnidad;
+    const cacheValid = Date.now() - lastFetch < CACHE_TTL;
+    
+    if (!forceRefresh && isSameUnidad && cacheValid && this._suscripciones().length > 0) {
+      return;
+    }
+
+    // Solo mostrar loading si no hay datos o cambió la unidad
+    const showLoading = !isSameUnidad || this._suscripciones().length === 0;
+    if (showLoading) {
+      this._loading.set(true);
+    }
     this._error.set(null);
     this.currentUnidadId = idUnidad;
 
@@ -101,15 +127,35 @@ export class SuscripcionesStore {
       this._pageSize.set(response.size);
       this._totalElements.set(response.totalElements);
       this._totalPages.set(response.totalPages);
+      this._lastFetchByUnidad.set(idUnidad, Date.now());
     } catch (error) {
       this._error.set(this.handleError(error));
     } finally {
-      this._loading.set(false);
+      if (showLoading) {
+        this._loading.set(false);
+      }
     }
   }
 
-  async loadDetalle(idSuscripcion: number): Promise<void> {
-    this._loadingDetalle.set(true);
+  /**
+   * Carga detalle de suscripción con soporte de caché.
+   */
+  async loadDetalle(idSuscripcion: number, forceRefresh = false): Promise<void> {
+    // Verificar caché válida
+    const lastFetch = this._lastFetchDetalle.get(idSuscripcion) ?? 0;
+    const currentDetalle = this._detalle();
+    const isSameSuscripcion = currentDetalle?.id === idSuscripcion;
+    const cacheValid = Date.now() - lastFetch < CACHE_TTL;
+    
+    if (!forceRefresh && isSameSuscripcion && cacheValid) {
+      return;
+    }
+
+    // Solo mostrar loading si no hay datos cacheados de esta suscripción
+    const showLoading = !isSameSuscripcion;
+    if (showLoading) {
+      this._loadingDetalle.set(true);
+    }
     this._error.set(null);
 
     try {
@@ -117,6 +163,7 @@ export class SuscripcionesStore {
         this.suscripcionService.getSuscripcionById(idSuscripcion),
       );
       this._detalle.set(detalle);
+      this._lastFetchDetalle.set(idSuscripcion, Date.now());
     } catch (error) {
       this._error.set(this.handleError(error));
     } finally {
@@ -229,14 +276,20 @@ export class SuscripcionesStore {
 
   async refresh(): Promise<void> {
     if (this.currentUnidadId !== null) {
-      await this.loadByUnidad(this.currentUnidadId, this._page(), this._pageSize());
+      await this.loadByUnidad(this.currentUnidadId, this._page(), this._pageSize(), true);
     }
   }
 
   async refreshDetalle(): Promise<void> {
     if (this._detalle()) {
-      await this.loadDetalle(this._detalle()!.id);
+      await this.loadDetalle(this._detalle()!.id, true);
     }
+  }
+
+  /** Invalida caché para forzar recarga en próxima navegación */
+  invalidateCache(): void {
+    this._lastFetchByUnidad.clear();
+    this._lastFetchDetalle.clear();
   }
 
   clear(): void {
@@ -252,6 +305,7 @@ export class SuscripcionesStore {
     this._estadosFiltro.set([]);
     this._periodicidadFiltro.set(null);
     this.currentUnidadId = null;
+    this.invalidateCache();
   }
 
   updateFromExternal(suscripcion: SuscripcionDetalle): void {

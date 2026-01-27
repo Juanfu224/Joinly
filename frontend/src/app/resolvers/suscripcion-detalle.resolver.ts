@@ -1,11 +1,18 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
-import { of, catchError, map } from 'rxjs';
+import { of, catchError, map, timeout } from 'rxjs';
 
 import type { SuscripcionDetalle } from '../models';
 import { SuscripcionService } from '../services';
 import { type ResolvedData, resolveSuccess, resolveError } from './types';
 
+/** Tiempo máximo de espera del resolver (ms) */
+const RESOLVER_TIMEOUT = 3000;
+
+/**
+ * Precarga suscripción antes de activar la ruta.
+ * Timeout de 3s para evitar bloquear navegación.
+ */
 export const suscripcionDetalleResolver: ResolveFn<ResolvedData<SuscripcionDetalle>> = (route) => {
   const suscripcionService = inject(SuscripcionService);
   const id = Number(route.paramMap.get('id'));
@@ -15,8 +22,14 @@ export const suscripcionDetalleResolver: ResolveFn<ResolvedData<SuscripcionDetal
   }
 
   return suscripcionService.getSuscripcionById(id).pipe(
+    timeout(RESOLVER_TIMEOUT),
     map((data) => resolveSuccess<SuscripcionDetalle>(data)),
     catchError((err) => {
+      // En caso de timeout, dejar que el componente maneje la carga
+      if (err.name === 'TimeoutError') {
+        return of(resolveError<SuscripcionDetalle>(''));
+      }
+
       const status = err.status;
       let message: string;
 

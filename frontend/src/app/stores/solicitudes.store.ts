@@ -11,6 +11,9 @@ import {
 import { SolicitudService } from '../services/solicitud';
 import { ToastService } from '../services/toast';
 
+/** TTL del caché en milisegundos (2 minutos) */
+const CACHE_TTL = 2 * 60 * 1000;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -38,6 +41,10 @@ export class SolicitudesStore {
   private _fechaHastaFiltro = signal<string | undefined>(undefined);
   private _visiblePendientesGrupoCount = signal(10);
   private _visiblePendientesSuscripcionCount = signal(10);
+
+  /** Cache timestamps */
+  private _lastFetchPendientesGrupo: Map<number, number> = new Map();
+  private _lastFetchPendientesSuscripcion: Map<number, number> = new Map();
 
   readonly solicitudes = this._solicitudes.asReadonly();
   readonly pendientesGrupo = this._pendientesGrupo.asReadonly();
@@ -90,6 +97,18 @@ export class SolicitudesStore {
   private currentGrupoId: number | null = null;
   private currentSuscripcionId: number | null = null;
 
+  /** Verifica si el caché es válido para una entidad */
+  private isCacheValid(timestamp: number | undefined): boolean {
+    if (!timestamp) return false;
+    return Date.now() - timestamp < CACHE_TTL;
+  }
+
+  /** Invalida el caché de solicitudes */
+  invalidateCache(): void {
+    this._lastFetchPendientesGrupo.clear();
+    this._lastFetchPendientesSuscripcion.clear();
+  }
+
   async loadMisSolicitudes(
     estado?: EstadoSolicitud,
     fechaDesde?: string,
@@ -120,6 +139,15 @@ export class SolicitudesStore {
   }
 
   async loadPendientesGrupo(idGrupo: number): Promise<void> {
+    // Skip si tenemos datos en caché válidos para este grupo
+    if (
+      this.currentGrupoId === idGrupo &&
+      this._pendientesGrupo().length > 0 &&
+      this.isCacheValid(this._lastFetchPendientesGrupo.get(idGrupo))
+    ) {
+      return;
+    }
+
     this._loadingPendientesGrupo.set(true);
     this._error.set(null);
     this.currentGrupoId = idGrupo;
@@ -131,6 +159,7 @@ export class SolicitudesStore {
       this._pendientesGrupo.set(pendientes);
       this._visiblePendientesGrupoCount.set(Math.min(10, pendientes.length));
       this._pendientesGrupoVisible.set(pendientes.slice(0, this._visiblePendientesGrupoCount()));
+      this._lastFetchPendientesGrupo.set(idGrupo, Date.now());
     } catch (error) {
       this._error.set(this.handleError(error));
     } finally {
@@ -139,6 +168,15 @@ export class SolicitudesStore {
   }
 
   async loadPendientesSuscripcion(idSuscripcion: number): Promise<void> {
+    // Skip si tenemos datos en caché válidos para esta suscripción
+    if (
+      this.currentSuscripcionId === idSuscripcion &&
+      this._pendientesSuscripcion().length > 0 &&
+      this.isCacheValid(this._lastFetchPendientesSuscripcion.get(idSuscripcion))
+    ) {
+      return;
+    }
+
     this._loadingPendientesSuscripcion.set(true);
     this._error.set(null);
     this.currentSuscripcionId = idSuscripcion;
@@ -152,6 +190,7 @@ export class SolicitudesStore {
       this._pendientesSuscripcionVisible.set(
         pendientes.slice(0, this._visiblePendientesSuscripcionCount()),
       );
+      this._lastFetchPendientesSuscripcion.set(idSuscripcion, Date.now());
     } catch (error) {
       this._error.set(this.handleError(error));
     } finally {

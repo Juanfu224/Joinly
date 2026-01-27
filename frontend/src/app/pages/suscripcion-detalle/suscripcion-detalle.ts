@@ -97,18 +97,27 @@ export class SuscripcionDetalleComponent implements OnInit {
     const resolved = this.route.snapshot.data[
       'suscripcionData'
     ] as ResolvedData<SuscripcionDetalle>;
+    const subId = Number(this.id());
 
     if (resolved.error) {
-      this.toastService.error(resolved.error);
-    } else if (resolved.data) {
-      const subId = Number(this.id());
-      if (!isNaN(subId)) {
-        await this.suscripcionesStore.loadDetalle(subId);
-        await this.solicitudesStore.loadPendientesSuscripcion(subId);
+      // Solo mostrar error si hay mensaje (no si fue timeout)
+      if (resolved.error.trim()) {
+        this.toastService.error(resolved.error);
+        return;
+      }
+    }
+
+    // Cargar datos (el store maneja el caché)
+    if (!isNaN(subId)) {
+      // Cargar en paralelo sin await para no bloquear UI
+      Promise.all([
+        this.suscripcionesStore.loadDetalle(subId),
+        this.solicitudesStore.loadPendientesSuscripcion(subId),
+      ]).then(async () => {
         const tienePendiente =
           await this.solicitudesStore.tieneSolicitudPendienteSuscripcion(subId);
         this.tieneSolicitudPendiente.set(tienePendiente);
-      }
+      });
     }
   }
 

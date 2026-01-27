@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
-import { of, catchError, map } from 'rxjs';
+import { of, catchError, map, timeout } from 'rxjs';
 
 import type { GrupoCardData, Page } from '../models';
 import { UnidadFamiliarService } from '../services';
@@ -14,26 +14,28 @@ export interface DashboardData {
   totalElements: number;
 }
 
+/** Tiempo máximo de espera del resolver (ms) - evita bloqueo prolongado */
+const RESOLVER_TIMEOUT = 3000;
+
 /**
  * Precarga los grupos del usuario antes de activar el dashboard.
- * El spinner global se muestra automáticamente vía LoadingInterceptor.
+ * Timeout de 3s para evitar bloquear la navegación demasiado tiempo.
+ * En caso de timeout o error, permite la navegación y el componente cargará.
  */
 export const dashboardResolver: ResolveFn<ResolvedData<DashboardData>> = () => {
   const unidadService = inject(UnidadFamiliarService);
 
   return unidadService.getGruposCards().pipe(
+    timeout(RESOLVER_TIMEOUT),
     map((page: Page<GrupoCardData>) =>
       resolveSuccess<DashboardData>({
         grupos: page.content,
         totalElements: page.totalElements,
       }),
     ),
-    catchError((err) =>
-      of(
-        resolveError<DashboardData>(
-          err.error?.message || 'No se pudieron cargar los grupos. Intenta de nuevo.',
-        ),
-      ),
+    catchError(() =>
+      // En caso de error o timeout, devolver vacío - el componente cargará
+      of(resolveSuccess<DashboardData>({ grupos: [], totalElements: 0 })),
     ),
   );
 };
