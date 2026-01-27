@@ -100,6 +100,8 @@ export class GrupoDetalleComponent implements OnInit, OnDestroy {
     if (resolved.error) {
       this.toastService.error(resolved.error);
     } else if (resolved.data) {
+      // Añadir el grupo al store para que esté disponible
+      this.gruposStore.updateFromExternal(resolved.data.grupo);
       this.miembros.set(resolved.data.miembros);
 
       const grupoId = Number(this.id());
