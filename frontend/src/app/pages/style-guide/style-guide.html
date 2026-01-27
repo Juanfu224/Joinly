@@ -496,9 +496,11 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
         <h3 class="p-style-guide__demo-titulo">Estado vacío</h3>
         <p class="p-style-guide__descripcion">
           Componente que se muestra cuando el usuario no tiene grupos creados. Incluye icono
-          circular, mensaje y descripción centrados.
+          circular, mensaje y descripción centrados. Debe usarse dentro de un contenedor con fondo.
         </p>
-        <app-empty-groups />
+        <div class="p-style-guide__contenedor-vacio">
+          <app-empty-groups />
+        </div>
       </div>
 
       <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4)">
@@ -548,9 +550,11 @@ const currentTheme = this.themeService.currentTheme();</code></pre>
         <h3 class="p-style-guide__demo-titulo">Estado vacío</h3>
         <p class="p-style-guide__descripcion">
           Componente que se muestra cuando el grupo no tiene suscripciones creadas. Incluye icono
-          circular, mensaje y descripción centrados.
+          circular, mensaje y descripción centrados. Debe usarse dentro de un contenedor con fondo.
         </p>
-        <app-empty-subscriptions />
+        <div class="p-style-guide__contenedor-vacio">
+          <app-empty-subscriptions />
+        </div>
       </div>
 
       <div class="p-style-guide__nota" style="margin-top: var(--espaciado-4)">

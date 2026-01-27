@@ -4,11 +4,11 @@
 // COMPONENTE: EMPTY-GROUPS (Estado vacío de grupos)
 // ==========================================================================
 // Estado vacío que se muestra cuando el usuario no tiene grupos
-// Diseño basado en Figma con tarjeta blanca, sombras e icono circular
+// Diseño centrado con icono circular, texto jerárquico y espaciado balanceado
+// El contenedor padre maneja el fondo y las sombras
 
 :host {
   display: block;
-  inline-size: 100%;
 }
 
 .c-empty-groups {
@@ -18,16 +18,13 @@
   align-items: center;
   justify-content: center;
   gap: var(--espaciado-3);
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radio-grande);
-  box-shadow: var(--sombra-1), var(--sombra-3);
+  background-color: transparent;
   padding: var(--espaciado-10) var(--espaciado-4);
   min-block-size: 300px;
   inline-size: 100%;
 
   // ==========================================================================
-  // ELEMENTO: Contenedor de icono circular (gris oscuro según Figma)
+  // ELEMENTO: Contenedor de icono circular
   // ==========================================================================
 
   &__icon-container {
@@ -36,17 +33,17 @@
     justify-content: center;
     inline-size: 64px;
     block-size: 64px;
-    background-color: var(--color-gris-oscuro);
+    background-color: var(--border-color);
     border-radius: 50%;
-    box-shadow: var(--sombra-2);
-
+    margin-block-end: var(--espaciado-1);
+    
     app-icon {
-      color: var(--color-fondo-claro);
+      color: var(--text-secondary);
     }
   }
 
   // ==========================================================================
-  // ELEMENTO: Título (20px semibold según Figma)
+  // ELEMENTO: Título - H3 según Figma (20px semi-bold)
   // ==========================================================================
 
   &__titulo {
@@ -60,7 +57,7 @@
   }
 
   // ==========================================================================
-  // ELEMENTO: Descripción (16px regular según Figma)
+  // ELEMENTO: Descripción - Texto normal (16px regular)
   // ==========================================================================
 
   &__descripcion {
@@ -68,7 +65,7 @@
     font-family: var(--font-primaria);
     font-size: var(--tamano-texto-normal);
     font-weight: var(--peso-fuente-regular);
-    line-height: var(--altura-linea-body-regular);
+    line-height: var(--altura-linea-normal);
     color: var(--text-secondary);
     text-align: center;
     margin: 0;

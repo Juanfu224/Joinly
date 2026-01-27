@@ -64,10 +64,7 @@
 
     <!-- Estado de carga -->
     @if (isLoading()) {
-      <section
-        class="p-dashboard__grupos p-dashboard__grupos--loading"
-        aria-label="Cargando grupos"
-      >
+      <section class="p-dashboard__grupos" aria-label="Cargando grupos">
         <div class="p-dashboard__grid">
           @for (i of [1, 2, 3]; track i) {
             <div class="p-dashboard__skeleton" aria-hidden="true">

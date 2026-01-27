@@ -491,3 +491,12 @@
   overflow-x: auto;
 }
 
+// Contenedor para estados vacíos con fondo (simula contenedor de tarjetas)
+.p-style-guide__contenedor-vacio {
+  background-color: var(--bg-tertiary);
+  border-radius: var(--radio-grande);
+  padding: var(--espaciado-5);
+  margin-block-start: var(--espaciado-4);
+  box-shadow: var(--sombra-1), var(--sombra-3);
+}
+

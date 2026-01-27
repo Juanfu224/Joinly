@@ -5,19 +5,24 @@ import { IconComponent } from '../icon/icon';
  * Componente de estado vacío para grupos.
  *
  * Se muestra cuando el usuario no tiene grupos creados,
- * siguiendo el diseño de Figma con icono de usuarios,
- * mensaje y descripción centrados.
+ * con icono de usuarios, mensaje y descripción centrados.
+ * El contenedor padre debe proporcionar el fondo y las sombras.
  *
  * @usageNotes
  * ```html
- * <app-empty-groups />
+ * <!-- Dentro de un contenedor con estilos de tarjeta -->
+ * <section class="contenedor-con-fondo">
+ *   <app-empty-groups />
+ * </section>
  * ```
  *
  * ### Características
  * - Diseño centrado con icono circular
- * - Mensaje y descripción según diseño Figma
- * - OnPush change detection
+ * - Fondo transparente (no incluye estilos de tarjeta)
+ * - Mensaje y descripción según diseño de Figma
+ * - OnPush change detection para rendimiento óptimo
  * - HTML semántico con elemento `<section>`
+ * - Sigue el patrón de componentes empty del proyecto
  */
 @Component({
   selector: 'app-empty-groups',
