@@ -134,7 +134,11 @@ export class GruposStore {
     this._searchTerm.set('');
   }
 
-  updateFromExternal(grupo: UnidadFamiliar): void {
+  /**
+   * Añade o actualiza un grupo en el store sin mostrar notificaciones.
+   * Útil para cargar datos desde el resolver.
+   */
+  addOrUpdate(grupo: UnidadFamiliar): void {
     this._grupos.update((list) => {
       const exists = list.some((g) => g.id === grupo.id);
       return exists ? list.map((g) => (g.id === grupo.id ? grupo : g)) : [...list, grupo];
@@ -142,6 +146,14 @@ export class GruposStore {
     this._cards.update((cards) =>
       cards.map((c) => (c.id === grupo.id ? { ...c, nombre: grupo.nombre } : c)),
     );
+  }
+
+  /**
+   * Actualiza un grupo desde una fuente externa (WebSocket, otros usuarios).
+   * Muestra una notificación al usuario.
+   */
+  updateFromExternal(grupo: UnidadFamiliar): void {
+    this.addOrUpdate(grupo);
     this.toastService.info('Grupo actualizado por otro usuario');
   }
 
