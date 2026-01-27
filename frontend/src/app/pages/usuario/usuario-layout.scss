@@ -12,12 +12,14 @@
 }
 
 .p-usuario-layout {
-  padding: var(--espaciado-4);
+  padding-block-start: var(--espaciado-4);
+  padding-inline: var(--espaciado-4);
   max-width: 72rem;
   margin: 0 auto;
 
   @include responder-a('tablet') {
-    padding: var(--espaciado-6);
+    padding-block-start: var(--espaciado-6);
+    padding-inline: var(--espaciado-6);
   }
 
   // =========================================================================

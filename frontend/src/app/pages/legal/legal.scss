@@ -14,10 +14,12 @@
 .p-legal {
   max-width: 48rem;
   margin: 0 auto;
-  padding: var(--espaciado-6) var(--espaciado-4);
+  padding-block-start: var(--espaciado-6);
+  padding-inline: var(--espaciado-4);
 
   @include responder-a('tablet') {
-    padding: var(--espaciado-8) var(--espaciado-6);
+    padding-block-start: var(--espaciado-8);
+    padding-inline: var(--espaciado-6);
   }
 
   // =========================================================================

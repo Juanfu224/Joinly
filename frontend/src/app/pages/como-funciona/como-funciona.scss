@@ -14,14 +14,17 @@
 .p-como-funciona {
   max-width: 56rem;
   margin: 0 auto;
-  padding: var(--espaciado-4) var(--espaciado-3);
+  padding-block-start: var(--espaciado-4);
+  padding-inline: var(--espaciado-3);
 
   @include responder-a('movil') {
-    padding: var(--espaciado-6) var(--espaciado-4);
+    padding-block-start: var(--espaciado-6);
+    padding-inline: var(--espaciado-4);
   }
 
   @include responder-a('tablet') {
-    padding: var(--espaciado-8) var(--espaciado-6);
+    padding-block-start: var(--espaciado-8);
+    padding-inline: var(--espaciado-6);
   }
 
   // =========================================================================

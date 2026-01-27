@@ -59,6 +59,26 @@ app-footer {
 }
 
 // ---------------------------------------------------------------------------
+// MAIN: Espaciado consistente al footer
+// ---------------------------------------------------------------------------
+// Asegura que todas las páginas tengan la misma distancia al footer.
+// Estrategia: padding-block-end responsive
+//
+// Valores:
+// - Mobile (< 768px): var(--espaciado-4) (32px)
+// - Tablet+ (≥768px): var(--espaciado-6) (48px)
+//
+// NOTA: Las páginas individuales pueden sobrescribir esto si necesitan
+// un espaciado diferente para casos específicos.
+.l-main {
+  padding-block-end: var(--espaciado-4);
+
+  @include responder-a('tablet') {
+    padding-block-end: var(--espaciado-6);
+  }
+}
+
+// ---------------------------------------------------------------------------
 // SKIP LINK (Accesibilidad)
 // ---------------------------------------------------------------------------
 // Enlace oculto que aparece al hacer focus con teclado.

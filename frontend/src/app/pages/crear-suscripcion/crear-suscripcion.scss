@@ -14,11 +14,11 @@
 .p-crear-suscripcion {
   @include centrar-flex;
   min-block-size: 100vh;
-  padding: var(--espaciado-4);
+  padding-inline: var(--espaciado-4);
   background: var(--color-superficie-morada);
 
   @include responder-a('tablet') {
-    padding: var(--espaciado-6);
+    padding-inline: var(--espaciado-6);
   }
 
   &__container {

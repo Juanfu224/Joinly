@@ -13,12 +13,6 @@
 // BLOQUE: .p-suscripcion-detalle
 // ---------------------------------------------------------------------------
 .p-suscripcion-detalle {
-  padding-block-end: var(--espaciado-6);
-
-  @include responder-a('tablet') {
-    padding-block-end: var(--espaciado-8);
-  }
-
   // ---------------------------------------------------------------------------
   // ELEMENTO: Header
   // ---------------------------------------------------------------------------

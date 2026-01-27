@@ -24,12 +24,7 @@
 // CONTENEDOR PRINCIPAL
 // ---------------------------------------------------------------------------
 .p-dashboard {
-  padding-block-end: var(--espaciado-4);
-
-  @include responder-a('tablet') {
-    padding-block-end: var(--espaciado-6);
-  }
-
+  // Espaciado mayor al footer en desktop para mejor separación visual
   @include responder-a('escritorio') {
     padding-block-end: var(--espaciado-8);
   }
