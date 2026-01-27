@@ -20,13 +20,6 @@
 }
 
 // ---------------------------------------------------------------------------
-// CONTENEDOR PRINCIPAL
-// ---------------------------------------------------------------------------
-.p-grupo-detalle {
-  // Sin padding superior, el header maneja el espaciado
-}
-
-// ---------------------------------------------------------------------------
 // HEADER DE PÁGINA
 // ---------------------------------------------------------------------------
 .p-grupo-detalle__header {
@@ -127,7 +120,6 @@
   padding: var(--espaciado-3);
   // Sombra combinada según diseño Figma (sombra 1 + sombra 3)
   box-shadow: var(--sombra-1), var(--sombra-3);
-  min-block-size: 400px; // Altura mínima según Figma
 
   @include responder-a('tablet') {
     padding: var(--espaciado-4);
