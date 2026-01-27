@@ -35,6 +35,7 @@ export class CrearGrupoComponent implements CanComponentDeactivate {
   protected onGroupSubmitted(data: { nombre: string }): void {
     this.unidadService.crearUnidad({ nombre: data.nombre }).subscribe({
       next: () => {
+        this.formComponent()?.markAsSuccessful();
         this.toastService.show('success', 'Grupo creado exitosamente');
         this.router.navigate(['/dashboard'], { replaceUrl: true });
       },

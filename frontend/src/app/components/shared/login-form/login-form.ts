@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  HostListener,
   inject,
   output,
   signal,
@@ -47,7 +46,10 @@ interface LoginFormValue {
   templateUrl: './login-form.html',
   styleUrl: './login-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'c-login-form' },
+  host: {
+    class: 'c-login-form',
+    '(keydown)': 'handleEnterKey($event)',
+  },
 })
 export class LoginFormComponent {
   private readonly fb = inject(FormBuilder).nonNullable;
@@ -80,7 +82,6 @@ export class LoginFormComponent {
     return this.form.invalid || this.form.pending || this.isLoading();
   });
 
-  @HostListener('keydown', ['$event'])
   protected handleEnterKey(event: KeyboardEvent): void {
     if (shouldTriggerSubmit(event)) {
       event.preventDefault();

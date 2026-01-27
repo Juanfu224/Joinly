@@ -109,15 +109,19 @@ export class SuscripcionDetalleComponent implements OnInit {
 
     // Cargar datos (el store maneja el caché)
     if (!isNaN(subId)) {
-      // Cargar en paralelo sin await para no bloquear UI
+      // Cargar en paralelo sin await para no bloquear UI, con manejo de errores
       Promise.all([
         this.suscripcionesStore.loadDetalle(subId),
         this.solicitudesStore.loadPendientesSuscripcion(subId),
-      ]).then(async () => {
-        const tienePendiente =
-          await this.solicitudesStore.tieneSolicitudPendienteSuscripcion(subId);
-        this.tieneSolicitudPendiente.set(tienePendiente);
-      });
+      ])
+        .then(async () => {
+          const tienePendiente =
+            await this.solicitudesStore.tieneSolicitudPendienteSuscripcion(subId);
+          this.tieneSolicitudPendiente.set(tienePendiente);
+        })
+        .catch((error) => {
+          console.error('Error al cargar datos de la suscripción:', error);
+        });
     }
   }
 

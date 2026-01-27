@@ -83,11 +83,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
       // Cargar si no hay datos en caché
       if (!this.gruposStore.hasCards()) {
-        this.gruposStore.loadCards(0, 50);
+        this.gruposStore.loadCards(0, 50).catch((error) => {
+          console.error('Error al cargar grupos:', error);
+        });
       }
     } else if (!this.gruposStore.hasCards()) {
       // Solo cargar si no hay datos en caché
-      this.gruposStore.loadCards(0, 50);
+      this.gruposStore.loadCards(0, 50).catch((error) => {
+        console.error('Error al cargar grupos:', error);
+      });
     }
   }
 

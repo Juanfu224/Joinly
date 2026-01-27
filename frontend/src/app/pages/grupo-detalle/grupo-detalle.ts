@@ -114,11 +114,13 @@ export class GrupoDetalleComponent implements OnInit, OnDestroy {
 
     // Cargar suscripciones y solicitudes (con caché)
     if (!isNaN(grupoId)) {
-      // Cargar en paralelo sin bloquear
+      // Cargar en paralelo sin bloquear, con manejo de errores
       Promise.all([
         this.suscripcionesStore.loadByUnidad(grupoId),
         this.solicitudesStore.loadPendientesGrupo(grupoId),
-      ]);
+      ]).catch((error) => {
+        console.error('Error al cargar datos del grupo:', error);
+      });
     }
   }
 

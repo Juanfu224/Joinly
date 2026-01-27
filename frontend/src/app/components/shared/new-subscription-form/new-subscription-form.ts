@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  HostListener,
   inject,
   output,
   signal,
@@ -44,7 +43,10 @@ export interface NewSubscriptionFormValue {
   templateUrl: './new-subscription-form.html',
   styleUrl: './new-subscription-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'c-new-subscription-form' },
+  host: {
+    class: 'c-new-subscription-form',
+    '(keydown)': 'handleEnterKey($event)',
+  },
 })
 export class NewSubscriptionFormComponent implements CanComponentDeactivate {
   private readonly fb = inject(FormBuilder).nonNullable;
@@ -96,7 +98,6 @@ export class NewSubscriptionFormComponent implements CanComponentDeactivate {
     return this.isLoading() || !this.form.dirty;
   }
 
-  @HostListener('keydown', ['$event'])
   protected handleEnterKey(event: KeyboardEvent): void {
     if (shouldTriggerSubmit(event)) {
       event.preventDefault();

@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router, RouterOutlet, NavigationStart } from '@angular/router';
+import { filter } from 'rxjs';
 import {
   ModalComponent,
   ToastContainerComponent,
@@ -35,11 +37,22 @@ import { BreadcrumbService } from './services';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App {
+  private readonly router = inject(Router);
   private readonly themeService = inject(ThemeService);
   protected readonly loadingService = inject(LoadingService);
   protected readonly breadcrumbService = inject(BreadcrumbService);
 
   constructor() {
     this.themeService.initialize();
+
+    // Resetear loading en cada navegación para evitar estados bloqueados
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationStart),
+        takeUntilDestroyed(),
+      )
+      .subscribe(() => {
+        this.loadingService.reset();
+      });
   }
 }

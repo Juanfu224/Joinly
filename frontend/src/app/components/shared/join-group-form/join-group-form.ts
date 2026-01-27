@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  HostListener,
   inject,
   output,
   signal,
@@ -33,7 +32,10 @@ interface JoinGroupFormValue {
   templateUrl: './join-group-form.html',
   styleUrl: './join-group-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'c-join-group-form' },
+  host: {
+    class: 'c-join-group-form',
+    '(keydown)': 'handleEnterKey($event)',
+  },
 })
 export class JoinGroupFormComponent {
   private readonly fb = inject(FormBuilder).nonNullable;
@@ -71,7 +73,6 @@ export class JoinGroupFormComponent {
     return this.form.invalid;
   });
 
-  @HostListener('keydown', ['$event'])
   protected handleEnterKey(event: KeyboardEvent): void {
     if (shouldTriggerSubmit(event)) {
       event.preventDefault();

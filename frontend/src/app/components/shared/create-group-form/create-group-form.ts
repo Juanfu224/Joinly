@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  HostListener,
   inject,
   output,
   signal,
@@ -31,7 +30,10 @@ interface CreateGroupFormValue {
   templateUrl: './create-group-form.html',
   styleUrl: './create-group-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'c-create-group-form' },
+  host: {
+    class: 'c-create-group-form',
+    '(keydown)': 'handleEnterKey($event)',
+  },
 })
 export class CreateGroupFormComponent implements CanComponentDeactivate {
   private readonly fb = inject(FormBuilder).nonNullable;
@@ -65,7 +67,6 @@ export class CreateGroupFormComponent implements CanComponentDeactivate {
     return this.isLoading() || !this.form.dirty;
   }
 
-  @HostListener('keydown', ['$event'])
   protected handleEnterKey(event: KeyboardEvent): void {
     if (shouldTriggerSubmit(event)) {
       event.preventDefault();
@@ -100,6 +101,16 @@ export class CreateGroupFormComponent implements CanComponentDeactivate {
   }
 
   completeLoading(): void {
+    this.isLoading.set(false);
+  }
+
+  /**
+   * Marca el formulario como exitosamente guardado.
+   * Establece el formulario como pristine para permitir navegación sin diálogo de confirmación.
+   * Debe llamarse tras guardar exitosamente en el servidor.
+   */
+  markAsSuccessful(): void {
+    this.form.markAsPristine();
     this.isLoading.set(false);
   }
 

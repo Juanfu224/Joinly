@@ -41,15 +41,15 @@ import { BehaviorSubject } from 'rxjs';
 export class LoadingService {
   /**
    * Delay mínimo en ms antes de mostrar el spinner.
-   * Evita parpadeos en requests muy rápidas (< 200ms).
+   * Evita parpadeos en requests muy rápidas (< 100ms).
    */
-  private static readonly SHOW_DELAY_MS = 200;
+  private static readonly SHOW_DELAY_MS = 100;
 
   /**
    * Delay mínimo que el spinner permanece visible.
    * Evita parpadeos si el request termina justo después de mostrarse.
    */
-  private static readonly MIN_VISIBLE_MS = 300;
+  private static readonly MIN_VISIBLE_MS = 150;
 
   private readonly loadingSubject = new BehaviorSubject<boolean>(false);
   private requestCount = 0;

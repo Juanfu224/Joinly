@@ -55,6 +55,7 @@ export class RegisterComponent {
 
     this.authService.register(registerData).subscribe({
       next: (user) => {
+        this.registerForm().completeLoading();
         this.toastService.success(`¡Cuenta creada! Bienvenido, ${user.nombre}!`);
         this.router.navigate(['/dashboard'], { replaceUrl: true });
       },

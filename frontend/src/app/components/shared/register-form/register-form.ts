@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  HostListener,
   inject,
   output,
   signal,
@@ -35,7 +34,10 @@ interface RegisterFormValue {
   templateUrl: './register-form.html',
   styleUrl: './register-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'c-register-form' },
+  host: {
+    class: 'c-register-form',
+    '(keydown)': 'handleEnterKey($event)',
+  },
 })
 export class RegisterFormComponent {
   private readonly fb = inject(FormBuilder).nonNullable;
@@ -87,7 +89,6 @@ export class RegisterFormComponent {
     return this.form.invalid || this.form.pending || this.isLoading();
   });
 
-  @HostListener('keydown', ['$event'])
   protected handleEnterKey(event: KeyboardEvent): void {
     if (shouldTriggerSubmit(event)) {
       event.preventDefault();

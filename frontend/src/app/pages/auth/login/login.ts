@@ -43,6 +43,7 @@ export class LoginComponent {
   protected onLoginSubmit(data: { email: string; password: string }): void {
     this.authService.login(data).subscribe({
       next: (user) => {
+        this.loginForm().completeLoading();
         this.toastService.success(`¡Bienvenido, ${user.nombre}!`);
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
         this.router.navigate([returnUrl], { replaceUrl: true });

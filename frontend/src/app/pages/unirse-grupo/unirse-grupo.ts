@@ -36,6 +36,7 @@ export class UnirseGrupoComponent {
 
     this.solicitudService.unirseGrupo(request).subscribe({
       next: () => {
+        this.formComponent()?.completeLoading();
         this.toastService.show('success', 'Solicitud enviada correctamente');
         this.router.navigate(['/dashboard']);
       },
