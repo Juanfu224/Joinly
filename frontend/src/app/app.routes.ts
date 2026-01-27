@@ -91,22 +91,6 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/crear-suscripcion').then((m) => m.CrearSuscripcionComponent),
     title: 'Nueva Suscripción - Joinly',
-    data: {
-      breadcrumbParent: [
-        {
-          label: 'Mis Grupos',
-          url: '/dashboard',
-        },
-        {
-          label: (data: Data) => {
-            const resolved = data['grupoData'] as ResolvedData<GrupoDetalleData> | undefined;
-            return resolved?.data?.grupo?.nombre ?? 'Grupo';
-          },
-          url: (params: Record<string, string>) => `/grupos/${params['id']}`,
-        },
-      ],
-      breadcrumb: 'Nueva Suscripción',
-    },
   },
   {
     path: 'grupos/:grupoId/suscripciones/:id',

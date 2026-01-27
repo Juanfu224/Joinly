@@ -92,6 +92,11 @@
   display: flex;
   flex-direction: column;
   gap: var(--espaciado-4);
+  margin-block-end: var(--espaciado-6);
+
+  @include responder-a('tablet') {
+    margin-block-end: var(--espaciado-8);
+  }
 }
 
 .p-grupo-detalle__suscripciones-header {
