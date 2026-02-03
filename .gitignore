@@ -19,6 +19,15 @@ mysql_data/
 # Backups (contienen datos sensibles)
 backups/
 
+# SSL/TLS Certificates (NUNCA subir claves privadas)
+ssl/
+certbot/
+*.pem
+*.key
+*.crt
+*.csr
+!nginx/*.conf
+
 # Logs
 *.log
 logs/
