@@ -55,32 +55,13 @@
         class="p-suscripcion-detalle__members"
       />
 
-      <!-- Solicitudes pendientes - Solo visible para anfitriones -->
-      @if (esAnfitrion() && solicitudesPendientes().length > 0) {
-        <section class="p-suscripcion-detalle__solicitudes">
-          <app-pending-requests-card
-            [solicitudes]="solicitudesPendientesVisible()"
-            (acceptRequest)="onAceptarSolicitud($event)"
-            (rejectRequest)="onRechazarSolicitud($event)"
-          />
-          @if (hasMoreSolicitudes() && !loadingMoreSolicitudes()) {
-            <div
-              class="p-suscripcion-detalle__infinite-scroll-trigger"
-              appInfiniteScroll
-              (scrolled)="onLoadMoreSolicitudes()"
-            ></div>
-          }
-          @if (loadingMoreSolicitudes()) {
-            <div class="p-suscripcion-detalle__loading-more">Cargando más solicitudes...</div>
-          }
-        </section>
-      }
-
       <!-- Info Card - Solo visible para miembros de la suscripción -->
       @if (esMiembro() || esAnfitrion()) {
         <app-subscription-info-card
           [info]="infoData()"
-          [isAdmin]="false"
+          [isAdmin]="esAnfitrion()"
+          (acceptRequest)="onAceptarSolicitudFromCard($event)"
+          (rejectRequest)="onRechazarSolicitudFromCard($event)"
           class="p-suscripcion-detalle__info"
         />
       }

@@ -14,16 +14,15 @@ import {
   SubscriptionInfoCardComponent,
   IconComponent,
   ButtonComponent,
-  PendingRequestsCardComponent,
   type MemberData,
   type SubscriptionInfoData,
   type StatCardType,
+  type JoinRequest,
 } from '../../components/shared';
 import type { SuscripcionDetalle, SolicitudResponse } from '../../models';
 import { type ResolvedData } from '../../resolvers';
 import { ToastService, AuthService, ModalService } from '../../services';
 import { SuscripcionesStore, SolicitudesStore } from '../../stores';
-import { InfiniteScrollDirective } from '../../directives';
 
 @Component({
   selector: 'app-suscripcion-detalle',
@@ -34,8 +33,6 @@ import { InfiniteScrollDirective } from '../../directives';
     SubscriptionInfoCardComponent,
     IconComponent,
     ButtonComponent,
-    PendingRequestsCardComponent,
-    InfiniteScrollDirective,
   ],
   templateUrl: './suscripcion-detalle.html',
   styleUrl: './suscripcion-detalle.scss',
@@ -57,11 +54,6 @@ export class SuscripcionDetalleComponent implements OnInit {
   protected readonly error = computed(() => this.suscripcionesStore.error());
   protected readonly tieneSolicitudPendiente = signal(false);
   protected readonly solicitudesPendientes = this.solicitudesStore.pendientesSuscripcion;
-  protected readonly solicitudesPendientesVisible =
-    this.solicitudesStore.pendientesSuscripcionVisible;
-  protected readonly hasMoreSolicitudes = this.solicitudesStore.hasMorePendientesSuscripcion;
-  protected readonly loadingMoreSolicitudes =
-    this.solicitudesStore.loadingMorePendientesSuscripcion;
 
   protected readonly esAnfitrion = computed(() => {
     const sub = this.suscripcion();
@@ -187,12 +179,48 @@ export class SuscripcionDetalleComponent implements OnInit {
       };
     }
 
+    // Transformar SolicitudResponse[] a JoinRequest[]
+    const solicitudes: JoinRequest[] = this.solicitudesPendientes().map((sol) => ({
+      id: sol.id,
+      nombreUsuario: sol.solicitante.nombreUsuario,
+      email: sol.solicitante.email,
+      avatarUrl: sol.solicitante.avatar,
+    }));
+
     return {
       credenciales: sub.credenciales ?? { usuario: '', contrasena: '' },
       pago: sub.pago,
-      solicitudes: [],
+      solicitudes,
     };
   });
+
+  /**
+   * Busca una solicitud pendiente por su ID.
+   * Método auxiliar para transformar JoinRequest a SolicitudResponse.
+   */
+  private findSolicitudById(id: number): SolicitudResponse | undefined {
+    return this.solicitudesPendientes().find((s) => s.id === id);
+  }
+
+  /**
+   * Maneja aceptar solicitud desde la tarjeta de información.
+   * Transforma JoinRequest a SolicitudResponse buscando en las solicitudes pendientes.
+   */
+  protected async onAceptarSolicitudFromCard(request: JoinRequest): Promise<void> {
+    const solicitud = this.findSolicitudById(request.id);
+    if (!solicitud) return;
+    await this.onAceptarSolicitud(solicitud);
+  }
+
+  /**
+   * Maneja rechazar solicitud desde la tarjeta de información.
+   * Transforma JoinRequest a SolicitudResponse buscando en las solicitudes pendientes.
+   */
+  protected async onRechazarSolicitudFromCard(request: JoinRequest): Promise<void> {
+    const solicitud = this.findSolicitudById(request.id);
+    if (!solicitud) return;
+    await this.onRechazarSolicitud(solicitud);
+  }
 
   protected async onAceptarSolicitud(request: SolicitudResponse): Promise<void> {
     const nombreUsuario = request.solicitante.nombreUsuario;
@@ -249,9 +277,5 @@ export class SuscripcionDetalleComponent implements OnInit {
       const tienePendiente = await this.solicitudesStore.tieneSolicitudPendienteSuscripcion(subId);
       this.tieneSolicitudPendiente.set(tienePendiente);
     }
-  }
-
-  protected async onLoadMoreSolicitudes(): Promise<void> {
-    await this.solicitudesStore.loadMorePendientesSuscripcion();
   }
 }
