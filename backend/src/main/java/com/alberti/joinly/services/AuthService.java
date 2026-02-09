@@ -98,22 +98,7 @@ public class AuthService {
         var accessToken = jwtService.generateAccessToken(userPrincipal);
         var refreshToken = jwtService.generateRefreshToken(userPrincipal);
 
-        return AuthResponse.builder()
-                .id(usuarioGuardado.getId())
-                .nombre(usuarioGuardado.getNombre())
-                .email(usuarioGuardado.getEmail())
-                .temaPreferido(usuarioGuardado.getTemaPreferido())
-                .emailVerificado(usuarioGuardado.getEmailVerificado())
-                .telefono(usuarioGuardado.getTelefono())
-                .fechaRegistro(usuarioGuardado.getFechaRegistro())
-                .fechaUltimoAcceso(usuarioGuardado.getFechaUltimoAcceso())
-                .avatar(usuarioGuardado.getAvatar())
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .tokenType("Bearer")
-                .expiresIn(jwtService.getRemainingValidity(accessToken))
-                .mensaje("Usuario registrado exitosamente")
-                .build();
+        return buildAuthResponse(usuarioGuardado, accessToken, refreshToken, "Usuario registrado exitosamente");
     }
 
     /**
@@ -162,22 +147,7 @@ public class AuthService {
 
             log.info("Login exitoso para usuario: {} (ID: {})", userPrincipal.getEmail(), userPrincipal.getId());
 
-            return AuthResponse.builder()
-                    .id(usuario.getId())
-                    .nombre(usuario.getNombre())
-                    .email(usuario.getEmail())
-                    .temaPreferido(usuario.getTemaPreferido())
-                    .emailVerificado(usuario.getEmailVerificado())
-                    .telefono(usuario.getTelefono())
-                    .fechaRegistro(usuario.getFechaRegistro())
-                    .fechaUltimoAcceso(usuario.getFechaUltimoAcceso())
-                    .avatar(usuario.getAvatar())
-                    .accessToken(accessToken)
-                    .refreshToken(refreshToken)
-                    .tokenType("Bearer")
-                    .expiresIn(jwtService.getRemainingValidity(accessToken))
-                    .mensaje("Inicio de sesión exitoso")
-                    .build();
+            return buildAuthResponse(usuario, accessToken, refreshToken, "Inicio de sesión exitoso");
 
         } catch (BadCredentialsException e) {
             log.warn("Credenciales inválidas para email: {}", request.email());
@@ -248,22 +218,7 @@ public class AuthService {
 
         log.info("Tokens renovados para usuario: {} (ID: {})", email, usuario.getId());
 
-        return AuthResponse.builder()
-                .id(usuario.getId())
-                .nombre(usuario.getNombre())
-                .email(usuario.getEmail())
-                .temaPreferido(usuario.getTemaPreferido())
-                .emailVerificado(usuario.getEmailVerificado())
-                .telefono(usuario.getTelefono())
-                .fechaRegistro(usuario.getFechaRegistro())
-                .fechaUltimoAcceso(usuario.getFechaUltimoAcceso())
-                .avatar(usuario.getAvatar())
-                .accessToken(newAccessToken)
-                .refreshToken(newRefreshToken)
-                .tokenType("Bearer")
-                .expiresIn(jwtService.getRemainingValidity(newAccessToken))
-                .mensaje("Tokens renovados exitosamente")
-                .build();
+        return buildAuthResponse(usuario, newAccessToken, newRefreshToken, "Tokens renovados exitosamente");
     }
 
     /**
@@ -331,5 +286,24 @@ public class AuthService {
         usuarioRepository.save(usuario);
 
         log.info("Contraseña cambiada exitosamente para usuario: {} (ID: {})", usuario.getEmail(), userId);
+    }
+
+    private AuthResponse buildAuthResponse(Usuario usuario, String accessToken, String refreshToken, String mensaje) {
+        return AuthResponse.builder()
+                .id(usuario.getId())
+                .nombre(usuario.getNombre())
+                .email(usuario.getEmail())
+                .temaPreferido(usuario.getTemaPreferido())
+                .emailVerificado(usuario.getEmailVerificado())
+                .telefono(usuario.getTelefono())
+                .fechaRegistro(usuario.getFechaRegistro())
+                .fechaUltimoAcceso(usuario.getFechaUltimoAcceso())
+                .avatar(usuario.getAvatar())
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .tokenType("Bearer")
+                .expiresIn(jwtService.getRemainingValidity(accessToken))
+                .mensaje(mensaje)
+                .build();
     }
 }

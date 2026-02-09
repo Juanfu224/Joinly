@@ -82,53 +82,24 @@ export class AuthService {
   }
 
   private extractUser(response: AuthResponse): User {
-    return {
-      id: response.id,
-      nombre: response.nombre,
-      email: response.email,
-      emailVerificado: response.emailVerificado,
-      temaPreferido: response.temaPreferido,
-      telefono: response.telefono,
-      avatar: response.avatar,
-      fechaRegistro: response.fechaRegistro,
-      fechaUltimoAcceso: response.fechaUltimoAcceso,
-    };
+    const { id, nombre, email, emailVerificado, temaPreferido, telefono, avatar, fechaRegistro, fechaUltimoAcceso } = response;
+    return { id, nombre, email, emailVerificado, temaPreferido, telefono, avatar, fechaRegistro, fechaUltimoAcceso };
   }
 
   private handleAuthError(error: HttpErrorResponse): Observable<never> {
-    let message = 'Error de autenticación';
+    const defaultMessages: Record<number, string> = {
+      0: 'Sin conexión al servidor. Verifica que el backend esté ejecutándose.',
+      400: 'Datos de registro inválidos',
+      401: 'Email o contraseña incorrectos. Por favor, verifica tus credenciales.',
+      403: 'No tienes permisos para realizar esta acción.',
+      409: 'Este email ya está registrado',
+      422: 'Tu cuenta está deshabilitada o bloqueada. Contacta con soporte.',
+      500: 'Error interno del servidor',
+    };
 
-    // Primero intentar obtener mensaje del error del backend
-    if (error.error?.message) {
-      message = error.error.message;
-    } else if (typeof error.error === 'string') {
-      message = error.error;
-    } else {
-      // Mensajes por código de estado HTTP
-      switch (error.status) {
-        case 0:
-          message = 'Sin conexión al servidor. Verifica que el backend esté ejecutándose.';
-          break;
-        case 400:
-          message = 'Datos de registro inválidos';
-          break;
-        case 401:
-          message = 'Email o contraseña incorrectos. Por favor, verifica tus credenciales.';
-          break;
-        case 403:
-          message = 'No tienes permisos para realizar esta acción.';
-          break;
-        case 409:
-          message = 'Este email ya está registrado';
-          break;
-        case 422:
-          message = 'Tu cuenta está deshabilitada o bloqueada. Contacta con soporte.';
-          break;
-        case 500:
-          message = 'Error interno del servidor';
-          break;
-      }
-    }
+    const message = error.error?.message 
+      ?? (typeof error.error === 'string' ? error.error : defaultMessages[error.status]) 
+      ?? 'Error de autenticación';
 
     return throwError(() => ({ message, status: error.status }));
   }

@@ -76,23 +76,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.gruposStore.setSearchTerm(savedSearch);
     }
 
-    if (resolved.error) {
-      // Solo mostrar error si hay mensaje (no si fue timeout)
-      if (resolved.error.trim()) {
-        this.toastService.error(resolved.error);
-      }
-      // Cargar si no hay datos en caché
-      if (!this.gruposStore.hasCards()) {
-        this.gruposStore.loadCards(0, 50).catch((error) => {
-          console.error('Error al cargar grupos:', error);
-        });
-      }
-    } else if (!this.gruposStore.hasCards()) {
-      // Solo cargar si no hay datos en caché
-      this.gruposStore.loadCards(0, 50).catch((error) => {
-        console.error('Error al cargar grupos:', error);
-      });
+    if (resolved.error && resolved.error.trim()) {
+      this.toastService.error(resolved.error);
     }
+
+    if (!this.gruposStore.hasCards()) {
+      this.loadGrupos();
+    }
+  }
+
+  private loadGrupos(): void {
+    this.gruposStore.loadCards(0, 50).catch((error) => {
+      console.error('Error al cargar grupos:', error);
+    });
   }
 
   ngOnDestroy(): void {

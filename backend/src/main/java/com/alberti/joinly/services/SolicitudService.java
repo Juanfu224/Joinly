@@ -197,9 +197,7 @@ public class SolicitudService {
         log.info("Solicitud de unión a grupo creada: id={}, usuario={}, grupo={}",
                 solicitudGuardada.getId(), idSolicitante, unidad.getId());
 
-        // Recargar la solicitud con todas las relaciones para evitar LazyInitializationException
-        return solicitudRepository.findByIdCompleto(solicitudGuardada.getId())
-                .orElse(solicitudGuardada);
+        return cargarSolicitudCompleta(solicitudGuardada);
     }
 
     /**
@@ -275,9 +273,7 @@ public class SolicitudService {
         log.info("Solicitud de plaza creada: id={}, usuario={}, suscripcion={}",
                 solicitudGuardada.getId(), idSolicitante, idSuscripcion);
 
-        // Recargar la solicitud con todas las relaciones para evitar LazyInitializationException
-        return solicitudRepository.findByIdCompleto(solicitudGuardada.getId())
-                .orElse(solicitudGuardada);
+        return cargarSolicitudCompleta(solicitudGuardada);
     }
 
     /**
@@ -524,5 +520,9 @@ public class SolicitudService {
     public boolean tieneSolicitudPendienteSuscripcion(Long idSolicitante, Long idSuscripcion) {
         return solicitudRepository.existsBySolicitanteIdAndSuscripcionIdAndEstado(
                 idSolicitante, idSuscripcion, EstadoSolicitud.PENDIENTE);
+    }
+
+    private Solicitud cargarSolicitudCompleta(Solicitud solicitud) {
+        return solicitudRepository.findByIdCompleto(solicitud.getId()).orElse(solicitud);
     }
 }
