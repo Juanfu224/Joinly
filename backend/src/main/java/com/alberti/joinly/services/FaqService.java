@@ -40,13 +40,22 @@ public class FaqService {
 
     @Transactional
     public PreguntaFrecuente crear(CrearPregunta pregunta) {
-        PreguntaFrecuente nuevaPregunta = new PreguntaFrecuente();
-        nuevaPregunta.setPregunta(pregunta.pregunta());
-        nuevaPregunta.setRespuesta(pregunta.respuesta());
-        nuevaPregunta.setCategoria(CategoriaFaq.valueOf(pregunta.categoria()));
-        nuevaPregunta.setOrden(pregunta.orden());
-        nuevaPregunta.setActivo(true);
+        var nuevaPregunta = PreguntaFrecuente.builder()
+                .pregunta(pregunta.pregunta())
+                .respuesta(pregunta.respuesta())
+                .categoria(CategoriaFaq.valueOf(pregunta.categoria()))
+                .orden(pregunta.orden())
+                .activo(true)
+                .build();
         return preguntaFrecuenteRepository.save(nuevaPregunta);
+    }
+
+    @Transactional
+    public void eliminar(Long id) {
+        var pregunta = obtenerPorId(id);
+        pregunta.setActivo(false);
+        preguntaFrecuenteRepository.save(pregunta);
+        log.info("Pregunta con id {} desactivada", id);
     }
 
 }
