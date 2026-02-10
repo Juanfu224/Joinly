@@ -14,8 +14,9 @@ Los endpoints creados son:
 - `DELETE /api/v1/preguntas/{id}`:
   Este endpoint permite a los administradores eliminar preguntas frecuentes específicas. Es importante para mantener la base de datos de FAQs limpia y eliminar información obsoleta o incorrecta.
 
-Cómo has implementado la seguridad.
+Cómo has implementado la seguridad??
 He implementado la seguridad utilizando JWT (JSON Web Tokens) para autenticar a los usuarios. Los usuarios deben iniciar sesión para obtener un token de acceso, que luego deben incluir en el encabezado de sus solicitudes para acceder a los endpoints protegidos. Esto asegura que solo los usuarios autenticados puedan acceder a ciertas funcionalidades, como crear nuevas preguntas frecuentes.
+Los endpoints `POST /api/v1/preguntas/` y `DELETE /api/v1/preguntas/{id}` están protegidos y requieren autenticación, mientras que los endpoints `GET /api/v1/preguntas/` y `GET /api/v1/preguntas/categoria/{categoria}` son accesibles para todos los usuarios.
 
 Capturas o comandos para probarlo.
 Para probar los endpoints, puedes usar herramientas como Postman o cURL. Aquí hay algunos comandos de ejemplo:
