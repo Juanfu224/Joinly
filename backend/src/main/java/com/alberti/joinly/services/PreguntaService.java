@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class FaqService {
+public class PreguntaService {
     private final PreguntaFrecuenteRepository preguntaFrecuenteRepository;
 
     public List<PreguntaFrecuente> obtenerTodas() {
