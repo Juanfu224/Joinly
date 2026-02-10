@@ -81,10 +81,6 @@
     cursor: pointer;
     font-weight: var(--peso-fuente-medio);
     @include texto-regular;
-    transition:
-      background-color var(--duracion-rapida) var(--transicion-estandar),
-      transform var(--duracion-rapida) var(--transicion-estandar);
-
     @include foco-visible;
 
     &:hover {

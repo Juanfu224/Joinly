@@ -1,7 +1,6 @@
 @use '../../../../styles/00-settings/variables' as *;
 @use '../../../../styles/01-tools/mixins' as *;
 
-
 :host {
   display: block;
 }
@@ -13,7 +12,8 @@
   border-radius: var(--radio-grande);
   overflow: hidden;
   background: var(--bg-secondary);
-  transition: box-shadow var(--duracion-base) var(--transicion-estandar),
+  transition:
+    box-shadow var(--duracion-base) var(--transicion-estandar),
     border-color var(--duracion-base) var(--transicion-estandar);
 
   &:hover {
@@ -35,7 +35,8 @@
     font-weight: var(--peso-fuente-medio);
     color: var(--text-primary);
     @include texto-regular;
-    transition: background-color var(--duracion-rapida) var(--transicion-estandar),
+    transition:
+      background-color var(--duracion-rapida) var(--transicion-estandar),
       color var(--duracion-rapida) var(--transicion-estandar);
 
     @include foco-visible;
