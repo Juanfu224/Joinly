@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { PreguntaCardComponent } from './pregunta-card';
 import { PreguntaService } from '../../services/pregunta';
 import { PreguntaFrecuente, PreguntasAgrupadas } from '../../models';
 
@@ -10,7 +11,7 @@ interface CategoriaConPreguntas {
 @Component({
   selector: 'app-preguntas',
   standalone: true,
-  imports: [],
+  imports: [PreguntaCardComponent],
   templateUrl: './pregunta.html',
   styleUrl: './pregunta.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

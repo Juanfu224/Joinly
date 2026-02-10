@@ -53,7 +53,6 @@ export {
 
 export {
   type CategoriaFaq,
-  type Pregunta,
   type PreguntaFrecuente,
   type PreguntasAgrupadas,
 } from './pregunta.model';

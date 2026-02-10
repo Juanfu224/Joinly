@@ -8,14 +8,27 @@
     <div class="p-preguntas__estado" aria-live="polite">
       <p class="p-preguntas__mensaje">Cargando preguntas...</p>
     </div>
-  }
-
-  @if (error(); as errorMsg) {
+  } @else if (error(); as errorMsg) {
     <div class="p-preguntas__estado p-preguntas__estado--error" role="alert">
       <p class="p-preguntas__mensaje">{{ errorMsg }}</p>
       <button type="button" class="p-preguntas__btn-reintentar" (click)="cargarPreguntas()">
         Reintentar
       </button>
+    </div>
+  } @else {
+    <div class="p-preguntas__categorias">
+      @for (categoria of categorias(); track categoria.nombre) {
+        <section>
+          <h2 class="p-preguntas__categoria-titulo">{{ categoria.nombre }}</h2>
+          <div class="p-preguntas__rejilla">
+            @for (pregunta of categoria.preguntas; track pregunta.id) {
+              <app-pregunta-card [pregunta]="pregunta" />
+            }
+          </div>
+        </section>
+      } @empty {
+        <p class="p-preguntas__mensaje">No hay preguntas frecuentes disponibles.</p>
+      }
     </div>
   }
 </section>

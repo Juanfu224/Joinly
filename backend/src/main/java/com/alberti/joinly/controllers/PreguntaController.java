@@ -45,8 +45,8 @@ public class PreguntaController {
 
         @GetMapping("/categoria/{categoria}")
         public ResponseEntity<List<RespuestaPregunta>> listarPorCategoria(
-                        @PathVariable String categoria) {
-                List<RespuestaPregunta> preguntas = preguntaService.obtenerPorCategoria(CategoriaFaq.valueOf(categoria))
+                        @PathVariable CategoriaFaq categoria) {
+                List<RespuestaPregunta> preguntas = preguntaService.obtenerPorCategoria(categoria)
                                 .stream()
                                 .map(RespuestaPregunta::fromEntity)
                                 .toList();

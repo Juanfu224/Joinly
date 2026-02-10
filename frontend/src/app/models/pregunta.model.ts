@@ -1,11 +1,4 @@
-export type CategoriaFaq = 'SUSCRIPCIONES' | 'PAGOS ' | 'CUENTA' | 'OTROS';
-
-export interface Pregunta {
-  id: number;
-  pregunta: string;
-  respuesta: string;
-  categoria: CategoriaFaq;
-}
+export type CategoriaFaq = 'SUSCRIPCIONES' | 'PAGOS' | 'CUENTA' | 'OTROS';
 
 export interface PreguntaFrecuente {
   readonly id: number;

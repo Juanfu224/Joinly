@@ -5,13 +5,18 @@
     [class.c-pregunta-card__header--activo]="abierto()"
     (click)="toggle()"
     [attr.aria-expanded]="abierto()"
+    [attr.aria-controls]="'faq-body-' + pregunta.id"
   >
     <span class="c-pregunta-card__titulo">{{ pregunta.pregunta }}</span>
     <app-icon [name]="abierto() ? 'chevron-up' : 'chevron-down'" size="sm" />
   </button>
-  @if (abierto()) {
-    <div class="c-pregunta-card__body" role="region">
-      <p class="c-pregunta-card__respuesta">{{ pregunta.respuesta }}</p>
-    </div>
-  }
+  <div
+    class="c-pregunta-card__body"
+    [class.c-pregunta-card__body--abierto]="abierto()"
+    [id]="'faq-body-' + pregunta.id"
+    role="region"
+    [attr.aria-labelledby]="'faq-heading-' + pregunta.id"
+  >
+    <p class="c-pregunta-card__respuesta">{{ pregunta.respuesta }}</p>
+  </div>
 </article>

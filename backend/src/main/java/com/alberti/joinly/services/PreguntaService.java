@@ -22,15 +22,11 @@ public class PreguntaService {
     private final PreguntaFrecuenteRepository preguntaFrecuenteRepository;
 
     public List<PreguntaFrecuente> obtenerTodas() {
-        return preguntaFrecuenteRepository.findAll();
+        return preguntaFrecuenteRepository.findByActivoTrueOrderByOrdenAsc();
     }
 
     public List<PreguntaFrecuente> obtenerPorCategoria(CategoriaFaq categoria) {
-        return preguntaFrecuenteRepository.findByCategoria(categoria);
-    }
-
-    public List<PreguntaFrecuente> obtenerActivos() {
-        return preguntaFrecuenteRepository.findByActivoTrueOrderByOrdenAsc();
+        return preguntaFrecuenteRepository.findByCategoriaAndActivoTrueOrderByOrdenAsc(categoria);
     }
 
     public PreguntaFrecuente obtenerPorId(Long id) {
@@ -42,23 +38,20 @@ public class PreguntaService {
         return preguntaFrecuenteRepository.buscarPorTermino(termino);
     }
 
-    @Transactional
     public PreguntaFrecuente crear(CrearPregunta pregunta) {
         var nuevaPregunta = PreguntaFrecuente.builder()
                 .pregunta(pregunta.pregunta())
                 .respuesta(pregunta.respuesta())
-                .categoria(CategoriaFaq.valueOf(pregunta.categoria()))
+                .categoria(pregunta.categoria())
                 .orden(pregunta.orden())
                 .activo(true)
                 .build();
         return preguntaFrecuenteRepository.save(nuevaPregunta);
     }
 
-    @Transactional
     public void eliminar(Long id) {
         var pregunta = obtenerPorId(id);
         pregunta.setActivo(false);
-        preguntaFrecuenteRepository.save(pregunta);
         log.info("Pregunta con id {} desactivada", id);
     }
 

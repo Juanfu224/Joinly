@@ -8,17 +8,17 @@
 .c-pregunta-card {
   display: flex;
   flex-direction: column;
-  border: var(--borde-delgado) solid var(--color-borde-base);
-  border-radius: var(--radio-grande);
   overflow: hidden;
   background: var(--bg-secondary);
+  border: var(--borde-delgado) solid var(--color-borde-base);
+  border-radius: var(--radio-grande);
   transition:
     box-shadow var(--duracion-base) var(--transicion-estandar),
     border-color var(--duracion-base) var(--transicion-estandar);
 
   &:hover {
-    box-shadow: var(--sombra-2);
     border-color: var(--color-teal);
+    box-shadow: var(--sombra-2);
   }
 
   &__header {
@@ -28,27 +28,22 @@
     gap: var(--espaciado-2);
     width: 100%;
     padding: var(--espaciado-3);
+    font-weight: var(--peso-fuente-medio);
+    color: var(--text-primary);
+    text-align: left;
     background: transparent;
     border: none;
     cursor: pointer;
-    text-align: left;
-    font-weight: var(--peso-fuente-medio);
-    color: var(--text-primary);
     @include texto-regular;
+    @include foco-visible;
     transition:
       background-color var(--duracion-rapida) var(--transicion-estandar),
       color var(--duracion-rapida) var(--transicion-estandar);
 
-    @include foco-visible;
-
-    &:hover {
-      background-color: var(--color-fondo-teal);
-      color: var(--color-teal-oscuro);
-    }
-
+    &:hover,
     &--activo {
-      background-color: var(--color-fondo-teal);
       color: var(--color-teal-oscuro);
+      background-color: var(--color-fondo-teal);
     }
   }
 
@@ -57,13 +52,24 @@
   }
 
   &__body {
-    padding: 0 var(--espaciado-3) var(--espaciado-3);
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--duracion-base) var(--transicion-estandar);
+
+    &--abierto {
+      grid-template-rows: 1fr;
+    }
+
+    > * {
+      overflow: hidden;
+    }
   }
 
   &__respuesta {
-    @include texto-regular;
+    padding: 0 var(--espaciado-3) var(--espaciado-3);
+    margin: 0;
     color: var(--text-secondary);
     line-height: var(--altura-linea-relajada);
-    margin: 0;
+    @include texto-regular;
   }
 }
