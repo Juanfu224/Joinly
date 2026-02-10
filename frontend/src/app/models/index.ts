@@ -50,3 +50,10 @@ export {
   type CambiarContrasenaRequest,
   type PreferenciasNotificacion,
 } from './usuario.model';
+
+export {
+  type CategoriaFaq,
+  type Pregunta,
+  type PreguntaFrecuente,
+  type PreguntasAgrupadas,
+} from './pregunta.model';
