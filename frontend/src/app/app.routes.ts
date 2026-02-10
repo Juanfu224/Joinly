@@ -40,6 +40,12 @@ export const routes: Routes = [
     data: { breadcrumb: 'Centro de ayuda' },
   },
   {
+    path: 'preguntas',
+    loadComponent: () => import('./pages/preguntas').then((m) => m.PreguntasComponent),
+    title: 'Preguntas Frecuentes - Joinly',
+    data: { breadcrumb: 'Preguntas Frecuentes' },
+  },
+  {
     path: '',
     loadChildren: () => import('./routes/legal.routes').then((m) => m.LEGAL_ROUTES),
   },
