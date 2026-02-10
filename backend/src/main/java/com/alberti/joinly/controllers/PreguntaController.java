@@ -4,19 +4,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.alberti.joinly.dto.faq.CrearPregunta;
 import com.alberti.joinly.dto.faq.RespuestaPregunta;
 import com.alberti.joinly.entities.enums.CategoriaFaq;
 import com.alberti.joinly.services.PreguntaService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequestMapping("/api/v1/preguntas")
@@ -51,6 +59,23 @@ public class PreguntaController {
                 .toList();
         return ResponseEntity.ok(faqs);
     }
-    
+
+    @PostMapping
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Pregunta creada exitosamente"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Solicitud inválida")
+    })
+
+    public ResponseEntity<RespuestaPregunta> crear(@Valid @RequestBody CrearPregunta nuevaPregunta) {
+        RespuestaPregunta preguntaCreada = RespuestaPregunta.fromEntity(
+                preguntaService.crear(nuevaPregunta));
+        return ResponseEntity.status(HttpStatus.CREATED).body(preguntaCreada);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        preguntaService.eliminar(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }
