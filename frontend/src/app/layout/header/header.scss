@@ -138,6 +138,44 @@
   }
 }
 
+// Navegación desktop (≥ 1024px)
+.c-header__nav-desktop {
+  display: none;
+  align-items: center;
+  gap: var(--espaciado-1);
+  flex: 1;
+  margin-inline-start: var(--espaciado-6);
+
+  @media (min-width: $bp-desktop) {
+    display: flex;
+  }
+}
+
+.c-header__nav-desktop-enlace {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--espaciado-2) var(--espaciado-3);
+  font-size: var(--tamano-texto-regular);
+  font-weight: var(--peso-fuente-medio);
+  color: var(--color-texto-base);
+  text-decoration: none;
+  border-radius: var(--radio-medio);
+  white-space: nowrap;
+  transition: color var(--duracion-base),
+    background-color var(--duracion-base);
+  @include foco-visible;
+
+  &:hover {
+    color: var(--color-principal);
+    background-color: var(--color-superficie-morada);
+  }
+
+  &--activo {
+    color: var(--color-principal);
+    font-weight: var(--peso-fuente-semi-negrita);
+  }
+}
+
 .c-header__overlay {
   position: fixed;
   inset: 0;

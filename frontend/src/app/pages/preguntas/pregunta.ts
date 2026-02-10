@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PreguntaCardComponent } from './pregunta-card';
 import { PreguntaService } from '../../services/pregunta';
 import { PreguntaFrecuente, PreguntasAgrupadas } from '../../models';
@@ -18,6 +19,7 @@ interface CategoriaConPreguntas {
 })
 export class PreguntasComponent implements OnInit {
   private readonly preguntaService = inject(PreguntaService);
+  private readonly destroyRef = inject(DestroyRef);
 
   protected readonly cargando = signal(true);
   protected readonly error = signal<string | null>(null);
@@ -31,18 +33,21 @@ export class PreguntasComponent implements OnInit {
     this.cargando.set(true);
     this.error.set(null);
 
-    this.preguntaService.obtenerTodas().subscribe({
-      next: (agrupadas: PreguntasAgrupadas) => {
-        const lista: CategoriaConPreguntas[] = Object.entries(agrupadas).map(
-          ([nombre, preguntas]) => ({ nombre, preguntas }),
-        );
-        this.categorias.set(lista);
-        this.cargando.set(false);
-      },
-      error: () => {
-        this.error.set('No se pudieron cargar las preguntas. Inténtalo de nuevo.');
-        this.cargando.set(false);
-      },
-    });
+    this.preguntaService
+      .obtenerTodas()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (agrupadas: PreguntasAgrupadas) => {
+          const lista: CategoriaConPreguntas[] = Object.entries(agrupadas).map(
+            ([nombre, preguntas]) => ({ nombre, preguntas }),
+          );
+          this.categorias.set(lista);
+          this.cargando.set(false);
+        },
+        error: () => {
+          this.error.set('No se pudieron cargar las preguntas. Inténtalo de nuevo.');
+          this.cargando.set(false);
+        },
+      });
   }
 }

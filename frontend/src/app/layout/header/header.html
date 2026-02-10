@@ -5,6 +5,17 @@
       <app-logo [variant]="logoVariant()" size="md" />
     </a>
 
+    <!-- Navegación principal (solo desktop) -->
+    <nav class="c-header__nav-desktop" aria-label="Navegación principal">
+      <a
+        routerLink="/preguntas"
+        class="c-header__nav-desktop-enlace"
+        routerLinkActive="c-header__nav-desktop-enlace--activo"
+      >
+        Preguntas Frecuentes
+      </a>
+    </nav>
+
     <!-- Botón menú hamburguesa (solo móvil/tablet) -->
     <button
       #menuButton
@@ -105,6 +116,17 @@
           </a>
         </li>
       }
+
+      <li class="c-header__nav-item">
+        <a
+          routerLink="/preguntas"
+          class="c-header__nav-enlace"
+          routerLinkActive="c-header__nav-enlace--activo"
+        >
+          <app-icon name="support" size="sm" />
+          <span>Preguntas Frecuentes</span>
+        </a>
+      </li>
 
       <li class="c-header__nav-item">
         <a

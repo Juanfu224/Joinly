@@ -1,4 +1,4 @@
-He creado la seccion de Preguntas frecuentes en el frontend. Es una pagina nueva que consume los datos del backend y los muestra al usuario.
+He creado la seccion de preguntas frecuentes en el frontend. Es una pagina nueva que consume los datos del backend y los muestra al usuario.
 
 ## Componentes
 

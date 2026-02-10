@@ -3,9 +3,10 @@
     type="button"
     class="c-pregunta-card__header"
     [class.c-pregunta-card__header--activo]="abierto()"
-    (click)="toggle()"
+    [id]="'faq-heading-' + pregunta.id"
     [attr.aria-expanded]="abierto()"
     [attr.aria-controls]="'faq-body-' + pregunta.id"
+    (click)="toggle()"
   >
     <span class="c-pregunta-card__titulo">{{ pregunta.pregunta }}</span>
     <app-icon [name]="abierto() ? 'chevron-up' : 'chevron-down'" size="sm" />
