@@ -14,7 +14,6 @@ import com.alberti.joinly.dto.faq.RespuestaPregunta;
 import com.alberti.joinly.entities.enums.CategoriaFaq;
 import com.alberti.joinly.services.PreguntaService;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -51,13 +50,12 @@ public class PreguntaController {
     }
 
     @GetMapping("/buscar")
-    @Operation(summary = "Buscar FAQs por término")
     public ResponseEntity<List<RespuestaPregunta>> buscar(
             @RequestParam String q) {
-        var faqs = preguntaService.buscar(q).stream()
+        var preguntas = preguntaService.buscar(q).stream()
                 .map(RespuestaPregunta::fromEntity)
                 .toList();
-        return ResponseEntity.ok(faqs);
+        return ResponseEntity.ok(preguntas);
     }
 
     @PostMapping
@@ -77,5 +75,6 @@ public class PreguntaController {
         preguntaService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
+    
 
 }
