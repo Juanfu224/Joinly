@@ -38,6 +38,10 @@ public class PreguntaService {
                 .orElseThrow(() -> new ResourceNotFoundException("FAQ", "id", id));
     }
 
+    public List<PreguntaFrecuente> buscar(String termino) {
+        return preguntaFrecuenteRepository.buscarPorTermino(termino);
+    }
+
     @Transactional
     public PreguntaFrecuente crear(CrearPregunta pregunta) {
         var nuevaPregunta = PreguntaFrecuente.builder()

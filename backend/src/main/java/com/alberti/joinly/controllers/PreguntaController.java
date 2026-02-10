@@ -39,8 +39,18 @@ public class PreguntaController {
                 .stream()
                 .map(RespuestaPregunta::fromEntity)
                 .toList();
-        return ResponseEntity.ok(faqs);
+        return ResponseEntity.ok(preguntas);
     }
 
+    @GetMapping("/buscar")
+    @Operation(summary = "Buscar FAQs por término")
+    public ResponseEntity<List<RespuestaPregunta>> buscar(
+            @RequestParam String q) {
+        var faqs = preguntaService.buscar(q).stream()
+                .map(RespuestaPregunta::fromEntity)
+                .toList();
+        return ResponseEntity.ok(faqs);
+    }
     
+
 }
