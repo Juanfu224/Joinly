@@ -1,0 +1,1 @@
+export { PreguntasComponent } from './pregunta';
