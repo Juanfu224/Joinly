@@ -1,0 +1,17 @@
+<article class="c-pregunta-card">
+  <button
+    type="button"
+    class="c-pregunta-card__header"
+    [class.c-pregunta-card__header--activo]="abierto()"
+    (click)="toggle()"
+    [attr.aria-expanded]="abierto()"
+  >
+    <span class="c-pregunta-card__titulo">{{ pregunta.pregunta }}</span>
+    <app-icon [name]="abierto() ? 'chevron-up' : 'chevron-down'" size="sm" />
+  </button>
+  @if (abierto()) {
+    <div class="c-pregunta-card__body" role="region">
+      <p class="c-pregunta-card__respuesta">{{ pregunta.respuesta }}</p>
+    </div>
+  }
+</article>

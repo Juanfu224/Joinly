@@ -1,0 +1,26 @@
+<section class="p-preguntas">
+
+  <header class="p-preguntas__hero">
+    <h1 class="p-preguntas__titulo">Preguntas Frecuentes</h1>
+    <p class="p-preguntas__subtitulo">Respuestas desde nuestro centro de ayuda</p>
+  </header>
+
+  @if (cargando()) {
+    <div class="p-preguntas__estado" aria-live="polite">
+      <p class="p-preguntas__mensaje">Cargando preguntas...</p>
+    </div>
+  }
+
+  @if (error(); as errorMsg) {
+    <div class="p-preguntas__estado p-preguntas__estado--error" role="alert">
+      <p class="p-preguntas__mensaje">{{ errorMsg }}</p>
+      <button type="button" class="p-preguntas__btn-reintentar" (click)="cargarPreguntas()">
+        Reintentar
+      </button>
+    </div>
+  }
+
+  
+
+
+</section>
