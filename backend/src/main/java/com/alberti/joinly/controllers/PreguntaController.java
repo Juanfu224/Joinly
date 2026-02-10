@@ -6,7 +6,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alberti.joinly.dto.faq.CrearPregunta;
@@ -14,7 +15,11 @@ import com.alberti.joinly.dto.faq.RespuestaPregunta;
 import com.alberti.joinly.entities.enums.CategoriaFaq;
 import com.alberti.joinly.services.PreguntaService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -25,56 +30,65 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Controller
+@RestController
 @RequestMapping("/api/v1/preguntas")
 @RequiredArgsConstructor
 public class PreguntaController {
-    private final PreguntaService preguntaService;
+        private final PreguntaService preguntaService;
 
-    @GetMapping()
-    public ResponseEntity<Map<String, List<RespuestaPregunta>>> listar() {
-        Map<String, List<RespuestaPregunta>> preguntas = preguntaService.obtenerTodas().stream()
-                .map(RespuestaPregunta::fromEntity)
-                .collect(Collectors.groupingBy(RespuestaPregunta::categoria));
-        return ResponseEntity.ok(preguntas);
-    }
+        @GetMapping
+        public ResponseEntity<Map<String, List<RespuestaPregunta>>> listar() {
+                Map<String, List<RespuestaPregunta>> preguntas = preguntaService.obtenerTodas().stream()
+                                .map(RespuestaPregunta::fromEntity)
+                                .collect(Collectors.groupingBy(RespuestaPregunta::categoria));
+                return ResponseEntity.ok(preguntas);
+        }
 
-    @GetMapping("/categoria/{categoria}")
-    public ResponseEntity<List<RespuestaPregunta>> listarPorCategoria(
-            @PathVariable String categoria) {
-        List<RespuestaPregunta> preguntas = preguntaService.obtenerPorCategoria(CategoriaFaq.valueOf(categoria))
-                .stream()
-                .map(RespuestaPregunta::fromEntity)
-                .toList();
-        return ResponseEntity.ok(preguntas);
-    }
+        @GetMapping("/categoria/{categoria}")
+        public ResponseEntity<List<RespuestaPregunta>> listarPorCategoria(
+                        @PathVariable String categoria) {
+                List<RespuestaPregunta> preguntas = preguntaService.obtenerPorCategoria(CategoriaFaq.valueOf(categoria))
+                                .stream()
+                                .map(RespuestaPregunta::fromEntity)
+                                .toList();
+                return ResponseEntity.ok(preguntas);
+        }
 
-    @GetMapping("/buscar")
-    public ResponseEntity<List<RespuestaPregunta>> buscar(
-            @RequestParam String q) {
-        var preguntas = preguntaService.buscar(q).stream()
-                .map(RespuestaPregunta::fromEntity)
-                .toList();
-        return ResponseEntity.ok(preguntas);
-    }
+        @GetMapping("/buscar")
+        @Operation(summary = "Buscar FAQs por término")
+        public ResponseEntity<List<RespuestaPregunta>> buscar(
+                        @RequestParam String q) {
+                var faqs = preguntaService.buscar(q).stream()
+                                .map(RespuestaPregunta::fromEntity)
+                                .toList();
+                return ResponseEntity.ok(faqs);
+        }
 
-    @PostMapping
-    @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Pregunta creada exitosamente"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Solicitud inválida")
-    })
+        @PostMapping
+        @PreAuthorize("hasRole('ADMIN')")
+        @SecurityRequirement(name = "bearerAuth")
+        @ApiResponses({
+                        @ApiResponse(responseCode = "201", description = "Pregunta creada exitosamente"),
+                        @ApiResponse(responseCode = "400", description = "Solicitud inválida"),
+                        @ApiResponse(responseCode = "403", description = "Acceso denegado – se requiere rol ADMIN")
+        })
+        public ResponseEntity<RespuestaPregunta> crear(@Valid @RequestBody CrearPregunta nuevaPregunta) {
+                RespuestaPregunta preguntaCreada = RespuestaPregunta.fromEntity(
+                                preguntaService.crear(nuevaPregunta));
+                return ResponseEntity.status(HttpStatus.CREATED).body(preguntaCreada);
+        }
 
-    public ResponseEntity<RespuestaPregunta> crear(@Valid @RequestBody CrearPregunta nuevaPregunta) {
-        RespuestaPregunta preguntaCreada = RespuestaPregunta.fromEntity(
-                preguntaService.crear(nuevaPregunta));
-        return ResponseEntity.status(HttpStatus.CREATED).body(preguntaCreada);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        preguntaService.eliminar(id);
-        return ResponseEntity.noContent().build();
-    }
-    
+        @DeleteMapping("/{id}")
+        @PreAuthorize("hasRole('ADMIN')")
+        @SecurityRequirement(name = "bearerAuth")
+        @ApiResponses({
+                        @ApiResponse(responseCode = "204", description = "Pregunta desactivada exitosamente"),
+                        @ApiResponse(responseCode = "404", description = "Pregunta no encontrada"),
+                        @ApiResponse(responseCode = "403", description = "Acceso denegado – se requiere rol ADMIN")
+        })
+        public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+                preguntaService.eliminar(id);
+                return ResponseEntity.noContent().build();
+        }
 
 }

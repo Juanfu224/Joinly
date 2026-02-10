@@ -30,11 +30,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
  * <p>
  * Esta clase configura:
  * <ul>
- *   <li>Autenticación JWT stateless</li>
- *   <li>Configuración CORS para el frontend Angular</li>
- *   <li>Definición de endpoints públicos vs privados</li>
- *   <li>Codificación de contraseñas con BCrypt</li>
- *   <li>Manejo de errores de autenticación y autorización</li>
+ * <li>Autenticación JWT stateless</li>
+ * <li>Configuración CORS para el frontend Angular</li>
+ * <li>Definición de endpoints públicos vs privados</li>
+ * <li>Codificación de contraseñas con BCrypt</li>
+ * <li>Manejo de errores de autenticación y autorización</li>
  * </ul>
  *
  * @author Joinly Team
@@ -58,7 +58,7 @@ public class SecurityConfig {
      */
     private static final String[] PUBLIC_ENDPOINTS = {
             "/api/v1/auth/**",
-            "/api/dev/**",        // DevController - solo activo en perfil dev
+            "/api/dev/**", // DevController - solo activo en perfil dev
             "/swagger-ui/**",
             "/swagger-ui.html",
             "/v3/api-docs/**",
@@ -66,7 +66,7 @@ public class SecurityConfig {
             "/webjars/**",
             "/actuator/health",
             "/actuator/info",
-            "/uploads/**",        // Archivos estáticos (avatares)
+            "/uploads/**", // Archivos estáticos (avatares)
             "/error"
     };
 
@@ -75,10 +75,10 @@ public class SecurityConfig {
      * <p>
      * Configuraciones aplicadas:
      * <ul>
-     *   <li>CSRF deshabilitado (API stateless con JWT)</li>
-     *   <li>Autenticación stateless sin sesiones</li>
-     *   <li>CORS habilitado con configuración personalizada</li>
-     *   <li>Filtro JWT antes del filtro de autenticación por usuario/password</li>
+     * <li>CSRF deshabilitado (API stateless con JWT)</li>
+     * <li>Autenticación stateless sin sesiones</li>
+     * <li>CORS habilitado con configuración personalizada</li>
+     * <li>Filtro JWT antes del filtro de autenticación por usuario/password</li>
      * </ul>
      *
      * @param http Builder de configuración HTTP
@@ -90,50 +90,47 @@ public class SecurityConfig {
         return http
                 // Deshabilitar CSRF ya que usamos JWT (stateless)
                 .csrf(AbstractHttpConfigurer::disable)
-                
+
                 // Configurar CORS
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                
+
                 // Configurar autorización de peticiones
                 .authorizeHttpRequests(auth -> auth
                         // Endpoints públicos
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
-                        
+
                         // Endpoints de solo lectura públicos (GET)
                         .requestMatchers(HttpMethod.GET, "/api/v1/servicios/**").permitAll()
-                        
+                        .requestMatchers(HttpMethod.GET, "/api/v1/preguntas/**").permitAll()
+
                         // Endpoints que requieren rol de administrador
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
-                        
+
                         // Endpoints que requieren rol de agente o superior
                         .requestMatchers("/api/v1/soporte/**").hasAnyRole("AGENTE", "ADMIN")
-                        
+
                         // Todos los demás endpoints requieren autenticación
-                        .anyRequest().authenticated()
-                )
-                
+                        .anyRequest().authenticated())
+
                 // Configurar política de sesiones (stateless)
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
                 // Configurar proveedor de autenticación
                 .authenticationProvider(authenticationProvider())
-                
+
                 // Añadir filtro JWT antes del filtro de autenticación por defecto
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                
+
                 // Configurar manejo de excepciones
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                        .accessDeniedHandler(jwtAccessDeniedHandler)
-                )
-                
+                        .accessDeniedHandler(jwtAccessDeniedHandler))
+
                 // Deshabilitar headers de frame para H2 console (solo desarrollo)
                 .headers(headers -> headers
-                        .frameOptions(frame -> frame.sameOrigin())
-                )
-                
+                        .frameOptions(frame -> frame.sameOrigin()))
+
                 .build();
     }
 
@@ -148,28 +145,28 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         var configuration = new CorsConfiguration();
-        
+
         // Orígenes permitidos (frontend Angular) - desde CorsProperties
         configuration.setAllowedOrigins(corsProperties.allowedOrigins());
-        
+
         // Métodos HTTP permitidos
         configuration.setAllowedMethods(corsProperties.allowedMethods());
-        
+
         // Headers permitidos
         configuration.setAllowedHeaders(corsProperties.allowedHeaders());
-        
+
         // Headers expuestos al frontend
         configuration.setExposedHeaders(corsProperties.exposedHeaders());
-        
+
         // Permitir credenciales (cookies, Authorization header)
         configuration.setAllowCredentials(true);
-        
+
         // Tiempo de caché para preflight requests
         configuration.setMaxAge(corsProperties.maxAge());
 
         var source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
-        
+
         return source;
     }
 
