@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-/** Rutas legales (términos, privacidad). */
+/** Rutas legales (términos, privacidad, accesibilidad). */
 export const LEGAL_ROUTES: Routes = [
   {
     path: 'terminos',
@@ -11,5 +11,10 @@ export const LEGAL_ROUTES: Routes = [
     path: 'privacidad',
     loadComponent: () => import('../pages/legal/privacidad').then((m) => m.PrivacidadComponent),
     title: 'Política de privacidad - Joinly',
+  },
+  {
+    path: 'accesibilidad',
+    loadComponent: () => import('../pages/legal/accesibilidad').then((m) => m.AccesibilidadComponent),
+    title: 'Declaración de Accesibilidad - Joinly',
   },
 ];

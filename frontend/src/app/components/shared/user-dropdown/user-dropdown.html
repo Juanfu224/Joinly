@@ -11,7 +11,7 @@
   </button>
 
   @if (isOpen()) {
-    <div class="c-user-dropdown__menu" role="menu">
+    <div class="c-user-dropdown__menu" role="menu" aria-label="Opciones de usuario">
       <div class="c-user-dropdown__header">
         <app-avatar [src]="userAvatar() ?? ''" [name]="userName()" size="md" />
         <div class="c-user-dropdown__user-info">
@@ -22,44 +22,50 @@
         </div>
       </div>
 
-      <hr class="c-user-dropdown__divider" />
+      <hr class="c-user-dropdown__divider" aria-hidden="true" />
 
       <nav>
-        <ul class="c-user-dropdown__list">
+        <ul class="c-user-dropdown__list" role="list">
           <li>
             <a
+              #menuItem
               routerLink="/usuario/perfil"
               class="c-user-dropdown__item"
               role="menuitem"
+              tabindex="-1"
               (click)="close()"
             >
-              <app-icon name="user" size="sm" />
+              <app-icon name="user" size="sm" aria-hidden="true" />
               <span>Mi perfil</span>
             </a>
           </li>
           <li>
             <a
+              #menuItem
               routerLink="/usuario/configuracion"
               class="c-user-dropdown__item"
               role="menuitem"
+              tabindex="-1"
               (click)="close()"
             >
-              <app-icon name="settings" size="sm" />
+              <app-icon name="settings" size="sm" aria-hidden="true" />
               <span>Configuración</span>
             </a>
           </li>
         </ul>
       </nav>
 
-      <hr class="c-user-dropdown__divider" />
+      <hr class="c-user-dropdown__divider" aria-hidden="true" />
 
       <button
+        #menuItem
         type="button"
         class="c-user-dropdown__item c-user-dropdown__item--logout"
         role="menuitem"
+        tabindex="-1"
         (click)="onLogout()"
       >
-        <app-icon name="log-out" size="sm" />
+        <app-icon name="log-out" size="sm" aria-hidden="true" />
         <span>Cerrar sesión</span>
       </button>
     </div>
