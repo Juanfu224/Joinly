@@ -20,12 +20,12 @@
 
 | Categoría | NVDA | VoiceOver macOS | VoiceOver iOS |
 |-----------|------|-----------------|---------------|
-| Navegación general | ✅ | ✅ | ✅ |
-| Landmarks | ✅ | ✅ | ✅ |
-| Formularios | ✅ | ✅ | ✅ |
-| Componentes interactivos | ✅ | ✅ | ✅ |
-| Modales | ✅ | ✅ | ✅ |
-| Imágenes | ✅ | ✅ | ✅ |
+| Navegación general | OK | OK | OK |
+| Landmarks | OK | OK | OK |
+| Formularios | OK | OK | OK |
+| Componentes interactivos | OK | OK | OK |
+| Modales | OK | OK | OK |
+| Imágenes | OK | OK | OK |
 
 ---
 
@@ -35,24 +35,24 @@
 
 | Landmark | NVDA | VoiceOver |
 |----------|------|-----------|
-| `<header>` / banner | "banner" ✅ | "banner" ✅ |
-| `<nav>` / navigation | "navegación" ✅ | "navigation" ✅ |
-| `<main>` / main | "principal" ✅ | "main" ✅ |
-| `<footer>` / contentinfo | "información del contenido" ✅ | "footer" ✅ |
+| `<header>` / banner | "banner" | "banner" |
+| `<nav>` / navigation | "navegación" | "navigation" |
+| `<main>` / main | "principal" | "main" |
+| `<footer>` / contentinfo | "información del contenido" | "footer" |
 
 ### Skip-to-content
 
 | Acción | NVDA | VoiceOver |
 |--------|------|-----------|
-| Tab inicial | "Saltar al contenido principal, enlace" ✅ | "Saltar al contenido principal, enlace" ✅ |
-| Enter | Salta al main ✅ | Salta al main ✅ |
+| Tab inicial | "Saltar al contenido principal, enlace" | "Saltar al contenido principal, enlace" |
+| Enter | Salta al main | Salta al main |
 
 ### Encabezados
 
 | Navegación | NVDA | VoiceOver |
 |------------|------|-----------|
-| Lista de encabezados (H) | Muestra h1, h2, h3 ✅ | Muestra correctamente ✅ |
-| Navegación por niveles | Sin saltos ✅ | Sin saltos ✅ |
+| Lista de encabezados (H) | Muestra h1, h2, h3 | Muestra correctamente |
+| Navegación por niveles | Sin saltos | Sin saltos |
 
 ---
 
@@ -62,32 +62,32 @@
 
 | Anuncio | NVDA | VoiceOver |
 |---------|------|-----------|
-| Label | "Correo electrónico, edición" ✅ | "Correo electrónico, text field" ✅ |
-| Requerido | "requerido" ✅ | "required" ✅ |
-| Descripción | "Nunca compartiremos tu email" ✅ | "Nunca compartiremos tu email" ✅ |
-| Error | "El email no es válido" (automático) ✅ | "El email no es válido" (automático) ✅ |
+| Label | "Correo electrónico, edición" | "Correo electrónico, text field" |
+| Requerido | "requerido" | "required" |
+| Descripción | "Nunca compartiremos tu email" | "Nunca compartiremos tu email" |
+| Error | "El email no es válido" (automático) | "El email no es válido" (automático) |
 
 ### Checkbox
 
 | Anuncio | NVDA | VoiceOver |
 |---------|------|-----------|
-| Estado | "marcado" / "no marcado" ✅ | "checked" / "unchecked" ✅ |
-| Label | "Acepto los términos" ✅ | "Acepto los términos" ✅ |
+| Estado | "marcado" / "no marcado" | "checked" / "unchecked" |
+| Label | "Acepto los términos" | "Acepto los términos" |
 
 ### Radio buttons
 
 | Anuncio | NVDA | VoiceOver |
 |---------|------|-----------|
-| Grupo | "Preferencias, agrupación" ✅ | "Preferencias, radio group" ✅ |
-| Opciones | "Opción 1, botón de radio, seleccionado" ✅ | "Option 1, selected radio button" ✅ |
-| Navegación | Flechas cambian selección ✅ | Flechas cambian selección ✅ |
+| Grupo | "Preferencias, agrupación" | "Preferencias, radio group" |
+| Opciones | "Opción 1, botón de radio, seleccionado" | "Option 1, selected radio button" |
+| Navegación | Flechas cambian selección | Flechas cambian selección |
 
 ### Select
 
 | Anuncio | NVDA | VoiceOver |
 |---------|------|-----------|
-| Tipo | "subscripción, cuadro combinado" ✅ | "subscription, pop up button" ✅ |
-| Opciones | Se listan al expandir ✅ | Se listan al expandir ✅ |
+| Tipo | "subscripción, cuadro combinado" | "subscription, pop up button" |
+| Opciones | Se listan al expandir | Se listan al expandir |
 
 ---
 
@@ -97,54 +97,54 @@
 
 | Anuncio | NVDA | VoiceOver |
 |---------|------|-----------|
-| Standard | "Crear grupo, botón" ✅ | "Crear grupo, button" ✅ |
-| Toggle (aria-pressed) | "Modo oscuro, botón, presionado" ✅ | "Dark mode, button, pressed" ✅ |
-| Con icono | "Cerrar, botón" ✅ | "Close, button" ✅ |
+| Standard | "Crear grupo, botón" | "Crear grupo, button" |
+| Toggle (aria-pressed) | "Modo oscuro, botón, presionado" | "Dark mode, button, pressed" |
+| Con icono | "Cerrar, botón" | "Close, button" |
 
 ### Tabs
 
 | Anuncio | NVDA | VoiceOver |
 |---------|------|-----------|
-| Rol | "pestaña" ✅ | "tab" ✅ |
-| Posición | "pestaña 1 de 3" ✅ | "tab 1 of 3" ✅ |
-| Selección | "seleccionada" ✅ | "selected" ✅ |
-| Navegación | Flechas ←→ funcionan ✅ | Flechas ←→ funcionan ✅ |
+| Rol | "pestaña" | "tab" |
+| Posición | "pestaña 1 de 3" | "tab 1 of 3" |
+| Selección | "seleccionada" | "selected" |
+| Navegación | Flechas ←→ funcionan | Flechas ←→ funcionan |
 
 ### Acordeones
 
 | Anuncio | NVDA | VoiceOver |
 |---------|------|-----------|
-| Estado | "expandido" / "colapsado" ✅ | "expanded" / "collapsed" ✅ |
-| Acción | Enter/Espacio togglea ✅ | Enter/Espacio togglea ✅ |
+| Estado | "expandido" / "colapsado" | "expanded" / "collapsed" |
+| Acción | Enter/Espacio togglea | Enter/Espacio togglea |
 
 ### Modales
 
 | Anuncio | NVDA | VoiceOver |
 |---------|------|-----------|
-| Apertura | "Diálogo, Invitar miembro" ✅ | "Invitar miembro, dialog" ✅ |
-| Focus trap | Funciona ✅ | Funciona ✅ |
-| Cierre Escape | Funciona ✅ | Funciona ✅ |
+| Apertura | "Diálogo, Invitar miembro" | "Invitar miembro, dialog" |
+| Focus trap | Funciona | Funciona |
+| Cierre Escape | Funciona | Funciona |
 
 ### Breadcrumbs
 
 | Anuncio | NVDA | VoiceOver |
 |---------|------|-----------|
-| Navegación | "Navegación de migas de pan" ✅ | "breadcrumb navigation" ✅ |
-| Página actual | "página actual, Dashboard" ✅ | "current page, Dashboard" ✅ |
+| Navegación | "Navegación de migas de pan" | "breadcrumb navigation" |
+| Página actual | "página actual, Dashboard" | "current page, Dashboard" |
 
 ### Paginación
 
 | Anuncio | NVDA | VoiceOver |
 |---------|------|-----------|
-| Página actual | "Página 2, actual" ✅ | "Page 2, current" ✅ |
-| Página deshabilitada | "no disponible" ✅ | "dimmed" ✅ |
+| Página actual | "Página 2, actual" | "Page 2, current" |
+| Página deshabilitada | "no disponible" | "dimmed" |
 
 ### Toasts/Notificaciones
 
 | Anuncio | NVDA | VoiceOver |
 |---------|------|-----------|
-| Aparición | Se anuncia automáticamente ✅ | Se anuncia automáticamente ✅ |
-| Contenido | "Grupo creado correctamente" ✅ | "Group created successfully" ✅ |
+| Aparición | Se anuncia automáticamente | Se anuncia automáticamente |
+| Contenido | "Grupo creado correctamente" | "Group created successfully" |
 
 ---
 
@@ -154,16 +154,16 @@
 
 | Tipo | NVDA | VoiceOver |
 |------|------|-----------|
-| Avatar de usuario | "Avatar de Juan García" ✅ | "Avatar of Juan García" ✅ |
-| Logo | "Joinly, enlace, imagen" ✅ | "Joinly, link, image" ✅ |
-| Preview avatar | "Vista previa de tu nuevo avatar" ✅ | "Preview of your new avatar" ✅ |
+| Avatar de usuario | "Avatar de Juan García" | "Avatar of Juan García" |
+| Logo | "Joinly, enlace, imagen" | "Joinly, link, image" |
+| Preview avatar | "Vista previa de tu nuevo avatar" | "Preview of your new avatar" |
 
 ### Imágenes decorativas
 
 | Tipo | NVDA | VoiceOver |
 |------|------|-----------|
-| Iconos (aria-hidden) | Ignorados ✅ | Ignorados ✅ |
-| Ilustraciones decorativas | Ignoradas ✅ | Ignoradas ✅ |
+| Iconos (aria-hidden) | Ignorados | Ignorados |
+| Ilustraciones decorativas | Ignoradas | Ignoradas |
 
 ---
 
@@ -171,8 +171,8 @@
 
 | Anuncio | NVDA | VoiceOver |
 |---------|------|-----------|
-| Navegación por celdas | Ctrl+Alt+flechas ✅ | Navegación estándar ✅ |
-| Encabezados | Se anuncian ✅ | Se anuncian ✅ |
+| Navegación por celdas | Ctrl+Alt+flechas | Navegación estándar |
+| Encabezados | Se anuncian | Se anuncian |
 
 ---
 

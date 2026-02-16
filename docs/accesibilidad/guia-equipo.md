@@ -24,7 +24,7 @@ Nuestro objetivo es cumplir con las pautas WCAG 2.1 a nivel AA. Esto significa:
 ### Un solo `<main>` por página
 
 ```html
-<!-- ✅ Correcto: un solo main en app.html -->
+<!-- Correcto: un solo main en app.html -->
 <a href="#contenido-principal" class="c-skip-link">
   Saltar al contenido principal
 </a>
@@ -34,7 +34,7 @@ Nuestro objetivo es cumplir con las pautas WCAG 2.1 a nivel AA. Esto significa:
 </main>
 <app-footer />
 
-<!-- ❌ Incorrecto: main anidado en componentes hijo -->
+<!-- Incorrecto: main anidado en componentes hijo -->
 <div class="p-dashboard">
   <main>...</main>  <!-- Ya existe un main en app.html -->
 </div>
@@ -43,13 +43,13 @@ Nuestro objetivo es cumplir con las pautas WCAG 2.1 a nivel AA. Esto significa:
 ### Un solo `<h1>` por página
 
 ```html
-<!-- ✅ Correcto -->
+<!-- Correcto -->
 <article>
   <h1 class="visually-hidden">Iniciar sesión en Joinly</h1>
   <h2>Accede a tu cuenta</h2>
 </article>
 
-<!-- ❌ Incorrecto: múltiples h1 -->
+<!-- Incorrecto: múltiples h1 -->
 <h1>Bienvenido</h1>
 <h1>Inicia sesión</h1>
 ```
@@ -57,12 +57,12 @@ Nuestro objetivo es cumplir con las pautas WCAG 2.1 a nivel AA. Esto significa:
 ### Jerarquía de encabezados sin saltos
 
 ```html
-<!-- ✅ Correcto: h1 → h2 → h3 -->
+<!-- Correcto: h1, h2, h3 -->
 <h1>Dashboard</h1>
 <h2>Mis grupos</h2>
 <h3>Familia García</h3>
 
-<!-- ❌ Incorrecto: salto de h2 a h4 -->
+<!-- Incorrecto: salto de h2 a h4 -->
 <h1>Dashboard</h1>
 <h2>Mis grupos</h2>
 <h4>Familia García</h4>  <!-- Falta h3 -->
@@ -77,10 +77,10 @@ Nuestro objetivo es cumplir con las pautas WCAG 2.1 a nivel AA. Esto significa:
 **Regla de oro:** Solo usa ARIA cuando HTML nativo no sea suficiente.
 
 ```html
-<!-- ✅ Preferir HTML nativo -->
+<!-- Preferir HTML nativo -->
 <button (click)="toggle()">Abrir menú</button>
 
-<!-- ❌ No reinventar con ARIA -->
+<!-- Incorrecto: no reinventar con ARIA -->
 <div role="button" tabindex="0" (click)="toggle()">Abrir menú</div>
 ```
 
@@ -118,16 +118,16 @@ Nuestro objetivo es cumplir con las pautas WCAG 2.1 a nivel AA. Esto significa:
 ### aria-hidden
 
 ```html
-<!-- ✅ Correcto: ocultar iconos decorativos -->
+<!-- Correcto: ocultar iconos decorativos -->
 <button (click)="save()">
   <app-icon name="check" aria-hidden="true" />
   Guardar
 </button>
 
-<!-- ❌ Incorrecto: ocultar elemento enfocable -->
+<!-- Incorrecto: ocultar elemento enfocable -->
 <button aria-hidden="true">No visible</button>
 
-<!-- ❌ Incorrecto: contener elementos enfocables -->
+<!-- Incorrecto: contener elementos enfocables -->
 <div aria-hidden="true">
   <button>Este botón es inaccesible</button>
 </div>
@@ -177,7 +177,7 @@ Nuestro objetivo es cumplir con las pautas WCAG 2.1 a nivel AA. Esto significa:
 Todos los elementos interactivos deben mostrar un indicador de foco visible para navegación por teclado.
 
 ```scss
-// ✅ Patrón correcto
+// Patrón correcto
 .mi-elemento {
   // Oculta outline solo cuando NO es navegación por teclado
   &:focus:not(:focus-visible) {
