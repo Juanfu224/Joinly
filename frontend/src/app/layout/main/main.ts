@@ -1,8 +1,14 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 /**
- * Componente de contenido principal de la aplicación.
- * Utiliza la etiqueta semántica <main> y proyecta el contenido de las páginas.
+ * Componente wrapper de contenido principal.
+ *
+ * NOTA: El landmark semántico `<main>` y el foco programático
+ * están gestionados directamente en `app.html` para garantizar
+ * un único `<main>` por página (WCAG 1.3.1).
+ *
+ * Este componente se puede usar como contenedor de estilos
+ * para el contenido proyectado.
  *
  * @usageNotes
  * ```html

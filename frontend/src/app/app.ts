@@ -14,6 +14,7 @@ import { FooterComponent } from './layout/footer/footer';
 import { ThemeService } from './services/theme';
 import { LoadingService } from './services/loading';
 import { BreadcrumbService } from './services';
+import { FocusManagementService } from './services/focus-management.service';
 
 /**
  * Componente raíz de la aplicación Joinly.
@@ -41,6 +42,7 @@ export class App {
   private readonly themeService = inject(ThemeService);
   protected readonly loadingService = inject(LoadingService);
   protected readonly breadcrumbService = inject(BreadcrumbService);
+  protected readonly focusService = inject(FocusManagementService);
 
   constructor() {
     this.themeService.initialize();

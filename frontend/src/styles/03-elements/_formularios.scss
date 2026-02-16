@@ -48,9 +48,18 @@ select {
   }
 
   // Estado: Focus (campo activo)
-  &:focus {
-    outline: none; // Quitamos el outline feo por defecto
-    border-color: var(--color-principal); // Resaltamos con color de marca
+  // Ocultamos el outline solo cuando NO es navegación por teclado
+  &:focus:not(:focus-visible) {
+    outline: none;
+    border-color: var(--color-principal);
+  }
+
+  // Estado: Focus visible (navegación con teclado) - WCAG 2.4.7
+  &:focus-visible {
+    outline: 2px solid var(--color-principal);
+    outline-offset: 2px;
+    border-color: var(--color-principal);
+    border-radius: var(--radio-medio);
   }
 
   // Estado: Deshabilitado

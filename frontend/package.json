@@ -61,7 +61,10 @@
     "@angular/build": "^21.0.1",
     "@angular/cli": "^21.0.1",
     "@angular/compiler-cli": "^21.0.0",
+    "@testing-library/angular": "^19.1.0",
+    "@testing-library/user-event": "^14.6.1",
     "@vitest/coverage-v8": "^4.0.18",
+    "axe-core": "^4.11.1",
     "jsdom": "^27.1.0",
     "lighthouse": "^13.0.1",
     "sharp": "^0.34.5",
@@ -70,6 +73,7 @@
     "tinify": "^1.8.2",
     "typescript": "~5.9.2",
     "vite-tsconfig-paths": "^6.0.4",
-    "vitest": "^4.0.8"
+    "vitest": "^4.0.8",
+    "vitest-axe": "^0.1.0"
   }
 }

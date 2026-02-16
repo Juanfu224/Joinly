@@ -1,0 +1,1 @@
+export { AccesibilidadComponent } from './accesibilidad';

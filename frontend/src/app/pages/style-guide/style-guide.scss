@@ -38,6 +38,21 @@
   @include responder-a('escritorio') {
     padding-block: var(--espaciado-10);
   }
+
+  // Título principal de la página (h1)
+  &__titulo {
+    @include heading-1;
+    margin: 0;
+  }
+
+  // Introducción debajo del título
+  &__intro {
+    @include texto-grande;
+    color: var(--text-secondary);
+    margin: 0;
+    margin-block-start: var(--espaciado-2);
+    max-inline-size: 65ch;
+  }
 }
 
 // ---------------------------------------------------------------------------

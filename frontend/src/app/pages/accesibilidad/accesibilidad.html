@@ -1,0 +1,182 @@
+<article class="p-accesibilidad" aria-labelledby="accesibilidad-titulo">
+  <header class="p-accesibilidad__header">
+    <app-breadcrumbs />
+    <h1 id="accesibilidad-titulo" class="p-accesibilidad__titulo">
+      Declaración de Accesibilidad
+    </h1>
+    <p class="p-accesibilidad__intro">
+      En Joinly nos comprometemos a hacer nuestra aplicación accesible para todas las personas,
+      independientemente de sus capacidades. Esta página describe nuestro compromiso con la accesibilidad.
+    </p>
+  </header>
+
+  <div class="p-accesibilidad__content">
+    <section class="p-accesibilidad__section" aria-labelledby="conformidad-titulo">
+      <h2 id="conformidad-titulo" class="p-accesibilidad__section-titulo">
+        Nivel de conformidad
+      </h2>
+      <app-card>
+        <div class="p-accesibilidad__conformidad">
+          <div class="p-accesibilidad__badge">
+            <app-icon name="check-circle" size="lg" aria-hidden="true" />
+            <span>WCAG 2.1 AA</span>
+          </div>
+          <p>
+            Joinly cumple con las <strong>Web Content Accessibility Guidelines (WCAG) 2.1</strong>
+            a nivel <strong>AA</strong>, el estándar reconocido internacionalmente para la
+            accesibilidad web.
+          </p>
+          <dl class="p-accesibilidad__datos">
+            <div>
+              <dt>Fecha de evaluación</dt>
+              <dd>{{ fechaEvaluacion }}</dd>
+            </div>
+            <div>
+              <dt>Última revisión</dt>
+              <dd>{{ ultimaRevision }}</dd>
+            </div>
+            <div>
+              <dt>Evaluado mediante</dt>
+              <dd>Auditoría interna, axe DevTools, Lighthouse, pruebas manuales</dd>
+            </div>
+          </dl>
+        </div>
+      </app-card>
+    </section>
+
+    <section class="p-accesibilidad__section" aria-labelledby="caracteristicas-titulo">
+      <h2 id="caracteristicas-titulo" class="p-accesibilidad__section-titulo">
+        Características de accesibilidad implementadas
+      </h2>
+
+      <div class="p-accesibilidad__caracteristicas">
+        <app-card>
+          <h3 class="p-accesibilidad__card-titulo">
+            <app-icon name="keyboard" size="sm" aria-hidden="true" />
+            Navegación por teclado
+          </h3>
+          <ul class="p-accesibilidad__lista">
+            <li>Todos los elementos interactivos son accesibles mediante teclado</li>
+            <li>Indicadores de foco visibles (outline de 2px)</li>
+            <li>Modales con focus trap y cierre con Escape</li>
+            <li>Skip link para saltar al contenido principal</li>
+            <li>Orden de foco lógico en todos los flujos</li>
+          </ul>
+        </app-card>
+
+        <app-card>
+          <h3 class="p-accesibilidad__card-titulo">
+            <app-icon name="book-open" size="sm" aria-hidden="true" />
+            Lectores de pantalla
+          </h3>
+          <ul class="p-accesibilidad__lista">
+            <li>HTML semántico (landmarks, headings, listas)</li>
+            <li>ARIA labels para elementos sin texto visible</li>
+            <li>Estados anunciados (expanded, pressed, invalid)</li>
+            <li>Live regions para notificaciones y errores</li>
+            <li>Un solo h1 por página con jerarquía correcta</li>
+          </ul>
+        </app-card>
+
+        <app-card>
+          <h3 class="p-accesibilidad__card-titulo">
+            <app-icon name="eye" size="sm" aria-hidden="true" />
+            Visuales
+          </h3>
+          <ul class="p-accesibilidad__lista">
+            <li>Contraste de colores mínimo 4.5:1 para texto</li>
+            <li>Información no transmitida solo por color</li>
+            <li>Tema oscuro completo con alto contraste</li>
+            <li>Tamaño mínimo táctil de 44x44px</li>
+            <li>Soporte para prefers-reduced-motion</li>
+          </ul>
+        </app-card>
+
+        <app-card>
+          <h3 class="p-accesibilidad__card-titulo">
+            <app-icon name="file-text" size="sm" aria-hidden="true" />
+            Formularios
+          </h3>
+          <ul class="p-accesibilidad__lista">
+            <li>Labels asociados a cada campo</li>
+            <li>Errores anunciados automáticamente (role="alert")</li>
+            <li>Campos obligatorios indicados con aria-required</li>
+            <li>Descripciones de ayuda vinculadas con aria-describedby</li>
+            <li>Autocompletado habilitado donde corresponde</li>
+          </ul>
+        </app-card>
+      </div>
+    </section>
+
+    <section class="p-accesibilidad__section" aria-labelledby="problemas-titulo">
+      <h2 id="problemas-titulo" class="p-accesibilidad__section-titulo">
+        Problemas conocidos
+      </h2>
+      <app-card>
+        <p class="p-accesibilidad__estado">
+          <app-icon name="check" size="sm" aria-hidden="true" />
+          Actualmente no hay problemas de accesibilidad conocidos.
+        </p>
+        <p>
+          Si encuentras alguna barrera de accesibilidad, por favor
+          <a href="mailto:soporte@joinly.es">contáctanos</a> para que podamos solucionarla.
+        </p>
+      </app-card>
+    </section>
+
+    <section class="p-accesibilidad__section" aria-labelledby="compatibilidad-titulo">
+      <h2 id="compatibilidad-titulo" class="p-accesibilidad__section-titulo">
+        Compatibilidad con tecnología de asistencia
+      </h2>
+      <app-card>
+        <p>Joinly ha sido probado con las siguientes tecnologías de asistencia:</p>
+        <ul class="p-accesibilidad__lista">
+          <li><strong>NVDA</strong> (Windows) con Chrome y Firefox</li>
+          <li><strong>VoiceOver</strong> (macOS) con Safari</li>
+          <li><strong>VoiceOver</strong> (iOS) con Safari</li>
+          <li><strong>Navegación por teclado</strong> en Chrome, Firefox, Safari y Edge</li>
+        </ul>
+      </app-card>
+    </section>
+
+    <section class="p-accesibilidad__section" aria-labelledby="contacto-titulo">
+      <h2 id="contacto-titulo" class="p-accesibilidad__section-titulo">
+        Contacto y feedback
+      </h2>
+      <app-card>
+        <p>
+          Valoramos tu feedback sobre la accesibilidad de Joinly. Si encuentras alguna
+          barrera o tienes sugerencias para mejorar, puedes contactarnos:
+        </p>
+        <ul class="p-accesibilidad__contacto">
+          <li>
+            <strong>Email:</strong>
+            <a href="mailto:soporte@joinly.es">soporte@joinly.es</a>
+          </li>
+          <li>
+            <strong>Respuesta:</strong>
+            Intentamos responder en un plazo de 2-3 días laborables
+          </li>
+        </ul>
+      </app-card>
+    </section>
+
+    <section class="p-accesibilidad__section" aria-labelledby="mejora-titulo">
+      <h2 id="mejora-titulo" class="p-accesibilidad__section-titulo">
+        Mejora continua
+      </h2>
+      <app-card>
+        <p>
+          La accesibilidad es un proceso continuo en Joinly. Nos comprometemos a:
+        </p>
+        <ul class="p-accesibilidad__lista">
+          <li>Realizar auditorías de accesibilidad periódicas</li>
+          <li>Incluir tests de accesibilidad en nuestro proceso de CI/CD</li>
+          <li>Formar al equipo en buenas prácticas de accesibilidad</li>
+          <li>Responder rápidamente a los reportes de usuarios</li>
+          <li>Mantener esta declaración actualizada</li>
+        </ul>
+      </app-card>
+    </section>
+  </div>
+</article>

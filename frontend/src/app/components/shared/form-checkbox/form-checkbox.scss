@@ -52,8 +52,15 @@
       }
     }
 
-    &:focus {
+    &:focus:not(:focus-visible) {
       outline: none;
+      border-color: var(--color-principal);
+      box-shadow: 0 0 0 var(--borde-medio) color-mix(in srgb, var(--color-principal) 25%, transparent);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-principal);
+      outline-offset: 2px;
       border-color: var(--color-principal);
       box-shadow: 0 0 0 var(--borde-medio) color-mix(in srgb, var(--color-principal) 25%, transparent);
     }

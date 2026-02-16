@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [tsconfigPaths()],
   test: {
     include: ['src/**/*.spec.ts'],
-    setupFiles: ['./src/test-setup.ts'],
+    setupFiles: ['./src/test-setup.ts', './src/test-setup-a11y.ts'],
     environment: 'jsdom',
     css: {
       modules: {

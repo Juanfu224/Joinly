@@ -24,6 +24,17 @@
   margin: -1px;
 }
 
+// Alias para compatibilidad con código existente
+// Ambas clases tienen el mismo efecto
+.u-visually-hidden {
+  @extend .visually-hidden;
+}
+
+// Alias adicional para screen reader only
+.u-sr-only {
+  @extend .visually-hidden;
+}
+
 // ---------------------------------------------------------------------------
 // Botón wrapper transparente
 // ---------------------------------------------------------------------------
@@ -41,9 +52,24 @@
   min-block-size: 0; // Prevenir colapso de altura en flex containers
   padding: 0;
   text-align: inherit;
+  border: none;
+  background: transparent;
+  cursor: pointer;
 
-  // Focus visible heredado del componente hijo
+  // Ocultar outline del wrapper, el hijo lo muestra
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  // Delegar indicador de foco al componente hijo
   &:focus-visible {
     outline: none;
+    
+    // Asegurar que el hijo tiene un indicador de foco visible
+    > * {
+      outline: 2px solid var(--color-principal);
+      outline-offset: 2px;
+      border-radius: var(--radio-grande);
+    }
   }
 }

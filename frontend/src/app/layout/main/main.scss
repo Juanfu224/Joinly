@@ -2,7 +2,7 @@
 // COMPONENTE: MAIN (.c-main)
 // ==========================================================================
 // Contenedor principal del contenido de la aplicación.
-// Utiliza la etiqueta semántica <main> y proyecta contenido dinámico.
+// El landmark semántico <main> está en app.html; este componente es un wrapper de estilos.
 // Basado en diseño Figma: https://www.figma.com/design/8q36kcT9LEqoXs99ZBxfV5/Joinly
 
 @use '../../../styles/00-settings/variables' as *;

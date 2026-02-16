@@ -3,6 +3,18 @@
   Saltar al contenido principal
 </a>
 
+<!-- Live region para anuncios de navegación SPA -->
+@if (focusService.shouldAnnounceNavigation()) {
+  <div
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+    class="visually-hidden"
+  >
+    {{ focusService.navigationAnnouncement() }}
+  </div>
+}
+
 <!-- Header de navegación principal -->
 <app-header />
 
@@ -14,7 +26,8 @@
 }
 
 <!-- Contenido principal con router-outlet -->
-<main class="l-main" id="contenido-principal">
+<!-- tabindex="-1" permite foco programático para navegación SPA -->
+<main class="l-main" id="contenido-principal" tabindex="-1">
   <router-outlet />
 </main>
 

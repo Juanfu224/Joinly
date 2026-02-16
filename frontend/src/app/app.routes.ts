@@ -40,6 +40,12 @@ export const routes: Routes = [
     data: { breadcrumb: 'Centro de ayuda' },
   },
   {
+    path: 'accesibilidad',
+    loadComponent: () => import('./pages/accesibilidad').then((m) => m.AccesibilidadComponent),
+    title: 'Declaración de Accesibilidad - Joinly',
+    data: { breadcrumb: 'Accesibilidad' },
+  },
+  {
     path: '',
     loadChildren: () => import('./routes/legal.routes').then((m) => m.LEGAL_ROUTES),
   },
